@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 
+import UserOne from '../../assets/user.png'
+
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [typeConnected, setTypeConnected] = useState("");
@@ -56,7 +58,7 @@ const DropdownUser = () => {
         <span className="h-12 w-12 rounded-full">
           {/* <img src={UserOne} alt="User" /> */}
           <img
-            src=""
+            src={UserOne}
             alt="User"
             className="rounded-full size-12  ring-1 ring-stroke dark:ring-strokedark"
           />
