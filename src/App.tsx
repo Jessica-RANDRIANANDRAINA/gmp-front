@@ -1,6 +1,7 @@
 import { Route, Routes, useLocation } from "react-router-dom";
 import PageTitle from "./components/PageTitle";
 import Login from "./Pages/Login";
+import ManageUser from "./Pages/Admin/ManageUser";
 
 const App = () => {
   return (
@@ -15,6 +16,17 @@ const App = () => {
             </>
           }
         ></Route>
+        <Route
+        path="/admin"
+        element={
+          <>
+            <PageTitle title="Admin"/>
+            <ManageUser />
+          </>
+        }
+        >
+
+        </Route>
       </Routes>
     </>
   );
