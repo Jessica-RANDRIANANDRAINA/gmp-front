@@ -54,12 +54,15 @@ const AdminSideBar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   return (
     <aside
       ref={sidebar}
-      className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-black duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0 ${
+      className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-boxlight  bg-cover duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0 ${
         sidebarOpen ? "translate-x-0" : "-translate-x-full"
       }`}
     >
-      {/* SIDEBAR HEADER */}
+      {/* ======SIDEBAR HEADER START====== */}
       <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
+        <div>
+          LOGO
+        </div>
         <button
           ref={trigger}
           onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -82,21 +85,22 @@ const AdminSideBar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
           </svg>
         </button>
       </div>
-      {/* SIDEBAR HEADER */}
+      {/* ======SIDEBAR HEADER END====== */}
 
       <div className="no-scrollbar transition-all h-full flex flex-col overflow-y-auto duration-300 ease-linear">
-        {/* SIDEBAR MENU */}
+        {/* ======SIDEBAR MENU START====== */}
         <nav className="mt-5 h-full py-4 px-4 lg:mt-9 lg:px-6 flex flex-col justify-between">
-          {/* ADMIN GROUP */}
+          {/* ======ADMIN GROUP START====== */}
           <div>
             <h3 className="mb-4 ml-4 text-sm font-semibold text-bodydark2">
               USER
             </h3>
             <ul>
               <NavLink
-                to="/user"
-                className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4  ${
-                  pathname.includes("user") && "bg-graydark dark:bg-meta-4"
+                to="/admin"
+                className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-tertiaryGreen dark:hover:bg-meta-4  ${
+                  pathname.includes("admin") &&
+                  "bg-tertiaryGreen dark:bg-secondaryGreen"
                 }`}
               >
                 <svg
@@ -128,7 +132,9 @@ const AdminSideBar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               </NavLink>
             </ul>
           </div>
+          {/* ======ADMIN GROUP END====== */}
         </nav>
+        {/* ======SIDEBAR MENU END====== */}
       </div>
     </aside>
   );

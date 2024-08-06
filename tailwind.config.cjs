@@ -36,7 +36,8 @@ export default {
         'gray-3': '#FAFAFA',
         whiten: '#F1F5F9',
         whiter: '#F5F7FD',
-        boxdark: '#24303F',
+        boxlight: '#006171',
+        boxdark: '#004550',
         'boxdark-2': '#1A222C',
         strokedark: '#2E3A47',
         'meta-1': '#DC3545',
@@ -49,6 +50,9 @@ export default {
         'meta-8': '#F0950C',
         'meta-9': '#E5E7EB',
       }, 
+      backgroundImage: {
+        "fond": "url('src/assets/pattern.png')"
+      },
       fontSize: {
         'title-xxl': ['44px', '55px'],
         'title-xl': ['36px', '45px'],
