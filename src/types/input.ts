@@ -6,7 +6,7 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   className?: string;
   rounded?: "full" | "medium" | "large" | "none";
   error?: string | null;
-  label: string
+  label: string;
 }
 
 export interface OptionMultiSelect {
@@ -19,6 +19,7 @@ export interface OptionMultiSelect {
 export interface MultiSelectProps {
   label: string | null;
   value?: Array<string>;
-  setValueMulti?: Function;
+  setValueMulti: Function;
   id: string;
+  placeholder?: string;
 }

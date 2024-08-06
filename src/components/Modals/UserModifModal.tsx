@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import CustomInput from "../UIElements/Input/CustomInput";
 import MultiSelect from "../UIElements/Select/MultiSelect";
 
@@ -9,7 +9,17 @@ const UserModifModal = ({
   userModif: boolean;
   setUserModifs: Function;
 }) => {
+  const [access, setAccess] = useState<string[]>([]);
+  const [valueMulti, setValueMulti] =useState<any>()
   const trigger = useRef<any>(null);
+
+  const handleModif = (e: any) => {
+    e.preventDefault()
+    console.log("-----------")
+    console.log(valueMulti)
+    console.log("-----------")
+    return;
+  }
 
   return (
     <div className="fixed inset-0 flex justify-center place-items-center bg-black z-999999 bg-opacity-50">
@@ -42,7 +52,7 @@ const UserModifModal = ({
         </header>
         {/* =====HEADER END===== */}
         <div>
-          <form action="">
+          <form onSubmit={handleModif}>
             <CustomInput
               label="Nom"
               type="text"
@@ -62,8 +72,15 @@ const UserModifModal = ({
             <MultiSelect
               id="aaa"
               label={"Accès"}
-              value={["Opt1", "Opt2", "Opt3", "Opt4", "Opt5"]}
+              placeholder="Accés disponible"
+              value={["Visualisation", "Gestion", "Total"]}
+              setValueMulti={setValueMulti}
             />
+          <input
+            type="submit"
+            value={"Modifier les accès"}
+            className="w-full cursor-pointer mt-2 py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen dark:hover:bg-opacity-90"
+          />
           </form>
         </div>
       </div>

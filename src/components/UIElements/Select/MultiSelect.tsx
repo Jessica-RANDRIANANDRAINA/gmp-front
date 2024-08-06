@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { MultiSelectProps, OptionMultiSelect } from "../../../types/input";
 
-const MultiSelect = ({ label, value, setValueMulti, id }: MultiSelectProps) => {
+const MultiSelect = ({ label, value, setValueMulti, id, placeholder }: MultiSelectProps) => {
   const [options, setOptions] = useState<OptionMultiSelect[]>([]);
   const [selected, setSelected] = useState<number[]>([]);
   const [show, setShow] = useState(false);
@@ -21,6 +21,7 @@ const MultiSelect = ({ label, value, setValueMulti, id }: MultiSelectProps) => {
           });
         }
         setOptions(newOptions);
+        
       }
     };
 
@@ -66,7 +67,11 @@ const MultiSelect = ({ label, value, setValueMulti, id }: MultiSelectProps) => {
 
   const selectedValues = () => {
     return selected.map((option) => options[option].value);
-  };
+  };  
+
+  useEffect(() => {
+    setValueMulti(selectedValues());
+  }, [selected, setValueMulti]);
 
   useEffect(() => {
     const clickHandler = ({ target }: MouseEvent) => {
@@ -140,7 +145,7 @@ const MultiSelect = ({ label, value, setValueMulti, id }: MultiSelectProps) => {
                     {selected.length === 0 && (
                       <div className="flex-1">
                         <input
-                          placeholder="Select an option"
+                          placeholder={placeholder}
                           className="h-full w-full appearance-none bg-transparent p-1 px-2 outline-none"
                           defaultValue={selectedValues()}
                         />
