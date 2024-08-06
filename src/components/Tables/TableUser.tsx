@@ -4,7 +4,16 @@ import UserModifModal from "../Modals/UserModifModal";
 const TableUser = ({ data }: { data: Array<any> }) => {
   const [userModif, setUserModif] = useState(false);
   return (
-    <div className="border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+    <div className=" bg-white pt-2 shadow-default dark:border-strokedark dark:bg-boxdark">
+      <div className="flex m-5 flex-wrap justify-between items-center">
+        <div>
+          <input
+            type="text"
+            placeholder="Recherche"
+            className="w-full rounded-md border border-stroke bg-transparent py-3 pl-6 pr-10 text-black outline-none focus:border-primaryGreen focus-visible:shadow-none dark:border-neutral-500 dark:focus:border-primaryGreen"
+          />
+        </div>
+      </div>
       {/* =====TABLE START===== */}
       <div className="max-w-full overflow-x-auto">
         <table className="w-full table-auto">
@@ -54,8 +63,12 @@ const TableUser = ({ data }: { data: Array<any> }) => {
                 </span>
               </td>
               <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                <button className=" hover:text-graydark dark:hover:text-white"
-                onClick={()=> {setUserModif(!userModif)}}>
+                <button
+                  className=" hover:text-graydark dark:hover:text-white"
+                  onClick={() => {
+                    setUserModif(!userModif);
+                  }}
+                >
                   Modifier
                 </button>
               </td>
@@ -65,7 +78,9 @@ const TableUser = ({ data }: { data: Array<any> }) => {
       </div>
       {/* =====TABLE END===== */}
       {/* =====MODAL USER MODIF START===== */}
-      {userModif && <UserModifModal setUserModifs={setUserModif} userModif={userModif} />}
+      {userModif && (
+        <UserModifModal setUserModifs={setUserModif} userModif={userModif} />
+      )}
       {/* =====MODAL USER MODIF END===== */}
     </div>
   );

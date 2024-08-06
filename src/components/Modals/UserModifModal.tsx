@@ -1,4 +1,6 @@
 import { useRef, useEffect } from "react";
+import CustomInput from "../UIElements/Input/CustomInput";
+import MultiSelect from "../UIElements/Select/MultiSelect";
 
 const UserModifModal = ({
   userModif,
@@ -8,25 +10,9 @@ const UserModifModal = ({
   setUserModifs: Function;
 }) => {
   const trigger = useRef<any>(null);
-  const dropdown = useRef<any>(null);
 
-  // close on click outside
-  useEffect(() => {
-    const clickHandler = ({ target }: MouseEvent) => {
-      if (!dropdown.current) return;
-      if (
-        !userModif ||
-        dropdown.current.contains(target) ||
-        trigger.current.contains(target)
-      )
-        return;
-        setUserModifs(false);
-    };
-    document.addEventListener("click", clickHandler);
-    return () => document.removeEventListener("click", clickHandler);
-  });
   return (
-    <div  className="fixed inset-0 flex justify-center place-items-center bg-black z-999999 bg-opacity-50">
+    <div className="fixed inset-0 flex justify-center place-items-center bg-black z-999999 bg-opacity-50">
       <div
         ref={trigger}
         className={"bg-white dark:bg-[#24303F] rounded-md w-5/6 md:w-1/3 p-4"}
@@ -56,7 +42,29 @@ const UserModifModal = ({
         </header>
         {/* =====HEADER END===== */}
         <div>
-          <div> HERE</div>
+          <form action="">
+            <CustomInput
+              label="Nom"
+              type="text"
+              rounded="medium"
+              className="p-4 w-full"
+              value={"Johanne RAZAFIMAHEFA"}
+              disabled
+            />
+            <CustomInput
+              label="Email"
+              type="text"
+              rounded="medium"
+              className="p-4 w-full"
+              value={"ST116@ravinala-airports.aero"}
+              disabled
+            />
+            <MultiSelect
+              id="aaa"
+              label={"Accès"}
+              value={["Opt1", "Opt2", "Opt3", "Opt4", "Opt5"]}
+            />
+          </form>
         </div>
       </div>
     </div>
