@@ -1,9 +1,14 @@
 import DefaultLayout from "../../layout/DefaultLayout";
+import TableUser from "../../components/Tables/TableUser";
 
 const ManageUser = () => {
   return (
     <DefaultLayout>
-      <div>test</div>
+      <div>
+        <TableUser 
+          data={[""]}
+        />
+      </div>
     </DefaultLayout>
   );
 };
