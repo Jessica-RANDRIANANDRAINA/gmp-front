@@ -1,11 +1,11 @@
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 
 import UserOne from '../../assets/user.png'
 
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [typeConnected, setTypeConnected] = useState("");
+  // const [typeConnected, setTypeConnected] = useState("");
 
   const trigger = useRef<any>(null);
   const dropdown = useRef<any>(null);

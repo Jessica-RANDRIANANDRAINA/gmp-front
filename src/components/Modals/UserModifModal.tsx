@@ -1,15 +1,15 @@
-import { useRef, useEffect, useState } from "react";
+import { useRef, useState } from "react";
 import CustomInput from "../UIElements/Input/CustomInput";
 import MultiSelect from "../UIElements/Select/MultiSelect";
 
 const UserModifModal = ({
-  userModif,
+  // userModif,
   setUserModifs,
 }: {
   userModif: boolean;
   setUserModifs: Function;
 }) => {
-  const [access, setAccess] = useState<string[]>([]);
+  // const [access, setAccess] = useState<string[]>([]);
   const [valueMulti, setValueMulti] =useState<any>()
   const trigger = useRef<any>(null);
 

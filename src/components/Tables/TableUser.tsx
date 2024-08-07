@@ -3,6 +3,15 @@ import UserModifModal from "../Modals/UserModifModal";
 
 const TableUser = ({ data }: { data: Array<any> }) => {
   const [userModif, setUserModif] = useState(false);
+
+  const showData = () => {
+    console.log(data);
+  };
+
+  useEffect(() => {
+    showData();
+  }, []);
+
   return (
     <div className=" bg-white pt-2 shadow-default dark:border-strokedark dark:bg-boxdark">
       <div className="flex m-5 flex-wrap justify-between items-center">

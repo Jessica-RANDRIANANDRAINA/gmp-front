@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 
 interface SidebarProps {
@@ -14,7 +14,7 @@ const AdminSideBar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const sidebar = useRef<any>(null);
 
   const storedSidebarExpanded = localStorage.getItem("sidebar-expanded");
-  const [sidebarExpanded, setSidebarExpanded] = useState(
+  const [sidebarExpanded] = useState(
     storedSidebarExpanded === null ? false : storedSidebarExpanded === "true"
   );
 
