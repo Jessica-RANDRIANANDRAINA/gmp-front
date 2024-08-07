@@ -53,13 +53,13 @@ const TableUser = ({ data }: { data: Array<any> }) => {
               </td>
               <td className="border-b flex flex-wrap border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
                 <span className="text-white border m-1 border-orange  bg-orange   py-1 px-2 rounded-2xl dark:text-white">
-                  no access
+                  Visualisation
                 </span>
                 <span className="text-white border m-1 border-orange  bg-orange   py-1 px-2 rounded-2xl dark:text-white">
-                  no access
+                  Gestion
                 </span>
                 <span className="text-white border m-1 border-orange  bg-orange   py-1 px-2 rounded-2xl dark:text-white">
-                  no access
+                  Total
                 </span>
               </td>
               <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
