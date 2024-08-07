@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { NavLink, useLocation } from "react-router-dom";
+import Logo from '../../assets/ravinala.webp'
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -59,9 +60,9 @@ const AdminSideBar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
       }`}
     >
       {/* ======SIDEBAR HEADER START====== */}
-      <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
-        <div>
-          LOGO
+      <div className="flex items-center lg:justify-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
+        <div className="w-1/2 flex justify-center">
+          <img src={Logo} alt="Logo" />
         </div>
         <button
           ref={trigger}
