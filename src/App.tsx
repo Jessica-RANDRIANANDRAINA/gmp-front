@@ -1,4 +1,4 @@
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import PageTitle from "./components/PageTitle";
 import Login from "./Pages/Login";
 import ManageUser from "./Pages/Admin/ManageUser";
