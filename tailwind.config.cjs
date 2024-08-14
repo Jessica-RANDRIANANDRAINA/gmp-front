@@ -65,6 +65,9 @@ export default {
         'title-sm': ['20px', '26px'],
         'title-xsm': ['18px', '24px']
       },
+      fontFamily: {
+        poppins: ['Poppins', 'sans-serif']
+      },
       spacing: {
         4.5: '1.125rem',
         5.5: '1.375rem',
@@ -232,6 +235,7 @@ export default {
         1: '0px 1px 0px #E2E8F0',
         2: '0px 1px 4px rgba(0, 0, 0, 0.12)'
       },
+      
     },
   },
   plugins: [],

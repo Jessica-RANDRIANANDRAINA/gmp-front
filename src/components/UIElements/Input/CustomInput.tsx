@@ -27,13 +27,13 @@ const CustomInput = ({
   }, [error]);
   return (
     <div>
-      <label className="mb-2 mt-3 block text-sm font-medium text-black dark:text-white">
+      <label className="mb-2.5 font-poppins font-semibold leading-relaxed block text-sm text-black dark:text-white">
         {label}
       </label>
       <input
         ref={inputRef}
         type={type}
-        className={`${className} ${round[rounded]} ${
+        className={` w-full border border-stroke bg-transparent py-3 pl-6 pr-10 text-black outline-none focus:border-primaryGreen focus-visible:shadow-none dark:border-neutral-500 dark:focus:border-primaryGreen ${className} ${round[rounded]} ${
           error &&
           "border-red-500 shadow-switcher shadow-red-500 focus:border-red-500 focus:shadow-switcher focus:shadow-red-500 dark:focus:border-red-500 dark:focus:shadow-switcher dark:focus:shadow-red-500 "
         }`}

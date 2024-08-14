@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import UserModifModal from "../Modals/UserModifModal";
+import { CustomInput, CustomSelect } from "../UIElements";
 
 const TableUser = ({ data }: { data: Array<any> }) => {
   const [userModif, setUserModif] = useState(false);
@@ -15,11 +16,24 @@ const TableUser = ({ data }: { data: Array<any> }) => {
   return (
     <div className=" bg-white pt-2 shadow-default dark:border-strokedark dark:bg-boxdark">
       <div className="flex m-5 flex-wrap justify-between items-center">
-        <div>
-          <input
+        <div className="  grid grid-cols-4 gap-3 w-full">
+          <CustomInput
             type="text"
-            placeholder="Recherche"
-            className="w-full rounded-md border border-stroke bg-transparent py-3 pl-6 pr-10 text-black outline-none focus:border-primaryGreen focus-visible:shadow-none dark:border-neutral-500 dark:focus:border-primaryGreen"
+            label="Recherche"
+            placeholder="Nom ou mail"
+            rounded="medium"
+          />
+          <CustomSelect 
+            label="Département"
+            placeholder="Département"
+            data={["DSI", "DAF"]}
+            onValueChange={()=> {console.log('first')}}
+          />
+          <CustomSelect 
+            label="Accès"
+            placeholder="Accès"
+            data={["Total", "Client", "Manager"]}
+            onValueChange={()=> {console.log('first')}}
           />
         </div>
       </div>
@@ -28,6 +42,9 @@ const TableUser = ({ data }: { data: Array<any> }) => {
         <table className="w-full table-auto">
           <thead className="pt-5 rounded-t-xl bg-primaryGreen">
             <tr className=" border border-stone-300 border-opacity-[0.1] border-r-0 border-l-0 text-white text-left">
+              <th className=" pl-2 ">
+                <p className="cursor-pointer border w-5 h-5"></p>
+              </th>
               <th className="py-4 px-4 font-bold  text-white dark:text-white xl:pl-11">
                 Nom
               </th>
@@ -47,6 +64,9 @@ const TableUser = ({ data }: { data: Array<any> }) => {
           </thead>
           <tbody>
             <tr className="hover:bg-whiten dark:hover:bg-whitenGreen">
+              <td className="pl-2 ">
+                <p className="cursor-pointer border w-5 h-5"></p>
+              </td>
               <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
                 <p className="text-black dark:text-white">
                   Johanne RAZAFIMAHEFA
@@ -54,7 +74,7 @@ const TableUser = ({ data }: { data: Array<any> }) => {
               </td>
               <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
                 <p className="text-black dark:text-white">
-                  ST116@ravinala-airports.aero
+                  johanne.razafimahefa@ravinala-airports.aero
                 </p>
               </td>
               <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">

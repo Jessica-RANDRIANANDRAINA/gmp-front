@@ -1,4 +1,4 @@
-import { InputHTMLAttributes } from "react";
+import { InputHTMLAttributes, SelectHTMLAttributes } from "react";
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   type: string;
@@ -23,3 +23,13 @@ export interface MultiSelectProps {
   id: string;
   placeholder?: string;
 }
+
+
+export interface InputSelectprops extends SelectHTMLAttributes<HTMLSelectElement> {
+  label?: string;
+  placeholder?: string;
+  data: Array<string>;
+  value?: string;
+  onValueChange: (selectedValue: string) => void;
+  required?: boolean
+};

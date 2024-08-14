@@ -1,6 +1,5 @@
 import { useRef, useState } from "react";
-import CustomInput from "../UIElements/Input/CustomInput";
-import MultiSelect from "../UIElements/Select/MultiSelect";
+import { CustomInput, MultiSelect } from "../UIElements";
 
 const UserModifModal = ({
   // userModif,

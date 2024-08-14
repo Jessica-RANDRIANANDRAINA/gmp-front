@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import PageTitle from "./components/PageTitle";
 import Login from "./Pages/Login";
 import ManageUser from "./Pages/Admin/ManageUser";
+import './App.css'
 
 const App = () => {
   return (
