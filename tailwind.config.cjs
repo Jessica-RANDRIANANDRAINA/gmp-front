@@ -25,6 +25,7 @@ export default {
         tertiaryColor: '#141E45',
         secondaryColor: '#737373',
         primaryColor: '#59599F', 
+        title: '#141D43',
         black: '#1C2434',
         orange: '#FA7828',
         'black-2': '#010101',

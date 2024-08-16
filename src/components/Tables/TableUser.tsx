@@ -104,7 +104,7 @@ const TableUser = ({ data }: { data: Array<any> }) => {
             </g>
           </svg> 
         </div>
-        <div className="text-2xl  font-medium">Listes de tous les utilisateurs</div>
+        <div className="text-2xl text-title  font-medium">Listes de tous les utilisateurs</div>
         <div >
           
           <svg
