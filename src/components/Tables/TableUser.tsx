@@ -16,25 +16,58 @@ const TableUser = ({ data }: { data: Array<any> }) => {
   return (
     <div className=" bg-white pt-2 shadow-default dark:border-strokedark dark:bg-boxdark">
       <div className="flex m-5 flex-wrap justify-between items-center">
-        <div className="  grid grid-cols-4 gap-3 w-full">
+        <div className="  grid md:grid-cols-4 grid-cols-1 gap-3 w-full ">
           <CustomInput
             type="text"
             label="Recherche"
             placeholder="Nom ou mail"
             rounded="medium"
           />
-          <CustomSelect 
+          <CustomSelect
             label="Département"
             placeholder="Département"
             data={["DSI", "DAF"]}
-            onValueChange={()=> {console.log('first')}}
+            onValueChange={() => {
+              console.log("first");
+            }}
           />
-          <CustomSelect 
+          <CustomSelect
             label="Accès"
             placeholder="Accès"
             data={["Total", "Client", "Manager"]}
-            onValueChange={()=> {console.log('first')}}
+            onValueChange={() => {
+              console.log("first");
+            }}
           />
+          <div className="flex items-end pb-3 mx-2">
+            <button className="flex justify-center  gap-1 h-fit">
+              Effacer les filtres
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                stroke="#00AE5D"
+              >
+                <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                <g
+                  id="SVGRepo_tracerCarrier"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                ></g>
+                <g id="SVGRepo_iconCarrier">
+                  {" "}
+                  <path
+                    d="M21 12C21 16.9706 16.9706 21 12 21C9.69494 21 7.59227 20.1334 6 18.7083L3 16M3 12C3 7.02944 7.02944 3 12 3C14.3051 3 16.4077 3.86656 18 5.29168L21 8M3 21V16M3 16H8M21 3V8M21 8H16"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  ></path>{" "}
+                </g>
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
       {/* =====TABLE START===== */}
