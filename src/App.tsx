@@ -2,7 +2,8 @@ import { Route, Routes } from "react-router-dom";
 import PageTitle from "./components/PageTitle";
 import Login from "./Pages/Login";
 import ManageUser from "./Pages/Admin/ManageUser";
-import './App.css'
+import ManageAccess from "./Pages/Admin/ManageAccess";
+import "./App.css";
 
 const App = () => {
   return (
@@ -18,16 +19,23 @@ const App = () => {
           }
         ></Route>
         <Route
-        path="/admin"
-        element={
-          <>
-            <PageTitle title="Admin"/>
-            <ManageUser />
-          </>
-        }
-        >
-
-        </Route>
+          path="/admin"
+          element={
+            <>
+              <PageTitle title="Admin" />
+              <ManageUser />
+            </>
+          }
+        ></Route>
+        <Route
+          path="/access"
+          element={
+            <>
+              <PageTitle title="Access management" />
+              <ManageAccess />
+            </>
+          }
+        ></Route>
       </Routes>
     </>
   );
