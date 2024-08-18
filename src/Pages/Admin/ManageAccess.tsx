@@ -5,7 +5,7 @@ const ManageAccess = () => {
   return (
     <DefaultLayout>
         <div>
-            
+            <TableAccess />
         </div>
     </DefaultLayout>
   )
