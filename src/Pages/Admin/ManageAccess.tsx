@@ -1,4 +1,5 @@
 import DefaultLayout from "../../layout/DefaultLayout"
+import { TableAccess } from "../../components/Tables"
 
 const ManageAccess = () => {
   return (
