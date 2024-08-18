@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { InputSelectprops } from "../../../types/input";
 
 const CustomSelect = ({
@@ -10,6 +10,25 @@ const CustomSelect = ({
 }: InputSelectprops) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState(value);
+
+  const trigger = useRef<any>(null);
+  const dropdown = useRef<any>(null);
+
+  // click on the outside of the select
+  useEffect(() => {
+    const clickHandler = ({ target }: MouseEvent) => {
+      if (!dropdown.current) return;
+      if (
+        !isOpen ||
+        dropdown.current.contains(target) ||
+        trigger.current.contains(target)
+      )
+        return;
+      setIsOpen(false);
+    };
+    document.addEventListener("click", clickHandler);
+    return () => document.removeEventListener("click", clickHandler);
+  });
 
   const handleSelect = (option: any) => {
     setSelected(option);
@@ -23,6 +42,7 @@ const CustomSelect = ({
         {label}
       </label>
       <button
+        ref={trigger}
         onClick={() => setIsOpen(!isOpen)}
         className={`w-full py-3 px-6 border flex items-center justify-between border-stroke rounded-lg bg-transparent text-left ${
           selected ? "" : "text-bodydark2"
@@ -55,10 +75,13 @@ const CustomSelect = ({
         </span>
       </button>
       <div
+        ref={dropdown}
         className={`absolute w-full bg-white border border-stroke rounded-lg mt-1 transition-transform duration-200 ease-in-out transform ${
-          isOpen ? "scale-y-100 scale-x-100 opacity-100 " : " scale-y-0 scale-x-0 opacity-0 "
+          isOpen
+            ? "scale-y-100 scale-x-100 opacity-100 "
+            : " scale-y-0 scale-x-0 opacity-0 "
         } `}
-        style={{transformOrigin:"top", overflow:"hidden"}}
+        style={{ transformOrigin: "top", overflow: "hidden" }}
       >
         {data?.map((option, index) => (
           <div
@@ -71,7 +94,6 @@ const CustomSelect = ({
           </div>
         ))}
       </div>
-      
     </div>
   );
 };
