@@ -21,6 +21,7 @@ const TableUser = ({ data }: { data: Array<any> }) => {
 
   return (
     <div className=" bg-white pt-2 shadow-default dark:border-strokedark dark:bg-boxdark">
+      {/* ==== FILTER START ===== */}
       <div className="flex m-5 flex-wrap justify-between items-center">
         <div className="  grid md:grid-cols-4 grid-cols-1 gap-3 w-full ">
           <CustomInput
@@ -76,6 +77,7 @@ const TableUser = ({ data }: { data: Array<any> }) => {
           </div>
         </div>
       </div>
+      {/* ==== FILTER END ===== */}
       {/* =====PAGINATE AND TITLE START===== */}
       <div className=" pb-4 flex justify-between px-3 ">
         <div className="rotate-180">
@@ -102,11 +104,12 @@ const TableUser = ({ data }: { data: Array<any> }) => {
                 stroke-linejoin="round"
               ></path>{" "}
             </g>
-          </svg> 
+          </svg>
         </div>
-        <div className="text-2xl text-title  font-medium">Listes de tous les utilisateurs</div>
-        <div >
-          
+        <div className="text-2xl text-title  font-medium">
+          Listes de tous les utilisateurs
+        </div>
+        <div>
           <svg
             width="40"
             height="40"
@@ -162,67 +165,73 @@ const TableUser = ({ data }: { data: Array<any> }) => {
                   </svg>
                 </button>
               </th>
-              <th className="py-4 px-4   font-bold  text-white dark:text-white xl:pl-11">
-                <button
-                  onClick={() => {
-                    setDataSorted({
-                      ...dataSorted,
-                      name: !dataSorted.name,
-                    });
-                  }}
-                  className={`${
-                    dataSorted.name ? "" : "rotate-180"
-                  } transform transition-transform duration-200   `}
-                >
-                  <svg
-                    className="fill-current"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
+              <th className="py-4 px-4  font-bold  text-white dark:text-white xl:pl-11">
+                <div className="flex items-center">
+                  <button
+                    onClick={() => {
+                      setDataSorted({
+                        ...dataSorted,
+                        name: !dataSorted.name,
+                      });
+                    }}
+                    className={`${
+                      dataSorted.name ? "" : "rotate-180"
+                    } transform transition-transform duration-200   `}
                   >
-                    <path
-                      d="M5.29289 8.29289C5.68342 7.90237 6.31658 7.90237 6.70711 8.29289L12 13.5858L17.2929 8.29289C17.6834 7.90237 18.3166 7.90237 18.7071 8.29289C19.0976 8.68342 19.0976 9.31658 18.7071 9.70711L12.7071 15.7071C12.3166 16.0976 11.6834 16.0976 11.2929 15.7071L5.29289 9.70711C4.90237 9.31658 4.90237 8.68342 5.29289 8.29289Z"
-                      fill=""
-                    ></path>
-                  </svg>
-                </button>
-                Nom
-              </th>
-              <th className="py-4 px-4 font-bold    text-white dark:text-white xl:pl-11">
-                <button
-                  onClick={() => {
-                    setDataSorted({
-                      ...dataSorted,
-                      email: !dataSorted.email,
-                    });
-                  }}
-                  className={`${
-                    dataSorted.email ? "" : "rotate-180"
-                  } transform transition-transform duration-200  `}
-                >
-                  <svg
-                    className="fill-current"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <g opacity="0.8">
+                    <svg
+                      className="fill-current"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
                       <path
-                        fillRule="evenodd"
-                        clipRule="evenodd"
                         d="M5.29289 8.29289C5.68342 7.90237 6.31658 7.90237 6.70711 8.29289L12 13.5858L17.2929 8.29289C17.6834 7.90237 18.3166 7.90237 18.7071 8.29289C19.0976 8.68342 19.0976 9.31658 18.7071 9.70711L12.7071 15.7071C12.3166 16.0976 11.6834 16.0976 11.2929 15.7071L5.29289 9.70711C4.90237 9.31658 4.90237 8.68342 5.29289 8.29289Z"
                         fill=""
                       ></path>
-                    </g>
-                  </svg>
-                </button>
-                Email
+                    </svg>
+                  </button>
+                  <span>Nom</span>
+                </div>
               </th>
-              <th className="py-4 px-4 font-bold flex text-white dark:text-white xl:pl-11">
+              <th className="py-4 px-4 font-bold    text-white dark:text-white xl:pl-11">
+                <div className="flex items-center">
+                  <button
+                    onClick={() => {
+                      setDataSorted({
+                        ...dataSorted,
+                        email: !dataSorted.email,
+                      });
+                    }}
+                    className={`${
+                      dataSorted.email ? "" : "rotate-180"
+                    } transform transition-transform duration-200  `}
+                  >
+                    <svg
+                      className="fill-current"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <g opacity="0.8">
+                        <path
+                          fillRule="evenodd"
+                          clipRule="evenodd"
+                          d="M5.29289 8.29289C5.68342 7.90237 6.31658 7.90237 6.70711 8.29289L12 13.5858L17.2929 8.29289C17.6834 7.90237 18.3166 7.90237 18.7071 8.29289C19.0976 8.68342 19.0976 9.31658 18.7071 9.70711L12.7071 15.7071C12.3166 16.0976 11.6834 16.0976 11.2929 15.7071L5.29289 9.70711C4.90237 9.31658 4.90237 8.68342 5.29289 8.29289Z"
+                          fill=""
+                        ></path>
+                      </g>
+                    </svg>
+                  </button>
+                  <span>Email</span>
+                </div>
+              </th>
+              <th className="py-4 px-4 font-bold  text-white dark:text-white xl:pl-11">
+                <div className="flex items-center">
+
                 <button
                   onClick={() => {
                     setDataSorted({
@@ -253,6 +262,7 @@ const TableUser = ({ data }: { data: Array<any> }) => {
                   </svg>
                 </button>
                 <span>Département</span>
+                </div>
               </th>
               <th className="py-4 px-4 font-bold  text-white dark:text-white xl:pl-11">
                 Accès
