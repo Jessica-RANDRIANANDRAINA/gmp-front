@@ -266,9 +266,7 @@ const TableUser = ({ data }: { data: Array<any> }) => {
               <th className="py-4 px-4 font-bold  text-white dark:text-white xl:pl-11">
                 Accès
               </th>
-              <th className="py-4 px-4 font-bold  text-white dark:text-white xl:pl-11">
-                Action
-              </th>
+              
             </tr>
           </thead>
           <tbody>
@@ -322,7 +320,7 @@ const TableUser = ({ data }: { data: Array<any> }) => {
                   Total
                 </span>
               </td>
-              <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+              {/* <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
                 <button
                   className=" hover:text-graydark dark:hover:text-white"
                   onClick={() => {
@@ -331,7 +329,7 @@ const TableUser = ({ data }: { data: Array<any> }) => {
                 >
                   Modifier
                 </button>
-              </td>
+              </td> */}
             </tr>
           </tbody>
         </table>
