@@ -1,34 +1,48 @@
-import { useMsal } from "@azure/msal-react"
-import { loginRequest } from "../Auth/AuthConfig"
-import axios from "axios"
+import React, { useState } from "react";
 
 const Login = () => {
-    const { instance } = useMsal()
-
-    const handleLogin = async () => {
-        try {
-          const loginResponse = await instance.loginPopup(loginRequest);
-          const idToken = loginResponse.idToken;
-    
-          // Envoyer le token au backend pour vérification
-          const response = await axios.post('http://localhost:5000/api/auth/verify', { token: idToken });
-          
-          if (response.data.success) {
-            console.log('Login successful!');
-            // Traiter la réponse du backend, par exemple, en stockant les informations utilisateur
-          } else {
-            console.error('Login failed on server.');
-          }
-        } catch (error) {
-          console.error('Login failed:', error);
-        }
-      };
-
+  const [user, setUser] = useState({
+    email: "",
+    password: "",
+  });
   return (
-    <button onClick={handleLogin}>
-      Login with Microsoft
-    </button>
-  )
-}
+    <div className="bg-gray h-[100vh] flex justify-center items-center ">
+      <form action="">
+        <div>
+          <label>Email:</label>
+          <input
+            type="text"
+            value={user?.email}
+            onChange={(e) => {
+              setUser({
+                ...user,
+                email: e.target.value,
+              });
+            }}
+          />
+        </div>
+        <div>
+          <label>Password:</label>
+          <input
+            type="password"
+            value={user?.password}
+            onChange={(e) => {
+              setUser({
+                ...user,
+                password: e.target.value,
+              });
+            }}
+          />
+        </div>
+        <button
+          className="border p-2 rounded bg-primaryGreen text-white"
+          type="submit"
+        >
+          Login
+        </button>
+      </form>
+    </div>
+  );
+};
 
-export default Login
+export default Login;

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { TableAccessProps } from "../../types/table";
+import { CustomSelect } from "../UIElements";
 
 const TableAccess = ({ data }: TableAccessProps) => {
   const [dataSorted, setDataSorted] = useState({
@@ -32,7 +33,7 @@ const TableAccess = ({ data }: TableAccessProps) => {
         </div>
         {/* =====FILTER START===== */}
         <div className="grid md:grid-cols-4 grid-cols-1 gap-3 w-full ">
-          {/* here the filters */}
+          here the filters
         </div>
         {/* =====FILTER END===== */}
       </div>
@@ -95,6 +96,19 @@ const TableAccess = ({ data }: TableAccessProps) => {
         </div>
       </div>
       {/* =====PAGINATE AND TITLE END===== */}
+      {/* ===== BULK ACTION START ===== */}
+      <div className="w-full flex border rounded-md p-4 justify-between mb-2 ">
+        <p></p>
+        <CustomSelect
+        className="w-1/2"
+          label="Action"
+          data={["Modifier", "Supprimer"]}
+          onValueChange={() => {
+            console.log("bulk");
+          }}
+        />
+      </div>
+      {/* ===== BULK ACTION END ===== */}
       {/* =====TABLE START===== */}
       <div className="max-w-full overflow-x-auto">
         <table className="w-full table-auto">
@@ -102,7 +116,7 @@ const TableAccess = ({ data }: TableAccessProps) => {
             <tr className="border border-stone-300 border-opacity-[0.1] border-r-0 border-l-0 text-white text-left">
               <th className=" pl-2 ">
                 <button
-                    onClick={() => setIsAllSelected(!isAllSelected)}
+                  onClick={() => setIsAllSelected(!isAllSelected)}
                   className="cursor-pointer border w-5 h-5"
                 >
                   <svg

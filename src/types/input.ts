@@ -32,4 +32,5 @@ export interface InputSelectprops extends SelectHTMLAttributes<HTMLSelectElement
   value?: string;
   onValueChange: (selectedValue: string) => void;
   required?: boolean
+  className?: string
 };

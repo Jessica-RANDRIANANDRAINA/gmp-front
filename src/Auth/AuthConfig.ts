@@ -1,6 +1,6 @@
 export const msalConfig = {
   auth: {
-    clientId: "3e8ca2e1-32e3-4d21-84f9-6e893e8246ea",
+    clientId: "f0557af9-03b4-43b4-9ec0-b4c8010ecfb7",
     authority: "https://login.microsoftonline.com/manojbedreoutlook.onmicrosoft.com",
     redirectUri: "http://localhost:5100",
     postLogoutRedirectUri: "http://localhost:5100"

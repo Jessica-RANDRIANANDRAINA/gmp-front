@@ -7,6 +7,7 @@ const CustomSelect = ({
   onValueChange,
   value,
   label,
+  className
 }: InputSelectprops) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState(value);
@@ -37,7 +38,7 @@ const CustomSelect = ({
   };
 
   return (
-    <div className="relative">
+    <div className={`relative ${className}`}>
       <label className="mb-2.5 leading-relaxed block font-semibold font-poppins text-sm text-black dark:text-white">
         {label}
       </label>
