@@ -1,24 +1,27 @@
 import { useEffect, useState } from "react";
 import UserModifModal from "../Modals/UserModifModal";
 import { CustomInput, CustomSelect } from "../UIElements";
+import { getAllDepatments } from "../../services/User";
 
 const TableUser = ({ data }: { data: Array<any> }) => {
   const [userModif, setUserModif] = useState(false);
+  const [departments, setDepartments] = useState([]);
   const [dataSorted, setDataSorted] = useState({
     name: true,
     email: true,
     department: true,
   });
   const [isAllSelected, setIsAllSelected] = useState(false);
-  const showData = () => {
-    console.log("***********");
-    console.log(data);
-    console.log("***********");
-  };
 
   useEffect(() => {
-    showData();
-  }, [data]);
+    const fetchDepartment = async () => {
+      const depart = await getAllDepatments();
+
+      setDepartments(depart);
+    };
+
+    fetchDepartment();
+  }, []);
 
   return (
     <div className=" bg-white pt-2 shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -34,7 +37,7 @@ const TableUser = ({ data }: { data: Array<any> }) => {
           <CustomSelect
             label="Département"
             placeholder="Département"
-            data={["DSI", "DAF"]}
+            data={departments}
             onValueChange={() => {
               console.log("first");
             }}
@@ -271,7 +274,10 @@ const TableUser = ({ data }: { data: Array<any> }) => {
           </thead>
           <tbody>
             {data?.map((user) => (
-              <tr key={user?.id} className="hover:bg-whiten dark:hover:bg-whitenGreen">
+              <tr
+                key={user?.id}
+                className="hover:bg-whiten dark:hover:bg-whitenGreen"
+              >
                 <td className="pl-2 ">
                   <button
                     className="cursor-pointer border w-5 h-5"
@@ -299,13 +305,11 @@ const TableUser = ({ data }: { data: Array<any> }) => {
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
                   <p className="text-black dark:text-white">
-                    {user?.name?.split('(')?.[0]}
+                    {user?.name?.split("(")?.[0]}
                   </p>
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                  <p className="text-black dark:text-white">
-                    {user?.email}
-                  </p>
+                  <p className="text-black dark:text-white">{user?.email}</p>
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
                   <p className="text-black dark:text-white">
@@ -323,7 +327,6 @@ const TableUser = ({ data }: { data: Array<any> }) => {
                     Total
                   </span>
                 </td>
-                
               </tr>
             ))}
           </tbody>

@@ -1,3 +1,3 @@
-import { getAllUsers } from "./UserServices";
+import { getAllUsers, getAllDepatments } from "./UserServices";
 
-export { getAllUsers };
+export { getAllUsers, getAllDepatments };
