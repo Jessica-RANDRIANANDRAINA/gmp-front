@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import UserModifModal from "../Modals/UserModifModal";
 import { CustomInput, CustomSelect } from "../UIElements";
 import { getAllDepatments } from "../../services/User";
+import Pagination from "./Pagination";
 
 const TableUser = ({ data }: { data: Array<any> }) => {
   const [entriesPerPage, setEntriesPerPage] = useState(5);
@@ -104,7 +105,14 @@ const TableUser = ({ data }: { data: Array<any> }) => {
       {/* ==== FILTER END ===== */}
       {/* =====PAGINATE AND TITLE START===== */}
       <div className=" pb-4 flex justify-between px-3 ">
-        <div className="rotate-180">
+        <button
+          className="rotate-180"
+          onClick={() => {
+            if (actualPage !== 1) {
+              setActualPage(actualPage - 1);
+            } else setActualPage(1);
+          }}
+        >
           <svg
             width="40"
             height="40"
@@ -129,11 +137,17 @@ const TableUser = ({ data }: { data: Array<any> }) => {
               ></path>{" "}
             </g>
           </svg>
-        </div>
+        </button>
         <div className="text-2xl text-title  font-medium">
           Listes de tous les utilisateurs
         </div>
-        <div>
+        <button
+          onClick={() => {
+            if (actualPage !== pageNumbers) {
+              setActualPage(actualPage + 1);
+            } else setActualPage(pageNumbers);
+          }}
+        >
           <svg
             width="40"
             height="40"
@@ -158,11 +172,11 @@ const TableUser = ({ data }: { data: Array<any> }) => {
               ></path>{" "}
             </g>
           </svg>
-        </div>
+        </button>
       </div>
       {/* =====PAGINATE AND TITLE END===== */}
       {/* =====TABLE START===== */}
-      <div className="max-w-full overflow-x-auto">
+      <div className="max-w-full mb-4 overflow-x-auto">
         <table className="w-full table-auto">
           <thead className="pt-5 rounded-t-xl bg-primaryGreen">
             <tr className=" border border-stone-300 border-opacity-[0.1] border-r-0 border-l-0 text-white text-left">
@@ -296,9 +310,12 @@ const TableUser = ({ data }: { data: Array<any> }) => {
             {data?.map((user, key) => (
               <tr
                 key={user?.id}
-                className={`hover:bg-whiten dark:hover:bg-whitenGreen ${
+                className={`hover:bg-whiten dark:hover:bg-whitenGreen 
+                  ${
                   indexInPaginationRange(key) ? "" : "hidden"
-                }`}
+                }
+                `
+              }
               >
                 <td className="pl-2 ">
                   <button
@@ -342,12 +359,6 @@ const TableUser = ({ data }: { data: Array<any> }) => {
                   <span className="text-white border m-1 border-orange  bg-orange   py-1 px-2 rounded-2xl dark:text-white">
                     Visualisation
                   </span>
-                  <span className="text-white border m-1 border-orange  bg-orange   py-1 px-2 rounded-2xl dark:text-white">
-                    Gestion
-                  </span>
-                  <span className="text-white border m-1 border-orange  bg-orange   py-1 px-2 rounded-2xl dark:text-white">
-                    Total
-                  </span>
                 </td>
               </tr>
             ))}
@@ -355,18 +366,23 @@ const TableUser = ({ data }: { data: Array<any> }) => {
         </table>
       </div>
       {/* ===== PAGINATE BEGIN ===== */}
-      <div className="flex justify-center items-center">
+      <div className="flex flex-col md:flex-row justify-end px-4 items-center">
         <div>
           <CustomSelect
-            label="Par page"
+            label="Par page: "
             data={["5", "10", "15", "20"]}
             placeholder="5"
+            className="flex"
             onValueChange={(selectedValue) => {
               setEntriesPerPage(parseInt(selectedValue));
             }}
           />
         </div>
-        <div>eaef</div>
+        <Pagination
+          actualPage={actualPage}
+          setActualPage={setActualPage}
+          pageNumbers={pageNumbers}
+        />
       </div>
       {/* ===== PAGINATE END ===== */}
       {/* =====TABLE END===== */}
