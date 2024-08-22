@@ -10,14 +10,15 @@ const TableUser = ({ data }: { data: Array<any> }) => {
     department: true,
   });
   const [isAllSelected, setIsAllSelected] = useState(false);
-
   const showData = () => {
+    console.log("***********");
     console.log(data);
+    console.log("***********");
   };
 
   useEffect(() => {
     showData();
-  }, []);
+  }, [data]);
 
   return (
     <div className=" bg-white pt-2 shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -88,20 +89,20 @@ const TableUser = ({ data }: { data: Array<any> }) => {
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+            <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
             <g
               id="SVGRepo_tracerCarrier"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             ></g>
             <g id="SVGRepo_iconCarrier">
               {" "}
               <path
                 d="M6 12H18M18 12L13 7M18 12L13 17"
                 stroke="#000000"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               ></path>{" "}
             </g>
           </svg>
@@ -117,20 +118,20 @@ const TableUser = ({ data }: { data: Array<any> }) => {
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+            <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
             <g
               id="SVGRepo_tracerCarrier"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             ></g>
             <g id="SVGRepo_iconCarrier">
               {" "}
               <path
                 d="M6 12H18M18 12L13 7M18 12L13 17"
                 stroke="#000000"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               ></path>{" "}
             </g>
           </svg>
@@ -158,9 +159,9 @@ const TableUser = ({ data }: { data: Array<any> }) => {
                     <path
                       d="M4 12.6111L8.92308 17.5L20 6.5"
                       stroke="#fff"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                     ></path>{" "}
                   </svg>
                 </button>
@@ -266,71 +267,65 @@ const TableUser = ({ data }: { data: Array<any> }) => {
               <th className="py-4 px-4 font-bold  text-white dark:text-white xl:pl-11">
                 Accès
               </th>
-              
             </tr>
           </thead>
           <tbody>
-            <tr className="hover:bg-whiten dark:hover:bg-whitenGreen">
-              <td className="pl-2 ">
-                <button
-                  className="cursor-pointer border w-5 h-5"
-                  onClick={() => {
-                    console.log("clicked");
-                  }}
-                >
-                  <svg
-                    width="18"
-                    height="17"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    className={`${isAllSelected ? "visible" : "invisible"}`}
+            {data?.map((user) => (
+              <tr key={user?.id} className="hover:bg-whiten dark:hover:bg-whitenGreen">
+                <td className="pl-2 ">
+                  <button
+                    className="cursor-pointer border w-5 h-5"
+                    onClick={() => {
+                      console.log("clicked");
+                    }}
                   >
-                    <path
-                      d="M4 12.6111L8.92308 17.5L20 6.5"
-                      stroke="#000"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    ></path>{" "}
-                  </svg>
-                </button>
-              </td>
-              <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                <p className="text-black dark:text-white">
-                  Johanne RAZAFIMAHEFA
-                </p>
-              </td>
-              <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                <p className="text-black dark:text-white">
-                  johanne.razafimahefa@ravinala-airports.aero
-                </p>
-              </td>
-              <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                <p className="text-black dark:text-white">DSI</p>
-              </td>
-              <td className="border-b flex flex-wrap border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                <span className="text-white border m-1 border-orange  bg-orange   py-1 px-2 rounded-2xl dark:text-white">
-                  Visualisation
-                </span>
-                <span className="text-white border m-1 border-orange  bg-orange   py-1 px-2 rounded-2xl dark:text-white">
-                  Gestion
-                </span>
-                <span className="text-white border m-1 border-orange  bg-orange   py-1 px-2 rounded-2xl dark:text-white">
-                  Total
-                </span>
-              </td>
-              {/* <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                <button
-                  className=" hover:text-graydark dark:hover:text-white"
-                  onClick={() => {
-                    setUserModif(!userModif);
-                  }}
-                >
-                  Modifier
-                </button>
-              </td> */}
-            </tr>
+                    <svg
+                      width="18"
+                      height="17"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      className={`${isAllSelected ? "visible" : "invisible"}`}
+                    >
+                      <path
+                        d="M4 12.6111L8.92308 17.5L20 6.5"
+                        stroke="#000"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      ></path>{" "}
+                    </svg>
+                  </button>
+                </td>
+                <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                  <p className="text-black dark:text-white">
+                    {user?.name?.split('(')?.[0]}
+                  </p>
+                </td>
+                <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                  <p className="text-black dark:text-white">
+                    {user?.email}
+                  </p>
+                </td>
+                <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                  <p className="text-black dark:text-white">
+                    {user?.department}
+                  </p>
+                </td>
+                <td className="border-b flex flex-wrap border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                  <span className="text-white border m-1 border-orange  bg-orange   py-1 px-2 rounded-2xl dark:text-white">
+                    Visualisation
+                  </span>
+                  <span className="text-white border m-1 border-orange  bg-orange   py-1 px-2 rounded-2xl dark:text-white">
+                    Gestion
+                  </span>
+                  <span className="text-white border m-1 border-orange  bg-orange   py-1 px-2 rounded-2xl dark:text-white">
+                    Total
+                  </span>
+                </td>
+                
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
