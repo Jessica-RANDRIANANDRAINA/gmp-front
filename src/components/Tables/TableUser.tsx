@@ -4,6 +4,9 @@ import { CustomInput, CustomSelect } from "../UIElements";
 import { getAllDepatments } from "../../services/User";
 
 const TableUser = ({ data }: { data: Array<any> }) => {
+  const [entriesPerPage, setEntriesPerPage] = useState(5);
+  const [actualPage, setActualPage] = useState(1);
+  const [pageNumbers, setPageNumbers] = useState(1);
   const [userModif, setUserModif] = useState(false);
   const [departments, setDepartments] = useState([]);
   const [dataSorted, setDataSorted] = useState({
@@ -12,6 +15,23 @@ const TableUser = ({ data }: { data: Array<any> }) => {
     department: true,
   });
   const [isAllSelected, setIsAllSelected] = useState(false);
+
+  const getPageNumber = (dataLength: number) => {
+    return Math.ceil(dataLength / entriesPerPage);
+  };
+
+  const indexInPaginationRange = (index: any) => {
+    let end = actualPage * entriesPerPage;
+    let start = end - entriesPerPage;
+    return index >= start && index < end;
+  };
+
+  useEffect(() => {
+    if (data) {
+      setPageNumbers(getPageNumber(data.length));
+    }
+    setActualPage(1);
+  }, [entriesPerPage, data]);
 
   useEffect(() => {
     const fetchDepartment = async () => {
@@ -273,10 +293,12 @@ const TableUser = ({ data }: { data: Array<any> }) => {
             </tr>
           </thead>
           <tbody>
-            {data?.map((user) => (
+            {data?.map((user, key) => (
               <tr
                 key={user?.id}
-                className="hover:bg-whiten dark:hover:bg-whitenGreen"
+                className={`hover:bg-whiten dark:hover:bg-whitenGreen ${
+                  indexInPaginationRange(key) ? "" : "hidden"
+                }`}
               >
                 <td className="pl-2 ">
                   <button
@@ -332,6 +354,21 @@ const TableUser = ({ data }: { data: Array<any> }) => {
           </tbody>
         </table>
       </div>
+      {/* ===== PAGINATE BEGIN ===== */}
+      <div className="flex justify-center items-center">
+        <div>
+          <CustomSelect
+            label="Par page"
+            data={["5", "10", "15", "20"]}
+            placeholder="5"
+            onValueChange={(selectedValue) => {
+              setEntriesPerPage(parseInt(selectedValue));
+            }}
+          />
+        </div>
+        <div>eaef</div>
+      </div>
+      {/* ===== PAGINATE END ===== */}
       {/* =====TABLE END===== */}
       {/* =====MODAL USER MODIF START===== */}
       {userModif && (
