@@ -8,8 +8,9 @@ const TableUser = ({ data }: { data: Array<any> }) => {
   const [entriesPerPage, setEntriesPerPage] = useState(5);
   const [actualPage, setActualPage] = useState(1);
   const [pageNumbers, setPageNumbers] = useState(1);
+  const [searchName, setSearchName] = useState("");
   const [userModif, setUserModif] = useState(false);
-  const [departments, setDepartments] = useState([]);
+  const [departments, setDepartments] = useState<string[]>([]);
   const [dataSorted, setDataSorted] = useState({
     name: true,
     email: true,
@@ -17,27 +18,31 @@ const TableUser = ({ data }: { data: Array<any> }) => {
   });
   const [isAllSelected, setIsAllSelected] = useState(false);
 
+  const filteredData = data.filter(item => {
+    return item.name.toLowerCase().includes(searchName.toLowerCase())
+  })
+  
+
   const getPageNumber = (dataLength: number) => {
     return Math.ceil(dataLength / entriesPerPage);
   };
 
-  const indexInPaginationRange = (index: any) => {
+  const indexInPaginationRange = (index: number) => {
     let end = actualPage * entriesPerPage;
     let start = end - entriesPerPage;
     return index >= start && index < end;
   };
 
   useEffect(() => {
-    if (data) {
-      setPageNumbers(getPageNumber(data.length));
-    }
-    setActualPage(1);
-  }, [entriesPerPage, data]);
+    // if (filteredData) {
+      setPageNumbers(getPageNumber(filteredData.length));
+    // }
+    // setActualPage(1);
+  }, [entriesPerPage, filteredData.length]);
 
   useEffect(() => {
     const fetchDepartment = async () => {
       const depart = await getAllDepatments();
-
       setDepartments(depart);
     };
 
@@ -45,15 +50,18 @@ const TableUser = ({ data }: { data: Array<any> }) => {
   }, []);
 
   return (
-    <div className=" bg-white pt-2 shadow-default dark:border-strokedark dark:bg-boxdark">
+    <div className="bg-white pt-2 shadow-default dark:border-strokedark dark:bg-boxdark">
       {/* ==== FILTER START ===== */}
       <div className="flex m-5 flex-wrap justify-between items-center">
-        <div className="  grid md:grid-cols-4 grid-cols-1 gap-3 w-full ">
+        <div className="grid md:grid-cols-4 grid-cols-1 gap-3 w-full">
           <CustomInput
             type="text"
             label="Recherche"
             placeholder="Nom ou mail"
             rounded="medium"
+            onChange={(e) => {
+              setSearchName(e.target.value);
+            }}
           />
           <CustomSelect
             label="Département"
@@ -72,7 +80,7 @@ const TableUser = ({ data }: { data: Array<any> }) => {
             }}
           />
           <div className="flex items-end pb-3 mx-2">
-            <button className="flex justify-center  gap-1 h-fit">
+            <button className="flex justify-center gap-1 h-fit">
               Effacer les filtres
               <svg
                 width="20"
@@ -82,21 +90,12 @@ const TableUser = ({ data }: { data: Array<any> }) => {
                 xmlns="http://www.w3.org/2000/svg"
                 stroke="#00AE5D"
               >
-                <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-                <g
-                  id="SVGRepo_tracerCarrier"
+                <path
+                  d="M21 12C21 16.9706 16.9706 21 12 21C9.69494 21 7.59227 20.1334 6 18.7083L3 16M3 12C3 7.02944 7.02944 3 12 3C14.3051 3 16.4077 3.86656 18 5.29168L21 8M3 21V16M3 16H8M21 3V8M21 8H16"
+                  strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                ></g>
-                <g id="SVGRepo_iconCarrier">
-                  {" "}
-                  <path
-                    d="M21 12C21 16.9706 16.9706 21 12 21C9.69494 21 7.59227 20.1334 6 18.7083L3 16M3 12C3 7.02944 7.02944 3 12 3C14.3051 3 16.4077 3.86656 18 5.29168L21 8M3 21V16M3 16H8M21 3V8M21 8H16"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  ></path>{" "}
-                </g>
+                />
               </svg>
             </button>
           </div>
@@ -104,14 +103,10 @@ const TableUser = ({ data }: { data: Array<any> }) => {
       </div>
       {/* ==== FILTER END ===== */}
       {/* =====PAGINATE AND TITLE START===== */}
-      <div className=" pb-4 flex justify-between px-3 ">
+      <div className="pb-4 flex justify-between px-3">
         <button
           className="rotate-180"
-          onClick={() => {
-            if (actualPage !== 1) {
-              setActualPage(actualPage - 1);
-            } else setActualPage(1);
-          }}
+          onClick={() => setActualPage((prev) => Math.max(prev - 1, 1))}
         >
           <svg
             width="40"
@@ -120,33 +115,22 @@ const TableUser = ({ data }: { data: Array<any> }) => {
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-            <g
-              id="SVGRepo_tracerCarrier"
+            <path
+              d="M6 12H18M18 12L13 7M18 12L13 17"
+              stroke="#000000"
+              strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
-            ></g>
-            <g id="SVGRepo_iconCarrier">
-              {" "}
-              <path
-                d="M6 12H18M18 12L13 7M18 12L13 17"
-                stroke="#000000"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              ></path>{" "}
-            </g>
+            />
           </svg>
         </button>
-        <div className="text-2xl text-title  font-medium">
+        <div className="text-2xl text-title font-medium">
           Listes de tous les utilisateurs
         </div>
         <button
-          onClick={() => {
-            if (actualPage !== pageNumbers) {
-              setActualPage(actualPage + 1);
-            } else setActualPage(pageNumbers);
-          }}
+          onClick={() =>
+            setActualPage((prev) => Math.min(prev + 1, pageNumbers))
+          }
         >
           <svg
             width="40"
@@ -155,22 +139,13 @@ const TableUser = ({ data }: { data: Array<any> }) => {
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-            <g
-              id="SVGRepo_tracerCarrier"
+            <path
+              d="M6 12H18M18 12L13 7M18 12L13 17"
+              stroke="#000000"
+              strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
-            ></g>
-            <g id="SVGRepo_iconCarrier">
-              {" "}
-              <path
-                d="M6 12H18M18 12L13 7M18 12L13 17"
-                stroke="#000000"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              ></path>{" "}
-            </g>
+            />
           </svg>
         </button>
       </div>
@@ -179,8 +154,8 @@ const TableUser = ({ data }: { data: Array<any> }) => {
       <div className="max-w-full mb-4 overflow-x-auto">
         <table className="w-full table-auto">
           <thead className="pt-5 rounded-t-xl bg-primaryGreen">
-            <tr className=" border border-stone-300 border-opacity-[0.1] border-r-0 border-l-0 text-white text-left">
-              <th className=" pl-2 ">
+            <tr className="border border-stone-300 border-opacity-[0.1] border-r-0 border-l-0 text-white text-left">
+              <th className="pl-2">
                 <button
                   onClick={() => setIsAllSelected(!isAllSelected)}
                   className="cursor-pointer border w-5 h-5"
@@ -199,11 +174,11 @@ const TableUser = ({ data }: { data: Array<any> }) => {
                       strokeWidth="2"
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                    ></path>{" "}
+                    />
                   </svg>
                 </button>
               </th>
-              <th className="py-4 px-4  font-bold  text-white dark:text-white xl:pl-11">
+              <th className="py-4 px-4 font-bold text-white dark:text-white xl:pl-11">
                 <div className="flex items-center">
                   <button
                     onClick={() => {
@@ -214,7 +189,7 @@ const TableUser = ({ data }: { data: Array<any> }) => {
                     }}
                     className={`${
                       dataSorted.name ? "" : "rotate-180"
-                    } transform transition-transform duration-200   `}
+                    } transform transition-transform duration-200`}
                   >
                     <svg
                       className="fill-current"
@@ -227,13 +202,13 @@ const TableUser = ({ data }: { data: Array<any> }) => {
                       <path
                         d="M5.29289 8.29289C5.68342 7.90237 6.31658 7.90237 6.70711 8.29289L12 13.5858L17.2929 8.29289C17.6834 7.90237 18.3166 7.90237 18.7071 8.29289C19.0976 8.68342 19.0976 9.31658 18.7071 9.70711L12.7071 15.7071C12.3166 16.0976 11.6834 16.0976 11.2929 15.7071L5.29289 9.70711C4.90237 9.31658 4.90237 8.68342 5.29289 8.29289Z"
                         fill=""
-                      ></path>
+                      />
                     </svg>
                   </button>
                   <span>Nom</span>
                 </div>
               </th>
-              <th className="py-4 px-4 font-bold    text-white dark:text-white xl:pl-11">
+              <th className="py-4 px-4 font-bold text-white dark:text-white xl:pl-11">
                 <div className="flex items-center">
                   <button
                     onClick={() => {
@@ -244,7 +219,7 @@ const TableUser = ({ data }: { data: Array<any> }) => {
                     }}
                     className={`${
                       dataSorted.email ? "" : "rotate-180"
-                    } transform transition-transform duration-200  `}
+                    } transform transition-transform duration-200`}
                   >
                     <svg
                       className="fill-current"
@@ -254,20 +229,18 @@ const TableUser = ({ data }: { data: Array<any> }) => {
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
                     >
-                      <g opacity="0.8">
-                        <path
-                          fillRule="evenodd"
-                          clipRule="evenodd"
-                          d="M5.29289 8.29289C5.68342 7.90237 6.31658 7.90237 6.70711 8.29289L12 13.5858L17.2929 8.29289C17.6834 7.90237 18.3166 7.90237 18.7071 8.29289C19.0976 8.68342 19.0976 9.31658 18.7071 9.70711L12.7071 15.7071C12.3166 16.0976 11.6834 16.0976 11.2929 15.7071L5.29289 9.70711C4.90237 9.31658 4.90237 8.68342 5.29289 8.29289Z"
-                          fill=""
-                        ></path>
-                      </g>
+                      <path
+                        fillRule="evenodd"
+                        clipRule="evenodd"
+                        d="M5.29289 8.29289C5.68342 7.90237 6.31658 7.90237 6.70711 8.29289L12 13.5858L17.2929 8.29289C17.6834 7.90237 18.3166 7.90237 18.7071 8.29289C19.0976 8.68342 19.0976 9.31658 18.7071 9.70711L12.7071 15.7071C12.3166 16.0976 11.6834 16.0976 11.2929 15.7071L5.29289 9.70711C4.90237 9.31658 4.90237 8.68342 5.29289 8.29289Z"
+                        fill=""
+                      />
                     </svg>
                   </button>
                   <span>Email</span>
                 </div>
               </th>
-              <th className="py-4 px-4 font-bold  text-white dark:text-white xl:pl-11">
+              <th className="py-4 px-4 font-bold text-white dark:text-white xl:pl-11">
                 <div className="flex items-center">
                   <button
                     onClick={() => {
@@ -278,7 +251,7 @@ const TableUser = ({ data }: { data: Array<any> }) => {
                     }}
                     className={`${
                       dataSorted.department ? "" : "rotate-180"
-                    } transform transition-transform duration-200  `}
+                    } transform transition-transform duration-200`}
                   >
                     <svg
                       className="fill-current"
@@ -288,80 +261,81 @@ const TableUser = ({ data }: { data: Array<any> }) => {
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
                     >
-                      <g opacity="0.8">
-                        <path
-                          fillRule="evenodd"
-                          clipRule="evenodd"
-                          d="M5.29289 8.29289C5.68342 7.90237 6.31658 7.90237 6.70711 8.29289L12 13.5858L17.2929 8.29289C17.6834 7.90237 18.3166 7.90237 18.7071 8.29289C19.0976 8.68342 19.0976 9.31658 18.7071 9.70711L12.7071 15.7071C12.3166 16.0976 11.6834 16.0976 11.2929 15.7071L5.29289 9.70711C4.90237 9.31658 4.90237 8.68342 5.29289 8.29289Z"
-                          fill=""
-                        ></path>
-                      </g>
+                      <path
+                        fillRule="evenodd"
+                        clipRule="evenodd"
+                        d="M5.29289 8.29289C5.68342 7.90237 6.31658 7.90237 6.70711 8.29289L12 13.5858L17.2929 8.29289C17.6834 7.90237 18.3166 7.90237 18.7071 8.29289C19.0976 8.68342 19.0976 9.31658 18.7071 9.70711L12.7071 15.7071C12.3166 16.0976 11.6834 16.0976 11.2929 15.7071L5.29289 9.70711C4.90237 9.31658 4.90237 8.68342 5.29289 8.29289Z"
+                        fill=""
+                      />
                     </svg>
                   </button>
                   <span>Département</span>
                 </div>
               </th>
-              <th className="py-4 px-4 font-bold  text-white dark:text-white xl:pl-11">
+              <th className="py-4 px-4 font-bold text-white dark:text-white xl:pl-11">
                 Accès
               </th>
             </tr>
           </thead>
           <tbody>
-            {data?.map((user, key) => (
-              <tr
-                key={user?.id}
-                className={`hover:bg-whiten dark:hover:bg-whitenGreen 
-                  ${
-                  indexInPaginationRange(key) ? "" : "hidden"
-                }
-                `
-              }
-              >
-                <td className="pl-2 ">
-                  <button
-                    className="cursor-pointer border w-5 h-5"
-                    onClick={() => {
-                      console.log("clicked");
-                    }}
-                  >
-                    <svg
-                      width="18"
-                      height="17"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                      className={`${isAllSelected ? "visible" : "invisible"}`}
+            {filteredData
+              ?.filter((user, index) => indexInPaginationRange(index))
+              .filter((user) => {
+                const name = user?.name?.toLowerCase();
+                const email = user?.email?.toLowerCase();
+                const searchQuery = searchName.toLowerCase();
+                return (
+                  name.includes(searchQuery) || email.includes(searchQuery)
+                );
+              })
+              .map((user) => (
+                <tr
+                  key={user?.id}
+                  className="hover:bg-whiten dark:hover:bg-whitenGreen"
+                >
+                  <td className="pl-2">
+                    <button
+                      className="cursor-pointer border w-5 h-5"
+                      onClick={() => console.log("clicked")}
                     >
-                      <path
-                        d="M4 12.6111L8.92308 17.5L20 6.5"
-                        stroke="#000"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      ></path>{" "}
-                    </svg>
-                  </button>
-                </td>
-                <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                  <p className="text-black dark:text-white">
-                    {user?.name?.split("(")?.[0]}
-                  </p>
-                </td>
-                <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                  <p className="text-black dark:text-white">{user?.email}</p>
-                </td>
-                <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                  <p className="text-black dark:text-white">
-                    {user?.department}
-                  </p>
-                </td>
-                <td className="border-b flex flex-wrap border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                  <span className="text-white border m-1 border-orange  bg-orange   py-1 px-2 rounded-2xl dark:text-white">
-                    Visualisation
-                  </span>
-                </td>
-              </tr>
-            ))}
+                      <svg
+                        width="18"
+                        height="17"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        className={`${isAllSelected ? "visible" : "invisible"}`}
+                      >
+                        <path
+                          d="M4 12.6111L8.92308 17.5L20 6.5"
+                          stroke="#000"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </button>
+                  </td>
+                  <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                    <p className="text-black dark:text-white">
+                      {user?.name?.split("(")?.[0]}
+                    </p>
+                  </td>
+                  <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                    <p className="text-black dark:text-white">{user?.email}</p>
+                  </td>
+                  <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                    <p className="text-black dark:text-white">
+                      {user?.department}
+                    </p>
+                  </td>
+                  <td className="border-b flex flex-wrap border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                    <span className="text-white border m-1 border-orange bg-orange py-1 px-2 rounded-2xl dark:text-white">
+                      Visualisation
+                    </span>
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>
@@ -374,7 +348,7 @@ const TableUser = ({ data }: { data: Array<any> }) => {
             placeholder="5"
             className="flex"
             onValueChange={(selectedValue) => {
-              setEntriesPerPage(parseInt(selectedValue));
+              setEntriesPerPage(parseInt(selectedValue, 10));
             }}
           />
         </div>
