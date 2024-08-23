@@ -21,6 +21,7 @@ const TableUser = ({ data }: { data: Array<any> }) => {
     department: true,
   });
   const [isAllSelected, setIsAllSelected] = useState(false);
+  const [userSelected, setUserSelected] = useState<string[]>([]);
 
   const filteredData = data.filter((item) => {
     const lowerCaseSearchName = search.nameAndMail.toLowerCase();
@@ -76,9 +77,19 @@ const TableUser = ({ data }: { data: Array<any> }) => {
       department: "",
     });
   };
+  const handleSelectAllUser = () => {
+    if (userSelected.length < filteredData.length) {
+      setUserSelected([]);
+      filteredData.map((u) => setUserSelected((prev) => [...prev, u.id]));
+      setIsAllSelected(true);
+    } else {
+      setUserSelected([]);
+      setIsAllSelected(false);
+    }
+  };
 
   return (
-    <div className="bg-white pt-2 shadow-default dark:border-strokedark dark:bg-boxdark">
+    <div className="bg-white  pt-2 shadow-default dark:border-strokedark dark:bg-boxdark">
       {/* ==== FILTER START ===== */}
       <div className="flex m-5 flex-wrap justify-between items-center">
         <div className="grid md:grid-cols-4 grid-cols-1 gap-3 w-full">
@@ -89,6 +100,8 @@ const TableUser = ({ data }: { data: Array<any> }) => {
             placeholder="Nom ou mail"
             rounded="medium"
             onChange={(e) => {
+              setUserSelected([]);
+              setIsAllSelected(false);
               setSearch({
                 ...search,
                 nameAndMail: e.target.value,
@@ -101,6 +114,9 @@ const TableUser = ({ data }: { data: Array<any> }) => {
             data={departments}
             value={search.department}
             onValueChange={(e) => {
+              setActualPage(1);
+              setUserSelected([]);
+              setIsAllSelected(false);
               setSearch({
                 ...search,
                 department: e,
@@ -142,7 +158,11 @@ const TableUser = ({ data }: { data: Array<any> }) => {
       </div>
       {/* ==== FILTER END ===== */}
       {/* =====PAGINATE AND TITLE START===== */}
-      <div className="pb-4 flex justify-between px-3">
+      <div
+        className={`pb-4 flex justify-between px-3 transition-opacity ${
+          isAllSelected ? "opacity-0" : "opacity-100"
+        }`}
+      >
         <button
           disabled={actualPage === 1}
           className="rotate-180"
@@ -170,7 +190,7 @@ const TableUser = ({ data }: { data: Array<any> }) => {
           Listes de tous les utilisateurs
         </div>
         <button
-        disabled={actualPage===pageNumbers}
+          disabled={actualPage === pageNumbers}
           onClick={() =>
             setActualPage((prev) => Math.min(prev + 1, pageNumbers))
           }
@@ -195,6 +215,27 @@ const TableUser = ({ data }: { data: Array<any> }) => {
         </button>
       </div>
       {/* =====PAGINATE AND TITLE END===== */}
+      {/* ===== BULK START ===== */}
+      <div
+        className={` mt-[-60px] border-primaryGreen border  bg-white z-40 relative px-2 flex items-center justify-between transition-transform duration-200 ease-in-out transform ${
+          userSelected.length > 0
+            ? "scale-y-100 opacity-100"
+            : "scale-y-0 opacity-0"
+        }`}
+      >
+        <div> {userSelected.length} éléments séléctionné </div>
+        <div>
+          <CustomSelect
+            data={["Modifier", "Supprimer"]}
+            className="mb-2"
+            placeholder="Actions"
+            onValueChange={() => {
+              console.log("first");
+            }}
+          />
+        </div>
+      </div>
+      {/* ===== BULK END ===== */}
       {/* =====TABLE START===== */}
       <div className="max-w-full mb-4 overflow-x-auto">
         <table className="w-full table-auto">
@@ -202,7 +243,7 @@ const TableUser = ({ data }: { data: Array<any> }) => {
             <tr className="border border-stone-300 border-opacity-[0.1] border-r-0 border-l-0 text-white text-left">
               <th className="pl-2">
                 <button
-                  onClick={() => setIsAllSelected(!isAllSelected)}
+                  onClick={handleSelectAllUser}
                   className="cursor-pointer border w-5 h-5"
                 >
                   <svg
@@ -211,7 +252,11 @@ const TableUser = ({ data }: { data: Array<any> }) => {
                     viewBox="0 0 24 24"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
-                    className={`${isAllSelected ? "visible" : "invisible"}`}
+                    className={`${
+                      userSelected.length === filteredData.length
+                        ? "visible"
+                        : "invisible"
+                    }`}
                   >
                     <path
                       d="M4 12.6111L8.92308 17.5L20 6.5"
@@ -324,7 +369,7 @@ const TableUser = ({ data }: { data: Array<any> }) => {
           </thead>
           <tbody>
             {filteredData
-              ?.filter((user, index) => indexInPaginationRange(index))
+              ?.filter((_user, index) => indexInPaginationRange(index))
               .filter((user) => {
                 const name = user?.name?.toLowerCase();
                 const email = user?.email?.toLowerCase();
@@ -334,8 +379,6 @@ const TableUser = ({ data }: { data: Array<any> }) => {
                   search.department.toLowerCase() === "vide"
                     ? ""
                     : search.department.toLowerCase();
-
-                console.log(user.department);
 
                 return (
                   name.includes(searchQuery) ||
@@ -351,7 +394,15 @@ const TableUser = ({ data }: { data: Array<any> }) => {
                   <td className="pl-2">
                     <button
                       className="cursor-pointer border w-5 h-5"
-                      onClick={() => console.log("clicked")}
+                      onClick={() => {
+                        setUserSelected((prev) => {
+                          if (prev?.includes(user.id)) {
+                            return prev.filter((id) => id !== user.id);
+                          } else {
+                            return [...prev, user.id];
+                          }
+                        });
+                      }}
                     >
                       <svg
                         width="18"
@@ -359,7 +410,12 @@ const TableUser = ({ data }: { data: Array<any> }) => {
                         viewBox="0 0 24 24"
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
-                        className={`${isAllSelected ? "visible" : "invisible"}`}
+                        // className={`${isAllSelected ? "visible" : "invisible"}`}
+                        className={`${
+                          userSelected.includes(user.id)
+                            ? "visible"
+                            : "invisible"
+                        }`}
                       >
                         <path
                           d="M4 12.6111L8.92308 17.5L20 6.5"
@@ -384,8 +440,8 @@ const TableUser = ({ data }: { data: Array<any> }) => {
                       {user?.department}
                     </p>
                   </td>
-                  <td className="border-b flex flex-wrap border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                    <span className="text-white border m-1 border-orange bg-orange py-1 px-2 rounded-2xl dark:text-white">
+                  <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                    <span className="text-white border  border-orange bg-orange py-1 px-2 rounded-2xl dark:text-white">
                       Visualisation
                     </span>
                   </td>
