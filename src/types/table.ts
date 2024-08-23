@@ -1,10 +1,10 @@
 export interface TableAccessProps {
-    data: Array<{
-        id: string, 
-        label: string, 
-        visuel: string, 
-        management: string, 
-        department: string[]
-    }>;
+  data: Array<{
+    id: string;
+    label: string;
+    admin: string[];
+    project: string[];
+    transverse: string[];
+    intercontract: string[];
+  }>;
 }
-
