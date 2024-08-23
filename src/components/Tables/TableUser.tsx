@@ -8,7 +8,11 @@ const TableUser = ({ data }: { data: Array<any> }) => {
   const [entriesPerPage, setEntriesPerPage] = useState(5);
   const [actualPage, setActualPage] = useState(1);
   const [pageNumbers, setPageNumbers] = useState(1);
-  const [searchName, setSearchName] = useState("");
+  const [search, setSearch] = useState({
+    nameAndMail: "",
+    department: "",
+    access: "",
+  });
   const [userModif, setUserModif] = useState(false);
   const [departments, setDepartments] = useState<string[]>([]);
   const [dataSorted, setDataSorted] = useState({
@@ -19,11 +23,24 @@ const TableUser = ({ data }: { data: Array<any> }) => {
   const [isAllSelected, setIsAllSelected] = useState(false);
 
   const filteredData = data.filter((item) => {
-    const lowerCaseSearchName = searchName.toLowerCase();
-    return (
-      item.name.toLowerCase().includes(lowerCaseSearchName) ||
-      item.email.toLowerCase().includes(lowerCaseSearchName)
-    );
+    const lowerCaseSearchName = search.nameAndMail.toLowerCase();
+    var lowerCaseDepartment = search.department.toLowerCase();
+
+    if (lowerCaseDepartment !== "") {
+      lowerCaseDepartment === "vide"
+        ? (lowerCaseDepartment = "")
+        : (lowerCaseDepartment = lowerCaseDepartment);
+      return (
+        (item.name.toLowerCase().includes(lowerCaseSearchName) ||
+          item.email.toLowerCase().includes(lowerCaseSearchName)) &&
+        item.department.toLowerCase() === lowerCaseDepartment
+      );
+    } else {
+      return (
+        item.name.toLowerCase().includes(lowerCaseSearchName) ||
+        item.email.toLowerCase().includes(lowerCaseSearchName)
+      );
+    }
   });
 
   const getPageNumber = (dataLength: number) => {
@@ -52,6 +69,14 @@ const TableUser = ({ data }: { data: Array<any> }) => {
     fetchDepartment();
   }, []);
 
+  const handleDeleteFilter = () => {
+    setSearch({
+      ...search,
+      nameAndMail: "",
+      department: "",
+    });
+  };
+
   return (
     <div className="bg-white pt-2 shadow-default dark:border-strokedark dark:bg-boxdark">
       {/* ==== FILTER START ===== */}
@@ -59,19 +84,27 @@ const TableUser = ({ data }: { data: Array<any> }) => {
         <div className="grid md:grid-cols-4 grid-cols-1 gap-3 w-full">
           <CustomInput
             type="text"
+            value={search.nameAndMail}
             label="Recherche"
             placeholder="Nom ou mail"
             rounded="medium"
             onChange={(e) => {
-              setSearchName(e.target.value);
+              setSearch({
+                ...search,
+                nameAndMail: e.target.value,
+              });
             }}
           />
           <CustomSelect
             label="Département"
             placeholder="Département"
             data={departments}
-            onValueChange={() => {
-              console.log("first");
+            value={search.department}
+            onValueChange={(e) => {
+              setSearch({
+                ...search,
+                department: e,
+              });
             }}
           />
           <CustomSelect
@@ -83,7 +116,10 @@ const TableUser = ({ data }: { data: Array<any> }) => {
             }}
           />
           <div className="flex items-end pb-3 mx-2">
-            <button className="flex justify-center gap-1 h-fit">
+            <button
+              onClick={handleDeleteFilter}
+              className="flex justify-center gap-1 h-fit"
+            >
               Effacer les filtres
               <svg
                 width="20"
@@ -108,6 +144,7 @@ const TableUser = ({ data }: { data: Array<any> }) => {
       {/* =====PAGINATE AND TITLE START===== */}
       <div className="pb-4 flex justify-between px-3">
         <button
+          disabled={actualPage === 1}
           className="rotate-180"
           onClick={() => setActualPage((prev) => Math.max(prev - 1, 1))}
         >
@@ -120,7 +157,9 @@ const TableUser = ({ data }: { data: Array<any> }) => {
           >
             <path
               d="M6 12H18M18 12L13 7M18 12L13 17"
-              stroke="#000000"
+              className={` ${
+                actualPage === 1 ? "stroke-slate-400" : "stroke-black"
+              }`}
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -131,6 +170,7 @@ const TableUser = ({ data }: { data: Array<any> }) => {
           Listes de tous les utilisateurs
         </div>
         <button
+        disabled={actualPage===pageNumbers}
           onClick={() =>
             setActualPage((prev) => Math.min(prev + 1, pageNumbers))
           }
@@ -144,7 +184,9 @@ const TableUser = ({ data }: { data: Array<any> }) => {
           >
             <path
               d="M6 12H18M18 12L13 7M18 12L13 17"
-              stroke="#000000"
+              className={` ${
+                actualPage === pageNumbers ? "stroke-slate-400" : "stroke-black"
+              }`}
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -286,9 +328,19 @@ const TableUser = ({ data }: { data: Array<any> }) => {
               .filter((user) => {
                 const name = user?.name?.toLowerCase();
                 const email = user?.email?.toLowerCase();
-                const searchQuery = searchName.toLowerCase();
+                const department = user?.department?.toLowerCase();
+                const searchQuery = search.nameAndMail.toLowerCase();
+                const searchDepartQuery =
+                  search.department.toLowerCase() === "vide"
+                    ? ""
+                    : search.department.toLowerCase();
+
+                console.log(user.department);
+
                 return (
-                  name.includes(searchQuery) || email.includes(searchQuery)
+                  name.includes(searchQuery) ||
+                  email.includes(searchQuery) ||
+                  department === searchDepartQuery
                 );
               })
               .map((user) => (

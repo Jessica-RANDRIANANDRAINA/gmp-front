@@ -10,7 +10,7 @@ const CustomSelect = ({
   className
 }: InputSelectprops) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selected, setSelected] = useState(value);
+  // const [selected, setSelected] = useState(value);
 
   const trigger = useRef<any>(null);
   const dropdown = useRef<any>(null);
@@ -32,7 +32,7 @@ const CustomSelect = ({
   });
 
   const handleSelect = (option: any) => {
-    setSelected(option);
+    // setSelected(option);
     onValueChange(option);
     setIsOpen(false);
   };
@@ -46,10 +46,10 @@ const CustomSelect = ({
         ref={trigger}
         onClick={() => setIsOpen(!isOpen)}
         className={`w-full py-3 px-6 border flex items-center justify-between border-stroke rounded-lg bg-transparent text-left ${
-          selected ? "" : "text-bodydark2"
+          value ? "" : "text-bodydark2"
         }`}
       >
-        {selected || placeholder}
+        {value || placeholder}
 
         <span
           className={`transform transition-transform duration-300 ${
