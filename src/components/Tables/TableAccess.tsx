@@ -58,73 +58,52 @@ const TableAccess = ({ data }: TableAccessProps) => {
   };
   return (
     <div className="bg-white pt-2 shadow-default dark:border-strokedark dark:bg-boxdark">
-      <div className="flex m-5 flex-wrap justify-between items-center">
-        {/* ===== ADD ACCESS START ===== */}
-        <div className="w-full  flex justify-end items-center">
-          <button className="md:w-fit gap-2 flex w-full cursor-pointer mt-2 py-4 px-5  text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen dark:hover:bg-opacity-90">
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 20 20"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M6 12H18M12 6V18"
-                stroke="#fff"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              ></path>
-            </svg>
-            Ajouter un accès
-          </button>
-        </div>
-        {/* ===== ADD ACCESS END ===== */}
-        {/* =====FILTER START===== */}
-        <div className="flex m-5 flex-wrap justify-between items-center">
-          <div className="grid md:grid-cols-4 grid-cols-1 gap-3 w-full">
-            <CustomInput
-              type="text"
-              value={search.name}
-              label="Recherche"
-              placeholder="Label"
-              rounded="medium"
-              onChange={(e) => {
-                setSearch({
-                  ...search,
-                  name: e.target.value,
-                });
-              }}
-            />
+      {/* <div className="flex m-5 flex-wrap justify-between items-center"> */}
 
-            <div className="flex items-end pb-3 mx-2">
-              <button
-                onClick={handleDeleteFilter}
-                className="flex justify-center gap-1 h-fit"
+      {/* =====FILTER START===== */}
+      <div className="flex m-5 flex-wrap justify-between items-center">
+        <div className="grid md:grid-cols-4 grid-cols-1 gap-3 w-full">
+          <CustomInput
+            type="text"
+            value={search.name}
+            label="Recherche"
+            placeholder="Label"
+            rounded="medium"
+            onChange={(e) => {
+              setSearch({
+                ...search,
+                name: e.target.value,
+              });
+            }}
+          />
+
+          <div className="flex items-end pb-3 mx-2">
+            <button
+              onClick={handleDeleteFilter}
+              className="flex justify-center gap-1 h-fit"
+            >
+              Effacer les filtres
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                stroke="#00AE5D"
               >
-                Effacer les filtres
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  stroke="#00AE5D"
-                >
-                  <path
-                    d="M21 12C21 16.9706 16.9706 21 12 21C9.69494 21 7.59227 20.1334 6 18.7083L3 16M3 12C3 7.02944 7.02944 3 12 3C14.3051 3 16.4077 3.86656 18 5.29168L21 8M3 21V16M3 16H8M21 3V8M21 8H16"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </button>
-            </div>
+                <path
+                  d="M21 12C21 16.9706 16.9706 21 12 21C9.69494 21 7.59227 20.1334 6 18.7083L3 16M3 12C3 7.02944 7.02944 3 12 3C14.3051 3 16.4077 3.86656 18 5.29168L21 8M3 21V16M3 16H8M21 3V8M21 8H16"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
           </div>
         </div>
-        {/* =====FILTER END===== */}
       </div>
+      {/* =====FILTER END===== */}
+      {/* </div> */}
       {/* =====PAGINATE AND TITLE START===== */}
       <div
         className={`pb-4 flex justify-between px-3 transition-opacity ${
@@ -392,7 +371,6 @@ const TableAccess = ({ data }: TableAccessProps) => {
                       </p>
                     )}
                   </td>
-
 
                   <td className="border-b max-w-40 border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
                     {access?.intercontract?.length > 1 ? (

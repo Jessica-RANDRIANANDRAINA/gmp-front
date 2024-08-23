@@ -34,3 +34,11 @@ export interface InputSelectprops extends SelectHTMLAttributes<HTMLSelectElement
   required?: boolean
   className?: string
 };
+
+export type CheckBoxProp = {
+  label: string;
+  htmlFor?: string;
+  checked?: boolean;
+  onStateCheckChange?: (checked: boolean) => void;
+  active?: boolean;
+};
