@@ -55,11 +55,13 @@ const TableUser = ({ data }: { data: Array<any> }) => {
   };
 
   useEffect(() => {
-    // if (filteredData) {
     setPageNumbers(getPageNumber(filteredData.length));
-    // }
-    // setActualPage(1);
   }, [entriesPerPage, filteredData.length]);
+  useEffect(() => {
+    setActualPage(1);
+    setUserSelected([]);
+    setIsAllSelected(false);
+  }, [search]);
 
   useEffect(() => {
     const fetchDepartment = async () => {
@@ -405,7 +407,6 @@ const TableUser = ({ data }: { data: Array<any> }) => {
                         viewBox="0 0 24 24"
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
-                        // className={`${isAllSelected ? "visible" : "invisible"}`}
                         className={`${
                           userSelected.includes(user.id)
                             ? "visible"
