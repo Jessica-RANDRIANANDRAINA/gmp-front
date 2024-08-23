@@ -100,8 +100,6 @@ const TableUser = ({ data }: { data: Array<any> }) => {
             placeholder="Nom ou mail"
             rounded="medium"
             onChange={(e) => {
-              setUserSelected([]);
-              setIsAllSelected(false);
               setSearch({
                 ...search,
                 nameAndMail: e.target.value,
@@ -114,9 +112,6 @@ const TableUser = ({ data }: { data: Array<any> }) => {
             data={departments}
             value={search.department}
             onValueChange={(e) => {
-              setActualPage(1);
-              setUserSelected([]);
-              setIsAllSelected(false);
               setSearch({
                 ...search,
                 department: e,
