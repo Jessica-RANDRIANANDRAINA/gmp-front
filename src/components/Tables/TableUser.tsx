@@ -18,10 +18,13 @@ const TableUser = ({ data }: { data: Array<any> }) => {
   });
   const [isAllSelected, setIsAllSelected] = useState(false);
 
-  const filteredData = data.filter(item => {
-    return item.name.toLowerCase().includes(searchName.toLowerCase())
-  })
-  
+  const filteredData = data.filter((item) => {
+    const lowerCaseSearchName = searchName.toLowerCase();
+    return (
+      item.name.toLowerCase().includes(lowerCaseSearchName) ||
+      item.email.toLowerCase().includes(lowerCaseSearchName)
+    );
+  });
 
   const getPageNumber = (dataLength: number) => {
     return Math.ceil(dataLength / entriesPerPage);
@@ -35,7 +38,7 @@ const TableUser = ({ data }: { data: Array<any> }) => {
 
   useEffect(() => {
     // if (filteredData) {
-      setPageNumbers(getPageNumber(filteredData.length));
+    setPageNumbers(getPageNumber(filteredData.length));
     // }
     // setActualPage(1);
   }, [entriesPerPage, filteredData.length]);
