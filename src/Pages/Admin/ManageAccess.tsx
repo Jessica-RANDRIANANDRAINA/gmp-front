@@ -2,9 +2,20 @@ import { useState, useEffect } from "react";
 import DefaultLayout from "../../layout/DefaultLayout";
 import { TableAccess } from "../../components/Tables";
 import AddAccessModal from "../../components/Modals/Access/AddAccessModal";
+import { getAllHabilitation } from "../../services/User";
 
 const ManageAccess = () => {
   const [isAddModalAccessVisible, setIsModalAccessVisible] = useState(false);
+  const [habilitationData, setHabilitationData] = useState([]);
+
+  useEffect(() => {
+    const fetchHabilitation = async () => {
+      const habilitation = await getAllHabilitation();
+      setHabilitationData(habilitation);
+    };
+
+    fetchHabilitation();
+  }, []);
   return (
     <DefaultLayout>
       <div>

@@ -3,6 +3,17 @@ import { HabilitationDataProps } from "../../types/Habilitation";
 
 const endPoint = import.meta.env.VITE_API_ENDPOINT;
 
+// GET
+// GET ALL HABILITATION
+export const getAllHabilitation = async () => {
+  try {
+    const response = await axios.get(`${endPoint}/Habilitation/all`);
+    return response.data;
+  } catch (error) {
+    throw new Error(`Error at service fetching habilitation`);
+  }
+};
+
 // POST
 // CREATE HABILITATION
 export const createHabilitation = async (
@@ -15,6 +26,6 @@ export const createHabilitation = async (
     );
     console.log(`Hablilitation created: ${response.data}`);
   } catch (error) {
-    console.error(`Error creating habilitation: ${error}`);
+    console.error(`Error service creating habilitation: ${error}`);
   }
 };

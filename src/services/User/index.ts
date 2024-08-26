@@ -1,4 +1,4 @@
 import { getAllUsers, getAllDepatments } from "./UserServices";
-import { createHabilitation } from "./HabilitationServices";
+import { createHabilitation, getAllHabilitation } from "./HabilitationServices";
 
-export { getAllUsers, getAllDepatments, createHabilitation };
+export { getAllUsers, getAllDepatments, createHabilitation, getAllHabilitation };
