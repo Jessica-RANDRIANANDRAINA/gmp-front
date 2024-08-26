@@ -9,7 +9,7 @@ const ManageAccess = () => {
     <DefaultLayout>
       <div>
         {/* ===== ADD ACCESS START ===== */}
-        <div className="w-full  flex justify-end items-center">
+        <div className="w-full mb-2 flex justify-end items-center">
           <button
             onClick={() => setIsModalAccessVisible(true)}
             className="md:w-fit gap-2 flex w-full cursor-pointer mt-2 py-4 px-5  text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen dark:hover:bg-opacity-90"
@@ -64,7 +64,7 @@ const ManageAccess = () => {
         {/* ===== MODAL ADD ACCESS START ===== */}
         {isAddModalAccessVisible && (
           <AddAccessModal
-            accessAdd={isAddModalAccessVisible}
+            // accessAdd={isAddModalAccessVisible}
             setAccessAdd={setIsModalAccessVisible}
           />
         )}
