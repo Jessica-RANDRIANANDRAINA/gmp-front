@@ -329,7 +329,7 @@ const TableAccess = ({ data }: TableAccessProps) => {
                   </td>
 
                   <td className="border-b max-w-40 border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                    {access?.habilitationAdmins?.map((admin) => {
+                    {access?.habilitationAdmins?.map((admin, key) => {
                       const message = [];
                       let count = 0;
                       if (admin.createHabilitation === 1) {
@@ -353,16 +353,16 @@ const TableAccess = ({ data }: TableAccessProps) => {
                         count++;
                       }
                       return count > 1 ? (
-                        <details>
+                        <details key={key}>
                           <summary>{message?.[0]}, </summary>
                           <p className="text-black dark:text-white">
                             {message.slice(1).join(", ")}
                           </p>
                         </details>
                       ) : count === 0 ? (
-                        <p className="text-black dark:text-white">--</p>
+                        <p key={key} className="text-black dark:text-white">--</p>
                       ) : (
-                        <p className="text-black dark:text-white">
+                        <p key={key} className="text-black dark:text-white">
                           {message[0]}
                         </p>
                       );
@@ -370,7 +370,7 @@ const TableAccess = ({ data }: TableAccessProps) => {
                   </td>
 
                   <td className="border-b max-w-40 border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                    {access?.habilitationProjects?.map((project) => {
+                    {access?.habilitationProjects?.map((project, key) => {
                       const message = [];
                       let count = 0;
                       if (project.create === 1) {
@@ -391,16 +391,16 @@ const TableAccess = ({ data }: TableAccessProps) => {
                       }
 
                       return count > 1 ? (
-                        <details>
+                        <details key={key}>
                           <summary>{message?.[0]}, </summary>
                           <p className="text-black dark:text-white">
                             {message.slice(1).join(", ")}
                           </p>
                         </details>
                       ) : count === 0 ? (
-                        <p className="text-black dark:text-white">--</p>
+                        <p key={key} className="text-black dark:text-white">--</p>
                       ) : (
-                        <p className="text-black dark:text-white">
+                        <p key={key} className="text-black dark:text-white">
                           {message[0]}
                         </p>
                       );
@@ -408,7 +408,7 @@ const TableAccess = ({ data }: TableAccessProps) => {
                   </td>
 
                   <td className="border-b max-w-40 border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                    {access?.habilitationTransverses?.map((transverse) => {
+                    {access?.habilitationTransverses?.map((transverse, key) => {
                       const message = [];
                       let count = 0;
                       if (transverse.create === 1) {
@@ -425,16 +425,16 @@ const TableAccess = ({ data }: TableAccessProps) => {
                       }
 
                       return count > 1 ? (
-                        <details>
+                        <details key={key}>
                           <summary>{message?.[0]}, </summary>
                           <p className="text-black dark:text-white">
                             {message.slice(1).join(", ")}
                           </p>
                         </details>
                       ) : count === 0 ? (
-                        <p className="text-black dark:text-white">--</p>
+                        <p key={key} className="text-black dark:text-white">--</p>
                       ) : (
-                        <p className="text-black dark:text-white">
+                        <p key={key} className="text-black dark:text-white">
                           {message[0]}
                         </p>
                       );
@@ -443,7 +443,7 @@ const TableAccess = ({ data }: TableAccessProps) => {
 
                   <td className="border-b max-w-40 border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
                     {access?.habilitationIntercontracts?.map(
-                      (intercontract) => {
+                      (intercontract, key) => {
                         const message = [];
                         let count = 0;
                         if (intercontract.create === 1) {
@@ -462,16 +462,16 @@ const TableAccess = ({ data }: TableAccessProps) => {
                         }
 
                         return count > 1 ? (
-                          <details>
+                          <details key={key}>
                             <summary>{message?.[0]}, </summary>
                             <p className="text-black dark:text-white">
                               {message.slice(1).join(", ")}
                             </p>
                           </details>
                         ) : count === 0 ? (
-                          <p className="text-black dark:text-white">--</p>
+                          <p key={key} className="text-black dark:text-white">--</p>
                         ) : (
-                          <p className="text-black dark:text-white">
+                          <p key={key} className="text-black dark:text-white">
                             {message[0]}
                           </p>
                         );
