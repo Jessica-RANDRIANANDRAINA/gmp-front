@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { TableAccessProps } from "../../types/table";
 import { CustomSelect, CustomInput } from "../UIElements";
+import { deleteHabilitation } from "../../services/User";
 
 const TableAccess = ({ data }: TableAccessProps) => {
   const [entriesPerPage, setEntriesPerPage] = useState(5);
@@ -54,6 +55,20 @@ const TableAccess = ({ data }: TableAccessProps) => {
     } else {
       setAccessSelected([]);
       setIsAllSelected(false);
+    }
+  };
+
+  const handleBulkAction = (e: string) => {
+    if (e === "Supprimer") {
+      // console.log("1");
+      console.log(accessSelected);
+      try {
+        deleteHabilitation(accessSelected);
+      } catch (error) {
+        console.log(`Unable to delete habilitations: ${error}`);
+      }
+    } else {
+      console.log("2");
     }
   };
   return (
@@ -174,8 +189,8 @@ const TableAccess = ({ data }: TableAccessProps) => {
             data={["Modifier", "Supprimer"]}
             className="mb-2"
             placeholder="Actions"
-            onValueChange={() => {
-              console.log("first");
+            onValueChange={(e) => {
+              handleBulkAction(e);
             }}
           />
         </div>
@@ -427,37 +442,41 @@ const TableAccess = ({ data }: TableAccessProps) => {
                   </td>
 
                   <td className="border-b max-w-40 border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                    {access?.habilitationIntercontracts?.map((intercontract) => {
-                      const message = [];
-                      let count = 0;
-                      if (intercontract.create === 1) {
-                        message.push("Créer un inter-contrat");
-                        count++;
-                      }
-                      if (intercontract.update === 1) {
-                        message.push("Modifier les détails d'un inter-contrat");
-                        count++;
-                      }
-                      if (intercontract.delete === 1) {
-                        message.push("Supprimer un inter-contrat");
-                        count++;
-                      }
+                    {access?.habilitationIntercontracts?.map(
+                      (intercontract) => {
+                        const message = [];
+                        let count = 0;
+                        if (intercontract.create === 1) {
+                          message.push("Créer un inter-contrat");
+                          count++;
+                        }
+                        if (intercontract.update === 1) {
+                          message.push(
+                            "Modifier les détails d'un inter-contrat"
+                          );
+                          count++;
+                        }
+                        if (intercontract.delete === 1) {
+                          message.push("Supprimer un inter-contrat");
+                          count++;
+                        }
 
-                      return count > 1 ? (
-                        <details>
-                          <summary>{message?.[0]}, </summary>
+                        return count > 1 ? (
+                          <details>
+                            <summary>{message?.[0]}, </summary>
+                            <p className="text-black dark:text-white">
+                              {message.slice(1).join(", ")}
+                            </p>
+                          </details>
+                        ) : count === 0 ? (
+                          <p className="text-black dark:text-white">--</p>
+                        ) : (
                           <p className="text-black dark:text-white">
-                            {message.slice(1).join(", ")}
+                            {message[0]}
                           </p>
-                        </details>
-                      ) : count === 0 ? (
-                        <p className="text-black dark:text-white">--</p>
-                      ) : (
-                        <p className="text-black dark:text-white">
-                          {message[0]}
-                        </p>
-                      );
-                    })}
+                        );
+                      }
+                    )}
                   </td>
                 </tr>
               ))}

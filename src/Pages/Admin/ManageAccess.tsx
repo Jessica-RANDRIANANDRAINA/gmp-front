@@ -11,7 +11,7 @@ const ManageAccess = () => {
   useEffect(() => {
     const fetchHabilitation = async () => {
       const habilitation = await getAllHabilitation();
-      console.log(habilitation)
+      console.log(habilitation);
       setHabilitationData(habilitation);
     };
 
@@ -45,9 +45,7 @@ const ManageAccess = () => {
           </button>
         </div>
         {/* ===== ADD ACCESS END ===== */}
-        <TableAccess
-          data={habilitationData}
-        />
+        <TableAccess data={habilitationData} />
         {/* ===== MODAL ADD ACCESS START ===== */}
         {isAddModalAccessVisible && (
           <AddAccessModal

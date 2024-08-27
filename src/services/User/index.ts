@@ -3,6 +3,7 @@ import {
   createHabilitation,
   getAllHabilitation,
   getAllHabilitationLabels,
+  deleteHabilitation
 } from "./HabilitationServices";
 
 export {
@@ -11,4 +12,5 @@ export {
   createHabilitation,
   getAllHabilitation,
   getAllHabilitationLabels,
+  deleteHabilitation
 };
