@@ -24,10 +24,20 @@ const TableUser = ({ data }: { data: Array<any> }) => {
     email: true,
     department: true,
   });
+
   const [isAllSelected, setIsAllSelected] = useState(false);
   const [userSelected, setUserSelected] = useState<string[]>([]);
 
-  const filteredData = data.filter((item) => {
+  // sort the data by name z-a
+  const sortedDatabyName = data.sort((a, b) => {
+    if (dataSorted.name) {
+      return a.name.localeCompare(b.name);
+    } else {
+      return b.name.localeCompare(a.name);
+    }
+  });
+
+  const filteredData = sortedDatabyName.filter((item) => {
     const lowerCaseSearchName = search.nameAndMail.toLowerCase();
     var lowerCaseDepartment = search.department.toLowerCase();
 
