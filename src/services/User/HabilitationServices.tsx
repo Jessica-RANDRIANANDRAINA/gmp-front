@@ -7,7 +7,7 @@ const endPoint = import.meta.env.VITE_API_ENDPOINT;
 // GET ALL HABILITATION
 export const getAllHabilitation = async () => {
   try {
-    const response = await axios.get(`${endPoint}/Habilitation/all`);
+    const response = await axios.get(`${endPoint}/api/Habilitation/all`);
     return response.data;
   } catch (error) {
     throw new Error(`Error at service fetching habilitation`);
