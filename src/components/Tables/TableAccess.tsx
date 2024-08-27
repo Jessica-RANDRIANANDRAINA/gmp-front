@@ -58,8 +58,6 @@ const TableAccess = ({ data }: TableAccessProps) => {
   };
   return (
     <div className="bg-white pt-2 shadow-default dark:border-strokedark dark:bg-boxdark">
-      {/* <div className="flex m-5 flex-wrap justify-between items-center"> */}
-
       {/* =====FILTER START===== */}
       <div className="flex m-5 flex-wrap justify-between items-center">
         <div className="grid md:grid-cols-4 grid-cols-1 gap-3 w-full">
@@ -103,7 +101,7 @@ const TableAccess = ({ data }: TableAccessProps) => {
         </div>
       </div>
       {/* =====FILTER END===== */}
-      {/* </div> */}
+
       {/* =====PAGINATE AND TITLE START===== */}
       <div
         className={`pb-4 flex justify-between px-3 transition-opacity ${
@@ -316,79 +314,150 @@ const TableAccess = ({ data }: TableAccessProps) => {
                   </td>
 
                   <td className="border-b max-w-40 border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                    {access?.admin?.length > 1 ? (
-                      <details>
-                        <summary>{access?.admin?.[0]}</summary>
-                        {access?.admin?.length > 1 && (
+                    {access?.habilitationAdmins?.map((admin) => {
+                      const message = [];
+                      let count = 0;
+                      if (admin.createHabilitation === 1) {
+                        message.push("Créer une nouvelle habilitation");
+                        count++;
+                      }
+                      if (admin.deleteHabilitation === 1) {
+                        message.push("Supprimer une habilitation");
+                        count++;
+                      }
+                      if (admin.updateHabilitation === 1) {
+                        message.push("Modifier une habilitation");
+                        count++;
+                      }
+                      if (admin.modifyHierarchy === 1) {
+                        message.push("Modifier la hiérarchie des utilisateurs");
+                        count++;
+                      }
+                      if (admin.restoreHierarchy === 1) {
+                        message.push("Restaurer la hiérarchie");
+                        count++;
+                      }
+                      return count > 1 ? (
+                        <details>
+                          <summary>{message?.[0]}, </summary>
                           <p className="text-black dark:text-white">
-                            {access?.admin?.slice(1).join(", ")}{" "}
+                            {message.slice(1).join(", ")}
                           </p>
-                        )}
-                      </details>
-                    ) : access?.admin?.length === 0 ? (
-                      <p>--</p>
-                    ) : (
-                      <p className="text-black dark:text-white">
-                        {access?.admin}
-                      </p>
-                    )}
+                        </details>
+                      ) : count === 0 ? (
+                        <p className="text-black dark:text-white">--</p>
+                      ) : (
+                        <p className="text-black dark:text-white">
+                          {message[0]}
+                        </p>
+                      );
+                    })}
                   </td>
 
                   <td className="border-b max-w-40 border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                    {access?.project?.length > 1 ? (
-                      <details>
-                        <summary>{access?.project?.[0]}</summary>
-                        {access?.project?.length > 1 && (
+                    {access?.habilitationProjects?.map((project) => {
+                      const message = [];
+                      let count = 0;
+                      if (project.create === 1) {
+                        message.push("Créer un projet");
+                        count++;
+                      }
+                      if (project.update === 1) {
+                        message.push("Modifier les détails d'un projet");
+                        count++;
+                      }
+                      if (project.delete === 1) {
+                        message.push("Supprimer un projet");
+                        count++;
+                      }
+                      if (project.assign === 1) {
+                        message.push("Assigner un projet à autrui");
+                        count++;
+                      }
+
+                      return count > 1 ? (
+                        <details>
+                          <summary>{message?.[0]}, </summary>
                           <p className="text-black dark:text-white">
-                            {access?.project?.slice(1).join(", ")}{" "}
+                            {message.slice(1).join(", ")}
                           </p>
-                        )}
-                      </details>
-                    ) : access?.project?.length === 0 ? (
-                      <p>--</p>
-                    ) : (
-                      <p className="text-black dark:text-white">
-                        {access?.project}
-                      </p>
-                    )}
+                        </details>
+                      ) : count === 0 ? (
+                        <p className="text-black dark:text-white">--</p>
+                      ) : (
+                        <p className="text-black dark:text-white">
+                          {message[0]}
+                        </p>
+                      );
+                    })}
                   </td>
 
                   <td className="border-b max-w-40 border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                    {access?.transverse?.length > 1 ? (
-                      <details>
-                        <summary>{access?.transverse?.[0]}</summary>
-                        {access?.transverse?.length > 1 && (
+                    {access?.habilitationTransverses?.map((transverse) => {
+                      const message = [];
+                      let count = 0;
+                      if (transverse.create === 1) {
+                        message.push("Créer un transverse");
+                        count++;
+                      }
+                      if (transverse.update === 1) {
+                        message.push("Modifier les détails d'un transverse");
+                        count++;
+                      }
+                      if (transverse.delete === 1) {
+                        message.push("Supprimer un transverse");
+                        count++;
+                      }
+
+                      return count > 1 ? (
+                        <details>
+                          <summary>{message?.[0]}, </summary>
                           <p className="text-black dark:text-white">
-                            {access?.transverse?.slice(1).join(", ")}{" "}
+                            {message.slice(1).join(", ")}
                           </p>
-                        )}
-                      </details>
-                    ) : access?.transverse?.length === 0 ? (
-                      <p>--</p>
-                    ) : (
-                      <p className="text-black dark:text-white">
-                        {access?.transverse}
-                      </p>
-                    )}
+                        </details>
+                      ) : count === 0 ? (
+                        <p className="text-black dark:text-white">--</p>
+                      ) : (
+                        <p className="text-black dark:text-white">
+                          {message[0]}
+                        </p>
+                      );
+                    })}
                   </td>
 
                   <td className="border-b max-w-40 border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                    {access?.intercontract?.length > 1 ? (
-                      <details>
-                        <summary>{access?.intercontract?.[0]}</summary>
-                        {access?.intercontract?.length > 1 && (
+                    {access?.habilitationIntercontracts?.map((intercontract) => {
+                      const message = [];
+                      let count = 0;
+                      if (intercontract.create === 1) {
+                        message.push("Créer un inter-contrat");
+                        count++;
+                      }
+                      if (intercontract.update === 1) {
+                        message.push("Modifier les détails d'un inter-contrat");
+                        count++;
+                      }
+                      if (intercontract.delete === 1) {
+                        message.push("Supprimer un inter-contrat");
+                        count++;
+                      }
+
+                      return count > 1 ? (
+                        <details>
+                          <summary>{message?.[0]}, </summary>
                           <p className="text-black dark:text-white">
-                            {access?.intercontract?.slice(1).join(", ")}{" "}
+                            {message.slice(1).join(", ")}
                           </p>
-                        )}
-                      </details>
-                    ) : access?.intercontract?.length === 0 ? (
-                      <p>--</p>
-                    ) : (
-                      <p className="text-black dark:text-white">
-                        {access?.intercontract}
-                      </p>
-                    )}
+                        </details>
+                      ) : count === 0 ? (
+                        <p className="text-black dark:text-white">--</p>
+                      ) : (
+                        <p className="text-black dark:text-white">
+                          {message[0]}
+                        </p>
+                      );
+                    })}
                   </td>
                 </tr>
               ))}
