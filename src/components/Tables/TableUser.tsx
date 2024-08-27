@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import UserModifModal from "../Modals/UserModifModal";
 import { CustomInput, CustomSelect } from "../UIElements";
-import { getAllDepatments } from "../../services/User";
+import {
+  getAllDepatments,
+  getAllHabilitationLabels,
+} from "../../services/User";
 import Pagination from "./Pagination";
 
 const TableUser = ({ data }: { data: Array<any> }) => {
@@ -15,6 +18,7 @@ const TableUser = ({ data }: { data: Array<any> }) => {
   });
   const [userModif, setUserModif] = useState(false);
   const [departments, setDepartments] = useState<string[]>([]);
+  const [habilitation, setHabilitations] = useState<string[]>([]);
   const [dataSorted, setDataSorted] = useState({
     name: true,
     email: true,
@@ -64,12 +68,14 @@ const TableUser = ({ data }: { data: Array<any> }) => {
   }, [search]);
 
   useEffect(() => {
-    const fetchDepartment = async () => {
+    const fetchDepartmentAndHabilitation = async () => {
       const depart = await getAllDepatments();
+      const habilit = await getAllHabilitationLabels();
       setDepartments(depart);
+      setHabilitations(habilit);
     };
 
-    fetchDepartment();
+    fetchDepartmentAndHabilitation();
   }, []);
 
   const handleDeleteFilter = () => {
@@ -123,7 +129,7 @@ const TableUser = ({ data }: { data: Array<any> }) => {
           <CustomSelect
             label="Accès"
             placeholder="Accès"
-            data={["Total", "Client", "Manager"]}
+            data={habilitation}
             onValueChange={() => {
               console.log("first");
             }}

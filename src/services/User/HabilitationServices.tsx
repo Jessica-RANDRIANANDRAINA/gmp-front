@@ -14,6 +14,16 @@ export const getAllHabilitation = async () => {
   }
 };
 
+// get all habilitation labels
+export const getAllHabilitationLabels = async()=> {
+  try {
+    const response = await axios.get(`${endPoint}/api/Habilitation/labels`)
+    return response.data
+  } catch (error) {
+    throw new Error(`Error at service fetching habilitation labels`);
+  }
+}
+
 // POST
 // CREATE HABILITATION
 export const createHabilitation = async (
