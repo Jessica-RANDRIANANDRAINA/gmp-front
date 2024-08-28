@@ -54,7 +54,8 @@ export default {
         'meta-9': '#E5E7EB',
       }, 
       backgroundImage: {
-        "fond": "url('src/assets/pattern.png')"
+        "fond": "url('src/assets/pattern.png')", 
+        "loginFond": "url('src/assets/DJI_0028.jpg.webp')"
       },
       fontSize: {
         'title-xxl': ['44px', '55px'],
