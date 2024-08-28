@@ -247,9 +247,9 @@ const TableUser = ({ data }: { data: Array<any> }) => {
             onValueChange={(e) => {
               console.log(e);
               if (e.includes("Modifier")) {
-                setUserModif(true)
+                setUserModif(true);
               } else {
-                setUserDelete(true)
+                setUserDelete(true);
               }
             }}
           />
@@ -463,10 +463,17 @@ const TableUser = ({ data }: { data: Array<any> }) => {
                       {user?.department}
                     </p>
                   </td>
-                  <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                    <span className="text-white border  border-orange bg-orange py-1 px-2 rounded-2xl dark:text-white">
-                      Visualisation
-                    </span>
+                  <td className="border-b border-[#eee] space-x-1 py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                    {user?.habilitations?.map(
+                      (hab: { id: string; label: string }) => (
+                        <span
+                          key={hab.id}
+                          className="text-white border  border-orange bg-orange py-1 px-2 rounded-2xl dark:text-white"
+                        >
+                          {hab?.label}
+                        </span>
+                      )
+                    )}
                   </td>
                 </tr>
               ))}
@@ -496,12 +503,19 @@ const TableUser = ({ data }: { data: Array<any> }) => {
       {/* =====TABLE END===== */}
       {/* =====MODAL USER MODIF START===== */}
       {userModif && (
-        <UserModifModal setUserModifs={setUserModif} userModif={userModif} userSelected={userSelected} />
+        <UserModifModal
+          setUserModifs={setUserModif}
+          userModif={userModif}
+          userSelected={userSelected}
+        />
       )}
       {/* =====MODAL USER MODIF END===== */}
       {/* =====MODAL USER DELETE START===== */}
       {userDelete && (
-        <ConfirmDeleteHabilitationuser setUserDelete={setUserDelete} userSelected={userSelected} />
+        <ConfirmDeleteHabilitationuser
+          setUserDelete={setUserDelete}
+          userSelected={userSelected}
+        />
       )}
       {/* =====MODAL USER DELETE END===== */}
     </div>
