@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useLayoutEffect, useState, useRef } from "react";
 import { InputSelectprops } from "../../../types/input";
 
 const CustomSelect = ({
@@ -7,9 +7,11 @@ const CustomSelect = ({
   onValueChange,
   value,
   label,
-  className
+  className,
 }: InputSelectprops) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isNearLeft, setIsNearLeft] = useState(false);
+  const [isNearRight, setIsNearRight] = useState(false);
   // const [selected, setSelected] = useState(value);
 
   const trigger = useRef<any>(null);
@@ -29,7 +31,26 @@ const CustomSelect = ({
     };
     document.addEventListener("click", clickHandler);
     return () => document.removeEventListener("click", clickHandler);
-  });
+  }, [isOpen]);
+
+  useEffect(() => {
+    const checkProximity = () => {
+      if (dropdown.current) {
+        const rect = dropdown.current.getBoundingClientRect();
+        const threshold = 50; // distance à laquelle tu considères l'élément comme proche du bord
+
+        setIsNearLeft(rect.left < threshold);
+        setIsNearRight(window.innerWidth - rect.right < threshold);
+      }
+    };
+
+    checkProximity(); // Vérifie la position au chargement
+
+    window.addEventListener('resize', checkProximity); // Vérifie la position lors du redimensionnement
+    return () => {
+      window.removeEventListener('resize', checkProximity);
+    };
+  }, []);
 
   const handleSelect = (option: any) => {
     // setSelected(option);
@@ -77,19 +98,24 @@ const CustomSelect = ({
       </button>
       <div
         ref={dropdown}
-        className={`absolute z-999999 w-full bg-white border border-stroke rounded-lg mt-1 transition-transform duration-200 ease-in-out transform ${
+        className={`absolute z-999999 min-w-fit w-full bg-white border border-stroke rounded-lg mt-1 transition-transform duration-200 ease-in-out transform ${
           isOpen
             ? "scale-y-100 scale-x-100 opacity-100 "
             : " scale-y-0 scale-x-0 opacity-0 "
-        } `}
+        } ${isNearLeft ? 'left-0' : 'right-0'}  `}
         style={{ transformOrigin: "top", overflow: "hidden" }}
       >
         {data?.map((option, index) => (
           <div
             key={index}
             onClick={() => handleSelect(option)}
-            className="py-2 px-4 cursor-pointer dark:text-bodydark hover:bg-gray-3 rounded-md"
-            style={{ height: "40px" }}
+            className="py-2 px-4 cursor-pointer  dark:text-bodydark hover:bg-gray-3 rounded-md"
+            style={{
+              height: "40px",
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
           >
             {option}
           </div>
