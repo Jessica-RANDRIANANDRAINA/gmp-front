@@ -1,9 +1,13 @@
-import { getAllUsers, getAllDepatments } from "./UserServices";
+import {
+  getAllUsers,
+  getAllDepatments,
+  assignHabilitations,
+} from "./UserServices";
 import {
   createHabilitation,
   getAllHabilitation,
   getAllHabilitationLabels,
-  deleteHabilitation
+  deleteHabilitation,
 } from "./HabilitationServices";
 
 export {
@@ -12,5 +16,6 @@ export {
   createHabilitation,
   getAllHabilitation,
   getAllHabilitationLabels,
-  deleteHabilitation
+  deleteHabilitation,
+  assignHabilitations,
 };

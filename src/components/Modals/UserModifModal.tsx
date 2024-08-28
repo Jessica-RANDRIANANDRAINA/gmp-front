@@ -1,24 +1,62 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CustomInput, MultiSelect } from "../UIElements";
+import { getAllHabilitation, assignHabilitations } from "../../services/User";
+import { Notyf } from 'notyf';
+import 'notyf/notyf.min.css';
+
+const notyf = new Notyf();
 
 const UserModifModal = ({
   // userModif,
   setUserModifs,
+  userSelected,
 }: {
   userModif: boolean;
   setUserModifs: Function;
+  userSelected: string[];
 }) => {
-  // const [access, setAccess] = useState<string[]>([]);
-  const [valueMulti, setValueMulti] =useState<any>()
+  const [habilitations, setHabilitations] = useState<string[]>([]);
+  const [habilitationsIdLabel, setHabilitationsIdLabel] = useState<
+    { label: string; id: string }[]
+  >([]);
+  const [valueMulti, setValueMulti] = useState<any>();
   const trigger = useRef<any>(null);
 
-  const handleModif = (e: any) => {
-    e.preventDefault()
-    console.log("-----------")
-    console.log(valueMulti)
-    console.log("-----------")
-    return;
-  }
+  useEffect(() => {
+    const fetchHabilitation = async () => {
+      const habilit = await getAllHabilitation();
+      const habilitIdLabel = habilit.map(
+        ({ label, id }: { label: string; id: string }) => ({ label, id })
+      );
+      const habilitLabel = habilit.map(({ label }: { label: string }) => label);
+      setHabilitationsIdLabel(habilitIdLabel);
+      setHabilitations(habilitLabel);
+    };
+    fetchHabilitation();
+  }, []);
+
+  const handleModif = async (e: any) => {
+    e.preventDefault();
+    const habIds: string[] = [];
+
+    const valueMultiSet = new Set(valueMulti);
+
+    habilitationsIdLabel.forEach(({ label, id }) => {
+      if (valueMultiSet.has(label)) {
+        habIds.push(id);
+      }
+    });
+    try {
+      assignHabilitations({ userIds: userSelected, habilitationIds: habIds });
+      notyf.success("Assignement réussi")
+    } catch (error) {
+      notyf.error("Un problème est survenu lors de l'assignement")
+      notyf.error("Veuillez reessayer plus tard")
+      console.error(`Error while assign habilitation to user`);
+    } finally {
+      setUserModifs(false);
+    }
+  };
 
   return (
     <div className="fixed inset-0 flex justify-center place-items-center bg-black z-999999 bg-opacity-50">
@@ -28,7 +66,12 @@ const UserModifModal = ({
       >
         {/* =====HEADER START===== */}
         <header className={"flex justify-between w-full  h-12"}>
-          <div className={"font-bold"}>Modifier les accès</div>
+          <div className={"font-bold"}>
+            Modifier les accès{" "}
+            {userSelected.length > 1
+              ? `des ${userSelected.length} utilisateurs`
+              : ``}
+          </div>
           <div
             className={"cursor-pointer"}
             onClick={() => setUserModifs(false)}
@@ -52,34 +95,40 @@ const UserModifModal = ({
         {/* =====HEADER END===== */}
         <div>
           <form onSubmit={handleModif}>
-            <CustomInput
-              label="Nom"
-              type="text"
-              rounded="medium"
-              className="p-4 w-full"
-              value={"Johanne RAZAFIMAHEFA"}
-              disabled
-            />
-            <CustomInput
-              label="Email"
-              type="text"
-              rounded="medium"
-              className="p-4 w-full"
-              value={"ST116@ravinala-airports.aero"}
-              disabled
-            />
+            {userSelected.length > 1 ? (
+              <div></div>
+            ) : (
+              <>
+                <CustomInput
+                  label="Nom"
+                  type="text"
+                  rounded="medium"
+                  className="p-4 w-full"
+                  value={"Johanne RAZAFIMAHEFA"}
+                  disabled
+                />
+                <CustomInput
+                  label="Email"
+                  type="text"
+                  rounded="medium"
+                  className="p-4 w-full"
+                  value={"ST116@ravinala-airports.aero"}
+                  disabled
+                />
+              </>
+            )}
             <MultiSelect
               id="aaa"
               label={"Accès"}
               placeholder="Accés disponible"
-              value={["Visualisation", "Gestion", "Total"]}
+              value={habilitations}
               setValueMulti={setValueMulti}
             />
-          <input
-            type="submit"
-            value={"Modifier les accès"}
-            className="w-full cursor-pointer mt-2 py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen dark:hover:bg-opacity-90"
-          />
+            <input
+              type="submit"
+              value={"Modifier les accès"}
+              className="w-full cursor-pointer mt-2 py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen dark:hover:bg-opacity-90"
+            />
           </form>
         </div>
       </div>

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import UserModifModal from "../Modals/UserModifModal";
+import ConfirmDeleteHabilitationuser from "../Modals/ConfirmDeleteHabilitationuser";
 import { CustomInput, CustomSelect } from "../UIElements";
 import {
   getAllDepatments,
@@ -17,6 +18,7 @@ const TableUser = ({ data }: { data: Array<any> }) => {
     access: "",
   });
   const [userModif, setUserModif] = useState(false);
+  const [userDelete, setUserDelete] = useState(false);
   const [departments, setDepartments] = useState<string[]>([]);
   const [habilitation, setHabilitations] = useState<string[]>([]);
   const [dataSorted, setDataSorted] = useState({
@@ -239,11 +241,16 @@ const TableUser = ({ data }: { data: Array<any> }) => {
         <div> {userSelected.length} éléments séléctionné </div>
         <div>
           <CustomSelect
-            data={["Modifier", "Supprimer"]}
-            className="mb-2"
+            data={["Modifier habilitation(s)", "Supprimer habilitation(s)"]}
+            className="mb-2  "
             placeholder="Actions"
-            onValueChange={() => {
-              console.log("first");
+            onValueChange={(e) => {
+              console.log(e);
+              if (e.includes("Modifier")) {
+                setUserModif(true)
+              } else {
+                setUserDelete(true)
+              }
             }}
           />
         </div>
@@ -288,6 +295,8 @@ const TableUser = ({ data }: { data: Array<any> }) => {
                       setDataSorted({
                         ...dataSorted,
                         name: !dataSorted.name,
+                        email: false,
+                        department: false,
                       });
                     }}
                     className={`${
@@ -318,6 +327,8 @@ const TableUser = ({ data }: { data: Array<any> }) => {
                       setDataSorted({
                         ...dataSorted,
                         email: !dataSorted.email,
+                        name: false,
+                        department: false,
                       });
                     }}
                     className={`${
@@ -485,9 +496,14 @@ const TableUser = ({ data }: { data: Array<any> }) => {
       {/* =====TABLE END===== */}
       {/* =====MODAL USER MODIF START===== */}
       {userModif && (
-        <UserModifModal setUserModifs={setUserModif} userModif={userModif} />
+        <UserModifModal setUserModifs={setUserModif} userModif={userModif} userSelected={userSelected} />
       )}
       {/* =====MODAL USER MODIF END===== */}
+      {/* =====MODAL USER DELETE START===== */}
+      {userDelete && (
+        <ConfirmDeleteHabilitationuser setUserDelete={setUserDelete} userSelected={userSelected} />
+      )}
+      {/* =====MODAL USER DELETE END===== */}
     </div>
   );
 };

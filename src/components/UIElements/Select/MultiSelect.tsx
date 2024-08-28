@@ -26,7 +26,7 @@ const MultiSelect = ({ label, value, setValueMulti, id, placeholder }: MultiSele
     };
 
     loadOptions();
-  }, [id]);
+  }, [id, value]);
 
   const open = () => {
     setShow(true);
