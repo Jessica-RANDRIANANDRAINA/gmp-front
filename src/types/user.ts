@@ -10,8 +10,9 @@ export interface UserInterface {
     department: string; 
     poste: string; 
     superiorId: string | null;
+    superiorName: String | null;
     status: string; 
-    hanilitations: Array<{id: string; label: string}>
+    habilitations: Array<{id: string; label: string}>
 }
 
 export interface AuthContextProps {

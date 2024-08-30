@@ -387,6 +387,11 @@ const TableUser = ({ data }: { data: Array<any> }) => {
                 </div>
               </th>
               <th className="py-4 px-4 font-bold text-white dark:text-white xl:pl-11">
+                <div className="flex items-center">
+                  <span>Supérieur direct</span>
+                </div>
+              </th>
+              <th className="py-4 px-4 font-bold text-white dark:text-white xl:pl-11">
                 Accès
               </th>
             </tr>
@@ -395,6 +400,7 @@ const TableUser = ({ data }: { data: Array<any> }) => {
             {filteredData
               ?.filter((_user, index) => indexInPaginationRange(index))
               .filter((user) => {
+
                 const name = user?.name?.toLowerCase();
                 const email = user?.email?.toLowerCase();
                 const department = user?.department?.toLowerCase();
@@ -461,6 +467,11 @@ const TableUser = ({ data }: { data: Array<any> }) => {
                   <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
                     <p className="text-black dark:text-white">
                       {user?.department}
+                    </p>
+                  </td>
+                  <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                    <p className="text-black dark:text-white">
+                      {user?.superiorName?.split("(")?.[0]}
                     </p>
                   </td>
                   <td className="border-b border-[#eee] space-x-1 py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
