@@ -1,7 +1,15 @@
 import { useEffect, useState } from "react";
 import { UserInterface } from "../../types/user";
 
-const BodyHierarchy = ({ userData }: { userData: Array<any> }) => {
+const BodyHierarchy = ({
+  userData,
+  setUserToModify,
+  setIsModifyHierarchyOpen
+}: {
+  userData: Array<any>;
+  setUserToModify: Function;
+  setIsModifyHierarchyOpen: Function;
+}) => {
   const [superior, setSuperior] = useState<Array<UserInterface>>([]);
   const [underline, setUndeline] = useState<Array<UserInterface>>([]);
   const [userSelected, setUserSelected] = useState<UserInterface | null>(null);
@@ -38,7 +46,7 @@ const BodyHierarchy = ({ userData }: { userData: Array<any> }) => {
 
       // Ajoute les supérieurs successifs jusqu'à la personne sans supérieur
       while (currentUser?.superiorId) {
-        const nextSuperior = userData.find(
+        const nextSuperior = userData?.find(
           (user) => user.id === currentUser.superiorId
         );
         if (
@@ -63,39 +71,65 @@ const BodyHierarchy = ({ userData }: { userData: Array<any> }) => {
   return (
     <div className=" mt-4 flex flex-col justify-center gap-2 items-center">
       {/* ===== DIRECTOR START ===== */}
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 ">
         {superior?.map((sup) => (
-          <button
+          <div
             key={sup?.id}
-            className="border  flex flex-col p-4 border-neutral-200 min-w-80"
-            onClick={() => {
-              setUserSelected(sup);
-            }}
+            className="border flex justify-between items-center  border-neutral-200 min-w-80"
           >
-            <span className="text-start">{sup?.name}</span>
-            <span className="text-xs text-start text-slate-500">
-              {sup?.poste}
-            </span>
-          </button>
+            <div
+              className="flex flex-col  w-full p-4  cursor-pointer "
+              onClick={() => {
+                setUserSelected(sup);
+              }}
+            >
+              <span className="text-start">{sup?.name}</span>
+              <span className="text-xs text-start text-slate-500">
+                {sup?.poste}
+              </span>
+            </div>
+            <button
+              className=" h-full p-2 "
+              onClick={() => {
+                setUserToModify(sup);
+                setIsModifyHierarchyOpen(true)
+              }}
+            >
+              U
+            </button>
+          </div>
         ))}
       </div>
       {/* ===== DIRECTOR END ===== */}
       {/* ===== UNDERLINE START ===== */}
       {underline?.length > 0 && (
-        <div className="border grid grid-cols-3 gap-4 p-4 border-neutral-200 w-full bg-slate-50">
+        <div className="border grid grid-cols-3 gap-4 p-4 border-neutral-200 w-full bg-slate-50 ">
           {underline?.map((user) => (
-            <button
+            <div
               key={user?.id}
-              className="border bg-white flex flex-col p-4  border-neutral-200 min-w-80"
-              onClick={() => {
-                setUserSelected(user);
-              }}
+              className="border bg-white flex  justify-between items-center  border-neutral-200 min-w-80"
             >
-              <span className=" text-start">{user?.name}</span>
-              <span className="text-xs text-start text-slate-500">
-                {user?.poste}
-              </span>
-            </button>
+              <div
+                className="flex flex-col  w-full p-4  cursor-pointer"
+                onClick={() => {
+                  setUserSelected(user);
+                }}
+              >
+                <span className=" text-start">{user?.name}</span>
+                <span className="text-xs text-start text-slate-500">
+                  {user?.poste}
+                </span>
+              </div>
+              <button
+                className=" h-full flex justify-center items-center p-2"
+                onClick={() => {
+                  setUserToModify(user);
+                  setIsModifyHierarchyOpen(true)
+                }}
+              >
+                UP
+              </button>
+            </div>
           ))}
         </div>
       )}
