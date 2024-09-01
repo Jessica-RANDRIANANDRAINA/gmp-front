@@ -29,7 +29,10 @@ const TableUser = ({ data }: { data: Array<any> }) => {
 
   const [isAllSelected, setIsAllSelected] = useState(false);
   const [userSelected, setUserSelected] = useState<string[]>([]);
-
+  const [userSelectedForModif, setUserSelectedForModif] = useState({
+    name: "",
+    email: "",
+  });
   // sort the data by name z-a
   const sortedDatabyName = data.sort((a, b) => {
     if (dataSorted.name) {
@@ -89,6 +92,18 @@ const TableUser = ({ data }: { data: Array<any> }) => {
 
     fetchDepartmentAndHabilitation();
   }, []);
+
+  useEffect(() => {
+    if (userSelected?.length === 1) {
+      const user = filteredData?.filter((u) => {
+        return u.id === userSelected?.[0];
+      });
+      setUserSelectedForModif({
+        name: user?.[0]?.name, 
+        email: user?.[0]?.email
+      });
+    }
+  }, [userSelected]);
 
   const handleDeleteFilter = () => {
     setSearch({
@@ -400,7 +415,6 @@ const TableUser = ({ data }: { data: Array<any> }) => {
             {filteredData
               ?.filter((_user, index) => indexInPaginationRange(index))
               .filter((user) => {
-
                 const name = user?.name?.toLowerCase();
                 const email = user?.email?.toLowerCase();
                 const department = user?.department?.toLowerCase();
@@ -515,6 +529,7 @@ const TableUser = ({ data }: { data: Array<any> }) => {
       {/* =====MODAL USER MODIF START===== */}
       {userModif && (
         <UserModifModal
+          userForModif={userSelectedForModif}
           setUserModifs={setUserModif}
           userModif={userModif}
           userSelected={userSelected}

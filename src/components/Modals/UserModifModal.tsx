@@ -10,10 +10,14 @@ const UserModifModal = ({
   // userModif,
   setUserModifs,
   userSelected,
+  userForModif
 }: {
   userModif: boolean;
   setUserModifs: Function;
   userSelected: string[];
+  userForModif: {
+    name: string, email: string
+  }
 }) => {
   const [habilitations, setHabilitations] = useState<string[]>([]);
   const [habilitationsIdLabel, setHabilitationsIdLabel] = useState<
@@ -104,7 +108,7 @@ const UserModifModal = ({
                   type="text"
                   rounded="medium"
                   className="p-4 w-full"
-                  value={"Johanne RAZAFIMAHEFA"}
+                  value={userForModif.name}
                   disabled
                 />
                 <CustomInput
@@ -112,7 +116,7 @@ const UserModifModal = ({
                   type="text"
                   rounded="medium"
                   className="p-4 w-full"
-                  value={"ST116@ravinala-airports.aero"}
+                  value={userForModif.email}
                   disabled
                 />
               </>
