@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useAuthService } from "../services/login";
 import { useNavigate } from "react-router-dom";
+import { PuffLoader } from "react-spinners";
 
 const Login = () => {
   const { loginUser } = useAuthService();
@@ -13,11 +14,13 @@ const Login = () => {
     password: "",
     error: "",
   });
+  const [isLoginLoading, setIsLoginLoading] = useState(false);
 
   const navigate = useNavigate();
 
   const handleLogin = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
+    setIsLoginLoading(true);
     try {
       const loginAnswer = await loginUser(user);
       console.log(loginAnswer);
@@ -32,20 +35,25 @@ const Login = () => {
       }
     } catch (error) {
       console.error(`error during login`);
+    } finally {
+      setIsLoginLoading(false);
     }
   };
   return (
     <div className="flex justify-center items-center h-screen bg-cover bg-center ">
       <div className="absolute inset-0 bg-cover bg-center filter bg-loginFond blur-sm"></div>
-      <div className="relative flex flex-col justify-center items-center h-[450px] w-[380px]  bg-black bg-opacity-60 p-4 shadow-lg">
-        <div className="text-white text-6xl  mb-4">Tsikilo</div>
+      <div className="relative rounded-lg flex flex-col justify-center items-center h-full w-full md:h-[500px] md:w-[450px]  bg-black bg-opacity-60 p-4 shadow-lg">
+        <div className="text-white  text-center  flex flex-col  mb-4">
+          <span className="text-6xl">Tsikilo</span>
+          <span className="">Admin</span>
+        </div>
         <form className="flex flex-col items-center w-full">
           <div className="flex flex-col">
             <input
               type="text"
               placeholder="Mail"
               required
-              className={`w-[270px] h-[40px] mt-5 bg-transparent border-b-2 text-white text-lg pl-1 focus:outline-none   ${
+              className={`w-[320px] h-[40px] mt-5 bg-transparent border-b-2 text-white text-lg pl-1 focus:outline-none   ${
                 loginError.mail === ""
                   ? "focus:border-primaryGreen"
                   : "border-red-500"
@@ -76,7 +84,7 @@ const Login = () => {
               type="password"
               placeholder="Mot de passe"
               required
-              className={`w-[270px] h-[40px] mt-5 bg-transparent border-b-2  text-white text-lg pl-1 focus:outline-none ${
+              className={`w-[320px] h-[40px] mt-5 bg-transparent border-b-2  text-white text-lg pl-1 focus:outline-none ${
                 loginError.password === ""
                   ? "focus:border-primaryGreen"
                   : "border-red-500"
@@ -104,8 +112,18 @@ const Login = () => {
           </div>
           <button
             onClick={handleLogin}
-            className="w-[280px] h-[35px] mt-10 bg-red-400 text-white text-base font-roboto rounded-sm shadow-md hover:bg-white hover:text-red-400 transition-colors duration-300 cursor-pointer"
+            className={`w-[320px] flex justify-center items-center h-[35px] mt-10 bg-red-400 text-white text-base font-roboto rounded-sm shadow-md  transition-colors duration-300  ${
+              isLoginLoading
+                ? "bg-red-500"
+                : "cursor-pointer hover:bg-white hover:text-red-400"
+            }`}
+            disabled={true}
           >
+            {isLoginLoading && (
+              <span>
+                <PuffLoader size={20} className="mr-2" />
+              </span>
+            )}
             Se connecter
           </button>
         </form>
