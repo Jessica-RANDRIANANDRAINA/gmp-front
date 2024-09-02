@@ -1,7 +1,8 @@
 import { useEffect, useState, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { logout } from "../../services/login";
 
-import UserOne from '../../assets/user.png'
+import UserOne from "../../assets/user.png";
 
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -9,6 +10,7 @@ const DropdownUser = () => {
 
   const trigger = useRef<any>(null);
   const dropdown = useRef<any>(null);
+  const navigate = useNavigate();
 
   // close on click outside
   useEffect(() => {
@@ -37,8 +39,15 @@ const DropdownUser = () => {
   });
 
   const handleLogOut = () => {
-    console.log("loged out")
-  }
+    try {
+      logout().then(() => {
+        navigate("/");
+      });
+      console.log("loged out");
+    } catch (error) {
+      console.log(`Error in logout ${error}`);
+    }
+  };
 
   return (
     <div className="relative">
@@ -82,12 +91,12 @@ const DropdownUser = () => {
 
       {/* dorpdown start */}
       <div
-      ref={dropdown}
-      onFocus={() => setDropdownOpen(true)}
-      onBlur={() => setDropdownOpen(false)}
-      className={`absolute right-0 mt-4 flex w-62.5 flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark ${
-        dropdownOpen === true ? 'block' : 'hidden'
-      }`}
+        ref={dropdown}
+        onFocus={() => setDropdownOpen(true)}
+        onBlur={() => setDropdownOpen(false)}
+        className={`absolute right-0 mt-4 flex w-62.5 flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark ${
+          dropdownOpen === true ? "block" : "hidden"
+        }`}
       >
         {/* <ul className="flex flex-col gap-5 border-b border-stroke px-6 py-7.5 dark:border-strokedark">
             <li>
