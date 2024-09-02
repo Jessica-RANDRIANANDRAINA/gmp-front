@@ -20,6 +20,7 @@ const Login = () => {
 
   const handleLogin = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
+    console.log("eee")
     setIsLoginLoading(true);
     try {
       const loginAnswer = await loginUser(user);
@@ -117,7 +118,7 @@ const Login = () => {
                 ? "bg-red-500"
                 : "cursor-pointer hover:bg-white hover:text-red-400"
             }`}
-            disabled={true}
+            disabled={isLoginLoading}
           >
             {isLoginLoading && (
               <span>

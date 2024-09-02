@@ -13,18 +13,15 @@ export const useAuthService = () => {
     password: string;
   }) => {
     try {
-      console.log(userCredentials)
+      console.log(userCredentials);
       const response = await axios.post(
         `${endPoint}/api/Login`,
-        userCredentials, 
-        {withCredentials: true}
+        userCredentials,
+        { withCredentials: true }
       );
-     
 
       if (response.data && response.data.type === "success") {
-        console.log("----CONTEXT-------");
-        console.log(response.data.user);
-        console.log("----CONTEXT-------");
+        localStorage.setItem("_au", response.data.token);
         login(response.data.user);
       }
 
@@ -35,4 +32,16 @@ export const useAuthService = () => {
   };
 
   return { loginUser };
+};
+
+//logout
+
+export const logout = async () => {
+  try {
+    const response = await axios.post(`${endPoint}/api/Login/logout`);
+    localStorage.removeItem("_au");
+    return response;
+  } catch (error) {
+    console.error(`Error while logout service ${error}`);
+  }
 };
