@@ -20,7 +20,6 @@ const Login = () => {
 
   const handleLogin = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    console.log("eee")
     setIsLoginLoading(true);
     try {
       const loginAnswer = await loginUser(user);
@@ -127,6 +126,11 @@ const Login = () => {
             )}
             Se connecter
           </button>
+          {loginError.error && (
+            <div className="text-red-500 mt-4 font-bold">
+              Vous n'avez pas accès à cette plateforme
+            </div>
+          )}
         </form>
       </div>
     </div>

@@ -21,8 +21,31 @@ export const useAuthService = () => {
       );
 
       if (response.data && response.data.type === "success") {
-        localStorage.setItem("_au", response.data.token);
-        login(response.data.user);
+        let adminPrivilege = false;
+        const habilitation = response.data.user.habilitations;
+        habilitation?.forEach((hab) => {
+          hab.habilitationAdmins.forEach((admin) => {
+            if (
+              admin?.createHabilitation === 1 ||
+              admin?.deleteHabilitation === 1 ||
+              admin?.modifyHierarchy === 1 ||
+              admin?.restoreHierarchy === 1 ||
+              admin?.updateHabilitation === 1
+            ) {
+              adminPrivilege = true;
+            } 
+          });
+        });
+
+        if(adminPrivilege){
+
+          localStorage.setItem("_au", response.data.token);
+  
+          login(response.data.user);
+        }else {
+          return {message: "Vous n'avez pas accèss à cette plateforme", type: "error"}
+        }
+
       }
 
       return response.data;
