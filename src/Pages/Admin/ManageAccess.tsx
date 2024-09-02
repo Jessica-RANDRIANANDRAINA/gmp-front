@@ -8,15 +8,23 @@ const ManageAccess = () => {
   const [isAddModalAccessVisible, setIsModalAccessVisible] = useState(false);
   const [habilitationData, setHabilitationData] = useState([]);
 
+  const fetchHabilitation = async () => {
+    const habilitation = await getAllHabilitation();
+    console.log(habilitation);
+    setHabilitationData(habilitation);
+  };
   useEffect(() => {
-    const fetchHabilitation = async () => {
-      const habilitation = await getAllHabilitation();
-      console.log(habilitation);
-      setHabilitationData(habilitation);
-    };
-
     fetchHabilitation();
   }, []);
+
+  useEffect(() => {
+    handleChange();
+  }, [isAddModalAccessVisible]);
+
+  const handleChange = () => {
+    fetchHabilitation();
+  };
+
   return (
     <DefaultLayout>
       <div>
