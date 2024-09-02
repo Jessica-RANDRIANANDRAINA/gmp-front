@@ -8,7 +8,15 @@ import {
 } from "../../services/User";
 import Pagination from "./Pagination";
 
-const TableUser = ({ data }: { data: Array<any> }) => {
+const TableUser = ({
+  data,
+  onModification,
+  setOnModification,
+}: {
+  data: Array<any>;
+  onModification: boolean;
+  setOnModification: Function;
+}) => {
   const [entriesPerPage, setEntriesPerPage] = useState(5);
   const [actualPage, setActualPage] = useState(1);
   const [pageNumbers, setPageNumbers] = useState(1);
@@ -99,11 +107,15 @@ const TableUser = ({ data }: { data: Array<any> }) => {
         return u.id === userSelected?.[0];
       });
       setUserSelectedForModif({
-        name: user?.[0]?.name, 
-        email: user?.[0]?.email
+        name: user?.[0]?.name,
+        email: user?.[0]?.email,
       });
     }
   }, [userSelected]);
+
+  useEffect(() => {
+    setOnModification(!onModification);
+  }, [userModif, userDelete]);
 
   const handleDeleteFilter = () => {
     setSearch({
