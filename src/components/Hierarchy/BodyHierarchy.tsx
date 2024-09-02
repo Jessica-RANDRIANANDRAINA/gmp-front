@@ -4,14 +4,14 @@ import { UserInterface } from "../../types/user";
 const BodyHierarchy = ({
   userData,
   setUserToModify,
-  setIsModifyHierarchyOpen
+  setIsModifyHierarchyOpen,
 }: {
   userData: Array<any>;
   setUserToModify: Function;
   setIsModifyHierarchyOpen: Function;
 }) => {
   const [superior, setSuperior] = useState<Array<UserInterface>>([]);
-  const [underline, setUndeline] = useState<Array<UserInterface>>([]);
+  const [underline, setUnderline] = useState<Array<UserInterface>>([]);
   const [userSelected, setUserSelected] = useState<UserInterface | null>(null);
 
   useEffect(() => {
@@ -29,18 +29,15 @@ const BodyHierarchy = ({
     const underlines = userData?.filter(
       (user) => user?.superiorId === userSelected?.id
     );
-    setUndeline(underlines);
+    setUnderline(underlines);
   }, [superior]);
 
   useEffect(() => {
     if (userSelected) {
-      console.log(userSelected);
-      // Garde uniquement le supérieur fixe (Directeur nommé Daniel)
-      const director = superior.find(
-        (user) =>
-          user.poste === "Directeur Général" && user.name.includes("Daniel")
-      );
-      const newSuperiors = director ? [director] : [];
+      let newSuperiors = [];
+
+      // Ajoute la personne sélectionnée au début de l'array
+      newSuperiors.push(userSelected);
 
       let currentUser = userSelected;
 
@@ -60,12 +57,17 @@ const BodyHierarchy = ({
         }
       }
 
-      // Ajoute la personne sélectionnée à la fin du tableau
-      if (!newSuperiors.some((sup) => sup.id === userSelected.id)) {
-        newSuperiors.push(userSelected);
+      // Ajoute le directeur général à la fin de l'array
+      const director = superior.find(
+        (user) =>
+          user.poste === "Directeur Général" && user.name.includes("Daniel")
+      );
+      if (director && !newSuperiors.some((sup) => sup.id === director.id)) {
+        newSuperiors.push(director);
       }
 
-      setSuperior(newSuperiors);
+      const reversedSuperior = newSuperiors.reverse();
+      setSuperior(reversedSuperior);
     }
   }, [userSelected]);
   return (
@@ -92,10 +94,31 @@ const BodyHierarchy = ({
               className=" h-full p-2 "
               onClick={() => {
                 setUserToModify(sup);
-                setIsModifyHierarchyOpen(true)
+                setIsModifyHierarchyOpen(true);
               }}
             >
-              U
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+              >
+                <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                <g
+                  id="SVGRepo_tracerCarrier"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                ></g>
+                <g id="SVGRepo_iconCarrier">
+                  {" "}
+                  <path
+                    fill="#006171"
+                    fillRule="evenodd"
+                    d="M15.198 3.52a1.612 1.612 0 012.223 2.336L6.346 16.421l-2.854.375 1.17-3.272L15.197 3.521zm3.725-1.322a3.612 3.612 0 00-5.102-.128L3.11 12.238a1 1 0 00-.253.388l-1.8 5.037a1 1 0 001.072 1.328l4.8-.63a1 1 0 00.56-.267L18.8 7.304a3.612 3.612 0 00.122-5.106zM12 17a1 1 0 100 2h6a1 1 0 100-2h-6z"
+                  ></path>{" "}
+                </g>
+              </svg>
             </button>
           </div>
         ))}
@@ -124,10 +147,31 @@ const BodyHierarchy = ({
                 className=" h-full flex justify-center items-center p-2"
                 onClick={() => {
                   setUserToModify(user);
-                  setIsModifyHierarchyOpen(true)
+                  setIsModifyHierarchyOpen(true);
                 }}
               >
-                UP
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                >
+                  <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                  <g
+                    id="SVGRepo_tracerCarrier"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  ></g>
+                  <g id="SVGRepo_iconCarrier">
+                    {" "}
+                    <path
+                      fill="#006171"
+                      fillRule="evenodd"
+                      d="M15.198 3.52a1.612 1.612 0 012.223 2.336L6.346 16.421l-2.854.375 1.17-3.272L15.197 3.521zm3.725-1.322a3.612 3.612 0 00-5.102-.128L3.11 12.238a1 1 0 00-.253.388l-1.8 5.037a1 1 0 001.072 1.328l4.8-.63a1 1 0 00.56-.267L18.8 7.304a3.612 3.612 0 00.122-5.106zM12 17a1 1 0 100 2h6a1 1 0 100-2h-6z"
+                    ></path>{" "}
+                  </g>
+                </svg>
               </button>
             </div>
           ))}

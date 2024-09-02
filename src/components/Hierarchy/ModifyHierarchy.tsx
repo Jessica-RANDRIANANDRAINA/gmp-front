@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import React, { useRef } from "react";
 import { CustomInput, CustomSelect } from "../UIElements";
 import { UserInterface } from "../../types/user";
 
@@ -10,6 +10,11 @@ const ModifyHierarchy = ({
   userToModify: UserInterface | null;
 }) => {
   const trigger = useRef<any>(null);
+
+  const modifySuperior = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log("reussi");
+  };
   return (
     <div className="fixed inset-0 flex justify-center place-items-center bg-black z-999999 bg-opacity-50">
       <div
@@ -17,8 +22,11 @@ const ModifyHierarchy = ({
         className="bg-white dark:bg-[#24303F] rounded-md w-full md:w-2/4 p-4"
       >
         {/* =====HEADER START===== */}
-        <header className={"flex justify-between w-full  h-12"}>
-          <div className={"font-bold"}>Modifier le supérieur direct de :</div>
+        <header className={"flex justify-between mb-4 w-full  h-12"}>
+          <div className={" flex flex-col "}>
+            <span className="font-bold">Modifier le supérieur direct de :</span>{" "}
+            <span className="italic text-sm">{userToModify?.name}</span>{" "}
+          </div>
           <div
             className={"cursor-pointer"}
             onClick={() => setIsModifyHierarchyOpen(false)}
@@ -41,25 +49,21 @@ const ModifyHierarchy = ({
         </header>
         {/* =====HEADER END===== */}
         <div>
-          <form action="">
+          <form action="" onSubmit={modifySuperior}>
             <CustomInput
               label="Supérieur actuel"
               type="text"
               rounded="medium"
               className="p-4 w-full"
-              value={userToModify?.name}
+              value={userToModify?.superiorName?.toString() ?? ""}
               disabled
             />
             <CustomSelect
               label="Nouveau supérieur"
-              placeholder=""
-              data={[]}
-              value={""}
+              placeholder="supérieur"
+              data={["a", "b"]}
+              value={"a"}
               onValueChange={(e) => {
-                // setSearch({
-                //   ...search,
-                //   department: e,
-                // });
                 console.log(e);
               }}
             />
