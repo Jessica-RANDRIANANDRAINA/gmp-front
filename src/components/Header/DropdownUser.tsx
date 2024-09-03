@@ -41,7 +41,7 @@ const DropdownUser = () => {
   const handleLogOut = () => {
     try {
       logout().then(() => {
-        navigate("/");
+        navigate("/admin");
       });
       console.log("loged out");
     } catch (error) {

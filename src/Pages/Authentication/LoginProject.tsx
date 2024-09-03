@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import { useAuthService } from "../services/login";
 import { useNavigate } from "react-router-dom";
+import { useAuthService } from "../../services/login";
 import { PuffLoader } from "react-spinners";
 
-const Login = () => {
+const LoginProject = () => {
   const { loginUser } = useAuthService();
   const [user, setUser] = useState({
     username: "",
@@ -15,15 +15,7 @@ const Login = () => {
     error: "",
   });
   const [isLoginLoading, setIsLoginLoading] = useState(false);
-
   const navigate = useNavigate();
-
-  useEffect(()=>{
-    const token = localStorage.getItem("_au")
-    if (token) {
-      navigate("/admin")
-    }
-  }, [])
 
   const handleLogin = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
@@ -52,7 +44,6 @@ const Login = () => {
       <div className="relative rounded-lg flex flex-col justify-center items-center h-full w-full md:h-[500px] md:w-[450px]  bg-black bg-opacity-60 p-4 shadow-lg">
         <div className="text-white  text-center  flex flex-col  mb-4">
           <span className="text-6xl">Tsikilo</span>
-          <span className="">Admin</span>
         </div>
         <form className="flex flex-col items-center w-full">
           <div className="flex flex-col">
@@ -144,4 +135,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginProject;

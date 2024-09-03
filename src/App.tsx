@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import PageTitle from "./components/PageTitle";
-import Login from "./Pages/Login";
+import Login from "./Pages/Authentication/Login";
+import LoginProject from "./Pages/Authentication/LoginProject";
 import ManageUser from "./Pages/Admin/ManageUser";
 import ManageAccess from "./Pages/Admin/ManageAccess";
 import ManageHierarchie from "./Pages/Admin/ManageHierarchie";
@@ -16,7 +17,7 @@ const App = () => {
           element={
             <>
               <PageTitle title="Login" />
-              <Login />
+              <LoginProject />
             </>
           }
         ></Route>
@@ -24,29 +25,38 @@ const App = () => {
           path="/admin"
           element={
             <>
+              <PageTitle title="Login" />
+              <Login />
+            </>
+          }
+        />
+        <Route
+          path="/admin/user"
+          element={
+            <>
               <PageTitle title="Admin" />
               <ManageUser />
             </>
           }
-        ></Route>
+        />
         <Route
-          path="/access"
+          path="/admin/access"
           element={
             <>
-              <PageTitle title="Access management" />
+              <PageTitle title="Admin" />
               <ManageAccess />
             </>
           }
-        ></Route>
+        />
         <Route
-          path="/hierarchy"
+          path="/admin/hierarchy"
           element={
             <>
-              <PageTitle title="hierarchy management" />
+              <PageTitle title="Admin" />
               <ManageHierarchie />
             </>
           }
-        ></Route>
+        />
         <Route
           path="/no-access"
           element={

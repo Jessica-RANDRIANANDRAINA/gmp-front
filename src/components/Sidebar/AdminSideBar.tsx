@@ -98,9 +98,9 @@ const AdminSideBar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             </h3> */}
             <ul>
               <NavLink
-                to="/admin"
+                to="/admin/user"
                 className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-tertiaryGreen dark:hover:bg-meta-4  ${
-                  pathname.includes("admin") &&
+                  pathname.includes("admin/user") &&
                   "bg-tertiaryGreen dark:bg-secondaryGreen"
                 }`}
               >
@@ -134,9 +134,9 @@ const AdminSideBar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             </ul>
             <ul>
               <NavLink
-                to="/hierarchy"
+                to="/admin/hierarchy"
                 className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-tertiaryGreen dark:hover:bg-meta-4  ${
-                  pathname.includes("hierarchy") &&
+                  pathname.includes("admin/hierarchy") &&
                   "bg-tertiaryGreen dark:bg-secondaryGreen"
                 }`}
               >
@@ -170,9 +170,9 @@ const AdminSideBar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             </ul>
             <ul>
               <NavLink
-                to="/access"
+                to="/admin/access"
                 className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-tertiaryGreen dark:hover:bg-meta-4  ${
-                  pathname.includes("access") &&
+                  pathname.includes("admin/access") &&
                   "bg-tertiaryGreen dark:bg-secondaryGreen"
                 }`}
               >
