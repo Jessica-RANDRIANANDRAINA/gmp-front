@@ -50,7 +50,8 @@ const TableUser = ({
     }
   });
 
-  const filteredData = sortedDatabyName.filter((item) => {
+  // FILTER DATA BY NAME, MAIL, DEPARTMENT
+  const filteredDataName = sortedDatabyName.filter((item) => {
     const lowerCaseSearchName = search.nameAndMail.toLowerCase();
     var lowerCaseDepartment = search.department.toLowerCase();
 
@@ -71,6 +72,23 @@ const TableUser = ({
     }
   });
 
+  // FILTER DATA BY ACCESS
+  const filteredData = filteredDataName.filter((item) => {
+    var lowerCaseAccess = search.access;
+
+    const hasMatchingAccess =
+      item?.habilitations?.some(
+        (hab: { label: string }) => hab.label === lowerCaseAccess
+      ) || false;
+
+    if (lowerCaseAccess === "") {
+      return item;
+    } else {
+      return hasMatchingAccess;
+    }
+  });
+
+  // TO GET THE NUMBER OF PAGE DEPENDING OF THE ENTRIES PER PAGE
   const getPageNumber = (dataLength: number) => {
     return Math.ceil(dataLength / entriesPerPage);
   };
@@ -81,15 +99,19 @@ const TableUser = ({
     return index >= start && index < end;
   };
 
+  // GET THE NUMBER OF PAGES EACH TIME A ENTRIES PER PAGE OR THE FILTEREDDATA CHANGE
   useEffect(() => {
     setPageNumbers(getPageNumber(filteredData.length));
   }, [entriesPerPage, filteredData.length]);
+
+  // ALWAYS IN THE FIRST PAGE WHEN SEARCH, DESELECT ALL
   useEffect(() => {
     setActualPage(1);
     setUserSelected([]);
     setIsAllSelected(false);
   }, [search]);
 
+  // GET ALL HABILITATION AND DEPARTMENTS FROM DB
   useEffect(() => {
     const fetchDepartmentAndHabilitation = async () => {
       const depart = await getAllDepatments();
@@ -101,6 +123,7 @@ const TableUser = ({
     fetchDepartmentAndHabilitation();
   }, []);
 
+  // IF SELECT ONE USER STORE HIS NAME AND EMAIL
   useEffect(() => {
     if (userSelected?.length === 1) {
       const user = filteredData?.filter((u) => {
@@ -117,14 +140,19 @@ const TableUser = ({
     setOnModification(!onModification);
   }, [userModif, userDelete]);
 
+  // DELETE FILTER
   const handleDeleteFilter = () => {
     setSearch({
       ...search,
       nameAndMail: "",
       department: "",
+      access: "",
     });
   };
+
+  // SELECT ALL USER
   const handleSelectAllUser = () => {
+    // IF THERE IS ALREADY USER SELECTED SO SELECT ALL USER ELSE DESELECT ALL
     if (userSelected.length < filteredData.length) {
       setUserSelected([]);
       filteredData.map((u) => setUserSelected((prev) => [...prev, u.id]));
@@ -169,8 +197,12 @@ const TableUser = ({
             label="Accès"
             placeholder="Accès"
             data={habilitation}
-            onValueChange={() => {
-              console.log("first");
+            value={search.access}
+            onValueChange={(e) => {
+              setSearch({
+                ...search,
+                access: e,
+              });
             }}
           />
           <div className="flex items-end pb-3 mx-2">
@@ -426,22 +458,6 @@ const TableUser = ({
           <tbody>
             {filteredData
               ?.filter((_user, index) => indexInPaginationRange(index))
-              .filter((user) => {
-                const name = user?.name?.toLowerCase();
-                const email = user?.email?.toLowerCase();
-                const department = user?.department?.toLowerCase();
-                const searchQuery = search.nameAndMail.toLowerCase();
-                const searchDepartQuery =
-                  search.department.toLowerCase() === "vide"
-                    ? ""
-                    : search.department.toLowerCase();
-
-                return (
-                  name.includes(searchQuery) ||
-                  email.includes(searchQuery) ||
-                  department === searchDepartQuery
-                );
-              })
               .map((user) => (
                 <tr
                   key={user?.id}
@@ -505,7 +521,7 @@ const TableUser = ({
                       (hab: { id: string; label: string }) => (
                         <span
                           key={hab.id}
-                          className="text-white border  border-orange bg-orange py-1 px-2 rounded-2xl dark:text-white"
+                          className="text-white border  border-orange bg-orange py-1 px-2 rounded-2xl dark:text-white whitespace-nowrap"
                         >
                           {hab?.label}
                         </span>
