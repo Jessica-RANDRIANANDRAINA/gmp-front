@@ -1,9 +1,20 @@
-import { ReactNode, useState } from "react";
+import { ReactNode, useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import AdminSideBar from "../components/Sidebar/AdminSideBar";
 import Header from "../components/Header";
 
 const DefaultLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    const token = localStorage.getItem("_au");
+    const currentPath = location.pathname;
+    if (!token && !currentPath.includes("no-access")) {
+      navigate("/no-access");
+    }
+  }, [location, navigate]);
 
   return (
     <div className="dark:bg-boxdark-2 dark:text-bodydark">

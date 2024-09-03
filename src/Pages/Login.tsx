@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuthService } from "../services/login";
 import { useNavigate } from "react-router-dom";
 import { PuffLoader } from "react-spinners";
@@ -17,6 +17,13 @@ const Login = () => {
   const [isLoginLoading, setIsLoginLoading] = useState(false);
 
   const navigate = useNavigate();
+
+  useEffect(()=>{
+    const token = localStorage.getItem("_au")
+    if (token) {
+      navigate("/admin")
+    }
+  }, [])
 
   const handleLogin = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
