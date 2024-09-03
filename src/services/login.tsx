@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
+import { HabilitationAdminInterface } from "../types/Habilitation";
 
 const endPoint = import.meta.env.VITE_API_ENDPOINT;
 
@@ -23,29 +24,34 @@ export const useAuthService = () => {
       if (response.data && response.data.type === "success") {
         let adminPrivilege = false;
         const habilitation = response.data.user.habilitations;
-        habilitation?.forEach((hab) => {
-          hab.habilitationAdmins.forEach((admin) => {
-            if (
-              admin?.createHabilitation === 1 ||
-              admin?.deleteHabilitation === 1 ||
-              admin?.modifyHierarchy === 1 ||
-              admin?.restoreHierarchy === 1 ||
-              admin?.updateHabilitation === 1
-            ) {
-              adminPrivilege = true;
-            } 
-          });
-        });
+        habilitation?.forEach(
+          (hab: { habilitationAdmins: HabilitationAdminInterface[] }) => {
+            hab.habilitationAdmins.forEach(
+              (admin: HabilitationAdminInterface) => {
+                if (
+                  admin?.createHabilitation === 1 ||
+                  admin?.deleteHabilitation === 1 ||
+                  admin?.modifyHierarchy === 1 ||
+                  admin?.restoreHierarchy === 1 ||
+                  admin?.updateHabilitation === 1
+                ) {
+                  adminPrivilege = true;
+                }
+              }
+            );
+          }
+        );
 
-        if(adminPrivilege){
-
+        if (adminPrivilege) {
           localStorage.setItem("_au", response.data.token);
-  
-          login(response.data.user);
-        }else {
-          return {message: "Vous n'avez pas accèss à cette plateforme", type: "error"}
-        }
 
+          login(response.data.user);
+        } else {
+          return {
+            message: "Vous n'avez pas accèss à cette plateforme",
+            type: "error",
+          };
+        }
       }
 
       return response.data;

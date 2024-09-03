@@ -1,13 +1,7 @@
 export interface HabilitationDataProps {
   id: string;
   label: string;
-  habilitationAdmins: {
-    modifyHierarchy: number;
-    createHabilitation: number;
-    updateHabilitation: number;
-    deleteHabilitation: number;
-    restoreHierarchy: number;
-  }[];
+  habilitationAdmins: HabilitationAdminInterface[];
   habilitationProjects: {
     create: number;
     update: number;
@@ -24,4 +18,12 @@ export interface HabilitationDataProps {
     update: number;
     delete: number;
   }[];
+}
+
+export interface HabilitationAdminInterface {
+  modifyHierarchy: number;
+  createHabilitation: number;
+  updateHabilitation: number;
+  deleteHabilitation: number;
+  restoreHierarchy: number;
 }
