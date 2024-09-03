@@ -8,6 +8,7 @@ const LoginProject = () => {
   const [user, setUser] = useState({
     username: "",
     password: "",
+    type: "project",
   });
   const [loginError, setLoginError] = useState({
     mail: "",
@@ -24,7 +25,7 @@ const LoginProject = () => {
       const loginAnswer = await loginUser(user);
       console.log(loginAnswer);
       if (loginAnswer.type === "success") {
-        navigate("/admin");
+        navigate("/tsikilo/home");
       } else if (loginAnswer.type === "unknown_user") {
         setLoginError({ ...loginError, mail: loginAnswer.message });
       } else if (loginAnswer.type === "incorrect_pass") {

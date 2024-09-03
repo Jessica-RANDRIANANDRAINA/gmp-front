@@ -8,6 +8,7 @@ const Login = () => {
   const [user, setUser] = useState({
     username: "",
     password: "",
+    type: "admin",
   });
   const [loginError, setLoginError] = useState({
     mail: "",
@@ -18,14 +19,13 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-
   // if already authenticated navigate to the admin home page
-  useEffect(()=>{
-    const token = localStorage.getItem("_au")
+  useEffect(() => {
+    const token = localStorage.getItem("_au_ad");
     if (token) {
-      navigate("/admin/user")
+      navigate("/admin/user");
     }
-  }, [])
+  }, []);
 
   const handleLogin = async (e: { preventDefault: () => void }) => {
     e.preventDefault();

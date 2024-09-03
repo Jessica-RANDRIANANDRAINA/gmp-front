@@ -1,15 +1,15 @@
 import { ReactNode, useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import AdminSideBar from "../components/Sidebar/AdminSideBar";
 import Header from "../components/Header";
+import ProjectSideBar from "../components/Sidebar/projectSideBar";
 
-const DefaultLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
+const ProjectLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
-    const token = localStorage.getItem("_au_ad");
+    const token = localStorage.getItem("_au_pr");
     const currentPath = location.pathname;
     if (!token && !currentPath.includes("no-access")) {
       navigate("/no-access");
@@ -18,33 +18,33 @@ const DefaultLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
 
   return (
     <div className="dark:bg-boxdark-2 dark:text-bodydark">
-      {/* page wrapper start */}
+      {/*===== PAGE WRAPPER START ===== */}
       <div className="flex h-screen overflow-hidden">
-        {/* Sidebar start */}
-        <AdminSideBar
+        {/* ===== SIDEBAR START ===== */}
+        <ProjectSideBar
           sidebarOpen={sidebarOpen}
           setSidebarOpen={setSidebarOpen}
         />
-        {/* Sidebar end */}
+        {/* ===== SIDEBAR START END ===== */}
 
-        {/* content start */}
+        {/* ===== CONTENT START ===== */}
         <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
-          {/* header start */}
+          {/* ===== HEADER START ===== */}
           <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-          {/* Header end */}
-          {/* Main content start */}
+          {/* ===== HEADER END ===== */}
+          {/* ===== MAIN CONTENT START ===== */}
           <main>
             <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
               {children}
             </div>
           </main>
-          {/* Main content end */}
+          {/* ===== MAIN CONTENT END ===== */}
         </div>
-        {/* content end */}
+        {/* ===== CONTENT END ===== */}
       </div>
-      {/* page wrapper end */}
+      {/* ===== PAGE WRAPPER END ===== */}
     </div>
   );
 };
 
-export default DefaultLayout;
+export default ProjectLayout;

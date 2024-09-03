@@ -12,9 +12,9 @@ export const useAuthService = () => {
   const loginUser = async (userCredentials: {
     username: string;
     password: string;
+    type: string;
   }) => {
     try {
-      console.log(userCredentials);
       const response = await axios.post(
         `${endPoint}/api/Login`,
         userCredentials,
@@ -42,8 +42,12 @@ export const useAuthService = () => {
           }
         );
 
-        if (adminPrivilege) {
-          localStorage.setItem("_au", response.data.token);
+        if (adminPrivilege && userCredentials.type === "admin") {
+          localStorage.setItem("_au_ad", response.data.token);
+
+          login(response.data.user);
+        } else if (adminPrivilege && userCredentials.type === "project") {
+          localStorage.setItem("_au_pr", response.data.token);
 
           login(response.data.user);
         } else {
@@ -68,7 +72,8 @@ export const useAuthService = () => {
 export const logout = async () => {
   try {
     const response = await axios.post(`${endPoint}/api/Login/logout`);
-    localStorage.removeItem("_au");
+    localStorage.removeItem("_au_ad");
+    localStorage.removeItem("_au_pr");
     return response;
   } catch (error) {
     console.error(`Error while logout service ${error}`);
