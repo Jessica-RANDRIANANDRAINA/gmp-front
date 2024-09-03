@@ -6,9 +6,9 @@ const Header = (props: {
   setSidebarOpen: (arg0: boolean) => void;
 }) => {
   return (
-    <header className="sticky top-0 z-999 flex w-full py-2 px-6 bg-white drop-shadow-1 dark:bg-boxdark bg-fond bg-cover bg-no-repeat dark:drop-shadow-none">
+    <header className="sticky top-0 z-999 flex w-full py-2 pr-6 bg-white drop-shadow-1 dark:bg-boxdark bg-fond bg-cover bg-no-repeat dark:drop-shadow-none">
       <div className="flex flex-grow items-center justify-between px-4 py-4  md:px-6 2xl:px-11">
-        <div className="flex items-center gap-2  sm:gap-4 lg:hidden">
+        <div className="flex items-center gap-2  sm:gap-4">
           {/* hamburger toogle button */}
           <button
             aria-controls="sidebar"
@@ -16,7 +16,7 @@ const Header = (props: {
               e.stopPropagation();
               props.setSidebarOpen(!props.sidebarOpen);
             }}
-            className="z-99999 block rounded-sm border border-stroke bg-white p-1.5 shadow-sm dark:border-strokedark dark:bg-boxdark lg:hidden"
+            className="z-99999 block rounded-sm border border-stroke bg-white p-1.5 shadow-sm dark:border-strokedark dark:bg-boxdark "
           >
             <span className="relative block h-5.5 w-5.5 cursor-pointer">
               <span className="du-block absolute right-0 h-full w-full">

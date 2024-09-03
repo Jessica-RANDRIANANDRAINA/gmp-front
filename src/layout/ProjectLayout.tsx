@@ -16,6 +16,7 @@ const ProjectLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
     }
   }, [location, navigate]);
 
+  
   return (
     <div className="dark:bg-boxdark-2 dark:text-bodydark">
       {/*===== PAGE WRAPPER START ===== */}
