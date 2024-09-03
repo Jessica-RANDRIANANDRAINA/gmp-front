@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { logout } from "../../services/login";
 
 import UserOne from "../../assets/user.png";
@@ -11,6 +11,8 @@ const DropdownUser = () => {
   const trigger = useRef<any>(null);
   const dropdown = useRef<any>(null);
   const navigate = useNavigate();
+  const location = useLocation();
+  const { pathname } = location;
 
   // close on click outside
   useEffect(() => {
@@ -41,7 +43,11 @@ const DropdownUser = () => {
   const handleLogOut = () => {
     try {
       logout().then(() => {
-        navigate("/admin");
+        if (pathname.includes("tsikilo")) {
+          navigate("/");
+        } else {
+          navigate("/admin");
+        }
       });
       console.log("loged out");
     } catch (error) {
