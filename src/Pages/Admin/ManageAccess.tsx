@@ -3,10 +3,13 @@ import DefaultLayout from "../../layout/DefaultLayout";
 import { TableAccess } from "../../components/Tables";
 import AddAccessModal from "../../components/Modals/Access/AddAccessModal";
 import { getAllHabilitation } from "../../services/User";
+import ConfirmSuppressAccess from "../../components/Modals/Access/ConfirmSuppressAccess";
 
 const ManageAccess = () => {
   const [isAddModalAccessVisible, setIsModalAccessVisible] = useState(false);
   const [habilitationData, setHabilitationData] = useState([]);
+  const [isDeleteAccess, setIsDeleteAccess] = useState(false);
+  const [accessSelectedId, setAccessSelectedId] = useState([]);
 
   const fetchHabilitation = async () => {
     const habilitation = await getAllHabilitation();
@@ -53,7 +56,11 @@ const ManageAccess = () => {
           </button>
         </div>
         {/* ===== ADD ACCESS END ===== */}
-        <TableAccess data={habilitationData} />
+        <TableAccess
+          data={habilitationData}
+          setIsDeleteAccess={setIsDeleteAccess}
+          setAccessSelectedId={setAccessSelectedId}
+        />
         {/* ===== MODAL ADD ACCESS START ===== */}
         {isAddModalAccessVisible && (
           <AddAccessModal
@@ -62,6 +69,9 @@ const ManageAccess = () => {
           />
         )}
         {/* ===== MODAL ADD ACCESS END ===== */}
+        {/* ===== MODAL CONFIRM DELETE ACCESS START ===== */}
+        {isDeleteAccess && <ConfirmSuppressAccess setIsDeleteAccess={setIsDeleteAccess} accessSelectedId={accessSelectedId} />}
+        {/* ===== MODAL CONFIRM DELETE ACCESS END ===== */}
       </div>
     </DefaultLayout>
   );

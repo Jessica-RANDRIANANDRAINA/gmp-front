@@ -62,7 +62,7 @@ const ConfirmDeleteHabilitationuser = ({
           </div>
         </header>
         {/* =====HEADER END===== */}
-        {/* =====BODY END===== */}
+        {/* =====BODY START===== */}
         <div>
           <p>
             Voulez vous vraiment supprimer les accès de{" "}

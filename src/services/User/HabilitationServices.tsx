@@ -1,5 +1,9 @@
 import axios from "axios";
 import { HabilitationDataProps } from "../../types/Habilitation";
+import { Notyf } from "notyf";
+import "notyf/notyf.min.css";
+
+const notyf = new Notyf();
 
 const endPoint = import.meta.env.VITE_API_ENDPOINT;
 
@@ -56,6 +60,9 @@ export const deleteHabilitation = async (ids: string[]) => {
       console.log(`Failed to delete the habilitation`);
     }
   } catch (error) {
+    notyf.error("Impossible de supprimer cet accès");
+    notyf.error("Des utilisateurs sont encore relié à cet accès");
     console.error(`An error occured while deleting the habilitation: ${error}`);
+    throw error;
   }
 };

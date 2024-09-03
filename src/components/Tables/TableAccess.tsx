@@ -3,7 +3,15 @@ import { TableAccessProps } from "../../types/table";
 import { CustomSelect, CustomInput } from "../UIElements";
 import { deleteHabilitation } from "../../services/User";
 
-const TableAccess = ({ data }: TableAccessProps) => {
+const TableAccess = ({
+  data,
+  setIsDeleteAccess,
+  setAccessSelectedId
+}: {
+  data: TableAccessProps["data"];
+  setIsDeleteAccess: Function;
+  setAccessSelectedId: Function;
+}) => {
   const [entriesPerPage, setEntriesPerPage] = useState(5);
   const [actualPage, setActualPage] = useState(1);
   const [pageNumbers, setPageNumbers] = useState(1);
@@ -62,11 +70,13 @@ const TableAccess = ({ data }: TableAccessProps) => {
     if (e === "Supprimer") {
       // console.log("1");
       console.log(accessSelected);
-      try {
-        deleteHabilitation(accessSelected);
-      } catch (error) {
-        console.log(`Unable to delete habilitations: ${error}`);
-      }
+      setIsDeleteAccess(true)
+      setAccessSelectedId(accessSelected)
+      // try {
+      //   deleteHabilitation(accessSelected);
+      // } catch (error) {
+      //   console.log(`Unable to delete habilitations: ${error}`);
+      // }
     } else {
       console.log("2");
     }
@@ -360,7 +370,9 @@ const TableAccess = ({ data }: TableAccessProps) => {
                           </p>
                         </details>
                       ) : count === 0 ? (
-                        <p key={key} className="text-black dark:text-white">--</p>
+                        <p key={key} className="text-black dark:text-white">
+                          --
+                        </p>
                       ) : (
                         <p key={key} className="text-black dark:text-white">
                           {message[0]}
@@ -398,7 +410,9 @@ const TableAccess = ({ data }: TableAccessProps) => {
                           </p>
                         </details>
                       ) : count === 0 ? (
-                        <p key={key} className="text-black dark:text-white">--</p>
+                        <p key={key} className="text-black dark:text-white">
+                          --
+                        </p>
                       ) : (
                         <p key={key} className="text-black dark:text-white">
                           {message[0]}
@@ -432,7 +446,9 @@ const TableAccess = ({ data }: TableAccessProps) => {
                           </p>
                         </details>
                       ) : count === 0 ? (
-                        <p key={key} className="text-black dark:text-white">--</p>
+                        <p key={key} className="text-black dark:text-white">
+                          --
+                        </p>
                       ) : (
                         <p key={key} className="text-black dark:text-white">
                           {message[0]}
@@ -469,7 +485,9 @@ const TableAccess = ({ data }: TableAccessProps) => {
                             </p>
                           </details>
                         ) : count === 0 ? (
-                          <p key={key} className="text-black dark:text-white">--</p>
+                          <p key={key} className="text-black dark:text-white">
+                            --
+                          </p>
                         ) : (
                           <p key={key} className="text-black dark:text-white">
                             {message[0]}
