@@ -7,6 +7,8 @@ import ManageAccess from "./Pages/Admin/ManageAccess";
 import ManageHierarchie from "./Pages/Admin/ManageHierarchie";
 import NoAccessPage from "./components/NoAccessPage";
 import Home from "./Pages/Project/Home";
+import ManageProjects from "./Pages/Project/ManageProjects";
+import Hebdo from "./Pages/Project/Hebdo";
 import "./App.css";
 
 const App = () => {
@@ -64,6 +66,24 @@ const App = () => {
             <>
               <PageTitle title="Tsikilo" />
               <Home />
+            </>
+          }
+        />
+        <Route
+          path="/tsikilo/projet"
+          element={
+            <>
+              <PageTitle title="Tsikilo" />
+              <ManageProjects />
+            </>
+          }
+        />
+        <Route
+          path="/tsikilo/hebdo"
+          element={
+            <>
+              <PageTitle title="Tsikilo" />
+              <Hebdo />
             </>
           }
         />

@@ -100,9 +100,9 @@ const ProjectSideBar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             </h3> */}
             <ul>
               <NavLink
-                to="/admin/user"
+                to="/tsikilo/home"
                 className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-tertiaryGreen dark:hover:bg-meta-4  ${
-                  pathname.includes("admin/user") &&
+                  pathname.includes("tsikilo/home") &&
                   "bg-tertiaryGreen dark:bg-secondaryGreen"
                 }`}
               >
@@ -131,14 +131,14 @@ const ProjectSideBar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     fill=""
                   />
                 </svg>
-                Utilisateurs
+                Home
               </NavLink>
             </ul>
             <ul>
               <NavLink
-                to="/admin/hierarchy"
+                to="/tsikilo/projet"
                 className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-tertiaryGreen dark:hover:bg-meta-4  ${
-                  pathname.includes("admin/hierarchy") &&
+                  pathname.includes("tsikilo/projet") &&
                   "bg-tertiaryGreen dark:bg-secondaryGreen"
                 }`}
               >
@@ -167,14 +167,14 @@ const ProjectSideBar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     fill=""
                   />
                 </svg>
-                Organigramme
+                Projets
               </NavLink>
             </ul>
             <ul>
               <NavLink
-                to="/admin/access"
+                to="/tsikilo/hebdo"
                 className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-tertiaryGreen dark:hover:bg-meta-4  ${
-                  pathname.includes("admin/access") &&
+                  pathname.includes("tsikilo/hebdo") &&
                   "bg-tertiaryGreen dark:bg-secondaryGreen"
                 }`}
               >
@@ -203,7 +203,7 @@ const ProjectSideBar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     fill=""
                   />
                 </svg>
-                Accès
+                Hebdo
               </NavLink>
             </ul>
           </div>
