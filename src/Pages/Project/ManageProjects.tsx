@@ -1,10 +1,13 @@
 import React from "react";
 import ProjectLayout from "../../layout/ProjectLayout";
+import { TableProjet } from "../../components/Tables/projets";
 
 const ManageProjects = () => {
   return (
     <ProjectLayout>
-      <div>ManageProjects</div>
+      <div>
+        <TableProjet  data={[]} />
+      </div>
     </ProjectLayout>
   );
 };
