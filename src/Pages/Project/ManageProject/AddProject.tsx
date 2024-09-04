@@ -50,7 +50,7 @@ const AddProject = ({
       </div>
       {/* ===== LINK RETURN END ===== */}
       {/* ===== BLOC ADD PROJECT START ===== */}
-      <div className="bg-white overflow-scroll  p-4 shadow-3 flex flex-col items-center rounded-md dark:border-strokedark dark:bg-boxdark min-h-fit md:min-h-fit md:h-[72vh] lg:h-[75vh]">
+      <div className="bg-white overflow-y-scroll overflow-x-clip  p-4 shadow-3 flex flex-col items-center rounded-md dark:border-strokedark dark:bg-boxdark min-h-fit md:min-h-fit md:h-[72vh] lg:h-[75vh]">
         <span className="font-bold tracking-widest text-lg   ">
           Ajouter un nouveau projet
         </span>
@@ -227,7 +227,9 @@ const AddProject = ({
                 <span className="font-semibold tracking-wide underline">
                   RESSOURCES
                 </span>
-                <div className=""></div>
+                <div className=" h-80">
+                  a
+                </div>
               </div>
               <div className="flex justify-between">
                 <button
@@ -236,7 +238,12 @@ const AddProject = ({
                 >
                   Précédent
                 </button>
-                <button className="md:w-fit gap-2 w-full cursor-pointer mt-2 py-2 px-5  text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen dark:hover:bg-opacity-90">
+                <button
+                  onClick={() => {
+                    console.log(projectData);
+                  }}
+                  className="md:w-fit gap-2 w-full cursor-pointer mt-2 py-2 px-5  text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen dark:hover:bg-opacity-90"
+                >
                   Suivant
                 </button>
               </div>
