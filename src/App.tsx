@@ -7,7 +7,7 @@ import ManageAccess from "./Pages/Admin/ManageAccess";
 import ManageHierarchie from "./Pages/Admin/ManageHierarchie";
 import NoAccessPage from "./components/NoAccessPage";
 import Home from "./Pages/Project/Home";
-import ManageProjects from "./Pages/Project/ManageProjects";
+import ManageProjects from "./Pages/Project/ManageProject/ManageProjects";
 import Hebdo from "./Pages/Project/Hebdo";
 import "./App.css";
 
@@ -70,7 +70,7 @@ const App = () => {
           }
         />
         <Route
-          path="/tsikilo/projet"
+          path="/tsikilo/projet/list"
           element={
             <>
               <PageTitle title="Tsikilo" />

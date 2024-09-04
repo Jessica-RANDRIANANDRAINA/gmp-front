@@ -183,6 +183,189 @@ const TableProjet = ({ data }: { data: Array<any> }) => {
       </div>
       {/* ===== BULK END ===== */}
       {/* =====TABLE START===== */}
+      <div className="max-w-full mb-4 overflow-x-auto">
+        <table className="w-full table-auto">
+          {/* ===== TABLE HEAD START ===== */}
+          <thead className="pt-5 rounded-t-xl bg-primaryGreen">
+            <tr className="border border-stone-300 border-opacity-[0.1] border-r-0 border-l-0 text-white text-left">
+              <th className="pl-2">
+                <button
+                  // onClick={handleSelectAllUser}
+                  className="cursor-pointer border w-5 h-5"
+                >
+                  <svg
+                    width="18"
+                    height="17"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    // className={`${
+                    //   userSelected.length === filteredData.length
+                    //     ? "visible"
+                    //     : "invisible"
+                    // }`}
+                  >
+                    <path
+                      d="M4 12.6111L8.92308 17.5L20 6.5"
+                      stroke="#fff"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </button>
+              </th>
+              <th className="py-4 px-4 font-bold text-white dark:text-white xl:pl-11">
+                <div className="flex items-center">
+                  <button
+                    className={`
+                     transform transition-transform duration-200`}
+                  >
+                    <svg
+                      className="fill-current"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M5.29289 8.29289C5.68342 7.90237 6.31658 7.90237 6.70711 8.29289L12 13.5858L17.2929 8.29289C17.6834 7.90237 18.3166 7.90237 18.7071 8.29289C19.0976 8.68342 19.0976 9.31658 18.7071 9.70711L12.7071 15.7071C12.3166 16.0976 11.6834 16.0976 11.2929 15.7071L5.29289 9.70711C4.90237 9.31658 4.90237 8.68342 5.29289 8.29289Z"
+                        fill=""
+                      />
+                    </svg>
+                  </button>
+                  <span>Titre</span>
+                </div>
+              </th>
+              <th className="py-4 px-4 font-bold text-white dark:text-white xl:pl-11">
+                <div className="flex items-center">
+                  <button
+                    className={`
+                     transform transition-transform duration-200`}
+                  >
+                    <svg
+                      className="fill-current"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M5.29289 8.29289C5.68342 7.90237 6.31658 7.90237 6.70711 8.29289L12 13.5858L17.2929 8.29289C17.6834 7.90237 18.3166 7.90237 18.7071 8.29289C19.0976 8.68342 19.0976 9.31658 18.7071 9.70711L12.7071 15.7071C12.3166 16.0976 11.6834 16.0976 11.2929 15.7071L5.29289 9.70711C4.90237 9.31658 4.90237 8.68342 5.29289 8.29289Z"
+                        fill=""
+                      />
+                    </svg>
+                  </button>
+                  <span>Priorité</span>
+                </div>
+              </th>
+              <th className="py-4 px-4 font-bold text-white dark:text-white xl:pl-11">
+                <div className="flex items-center">
+                  <button
+                    className={`
+                     transform transition-transform duration-200`}
+                  >
+                    <svg
+                      className="fill-current"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M5.29289 8.29289C5.68342 7.90237 6.31658 7.90237 6.70711 8.29289L12 13.5858L17.2929 8.29289C17.6834 7.90237 18.3166 7.90237 18.7071 8.29289C19.0976 8.68342 19.0976 9.31658 18.7071 9.70711L12.7071 15.7071C12.3166 16.0976 11.6834 16.0976 11.2929 15.7071L5.29289 9.70711C4.90237 9.31658 4.90237 8.68342 5.29289 8.29289Z"
+                        fill=""
+                      />
+                    </svg>
+                  </button>
+                  <span>Date début et fin</span>
+                </div>
+              </th>
+              <th className="py-4 px-4 font-bold text-white dark:text-white xl:pl-11">
+                <div className="flex items-center">
+                  <button
+                    className={`
+                     transform transition-transform duration-200`}
+                  >
+                    <svg
+                      className="fill-current"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M5.29289 8.29289C5.68342 7.90237 6.31658 7.90237 6.70711 8.29289L12 13.5858L17.2929 8.29289C17.6834 7.90237 18.3166 7.90237 18.7071 8.29289C19.0976 8.68342 19.0976 9.31658 18.7071 9.70711L12.7071 15.7071C12.3166 16.0976 11.6834 16.0976 11.2929 15.7071L5.29289 9.70711C4.90237 9.31658 4.90237 8.68342 5.29289 8.29289Z"
+                        fill=""
+                      />
+                    </svg>
+                  </button>
+                  <span>Avancement</span>
+                </div>
+              </th>
+            </tr>
+          </thead>
+          {/* ===== TABLE HEAD END ===== */}
+          {/* ===== TABLE BODY END ===== */}
+          <tbody>
+            <tr className="hover:bg-whiten dark:hover:bg-whitenGreen">
+              <td className="pl-2">
+                <button className="cursor-pointer border w-5 h-5">
+                  <svg
+                    width="18"
+                    height="17"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    // className={`${
+                    //   userSelected.includes(user.id)
+                    //     ? "visible"
+                    //     : "invisible"
+                    // }`}
+                  >
+                    <path
+                      d="M4 12.6111L8.92308 17.5L20 6.5"
+                      stroke="#000"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </button>
+              </td>
+              <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                <p className="text-black dark:text-white">
+                  {/* {user?.name?.split("(")?.[0]} */}
+                  BANJINA
+                </p>
+              </td>
+              <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                <p className="text-black dark:text-white">
+                  {/* {user?.name?.split("(")?.[0]} */}
+                  MOYEN
+                </p>
+              </td>
+              <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                <p className="text-black dark:text-white">
+                  {/* {user?.name?.split("(")?.[0]} */}
+                  10/10/2024 - 12/12/2024
+                </p>
+              </td>
+              <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                <p className="text-black dark:text-white">
+                  {/* {user?.name?.split("(")?.[0]} */}
+                  20%
+                </p>
+              </td>
+            </tr>
+          </tbody>
+          {/* ===== TABLE BODY END ===== */}
+        </table>
+      </div>
       {/* =====TABLE END===== */}
       <div></div>
     </div>
