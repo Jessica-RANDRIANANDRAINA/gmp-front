@@ -46,9 +46,9 @@ const CustomSelect = ({
 
     checkProximity(); // Vérifie la position au chargement
 
-    window.addEventListener('resize', checkProximity); // Vérifie la position lors du redimensionnement
+    window.addEventListener("resize", checkProximity); // Vérifie la position lors du redimensionnement
     return () => {
-      window.removeEventListener('resize', checkProximity);
+      window.removeEventListener("resize", checkProximity);
     };
   }, []);
 
@@ -102,7 +102,7 @@ const CustomSelect = ({
           isOpen
             ? "scale-y-100 scale-x-100 opacity-100 "
             : " scale-y-0 scale-x-0 opacity-0 "
-        } ${isNearLeft ? 'left-0' : 'right-0'}  `}
+        } ${isNearLeft ? "left-0" : "right-0"}  `}
         style={{ transformOrigin: "top", overflow: "hidden" }}
       >
         {data?.map((option, index) => (

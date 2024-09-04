@@ -1,7 +1,22 @@
 import React, { useEffect, useRef, useState } from "react";
 import { MultiSelectProps, OptionMultiSelect } from "../../../types/input";
 
-const MultiSelect = ({ label, value, setValueMulti, id, placeholder }: MultiSelectProps) => {
+const round = {
+  full: "rounded-full",
+  medium: "rounded-md",
+  large: "rounded-lg",
+  none: "",
+};
+
+const MultiSelect = ({
+  label,
+  value,
+  setValueMulti,
+  rounded = "none",
+  id,
+  placeholder,
+  className,
+}: MultiSelectProps) => {
   const [options, setOptions] = useState<OptionMultiSelect[]>([]);
   const [selected, setSelected] = useState<number[]>([]);
   const [show, setShow] = useState(false);
@@ -21,7 +36,6 @@ const MultiSelect = ({ label, value, setValueMulti, id, placeholder }: MultiSele
           });
         }
         setOptions(newOptions);
-        
       }
     };
 
@@ -67,7 +81,7 @@ const MultiSelect = ({ label, value, setValueMulti, id, placeholder }: MultiSele
 
   const selectedValues = () => {
     return selected.map((option) => options[option].value);
-  };  
+  };
 
   useEffect(() => {
     setValueMulti(selectedValues());
@@ -89,8 +103,8 @@ const MultiSelect = ({ label, value, setValueMulti, id, placeholder }: MultiSele
   });
 
   return (
-    <div className="relative z-50">
-      <label className="mb-2 mt-3 block text-sm font-medium text-black dark:text-white">
+    <div className={`relative ${className} `}>
+      <label className="mb-2.5 min-w-20 block text-sm font-medium text-black dark:text-white">
         {label}
       </label>
       <div>
@@ -107,7 +121,9 @@ const MultiSelect = ({ label, value, setValueMulti, id, placeholder }: MultiSele
           <div className="relative z-20 inline-block w-full">
             <div className="relative flex flex-col items-center">
               <div ref={trigger} onClick={open} className="w-full ">
-                <div className="mb-2 flex rounded border border-stroke py-2 pl-3 pr-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input">
+                <div
+                  className={`mb-2 flex ${round[rounded]} border border-stroke py-2 pl-3 pr-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input`}
+                >
                   <div className="flex flex-auto  flex-wrap gap-3 ">
                     {selected.map((index) => (
                       <div
@@ -120,7 +136,7 @@ const MultiSelect = ({ label, value, setValueMulti, id, placeholder }: MultiSele
                         <div className="flex flex-auto flex-row-reverse ">
                           <div
                             onClick={() => remove(index)}
-                            className="cursor-pointer pl-2 hover:text-danger"
+                            className={`cursor-pointer pl-2 hover:text-danger `}
                           >
                             <svg
                               className="fill-current"
@@ -156,7 +172,9 @@ const MultiSelect = ({ label, value, setValueMulti, id, placeholder }: MultiSele
                     <button
                       type="button"
                       onClick={open}
-                      className="h-6 w-6 cursor-pointer outline-none focus:outline-none"
+                      className={`h-6 w-6 cursor-pointer outline-none focus:outline-none transform transition-transform duration-300 ${
+                        isOpen() ? "rotate-180" : ""
+                      }`}
                     >
                       <svg
                         width="24"

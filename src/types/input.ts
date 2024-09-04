@@ -6,7 +6,10 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   className?: string;
   rounded?: "full" | "medium" | "large" | "none";
   error?: string | null;
+  rows?: number;
+  cols?: number;
   label: string;
+  onChange?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
 }
 
 export interface OptionMultiSelect {
@@ -22,6 +25,8 @@ export interface MultiSelectProps {
   setValueMulti: Function;
   id: string;
   placeholder?: string;
+  rounded?: "full" | "medium" | "large" | "none";
+  className?: string;
 }
 
 
