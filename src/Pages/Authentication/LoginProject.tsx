@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthService } from "../../services/login";
 import { PuffLoader } from "react-spinners";
+import fond from "../../../src/assets/DJI_0028.jpg.webp";
 
 const LoginProject = () => {
   const { loginUser } = useAuthService();
@@ -41,7 +42,10 @@ const LoginProject = () => {
   };
   return (
     <div className="flex justify-center items-center h-screen bg-cover bg-center ">
-      <div className="absolute inset-0 bg-cover bg-center filter bg-loginFond blur-sm"></div>
+      <div
+        className="absolute inset-0 bg-cover bg-center filter  blur-sm"
+        style={{ backgroundImage: `url(${fond})` }}
+      ></div>
       <div className="relative rounded-lg flex flex-col justify-center items-center h-full w-full md:h-[500px] md:w-[450px]  bg-black bg-opacity-60 p-4 shadow-lg">
         <div className="text-white  text-center  flex flex-col  mb-4">
           <span className="text-6xl">Tsikilo</span>

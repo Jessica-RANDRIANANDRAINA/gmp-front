@@ -1,12 +1,16 @@
 import DarkModeSwitcher from "./DarkModeSwitcher";
 import DropdownUser from "./DropdownUser";
+import pattern from "../../../src/assets/pattern.png"
 
 const Header = (props: {
   sidebarOpen: string | boolean | undefined;
   setSidebarOpen: (arg0: boolean) => void;
 }) => {
   return (
-    <header className="sticky top-0 z-999 flex w-full py-2 pr-6 bg-white drop-shadow-1 dark:bg-boxdark bg-fond bg-cover bg-no-repeat dark:drop-shadow-none">
+    <header
+      className="sticky top-0 z-999 flex w-full py-2 pr-6 bg-white drop-shadow-1 dark:bg-boxdark bg-cover bg-no-repeat dark:drop-shadow-none"
+      style={{ backgroundImage: `url(${pattern})` }}
+    >
       <div className="flex flex-grow items-center justify-between px-4 py-4  md:px-6 2xl:px-11">
         <div className="flex items-center gap-2  sm:gap-4">
           {/* hamburger toogle button */}
@@ -22,29 +26,29 @@ const Header = (props: {
               <span className="du-block absolute right-0 h-full w-full">
                 <span
                   className={`relative left-0 top-0 my-1 block h-0.5 w-0 rounded-sm bg-black delay-[0] duration-200 ease-in-out dark:bg-white ${
-                    !props.sidebarOpen && '!w-full delay-300'
+                    !props.sidebarOpen && "!w-full delay-300"
                   }`}
                 ></span>
                 <span
                   className={`relative left-0 top-0 my-1 block h-0.5 w-0 rounded-sm bg-black delay-150 duration-200 ease-in-out dark:bg-white ${
-                    !props.sidebarOpen && 'delay-400 !w-full'
+                    !props.sidebarOpen && "delay-400 !w-full"
                   }`}
                 ></span>
                 <span
                   className={`relative left-0 top-0 my-1 block h-0.5 w-0 rounded-sm bg-black delay-200 duration-200 ease-in-out dark:bg-white ${
-                    !props.sidebarOpen && '!w-full delay-500'
+                    !props.sidebarOpen && "!w-full delay-500"
                   }`}
                 ></span>
               </span>
               <span className="absolute right-0 h-full w-full rotate-45">
                 <span
                   className={`absolute left-2.5 top-0 block h-full w-0.5 rounded-sm bg-black delay-300 duration-200 ease-in-out dark:bg-white ${
-                    !props.sidebarOpen && '!h-0 !delay-[0]'
+                    !props.sidebarOpen && "!h-0 !delay-[0]"
                   }`}
                 ></span>
                 <span
                   className={`delay-400 absolute left-0 top-2.5 block h-0.5 w-full rounded-sm bg-black duration-200 ease-in-out dark:bg-white ${
-                    !props.sidebarOpen && '!h-0 !delay-200'
+                    !props.sidebarOpen && "!h-0 !delay-200"
                   }`}
                 ></span>
               </span>
