@@ -1,6 +1,6 @@
 import {
   getAllUsers,
-  getAllDepatments,
+  getAllDepartments,
   assignHabilitations,
 } from "./UserServices";
 import {
@@ -12,7 +12,7 @@ import {
 
 export {
   getAllUsers,
-  getAllDepatments,
+  getAllDepartments,
   createHabilitation,
   getAllHabilitation,
   getAllHabilitationLabels,

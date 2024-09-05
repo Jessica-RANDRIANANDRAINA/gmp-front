@@ -3,7 +3,7 @@ import UserModifModal from "../Modals/UserModifModal";
 import ConfirmDeleteHabilitationuser from "../Modals/ConfirmDeleteHabilitationuser";
 import { CustomInput, CustomSelect } from "../UIElements";
 import {
-  getAllDepatments,
+  getAllDepartments,
   getAllHabilitationLabels,
 } from "../../services/User";
 import Pagination from "./Pagination";
@@ -114,7 +114,7 @@ const TableUser = ({
   // GET ALL HABILITATION AND DEPARTMENTS FROM DB
   useEffect(() => {
     const fetchDepartmentAndHabilitation = async () => {
-      const depart = await getAllDepatments();
+      const depart = await getAllDepartments();
       const habilit = await getAllHabilitationLabels();
       setDepartments(depart);
       setHabilitations(habilit);

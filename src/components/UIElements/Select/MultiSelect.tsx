@@ -107,7 +107,7 @@ const MultiSelect = ({
       <label className="mb-2.5 min-w-20 block text-sm font-medium text-black dark:text-white">
         {label}
       </label>
-      <div>
+      <div >
         <select className="hidden" id={id}>
           {value?.map((opt, key) => (
             <option value={opt} key={key}>
@@ -116,24 +116,24 @@ const MultiSelect = ({
           ))}
         </select>
 
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center ">
           <input name="values" type="hidden" defaultValue={selectedValues()} />
-          <div className="relative z-20 inline-block w-full">
-            <div className="relative flex flex-col items-center">
+          <div className="relative z-20 inline-block w-full ">
+            <div className="relative flex flex-col items-center  ">
               <div ref={trigger} onClick={open} className="w-full ">
                 <div
-                  className={`mb-2 flex ${round[rounded]} border border-stroke py-2 pl-3 pr-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input`}
+                  className={`mb-2 flex ${round[rounded]} border overflow-x-scroll  border-stroke py-2 pl-3 pr-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input`}
                 >
-                  <div className="flex flex-auto  flex-wrap gap-3 ">
+                  <div className="flex flex-auto  gap-3 ">
                     {selected.map((index) => (
                       <div
                         key={index}
                         className="my-1.5 flex items-center justify-center rounded border-[.5px] border-stroke bg-gray px-2.5 py-1.5 text-sm font-medium dark:border-strokedark dark:bg-white/30"
                       >
-                        <div className="max-w-full flex-initial ">
+                        <div className="max-w-full flex-initial  ">
                           {options[index].text}
                         </div>
-                        <div className="flex flex-auto flex-row-reverse ">
+                        <div className="flex flex-auto  flex-row-reverse ">
                           <div
                             onClick={() => remove(index)}
                             className={`cursor-pointer pl-2 hover:text-danger `}
@@ -198,7 +198,7 @@ const MultiSelect = ({
               </div>
               <div className="w-full px-4 ">
                 <div
-                  className={`max-h-select absolute top-full left-0 z-40 w-full overflow-y-auto rounded bg-white shadow dark:bg-form-input ${
+                  className={`max-h-select max-h-60  absolute top-full left-0 z-40 w-full overflow-y-auto rounded bg-white shadow dark:bg-form-input ${
                     isOpen() ? "" : "hidden"
                   }`}
                   ref={dropdownRef}
@@ -209,7 +209,7 @@ const MultiSelect = ({
                     {options.map((option, index) => (
                       <div key={index}>
                         <div
-                          className="w-full cursor-pointer  border-b border-stroke dark:border-strokedark dark:bg-boxdark dark:hover:bg-boxdark-2 "
+                          className="w-full  cursor-pointer  border-b border-stroke dark:border-strokedark dark:bg-boxdark dark:hover:bg-boxdark-2 "
                           onClick={(event) => select(index, event)}
                         >
                           <div

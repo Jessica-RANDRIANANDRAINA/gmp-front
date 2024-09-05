@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getAllDepatments } from "../../services/User";
+import { getAllDepartments } from "../../services/User";
 
 const HeaderHierarchy = ({
   setDepartChoosen,
@@ -10,7 +10,7 @@ const HeaderHierarchy = ({
 
   useEffect(() => {
     const fetchDepartment = async () => {
-      const depart = await getAllDepatments();
+      const depart = await getAllDepartments();
       setDepartments(depart);
     };
     fetchDepartment();

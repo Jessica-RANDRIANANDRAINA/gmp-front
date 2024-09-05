@@ -33,7 +33,7 @@ export const getAllUsers = async () => {
 };
 
 // GET ALL DEPARTMENTS
-export const getAllDepatments = async () => {
+export const getAllDepartments = async () => {
   try {
     const response = await axios.get(`${endPoint}/api/User/departments`);
     return response.data;
