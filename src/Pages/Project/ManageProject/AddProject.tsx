@@ -4,6 +4,21 @@ import {
   CustomSelect,
   MultiSelect,
 } from "../../../components/UIElements";
+import { getAllDepartments } from "../../../services/User";
+import { v4 as uuid4 } from "uuid";
+
+interface RessourceInterface {
+  id: string;
+  label: string;
+  source: string;
+  type: string;
+}
+
+interface PhaseAndLivrableInterface {
+  id: string;
+  phase: string;
+  livrable: string;
+}
 
 const AddProject = ({
   setIsAddProject,
@@ -19,18 +34,124 @@ const AddProject = ({
     priority: "",
     startDate: "",
     endDate: "",
-    directionOwner: [""],
     codeBuget: "",
     directionSourceBudget: "",
     budgetAmount: 0,
-    budgetCurrency: "Ar",
+    budgetCurrency: "AR",
   });
-  const [valueMulti, setValueMulti] = useState<any>();
+  const [ressourceList, setRessourceList] = useState<Array<RessourceInterface>>(
+    []
+  );
+  const [phaseAndLivrableList, setPhaseAndLivrableList] = useState<
+    Array<PhaseAndLivrableInterface>
+  >([]);
+  const [directionOwner, setDirectionOwner] = useState<any>();
   const [pageCreate, setPageCreate] = useState(1);
+  const [departments, setDepartments] = useState<string[]>([]);
 
   useEffect(() => {
     setIsLoaded(true);
   }, []);
+
+  // GET ALL DEPARTEMENTS
+  useEffect(() => {
+    const fetchDepartment = async () => {
+      const depart = await getAllDepartments();
+      setDepartments(depart);
+    };
+    fetchDepartment();
+  }, []);
+
+  // ADD RESSOURCE LIST
+  const handleAddRessourceToList = () => {
+    let ressourceData: RessourceInterface = {
+      id: uuid4(),
+      label: "",
+      source: "",
+      type: "",
+    };
+    setRessourceList([...ressourceList, ressourceData]);
+  };
+
+  // REMOVE A RESSOURCE TO THE LIST
+  const handleRemoveRessourceToList = (id: string) => {
+    let filteredList = ressourceList.filter((ressource) => ressource.id !== id);
+    setRessourceList(filteredList);
+  };
+  useEffect(() => {
+    const data = ressourceList;
+    // setTimeout(() => {
+    setRessourceList(data);
+    // }, 100);
+  }, [ressourceList]);
+
+  // ADD PHASE IN THE LIST
+  const handleAddPhaseList = () => {
+    let phaseData: PhaseAndLivrableInterface = {
+      id: uuid4(),
+      phase: "",
+      livrable: "",
+    };
+    setPhaseAndLivrableList([...phaseAndLivrableList, phaseData]);
+  };
+
+  // ADD DEFAULT VALUE IN PHASE LIST
+  const handleAddDefaultPhaseList = () => {
+    let phaseData: PhaseAndLivrableInterface[] = [
+      {
+        id: uuid4(),
+        phase: "Etude",
+        livrable: "Document d'étude de projet et de faisabilité",
+      },
+      {
+        id: uuid4(),
+        phase: "Conception",
+        livrable: "Document de conception",
+      },
+      {
+        id: uuid4(),
+        phase: "Developpement",
+        livrable: "Document de documentation",
+      },
+    ];
+    setPhaseAndLivrableList(phaseData);
+  };
+
+  // REMOVE A PHASE TO THE LIST
+  const handleRemovePhaseList = (id: string) => {
+    let filteredList = phaseAndLivrableList.filter((phase) => phase.id !== id);
+    setPhaseAndLivrableList(filteredList);
+  };
+
+  const handleRessourceDataChange = (
+    valueToChange: string,
+    index: number,
+    value: string
+  ) => {
+    let data = ressourceList;
+    if (valueToChange === "source") {
+      data[index].source = value;
+    } else if (valueToChange === "etat") {
+      data[index].type = value;
+    } else if (valueToChange === "ressource") {
+      data[index].label = value;
+    }
+    setRessourceList(data);
+  };
+
+  const handlePhaseDataChange = (
+    label: string,
+    value: string,
+    index: number
+  ) => {
+    let data = phaseAndLivrableList;
+    if (label === "phase") {
+      data[index].phase = value;
+    } else if (label === "livrable") {
+      data[index].livrable = value;
+    }
+    setPhaseAndLivrableList(data);
+  };
 
   return (
     <div>
@@ -50,15 +171,51 @@ const AddProject = ({
       </div>
       {/* ===== LINK RETURN END ===== */}
       {/* ===== BLOC ADD PROJECT START ===== */}
-      <div className="bg-white overflow-y-scroll overflow-x-clip  p-4 shadow-3 flex flex-col items-center rounded-md dark:border-strokedark dark:bg-boxdark min-h-fit md:min-h-fit md:h-[72vh] lg:h-[75vh]">
+      <div className="flex flex-col items-center bg-white relative  overflow-y-scroll overflow-x-clip hide-scrollbar p-4 shadow-3  rounded-md dark:border-strokedark dark:bg-boxdark min-h-fit md:min-h-fit md:h-[72vh] lg:h-[75vh]">
+        {/* ===== ADVANCEMENT STEP MENUE START ===== */}
+        <div className="absolute my-2 ml-2 top-0 left-0 space-y-3 md:block hidden">
+          <div
+            onClick={() => setPageCreate(1)}
+            className={`border p-2 border-slate-200 tranform duration-500 ease-linear cursor-pointer
+               ${pageCreate === 1 ? "bg-amber-200" : ""}`}
+          >
+            Info générale
+          </div>
+          <div
+            onClick={() => setPageCreate(2)}
+            className={`border p-2 border-slate-200 tranform duration-500 ease-linear cursor-pointer ${
+              pageCreate === 2 ? "bg-amber-200" : ""
+            } `}
+          >
+            Budget et ressources
+          </div>
+          <div
+            onClick={() => setPageCreate(3)}
+            className={`border p-2 border-slate-200 tranform duration-500 ease-linear cursor-pointer ${
+              pageCreate === 3 ? "bg-amber-200" : ""
+            } `}
+          >
+            Phases et livrables
+          </div>
+          <div
+            onClick={() => setPageCreate(4)}
+            className={`border p-2 border-slate-200 tranform duration-500 ease-linear cursor-pointer ${
+              pageCreate === 4 ? "bg-amber-200" : ""
+            } `}
+          >
+            Equipe
+          </div>
+        </div>
+
+        {/* ===== ADVANCEMENT STEP MENUE END ===== */}
         <span className="font-bold tracking-widest text-lg   ">
           Ajouter un nouveau projet
         </span>
         {/* ===== FORM CREATE START ===== */}
         <div className="pt-2 md:w-1/2  ">
-          {/* ===== CREATE PROJECT LEVEL ONE START ===== */}
+          {/* ===== CREATE PROJECT LEVEL ONE START INFO GENERAL ===== */}
           <div
-            className={`space-y-2 transition-all duration-5000 ease-linear ${
+            className={`space-y-2 transition-all duration-1000 ease-in-out ${
               pageCreate === 1 ? "opacity-100" : "opacity-0 h-0 overflow-hidden"
             }`}
           >
@@ -108,8 +265,8 @@ const AddProject = ({
                 id="001"
                 label={"Direction propriétaire"}
                 placeholder="Direction propriétaire"
-                value={projectData.directionOwner}
-                setValueMulti={setValueMulti}
+                value={departments}
+                setValueMulti={setDirectionOwner}
                 rounded="large"
               />
             </div>
@@ -149,11 +306,11 @@ const AddProject = ({
               </button>
             </div>
           </div>
-          {/* ===== CREATE PROJECT LEVEL ONE END ===== */}
+          {/* ===== CREATE PROJECT LEVEL ONE END INFO GENERAL ===== */}
 
-          {/* ===== CREATE PROJECT LEVEL TWO START ===== */}
+          {/* ===== CREATE PROJECT LEVEL TWO: BUDGET AND RESSOURCE START ===== */}
           <div
-            className={`space-y-2 transition-all duration-5000 ease-in-out ${
+            className={`space-y-2 transition-all duration-1000 ease-in-out ${
               pageCreate === 2 ? "opacity-100" : "opacity-0 h-0 overflow-hidden"
             }`}
           >
@@ -180,7 +337,7 @@ const AddProject = ({
                   <CustomSelect
                     label="Direction source"
                     placeholder="Source du budget"
-                    data={["DSI", "DAF", "DRH", "DOP"]}
+                    data={departments}
                     value={projectData.directionSourceBudget}
                     onValueChange={(e) => {
                       setProjectData({
@@ -212,7 +369,7 @@ const AddProject = ({
                   <CustomSelect
                     label="Devise"
                     placeholder=" "
-                    data={["Ar", "EUR"]}
+                    data={["AR", "EUR"]}
                     value={projectData.budgetCurrency}
                     onValueChange={(e) => {
                       setProjectData({
@@ -224,14 +381,75 @@ const AddProject = ({
                 </div>
               </div>
               <div>
+                {/* ===== RESSOURCES START ===== */}
                 <span className="font-semibold tracking-wide underline">
                   RESSOURCES
                 </span>
-                <div className=" h-80">
-                  a
+                <div className=" max-h-80 min-h-80 overflow-y-scroll">
+                  {ressourceList?.map((ressouce, index) => (
+                    <div key={ressouce.id}>
+                      <div className={"flex justify-between"}>
+                        <div className={"underline"}>Ressource {index + 1}</div>
+                        <button
+                          className={
+                            "text-red-500 decoration-red-500 font-bold hover:font-black"
+                          }
+                          onClick={() => {
+                            handleRemoveRessourceToList(ressouce.id);
+                          }}
+                        >
+                          Supprimer
+                        </button>
+                      </div>
+                      <div className="grid md:grid-cols-2 gap-2">
+                        <CustomInput
+                          label="Source"
+                          type="text"
+                          rounded="medium"
+                          placeholder="Ex: Massin"
+                          onChange={(e) => {
+                            handleRessourceDataChange(
+                              "source",
+                              index,
+                              e.target.value
+                            );
+                          }}
+                        />
+                        <CustomSelect
+                          label="Etat"
+                          placeholder="Disponible"
+                          data={["A acquérir", "Disponible"]}
+                          value={ressouce.type}
+                          onValueChange={(e) => {
+                            handleRessourceDataChange("etat", index, e);
+                          }}
+                        />
+                      </div>
+                      <CustomInput
+                        label="Resssource"
+                        type="textarea"
+                        rounded="medium"
+                        placeholder="La ressouce ex: un serveur"
+                        onChange={(e) => {
+                          handleRessourceDataChange(
+                            "ressource",
+                            index,
+                            e.target.value
+                          );
+                        }}
+                      />
+                    </div>
+                  ))}
+                  <button
+                    onClick={handleAddRessourceToList}
+                    className={`py-2 w-full mt-2 text-center border border-dashed border-stroke rounded-md hover:bg-stroke`}
+                  >
+                    Ajouter une ressource
+                  </button>
                 </div>
+                {/* ===== RESSOURCES END ===== */}
               </div>
-              <div className="flex justify-between">
+              <div className="flex justify-between gap-3">
                 <button
                   onClick={() => setPageCreate(1)}
                   className="md:w-fit gap-2 w-full cursor-pointer mt-2 py-2 px-5  text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen dark:hover:bg-opacity-90"
@@ -239,9 +457,7 @@ const AddProject = ({
                   Précédent
                 </button>
                 <button
-                  onClick={() => {
-                    console.log(projectData);
-                  }}
+                  onClick={() => setPageCreate(3)}
                   className="md:w-fit gap-2 w-full cursor-pointer mt-2 py-2 px-5  text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen dark:hover:bg-opacity-90"
                 >
                   Suivant
@@ -249,7 +465,139 @@ const AddProject = ({
               </div>
             </div>
           </div>
-          {/* ===== CREATE PROJECT LEVEL TWO END ===== */}
+          {/* ===== CREATE PROJECT LEVEL TWO: BUDGET AND RESSOURCE END ===== */}
+          {/* ===== CREATE PROJECT LEVEL THREE: PHASES AND LIVRABLE START ===== */}
+          <div
+            className={`space-y-2 transition-all duration-1000 ease-in-out ${
+              pageCreate === 3 ? "opacity-100" : "opacity-0 h-0 overflow-hidden"
+            }`}
+          >
+            <div className="space-y-4">
+              <div>
+                <span className="font-semibold tracking-wide underline">
+                  PHASES ET LIVRABLES
+                </span>
+                <div className="hide-scrollbar overflow-y-scroll md:max-h-125 md:min-h-125">
+                  <button
+                    onClick={handleAddDefaultPhaseList}
+                    className={`py-2 w-full mt-2 text-center border border-dashed border-stroke rounded-md hover:bg-stroke`}
+                  >
+                    Utiliser les valeurs par défaut
+                  </button>
+                  {phaseAndLivrableList?.map((phase, index) => (
+                    <div key={phase.id}>
+                      <div className={"flex justify-between"}>
+                        <div className={"underline"}>Phase {index + 1}</div>
+                        <button
+                          className={
+                            "text-red-500 decoration-red-500 font-bold hover:font-black"
+                          }
+                          onClick={() => {
+                            handleRemovePhaseList(phase.id);
+                          }}
+                        >
+                          Supprimer
+                        </button>
+                      </div>
+
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <CustomInput
+                          label="Phase"
+                          type="text"
+                          rounded="medium"
+                          placeholder="Ex: conception"
+                          onChange={(e) => {
+                            handlePhaseDataChange(
+                              "phase",
+                              e.target.value,
+                              index
+                            );
+                          }}
+                        />
+                        <CustomInput
+                          label="Livrable"
+                          type="text"
+                          rounded="medium"
+                          placeholder="Ex: dossier de conception"
+                          onChange={(e) => {
+                            handlePhaseDataChange(
+                              "livrable",
+                              e.target.value,
+                              index
+                            );
+                          }}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                  <button
+                    onClick={handleAddPhaseList}
+                    className={`py-2 w-full mt-2 text-center border border-dashed border-stroke rounded-md hover:bg-stroke`}
+                  >
+                    Ajouter une phase
+                  </button>
+                </div>
+              </div>
+              <div className="flex justify-between gap-3">
+                <button
+                  onClick={() => setPageCreate(2)}
+                  className="md:w-fit gap-2 w-full cursor-pointer mt-2 py-2 px-5  text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen dark:hover:bg-opacity-90"
+                >
+                  Précédent
+                </button>
+                <button
+                  onClick={() => setPageCreate(4)}
+                  className="md:w-fit gap-2 w-full cursor-pointer mt-2 py-2 px-5  text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen dark:hover:bg-opacity-90"
+                >
+                  Suivant
+                </button>
+              </div>
+            </div>
+          </div>
+          {/* ===== CREATE PROJECT LEVEL THREE: PHASES AND LIVRABLE END ===== */}
+          {/* ===== CREATE PROJECT LEVEL FOUR: TEAM START ===== */}
+          <div
+            className={`space-y-2 transition-all duration-1000 ease-in-out ${
+              pageCreate === 4 ? "opacity-100" : "opacity-0 h-0 overflow-hidden"
+            }`}
+          >
+            <div className="space-y-4">
+              <div>
+                <span className="font-semibold tracking-wide underline">
+                  EQUIPES
+                </span>
+                <div className="hide-scrollbar overflow-y-scroll md:max-h-125 md:min-h-125">
+                  <CustomInput
+                    label="Recherche"
+                    type="text"
+                    rounded="medium"
+                    placeholder=""
+                    value={""}
+                    required
+                    onChange={(e) => {
+                      // handlePhaseDataChange("phase", e.target.value, index);
+                      console.log(e);
+                    }}
+                  />
+                </div>
+              </div>
+              <div className="flex justify-between gap-3">
+                <button
+                  onClick={() => setPageCreate(3)}
+                  className="md:w-fit gap-2 w-full cursor-pointer mt-2 py-2 px-5  text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen dark:hover:bg-opacity-90"
+                >
+                  Précédent
+                </button>
+                <button
+                  onClick={() => setPageCreate(4)}
+                  className="md:w-fit gap-2 w-full cursor-pointer mt-2 py-2 px-5  text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen dark:hover:bg-opacity-90"
+                >
+                  Créer le projet
+                </button>
+              </div>
+            </div>
+          </div>
+          {/* ===== CREATE PROJECT LEVEL FOUR: TEAM END ===== */}
         </div>
         {/* ===== FORM CREATE END ===== */}
       </div>
