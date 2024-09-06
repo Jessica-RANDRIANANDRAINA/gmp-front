@@ -12,6 +12,19 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   onChange?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
 }
 
+export interface InputUserSearchInterface {
+  placeholder?: string;
+  className?: string;
+  rounded?: "full" | "medium" | "large" | "none";
+  label?: string;
+  userSelected: {
+    id: string, 
+    name: string, 
+    email: string
+  }[]
+  setUserSelected: Function
+}
+
 export interface OptionMultiSelect {
   value: string;
   text: string;
@@ -29,16 +42,16 @@ export interface MultiSelectProps {
   className?: string;
 }
 
-
-export interface InputSelectprops extends SelectHTMLAttributes<HTMLSelectElement> {
+export interface InputSelectprops
+  extends SelectHTMLAttributes<HTMLSelectElement> {
   label?: string;
   placeholder?: string;
   data: Array<string>;
   value?: string;
   onValueChange: (selectedValue: string) => void;
-  required?: boolean
-  className?: string
-};
+  required?: boolean;
+  className?: string;
+}
 
 export type CheckBoxProp = {
   label: string;

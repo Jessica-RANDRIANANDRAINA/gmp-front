@@ -3,6 +3,7 @@ import {
   CustomInput,
   CustomSelect,
   MultiSelect,
+  CutomInputUserSearch,
 } from "../../../components/UIElements";
 import { getAllDepartments } from "../../../services/User";
 import { v4 as uuid4 } from "uuid";
@@ -48,7 +49,9 @@ const AddProject = ({
   const [directionOwner, setDirectionOwner] = useState<any>();
   const [pageCreate, setPageCreate] = useState(1);
   const [departments, setDepartments] = useState<string[]>([]);
-
+  const [userTeam, setUserTeam] = useState<
+    { id: string; name: string; email: string }[]
+  >([]);
   useEffect(() => {
     setIsLoaded(true);
   }, []);
@@ -121,6 +124,12 @@ const AddProject = ({
   const handleRemovePhaseList = (id: string) => {
     let filteredList = phaseAndLivrableList.filter((phase) => phase.id !== id);
     setPhaseAndLivrableList(filteredList);
+  };
+
+  // REMOVE A USER FROM TEAM LIST
+  const handleRemoveTeamList = (id: string) => {
+    let filteredList = userTeam.filter((team) => team.id !== id);
+    setUserTeam(filteredList);
   };
 
   const handleRessourceDataChange = (
@@ -567,18 +576,30 @@ const AddProject = ({
                   EQUIPES
                 </span>
                 <div className="hide-scrollbar overflow-y-scroll md:max-h-125 md:min-h-125">
-                  <CustomInput
-                    label="Recherche"
-                    type="text"
-                    rounded="medium"
-                    placeholder=""
-                    value={""}
-                    required
-                    onChange={(e) => {
-                      // handlePhaseDataChange("phase", e.target.value, index);
-                      console.log(e);
-                    }}
+                  <CutomInputUserSearch
+                    placeholder="Recherche"
+                    label="Assigner"
+                    userSelected={userTeam}
+                    setUserSelected={setUserTeam}
                   />
+                  <div className="flex gap-4 mt-6 flex-wrap">
+                    {userTeam?.map((team) => (
+                      <div
+                        key={team.id}
+                        className="border flex justify-center items-center gap-1 p-2 rounded text-sm"
+                      >
+                        {team?.name}
+                        <span
+                          className="cursor-pointer border rounded-full w-4 h-4 flex justify-center items-center bg-slate-400 text-whiten "
+                          onClick={() => {
+                            handleRemoveTeamList(team.id);
+                          }}
+                        >
+                          x
+                        </span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
               <div className="flex justify-between gap-3">
