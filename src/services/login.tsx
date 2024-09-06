@@ -46,7 +46,7 @@ export const useAuthService = () => {
           localStorage.setItem("_au_ad", response.data.token);
 
           login(response.data.user);
-        } else if (adminPrivilege && userCredentials.type === "project") {
+        } else if (userCredentials.type === "project") {
           localStorage.setItem("_au_pr", response.data.token);
 
           login(response.data.user);
