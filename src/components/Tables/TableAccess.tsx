@@ -6,7 +6,7 @@ import { deleteHabilitation } from "../../services/User";
 const TableAccess = ({
   data,
   setIsDeleteAccess,
-  setAccessSelectedId
+  setAccessSelectedId,
 }: {
   data: TableAccessProps["data"];
   setIsDeleteAccess: Function;
@@ -70,8 +70,8 @@ const TableAccess = ({
     if (e === "Supprimer") {
       // console.log("1");
       console.log(accessSelected);
-      setIsDeleteAccess(true)
-      setAccessSelectedId(accessSelected)
+      setIsDeleteAccess(true);
+      setAccessSelectedId(accessSelected);
       // try {
       //   deleteHabilitation(accessSelected);
       // } catch (error) {
