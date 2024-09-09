@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { CustomInput, CustomSelect } from "../../UIElements";
+import { formatDate } from "../../../services/Function/DateServices";
 
 const TableProjet = ({ data }: { data: Array<any> }) => {
   const [entriesPerPage, setEntriesPerPage] = useState(5);
@@ -24,6 +25,17 @@ const TableProjet = ({ data }: { data: Array<any> }) => {
   useEffect(() => {
     setPageNumbers(getPageNumber(data.length));
   }, [entriesPerPage, data.length]);
+
+  const handleSelectAllProject = () => {
+    if (projectSelected.length < data.length) {
+      setProjectSelected([]);
+      data.map((p) => setProjectSelected((prev) => [...prev, p.id]));
+      setIsAllSelected(true);
+    } else {
+      setProjectSelected([]);
+      setIsAllSelected(false);
+    }
+  };
 
   return (
     <div className="bg-white  pt-2 shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -166,19 +178,19 @@ const TableProjet = ({ data }: { data: Array<any> }) => {
       >
         <div> {projectSelected.length} éléments séléctionné </div>
         <div>
-          {/* <CustomSelect
+          <CustomSelect
             data={["Modifier habilitation(s)", "Supprimer habilitation(s)"]}
             className="mb-2  "
             placeholder="Actions"
             onValueChange={(e) => {
               console.log(e);
-              if (e.includes("Modifier")) {
-                setUserModif(true);
-              } else {
-                setUserDelete(true);
-              }
+              // if (e.includes("Modifier")) {
+              //   setUserModif(true);
+              // } else {
+              //   setUserDelete(true);
+              // }
             }}
-          /> */}
+          />
         </div>
       </div>
       {/* ===== BULK END ===== */}
@@ -190,7 +202,7 @@ const TableProjet = ({ data }: { data: Array<any> }) => {
             <tr className="border border-stone-300 border-opacity-[0.1] border-r-0 border-l-0 text-white text-left">
               <th className="pl-2">
                 <button
-                  // onClick={handleSelectAllUser}
+                  onClick={handleSelectAllProject}
                   className="cursor-pointer border w-5 h-5"
                 >
                   <svg
@@ -199,11 +211,11 @@ const TableProjet = ({ data }: { data: Array<any> }) => {
                     viewBox="0 0 24 24"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
-                    // className={`${
-                    //   userSelected.length === filteredData.length
-                    //     ? "visible"
-                    //     : "invisible"
-                    // }`}
+                    className={`${
+                      projectSelected.length === data.length
+                        ? "visible"
+                        : "invisible"
+                    }`}
                   >
                     <path
                       d="M4 12.6111L8.92308 17.5L20 6.5"
@@ -312,56 +324,74 @@ const TableProjet = ({ data }: { data: Array<any> }) => {
           {/* ===== TABLE HEAD END ===== */}
           {/* ===== TABLE BODY END ===== */}
           <tbody>
-            <tr className="hover:bg-whiten dark:hover:bg-whitenGreen">
-              <td className="pl-2">
-                <button className="cursor-pointer border w-5 h-5">
-                  <svg
-                    width="18"
-                    height="17"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    // className={`${
-                    //   userSelected.includes(user.id)
-                    //     ? "visible"
-                    //     : "invisible"
-                    // }`}
+            {data
+              ?.filter((_project, index) => indexInPaginationRange(index))
+              .map((project) => {
+                const dateStart = formatDate(project?.startDate);
+                const dateEnd = formatDate(project?.endDate);
+                return (
+                  <tr
+                    key={project?.id}
+                    className="hover:bg-whiten dark:hover:bg-whitenGreen"
                   >
-                    <path
-                      d="M4 12.6111L8.92308 17.5L20 6.5"
-                      stroke="#000"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </button>
-              </td>
-              <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                <p className="text-black dark:text-white">
-                  {/* {user?.name?.split("(")?.[0]} */}
-                  BANJINA
-                </p>
-              </td>
-              <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                <p className="text-black dark:text-white">
-                  {/* {user?.name?.split("(")?.[0]} */}
-                  MOYEN
-                </p>
-              </td>
-              <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                <p className="text-black dark:text-white">
-                  {/* {user?.name?.split("(")?.[0]} */}
-                  10/10/2024 - 12/12/2024
-                </p>
-              </td>
-              <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                <p className="text-black dark:text-white">
-                  {/* {user?.name?.split("(")?.[0]} */}
-                  20%
-                </p>
-              </td>
-            </tr>
+                    <td className="pl-2">
+                      <button
+                        className="cursor-pointer border w-5 h-5"
+                        onClick={() => {
+                          setProjectSelected((prev) => {
+                            if (prev?.includes(project.id)) {
+                              return prev.filter((id) => id !== project.id);
+                            } else {
+                              return [...prev, project.id];
+                            }
+                          });
+                        }}
+                      >
+                        <svg
+                          width="18"
+                          height="17"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                          className={`${
+                            projectSelected.includes(project.id)
+                              ? "visible"
+                              : "invisible"
+                          }`}
+                        >
+                          <path
+                            d="M4 12.6111L8.92308 17.5L20 6.5"
+                            stroke="#000"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </button>
+                    </td>
+                    <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                      <p className="text-black dark:text-white">
+                        {project?.title}
+                      </p>
+                    </td>
+                    <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                      <p className="text-black dark:text-white">
+                        {project?.priority}
+                      </p>
+                    </td>
+                    <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                      <p className="text-black dark:text-white">
+                        {`${dateStart} - ${dateEnd}`}
+                      </p>
+                    </td>
+                    <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                      <p className="text-black dark:text-white">
+                        {project?.completionPercentage}%
+                      </p>
+                    </td>
+                  </tr>
+                );
+              })}
           </tbody>
           {/* ===== TABLE BODY END ===== */}
         </table>
