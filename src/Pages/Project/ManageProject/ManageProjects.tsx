@@ -14,9 +14,12 @@ const ManageProjects = () => {
     const project = await getAllProject();
     setProjectData(project);
   };
+
   useEffect(() => {
-    fetchProject();
-  }, []);
+    setTimeout(() => {
+      fetchProject();
+    }, 200);
+  }, [isAddProject]);
 
   return (
     <ProjectLayout>

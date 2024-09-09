@@ -17,6 +17,7 @@ const CustomInput = ({
   cols,
   rows,
   error,
+  required = false,
   onChange,
   ...rest
 }: InputProps) => {
@@ -32,6 +33,7 @@ const CustomInput = ({
     <div>
       <label className="mb-2.5 font-poppins font-semibold leading-relaxed block text-sm text-black dark:text-white">
         {label}
+        {required && <span className="text-red-500 ml-1">*</span>}
       </label>
       {type === "textarea" ? (
         <textarea

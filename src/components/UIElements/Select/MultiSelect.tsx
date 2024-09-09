@@ -16,6 +16,7 @@ const MultiSelect = ({
   id,
   placeholder,
   className,
+  required = false,
 }: MultiSelectProps) => {
   const [options, setOptions] = useState<OptionMultiSelect[]>([]);
   const [selected, setSelected] = useState<number[]>([]);
@@ -106,8 +107,9 @@ const MultiSelect = ({
     <div className={`relative ${className} `}>
       <label className="mb-2.5 min-w-20 block text-sm font-medium text-black dark:text-white">
         {label}
+        {required && <span className="text-red-500 ml-1">*</span>}
       </label>
-      <div >
+      <div>
         <select className="hidden" id={id}>
           {value?.map((opt, key) => (
             <option value={opt} key={key}>

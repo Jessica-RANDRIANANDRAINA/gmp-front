@@ -5,21 +5,16 @@ import {
   MultiSelect,
   CutomInputUserSearch,
 } from "../../../components/UIElements";
+import {
+  RessourceInterface,
+  PhaseInterface,
+  BudgetInterface,
+  ProjectData,
+} from "../../../types/Project";
 import { getAllDepartments } from "../../../services/User";
+import { createProject } from "../../../services/Project/ProjectServices";
 import { v4 as uuid4 } from "uuid";
-
-interface RessourceInterface {
-  id: string;
-  label: string;
-  source: string;
-  type: string;
-}
-
-interface PhaseAndLivrableInterface {
-  id: string;
-  phase: string;
-  livrable: string;
-}
+import { PuffLoader } from "react-spinners";
 
 const AddProject = ({
   setIsAddProject,
@@ -29,12 +24,18 @@ const AddProject = ({
   setIsButtonAnimate: Function;
 }) => {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [projectData, setProjectData] = useState({
+  const [projectData, setProjectData] = useState<ProjectData>({
+    id: "",
     title: "",
     description: "",
-    priority: "",
+    priority: "Moyen",
+    beneficiary: "",
+    initiator: "",
     startDate: "",
     endDate: "",
+    listBudgets: [],
+    listRessources: [],
+    listPhases: [],
     codeBuget: "",
     directionSourceBudget: "",
     budgetAmount: 0,
@@ -44,14 +45,16 @@ const AddProject = ({
     []
   );
   const [phaseAndLivrableList, setPhaseAndLivrableList] = useState<
-    Array<PhaseAndLivrableInterface>
+    Array<PhaseInterface>
   >([]);
+  const [budgetList, setBudgetList] = useState<Array<BudgetInterface>>([]);
   const [directionOwner, setDirectionOwner] = useState<any>();
   const [pageCreate, setPageCreate] = useState(1);
   const [departments, setDepartments] = useState<string[]>([]);
   const [userTeam, setUserTeam] = useState<
     { id: string; name: string; email: string }[]
   >([]);
+  const [isCreateLoading, setIsCreateLoading] = useState(false);
   useEffect(() => {
     setIsLoaded(true);
   }, []);
@@ -69,7 +72,7 @@ const AddProject = ({
   const handleAddRessourceToList = () => {
     let ressourceData: RessourceInterface = {
       id: uuid4(),
-      label: "",
+      ressource: "",
       source: "",
       type: "",
     };
@@ -90,39 +93,40 @@ const AddProject = ({
 
   // ADD PHASE IN THE LIST
   const handleAddPhaseList = () => {
-    let phaseData: PhaseAndLivrableInterface = {
-      id: uuid4(),
-      phase: "",
-      livrable: "",
+    let phaseData: PhaseInterface = {
+      phase1: "",
+      expectedDeliverable: "",
     };
     setPhaseAndLivrableList([...phaseAndLivrableList, phaseData]);
   };
 
   // ADD DEFAULT VALUE IN PHASE LIST
   const handleAddDefaultPhaseList = () => {
-    let phaseData: PhaseAndLivrableInterface[] = [
+    let phaseData: PhaseInterface[] = [
       {
         id: uuid4(),
-        phase: "Etude",
-        livrable: "Document d'étude de projet et de faisabilité",
+        phase1: "Etude",
+        expectedDeliverable: "Document d'étude de projet et de faisabilité",
       },
       {
         id: uuid4(),
-        phase: "Conception",
-        livrable: "Document de conception",
+        phase1: "Conception",
+        expectedDeliverable: "Document de conception",
       },
       {
         id: uuid4(),
-        phase: "Developpement",
-        livrable: "Document de documentation",
+        phase1: "Developpement",
+        expectedDeliverable: "Document de documentation",
       },
     ];
     setPhaseAndLivrableList(phaseData);
   };
 
   // REMOVE A PHASE TO THE LIST
-  const handleRemovePhaseList = (id: string) => {
-    let filteredList = phaseAndLivrableList.filter((phase) => phase.id !== id);
+  const handleRemovePhaseList = (phase1: string) => {
+    let filteredList = phaseAndLivrableList.filter(
+      (phase) => phase.phase1 !== phase1
+    );
     setPhaseAndLivrableList(filteredList);
   };
 
@@ -143,7 +147,7 @@ const AddProject = ({
     } else if (valueToChange === "etat") {
       data[index].type = value;
     } else if (valueToChange === "ressource") {
-      data[index].label = value;
+      data[index].ressource = value;
     }
     setRessourceList(data);
   };
@@ -153,13 +157,55 @@ const AddProject = ({
     value: string,
     index: number
   ) => {
-    let data = phaseAndLivrableList;
-    if (label === "phase") {
-      data[index].phase = value;
-    } else if (label === "livrable") {
-      data[index].livrable = value;
+    // let data = phaseAndLivrableList;
+    // if (label === "phase") {
+    //   data[index].phase1 = value;
+    // } else if (label === "livrable") {
+    //   data[index].expectedDeliverable = value;
+    // }
+    // setPhaseAndLivrableList(data);
+    setPhaseAndLivrableList((prevList) =>
+      prevList.map((phase, idx) =>
+        idx === index
+          ? {
+              ...phase,
+              [label === "phase" ? "phase1" : "expectedDeliverable"]: value,
+            }
+          : phase
+      )
+    );
+  };
+
+  const handleCreateProject = async () => {
+    setIsCreateLoading(true);
+    const projectid = uuid4();
+    const beneficiary = directionOwner?.join(", ");
+
+    let budgetData = [
+      {
+        code: projectData?.codeBuget,
+        direction: projectData?.directionSourceBudget,
+        amount: projectData?.budgetAmount,
+        currency: projectData?.budgetCurrency,
+      },
+    ];
+    const data = {
+      ...projectData,
+      id: projectid,
+      beneficiary: beneficiary,
+      listBudgets: budgetData,
+      listRessources: ressourceList,
+      listPhases: phaseAndLivrableList,
+    };
+
+    try {
+      await createProject(data);
+      setIsAddProject(false);
+    } catch (error) {
+      console.log(`Error at create project: ${error}`);
+    } finally {
+      setIsCreateLoading(false);
     }
-    setPhaseAndLivrableList(data);
   };
 
   return (
@@ -277,6 +323,7 @@ const AddProject = ({
                 value={departments}
                 setValueMulti={setDirectionOwner}
                 rounded="large"
+                required
               />
             </div>
             <div className="grid md:grid-cols-2 gap-4">
@@ -354,6 +401,7 @@ const AddProject = ({
                         directionSourceBudget: e,
                       });
                     }}
+                    required
                   />
                 </div>
                 <div className="grid md:grid-cols-2 gap-3">
@@ -432,6 +480,7 @@ const AddProject = ({
                           onValueChange={(e) => {
                             handleRessourceDataChange("etat", index, e);
                           }}
+                          required
                         />
                       </div>
                       <CustomInput
@@ -446,6 +495,7 @@ const AddProject = ({
                             e.target.value
                           );
                         }}
+                        required
                       />
                     </div>
                   ))}
@@ -502,7 +552,7 @@ const AddProject = ({
                             "text-red-500 decoration-red-500 font-bold hover:font-black"
                           }
                           onClick={() => {
-                            handleRemovePhaseList(phase.id);
+                            handleRemovePhaseList(phase.phase1);
                           }}
                         >
                           Supprimer
@@ -515,6 +565,7 @@ const AddProject = ({
                           type="text"
                           rounded="medium"
                           placeholder="Ex: conception"
+                          value={phase?.phase1}
                           onChange={(e) => {
                             handlePhaseDataChange(
                               "phase",
@@ -522,12 +573,14 @@ const AddProject = ({
                               index
                             );
                           }}
+                          required
                         />
                         <CustomInput
                           label="Livrable"
                           type="text"
                           rounded="medium"
                           placeholder="Ex: dossier de conception"
+                          value={phase?.expectedDeliverable}
                           onChange={(e) => {
                             handlePhaseDataChange(
                               "livrable",
@@ -535,6 +588,7 @@ const AddProject = ({
                               index
                             );
                           }}
+                          required
                         />
                       </div>
                     </div>
@@ -610,9 +664,14 @@ const AddProject = ({
                   Précédent
                 </button>
                 <button
-                  onClick={() => setPageCreate(4)}
+                  onClick={handleCreateProject}
                   className="md:w-fit gap-2 w-full cursor-pointer mt-2 py-2 px-5  text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen dark:hover:bg-opacity-90"
                 >
+                  {isCreateLoading && (
+                    <span>
+                      <PuffLoader size={20} className="mr-2" />
+                    </span>
+                  )}
                   Créer le projet
                 </button>
               </div>

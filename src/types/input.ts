@@ -40,6 +40,7 @@ export interface MultiSelectProps {
   placeholder?: string;
   rounded?: "full" | "medium" | "large" | "none";
   className?: string;
+  required?: boolean
 }
 
 export interface InputSelectprops
