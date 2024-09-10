@@ -2,16 +2,19 @@ import { useState, useEffect } from "react";
 import ProjectLayout from "../../../layout/ProjectLayout";
 import AddProject from "./AddProject";
 import { TableProjet } from "../../../components/Tables/projets";
-import { getAllProject } from "../../../services/Project/ProjectServices";
+import { getProjectByUserId } from "../../../services/Project/ProjectServices";
+import { decodeToken } from "../../../services/Function/TokenService";
 
 const ManageProjects = () => {
   const [isAddProject, setIsAddProject] = useState(false);
   const [isButtonAnimate, setIsButtonAnimate] = useState(false);
   const [projectData, setProjectData] = useState([]);
 
-  // fetch all project
+  // fetch all project related to the user connected
   const fetchProject = async () => {
-    const project = await getAllProject();
+    const decode = decodeToken("pr");
+
+    const project = await getProjectByUserId(decode?.jti);
     setProjectData(project);
   };
 

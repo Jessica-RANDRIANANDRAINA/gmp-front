@@ -1,6 +1,9 @@
-import { useEffect, useState } from "react";
+import { Key, useEffect, useState } from "react";
 import { CustomInput, CustomSelect } from "../../UIElements";
 import { formatDate } from "../../../services/Function/DateServices";
+import { decodeToken } from "../../../services/Function/TokenService";
+import { getInitials } from "../../../services/Function/UserFunctionService";
+import Pagination from "../Pagination";
 
 const TableProjet = ({ data }: { data: Array<any> }) => {
   const [entriesPerPage, setEntriesPerPage] = useState(5);
@@ -9,6 +12,15 @@ const TableProjet = ({ data }: { data: Array<any> }) => {
 
   const [isAllSelected, setIsAllSelected] = useState(false);
   const [projectSelected, setProjectSelected] = useState<string[]>([]);
+  const userConnected = decodeToken("pr");
+
+  useEffect(() => {
+    console.log("****");
+    console.log(data);
+    console.log(userConnected);
+
+    console.log("****");
+  }, []);
 
   // TO GET THE NUMBER OF PAGE DEPENDING OF THE ENTRIES PER PAGE
   const getPageNumber = (dataLength: number) => {
@@ -293,10 +305,38 @@ const TableProjet = ({ data }: { data: Array<any> }) => {
                       />
                     </svg>
                   </button>
-                  <span>Date début et fin</span>
+                  <span>Role</span>
                 </div>
               </th>
               <th className="py-4 px-4 font-bold text-white dark:text-white xl:pl-11">
+                <div className="flex items-center">
+                  <span>Equipes</span>
+                </div>
+              </th>
+              <th className="py-4 px-4 font-bold text-white dark:text-white xl:pl-11">
+                <div className="flex items-center">
+                  <button
+                    className={`
+                     transform transition-transform duration-200`}
+                  >
+                    <svg
+                      className="fill-current"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M5.29289 8.29289C5.68342 7.90237 6.31658 7.90237 6.70711 8.29289L12 13.5858L17.2929 8.29289C17.6834 7.90237 18.3166 7.90237 18.7071 8.29289C19.0976 8.68342 19.0976 9.31658 18.7071 9.70711L12.7071 15.7071C12.3166 16.0976 11.6834 16.0976 11.2929 15.7071L5.29289 9.70711C4.90237 9.31658 4.90237 8.68342 5.29289 8.29289Z"
+                        fill=""
+                      />
+                    </svg>
+                  </button>
+                  <span>Date début et fin</span>
+                </div>
+              </th>
+              <th className="py-4 px-4  font-bold text-white dark:text-white xl:pl-11">
                 <div className="flex items-center">
                   <button
                     className={`
@@ -329,6 +369,15 @@ const TableProjet = ({ data }: { data: Array<any> }) => {
               .map((project) => {
                 const dateStart = formatDate(project?.startDate);
                 const dateEnd = formatDate(project?.endDate);
+                const userDetails = project.listUsers?.filter(
+                  (user: { userid: string | undefined }) => {
+                    return user?.userid === userConnected?.jti;
+                  }
+                );
+                console.log("////////");
+                console.log(project);
+                console.log("////////");
+
                 return (
                   <tr
                     key={project?.id}
@@ -381,6 +430,63 @@ const TableProjet = ({ data }: { data: Array<any> }) => {
                     </td>
                     <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
                       <p className="text-black dark:text-white">
+                        {userDetails?.[0]?.role}
+                      </p>
+                    </td>
+                    <td className="border-b flex gap-1 border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                      {project?.listUsers?.length <= 2
+                        ? project.listUsers.map(
+                            (user: {
+                              [x: string]: any;
+                              userid: Key | null | undefined;
+                            }) => {
+                              const initials = getInitials(user?.user?.name);
+                              return (
+                                <div
+                                  key={user?.userid}
+                                  className="relative group"
+                                >
+                                  <p className="text-slate-50 border relative bg-secondaryGreen p-1 w-7 h-7 flex justify-center items-center text-xs rounded-full dark:text-white">
+                                    {initials}
+                                  </p>
+                                  <div className="absolute whitespace-nowrap text-xs hidden group-hover:block bg-white text-black p-2 border border-whiten shadow-5 rounded-md z-10 top-[-20px] left-1/2 transform -translate-x-1/2">
+                                    <p>{user?.user?.name}</p>
+                                  </div>
+                                </div>
+                              );
+                            }
+                          )
+                        : project.listUsers
+                            .slice(0, 3)
+                            .map(
+                              (user: {
+                                [x: string]: any;
+                                userid: Key | null | undefined;
+                              }) => {
+                                const initials = getInitials(user?.user?.name);
+                                return (
+                                  <div
+                                    key={user?.userid}
+                                    className="relative group"
+                                  >
+                                    <p className="text-slate-50 border relative bg-secondaryGreen p-1 w-7 h-7 flex justify-center items-center text-xs rounded-full dark:text-white">
+                                      {initials}
+                                    </p>
+                                    <div className="absolute whitespace-nowrap text-xs hidden group-hover:block bg-white text-black p-2 border border-whiten shadow-5 rounded-md z-10 top-[-20px] left-1/2 transform -translate-x-1/2">
+                                      <p>{user?.user?.name}</p>
+                                    </div>
+                                  </div>
+                                );
+                              }
+                            )}
+                      {project?.listUsers?.length > 3 && (
+                        <p className="text-slate-50 border relative bg-secondaryGreen p-1 w-7 h-7 flex justify-center items-center text-xs rounded-full dark:text-white">
+                          ...
+                        </p>
+                      )}
+                    </td>
+                    <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                      <p className="text-black dark:text-white">
                         {`${dateStart} - ${dateEnd}`}
                       </p>
                     </td>
@@ -396,8 +502,28 @@ const TableProjet = ({ data }: { data: Array<any> }) => {
           {/* ===== TABLE BODY END ===== */}
         </table>
       </div>
+      {/* =====PAGINATE START===== */}
+      <div className="flex flex-col md:flex-row justify-end px-4 items-center">
+        <div>
+          <CustomSelect
+            label="Par page: "
+            data={["5", "10", "15", "20"]}
+            placeholder="5"
+            className="flex"
+            value={entriesPerPage.toString()}
+            onValueChange={(selectedValue) => {
+              setEntriesPerPage(parseInt(selectedValue, 10));
+            }}
+          />
+        </div>
+        <Pagination
+          actualPage={actualPage}
+          setActualPage={setActualPage}
+          pageNumbers={pageNumbers}
+        />
+      </div>
+      {/* =====PAGINATE END===== */}
       {/* =====TABLE END===== */}
-      <div></div>
     </div>
   );
 };
