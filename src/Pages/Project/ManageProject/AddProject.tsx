@@ -31,8 +31,8 @@ const AddProject = ({
     priority: "Moyen",
     beneficiary: "",
     initiator: "",
-    startDate: "",
-    endDate: "",
+    startDate: undefined,
+    endDate: undefined,
     listBudgets: [],
     listRessources: [],
     listPhases: [],
@@ -197,6 +197,7 @@ const AddProject = ({
       listRessources: ressourceList,
       listPhases: phaseAndLivrableList,
     };
+    console.log(data);
 
     try {
       await createProject(data);
@@ -331,7 +332,7 @@ const AddProject = ({
                 label="Date de début prévue du projet"
                 type="date"
                 rounded="medium"
-                value={projectData.startDate}
+                value={projectData?.startDate}
                 onChange={(e) => {
                   setProjectData({
                     ...projectData,
@@ -344,7 +345,7 @@ const AddProject = ({
                 label="Date de fin prévue du projet"
                 type="date"
                 rounded="medium"
-                value={projectData.endDate}
+                value={projectData?.endDate}
                 onChange={(e) => {
                   setProjectData({
                     ...projectData,

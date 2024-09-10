@@ -5,8 +5,8 @@ export interface ProjectData {
   priority: string;
   beneficiary: string;
   initiator: string;
-  startDate: string;
-  endDate: string;
+  startDate?: string;
+  endDate?: string;
   listBudgets: BudgetInterface[];
   listRessources: RessourceInterface[];
   listPhases: PhaseInterface[];
@@ -23,8 +23,8 @@ export interface ProjectDtoInterface {
   priority: string;
   beneficiary: string;
   initiator: string;
-  startDate: string;
-  endDate: string;
+  startDate?: string;
+  endDate?: string;
   listBudgets: BudgetInterface[];
   listRessources: RessourceInterface[];
   listPhases: PhaseInterface[];

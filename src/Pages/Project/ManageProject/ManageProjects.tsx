@@ -27,10 +27,10 @@ const ManageProjects = () => {
         {!isAddProject ? (
           <>
             {/* ===== ADD PROJECT START =====*/}
-            <div className="w-full mb-2 flex justify-end items-center">
+            <div className="w-full mb-2 flex justify-end  items-center">
               <button
                 onClick={() => setIsAddProject(true)}
-                className={`md:w-fit gap-2 flex w-full cursor-pointer mt-2 py-4 px-5  text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen dark:hover:bg-opacity-90  md:ease-in md:duration-300 md:transform  
+                className={`md:w-fit gap-2 flex justify-center w-full cursor-pointer mt-2 py-2   text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen dark:hover:bg-opacity-90  md:ease-in md:duration-300 md:transform  
                    `}
               >
                 <svg
