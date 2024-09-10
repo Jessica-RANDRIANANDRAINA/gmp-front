@@ -10,6 +10,7 @@ export interface ProjectData {
   listBudgets: BudgetInterface[];
   listRessources: RessourceInterface[];
   listPhases: PhaseInterface[];
+  listUsers: UserProjectInterface[];
   codeBuget: string;
   directionSourceBudget: string;
   budgetAmount: number;
@@ -22,12 +23,13 @@ export interface ProjectDtoInterface {
   description: string;
   priority: string;
   beneficiary: string;
-  initiator: string;
+  initiator: string | undefined;
   startDate?: string;
   endDate?: string;
   listBudgets: BudgetInterface[];
   listRessources: RessourceInterface[];
   listPhases: PhaseInterface[];
+  listUsers: UserProjectInterface[];
 }
 export interface PhaseInterface {
   id?: string;
@@ -46,4 +48,10 @@ export interface BudgetInterface {
   direction: string;
   amount: number;
   currency: string;
+}
+
+export interface UserProjectInterface {
+  userid: string | undefined;
+  projectid: string;
+  role: string;
 }

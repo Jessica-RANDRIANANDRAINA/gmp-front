@@ -18,7 +18,7 @@ export interface InputUserSearchInterface {
   rounded?: "full" | "medium" | "large" | "none";
   label?: string;
   userSelected: {
-    id: string, 
+    id: string | undefined, 
     name: string, 
     email: string
   }[]

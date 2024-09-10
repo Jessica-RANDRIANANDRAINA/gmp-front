@@ -13,6 +13,7 @@ import {
 } from "../../../types/Project";
 import { getAllDepartments } from "../../../services/User";
 import { createProject } from "../../../services/Project/ProjectServices";
+import { decodeToken } from "../../../services/Function/TokenService";
 import { v4 as uuid4 } from "uuid";
 import { PuffLoader } from "react-spinners";
 
@@ -36,6 +37,7 @@ const AddProject = ({
     listBudgets: [],
     listRessources: [],
     listPhases: [],
+    listUsers: [],
     codeBuget: "",
     directionSourceBudget: "",
     budgetAmount: 0,
@@ -47,12 +49,11 @@ const AddProject = ({
   const [phaseAndLivrableList, setPhaseAndLivrableList] = useState<
     Array<PhaseInterface>
   >([]);
-  const [budgetList, setBudgetList] = useState<Array<BudgetInterface>>([]);
   const [directionOwner, setDirectionOwner] = useState<any>();
   const [pageCreate, setPageCreate] = useState(1);
   const [departments, setDepartments] = useState<string[]>([]);
   const [userTeam, setUserTeam] = useState<
-    { id: string; name: string; email: string }[]
+    { id: string | undefined; name: string; email: string }[]
   >([]);
   const [isCreateLoading, setIsCreateLoading] = useState(false);
   useEffect(() => {
@@ -131,7 +132,7 @@ const AddProject = ({
   };
 
   // REMOVE A USER FROM TEAM LIST
-  const handleRemoveTeamList = (id: string) => {
+  const handleRemoveTeamList = (id: string | undefined) => {
     let filteredList = userTeam.filter((team) => team.id !== id);
     setUserTeam(filteredList);
   };
@@ -176,35 +177,62 @@ const AddProject = ({
     );
   };
 
+  // create project
   const handleCreateProject = async () => {
     setIsCreateLoading(true);
     const projectid = uuid4();
+    // trnasform the benefiary from an array to a string
     const beneficiary = directionOwner?.join(", ");
+    // initilize budget data
+    var budgetData: BudgetInterface[] = [];
+    // get the data of the user connected
+    const userConnected = decodeToken("pr");
 
-    let budgetData = [
-      {
-        code: projectData?.codeBuget,
-        direction: projectData?.directionSourceBudget,
-        amount: projectData?.budgetAmount,
-        currency: projectData?.budgetCurrency,
-      },
-    ];
+    // if there is budget add it in budgetData
+    if (projectData?.budgetAmount !== 0) {
+      budgetData = [
+        {
+          code: projectData?.codeBuget,
+          direction: projectData?.directionSourceBudget,
+          amount: projectData?.budgetAmount,
+          currency: projectData?.budgetCurrency,
+        },
+      ];
+    }
+    // if there is team members, map them and store in userProject
+    const userProject = userTeam?.map((team) => ({
+      userid: team.id,
+      projectid: projectid,
+      role: "User",
+    }));
+
+    // make the user connected owner of the project
+    userProject.push({
+      userid: userConnected?.jti,
+      projectid: projectid,
+      role: "Owner",
+    });
+    
+    // trenasform all the data to a single object 
     const data = {
       ...projectData,
       id: projectid,
+      initiator: userConnected?.name,
       beneficiary: beneficiary,
       listBudgets: budgetData,
       listRessources: ressourceList,
       listPhases: phaseAndLivrableList,
+      listUsers: userProject
     };
-    console.log(data);
-
+    
     try {
+      // create project service
       await createProject(data);
       setIsAddProject(false);
     } catch (error) {
       console.log(`Error at create project: ${error}`);
     } finally {
+      // stop loading
       setIsCreateLoading(false);
     }
   };
@@ -666,7 +694,7 @@ const AddProject = ({
                 </button>
                 <button
                   onClick={handleCreateProject}
-                  className="md:w-fit gap-2 w-full cursor-pointer mt-2 py-2 px-5  text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen dark:hover:bg-opacity-90"
+                  className="md:w-fit gap-2 w-full flex cursor-pointer mt-2 py-2 px-5  text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen dark:hover:bg-opacity-90"
                 >
                   {isCreateLoading && (
                     <span>
