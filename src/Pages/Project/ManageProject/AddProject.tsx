@@ -212,8 +212,8 @@ const AddProject = ({
       projectid: projectid,
       role: "Owner",
     });
-    
-    // trenasform all the data to a single object 
+
+    // trenasform all the data to a single object
     const data = {
       ...projectData,
       id: projectid,
@@ -222,9 +222,9 @@ const AddProject = ({
       listBudgets: budgetData,
       listRessources: ressourceList,
       listPhases: phaseAndLivrableList,
-      listUsers: userProject
+      listUsers: userProject,
     };
-    
+
     try {
       // create project service
       await createProject(data);
@@ -261,30 +261,88 @@ const AddProject = ({
           <div
             onClick={() => setPageCreate(1)}
             className={`border p-2 border-slate-200 tranform duration-500 ease-linear cursor-pointer
-               ${pageCreate === 1 ? "bg-amber-200" : ""}`}
+               ${pageCreate === 1 ? "bg-amber-200" : ""}
+               
+               `}
           >
             Info générale
           </div>
           <div
-            onClick={() => setPageCreate(2)}
-            className={`border p-2 border-slate-200 tranform duration-500 ease-linear cursor-pointer ${
+            onClick={() => {
+              if (
+                projectData?.title === "" ||
+                projectData?.startDate === undefined ||
+                projectData?.startDate === "" ||
+                directionOwner?.length === 0
+              ) {
+                return;
+              }
+              setPageCreate(2);
+            }}
+            className={`border p-2 border-slate-200 tranform duration-500 ease-linear  ${
               pageCreate === 2 ? "bg-amber-200" : ""
-            } `}
+            } 
+            ${
+              projectData?.title === "" ||
+              projectData?.startDate === undefined ||
+              projectData?.startDate === "" ||
+              directionOwner?.length === 0
+                ? "cursor-default opacity-70"
+                : "cursor-pointer"
+            }
+            `}
           >
             Budget et ressources
           </div>
           <div
-            onClick={() => setPageCreate(3)}
+            onClick={() => {
+              if (
+                projectData?.title === "" ||
+                projectData?.startDate === undefined ||
+                projectData?.startDate === "" ||
+                directionOwner?.length === 0
+              ) {
+                return;
+              }
+              setPageCreate(3);
+            }}
             className={`border p-2 border-slate-200 tranform duration-500 ease-linear cursor-pointer ${
               pageCreate === 3 ? "bg-amber-200" : ""
-            } `}
+            } 
+            ${
+              projectData?.title === "" ||
+              projectData?.startDate === undefined ||
+              projectData?.startDate === "" ||
+              directionOwner?.length === 0
+                ? "cursor-default opacity-70"
+                : "cursor-pointer"
+            }
+            `}
           >
             Phases et livrables
           </div>
           <div
-            onClick={() => setPageCreate(4)}
+            onClick={() => {
+              if (
+                projectData?.title === "" ||
+                projectData?.startDate === undefined ||
+                projectData?.startDate === "" ||
+                directionOwner?.length === 0
+              ) {
+                return;
+              }
+              setPageCreate(4);
+            }}
             className={`border p-2 border-slate-200 tranform duration-500 ease-linear cursor-pointer ${
               pageCreate === 4 ? "bg-amber-200" : ""
+            }
+            ${
+              projectData?.title === "" ||
+              projectData?.startDate === undefined ||
+              projectData?.startDate === "" ||
+              directionOwner?.length === 0
+                ? "cursor-default opacity-70"
+                : "cursor-pointer"
             } `}
           >
             Equipe
@@ -384,8 +442,28 @@ const AddProject = ({
             </div>
             <div className="flex justify-end ">
               <button
-                onClick={() => setPageCreate(2)}
-                className="md:w-fit gap-2 w-full cursor-pointer mt-2 py-2 px-5  text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen dark:hover:bg-opacity-90"
+                // onClick={() => setPageCreate(2)}
+                onClick={() => {
+                  if (
+                    projectData?.title === "" ||
+                    projectData.startDate === undefined ||
+                    projectData.startDate === "" ||
+                    directionOwner.length === 0
+                  ) {
+                    return;
+                  }
+                  setPageCreate(2);
+                }}
+                className={`md:w-fit gap-2 w-full  mt-2 py-2 px-5  text-center font-medium text-white  lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen 
+                  ${
+                    projectData?.title === "" ||
+                    projectData?.startDate === undefined ||
+                    projectData?.startDate === "" ||
+                    directionOwner?.length === 0
+                      ? "cursor-default opacity-70"
+                      : "cursor-pointer hover:bg-opacity-90 dark:hover:bg-opacity-90"
+                  }
+                  `}
               >
                 Suivant
               </button>
@@ -573,7 +651,7 @@ const AddProject = ({
                     Utiliser les valeurs par défaut
                   </button>
                   {phaseAndLivrableList?.map((phase, index) => (
-                    <div key={phase.id}>
+                    <div key={phase?.id}>
                       <div className={"flex justify-between"}>
                         <div className={"underline"}>Phase {index + 1}</div>
                         <button
