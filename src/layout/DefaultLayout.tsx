@@ -2,9 +2,18 @@ import { ReactNode, useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import AdminSideBar from "../components/Sidebar/AdminSideBar";
 import Header from "../components/Header";
+import { decodeToken } from "../services/Function/TokenService";
+
+interface DecodedToken {
+  sub: string;
+  name: string;
+  jti: string;
+  exp: number;
+}
 
 const DefaultLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [decodedToken, setDecodedToken] = useState<DecodedToken>();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -13,6 +22,16 @@ const DefaultLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
     const currentPath = location.pathname;
     if (!token && !currentPath.includes("no-access")) {
       navigate("/no-access");
+    }
+
+    if (token) {
+      try {
+        const decoded = decodeToken("ad");
+        setDecodedToken(decoded);
+      } catch (error) {
+        console.error(`Invalid token ${error}`);
+        navigate("/no-access");
+      }
     }
   }, [location, navigate]);
 
@@ -30,7 +49,11 @@ const DefaultLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
         {/* content start */}
         <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
           {/* header start */}
-          <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+          <Header
+            sidebarOpen={sidebarOpen}
+            userConnected={decodedToken}
+            setSidebarOpen={setSidebarOpen}
+          />
           {/* Header end */}
           {/* Main content start */}
           <main>

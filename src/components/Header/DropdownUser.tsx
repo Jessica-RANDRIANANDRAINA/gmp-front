@@ -4,7 +4,7 @@ import { logout } from "../../services/login";
 
 import UserOne from "../../assets/user.png";
 
-const DropdownUser = () => {
+const DropdownUser = (userConnected: any) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   // const [typeConnected, setTypeConnected] = useState("");
 
@@ -65,9 +65,11 @@ const DropdownUser = () => {
       >
         <span className="hidden text-right lg:block">
           <span className="block text-sm font-medium text-black dark:text-white">
-            Johanne razafimahefa
+            {userConnected?.userConnected?.name}
           </span>
-          <span className="block text-xs">ST116@ravinala-airports.aero</span>
+          <span className="block text-xs">
+            {userConnected?.userConnected?.email}
+          </span>
         </span>
 
         <span className="h-12 w-12 rounded-full">

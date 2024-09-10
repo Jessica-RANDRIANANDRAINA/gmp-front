@@ -1,11 +1,26 @@
+import { useState, useEffect } from "react";
 import DarkModeSwitcher from "./DarkModeSwitcher";
 import DropdownUser from "./DropdownUser";
-import pattern from "../../../src/assets/pattern.png"
+import pattern from "../../../src/assets/pattern.png";
 
 const Header = (props: {
   sidebarOpen: string | boolean | undefined;
   setSidebarOpen: (arg0: boolean) => void;
+  userConnected: any;
 }) => {
+  const [userConnected, setUserConnected] = useState({
+    name: "",
+    email: "",
+  });
+
+  useEffect(() => {
+    setUserConnected({
+      ...userConnected,
+      name: props?.userConnected?.name,
+      email: props?.userConnected?.sub,
+    });
+  }, [props.userConnected]);
+
   return (
     <header
       className="sticky top-0 z-999 flex w-full py-2 pr-6 bg-white drop-shadow-1 dark:bg-boxdark bg-cover bg-no-repeat dark:drop-shadow-none"
@@ -61,7 +76,7 @@ const Header = (props: {
         <ul className="flex items-center gap-2 2xsm:gap-4">
           <DarkModeSwitcher />
         </ul>
-        <DropdownUser />
+        <DropdownUser userConnected={userConnected} />
       </div>
     </header>
   );
