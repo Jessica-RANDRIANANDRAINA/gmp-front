@@ -24,7 +24,6 @@ const LoginProject = () => {
     setIsLoginLoading(true);
     try {
       const loginAnswer = await loginUser(user);
-      console.log(loginAnswer);
       if (loginAnswer.type === "success") {
         navigate("/tsikilo/home");
       } else if (loginAnswer.type === "unknown_user") {
