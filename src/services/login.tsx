@@ -52,7 +52,8 @@ export const useAuthService = () => {
           login(response.data.user);
         } else {
           return {
-            message: "Vous n'avez pas accèss à cette plateforme",
+            message:
+              "Vous n'avez pas accès à cette plateforme, veuillez vérifier votre connexion ou contacter l'administrateur",
             type: "error",
           };
         }
