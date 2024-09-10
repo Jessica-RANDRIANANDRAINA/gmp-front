@@ -541,6 +541,7 @@ const TableUser = ({
             data={["5", "10", "15", "20"]}
             placeholder="5"
             className="flex"
+            value={entriesPerPage.toString()}
             onValueChange={(selectedValue) => {
               setEntriesPerPage(parseInt(selectedValue, 10));
             }}
