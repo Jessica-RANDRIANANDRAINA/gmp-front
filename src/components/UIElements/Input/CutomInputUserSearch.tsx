@@ -64,7 +64,7 @@ const CutomInputUserSearch = ({
         />
         <div
           className={`absolute mt-1 bg-opacity-90 max-h-45 overflow-y-scroll  z-999999 min-w-fit w-full bg-white border border-stroke rounded-sm transition-transform duration-200 ease-in-out transform ${
-            valueChange.length > 2
+            valueChange.length > 1
               ? "scale-y-100 scale-x-100 opacity-100"
               : "scale-y-0 scale-x-0 opacity-0"
           }`}
