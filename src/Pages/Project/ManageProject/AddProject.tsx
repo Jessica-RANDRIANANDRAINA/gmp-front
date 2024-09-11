@@ -17,13 +17,7 @@ import { decodeToken } from "../../../services/Function/TokenService";
 import { v4 as uuid4 } from "uuid";
 import { PuffLoader } from "react-spinners";
 
-const AddProject = ({
-  setIsAddProject,
-  setIsButtonAnimate,
-}: {
-  setIsAddProject: Function;
-  setIsButtonAnimate: Function;
-}) => {
+const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [projectData, setProjectData] = useState<ProjectData>({
     id: "",
@@ -244,7 +238,6 @@ const AddProject = ({
         <button
           onClick={() => {
             setIsAddProject(false);
-            setIsButtonAnimate(true);
           }}
           className={`md:w-fit gap-2  w-full cursor-pointer mt-2 py-2 px-5  text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen dark:hover:bg-opacity-90 md:ease-out md:duration-300 md:transform   ${
             isLoaded ? "md:translate-x-0 " : "md:translate-x-[60vw]"
