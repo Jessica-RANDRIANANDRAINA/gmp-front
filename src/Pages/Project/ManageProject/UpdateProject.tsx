@@ -42,10 +42,10 @@ const UpdateProject = ({
     listRessources: [],
     listPhases: [],
     listUsers: [],
-    codeBuget: projectDataToModif?.budgets?.[0]?.code,
-    directionSourceBudget: projectDataToModif?.budgets?.[0]?.direction,
-    budgetAmount: projectDataToModif?.budgets?.[0]?.amount,
-    budgetCurrency: projectDataToModif?.budgets?.[0]?.currency ?? "Ar",
+    codeBuget: projectDataToModif?.listBudgets?.[0]?.code,
+    directionSourceBudget: projectDataToModif?.listBudgets?.[0]?.direction,
+    budgetAmount: projectDataToModif?.listBudgets?.[0]?.amount,
+    budgetCurrency: projectDataToModif?.listBudgets?.[0]?.currency ?? "Ar",
   });
   const [ressourceList, setRessourceList] = useState<Array<RessourceInterface>>(
     []
@@ -73,31 +73,42 @@ const UpdateProject = ({
     fetchDepartment();
   }, []);
 
-  // Initialize ressource, get the ancient ressource
+  // Initialize ressource, phase, get the ancient ressource, phase
   useEffect(() => {
     const ressourceData: RessourceInterface[] = [];
     const phaseData: PhaseInterface[] = [];
-    if (projectDataToModif.ressources.length > 0) {
-      for (let i = 0; i < projectDataToModif.ressources.length; i++) {
+    const team = [];
+    if (projectDataToModif?.listRessources?.length > 0) {
+      for (let i = 0; i < projectDataToModif.listRessources.length; i++) {
         ressourceData.push({
-          id: projectDataToModif.ressources[i]?.id,
-          ressource: projectDataToModif.ressources[i]?.ressource1,
-          source: projectDataToModif.ressources[i]?.source,
-          type: projectDataToModif.ressources[i]?.type,
+          id: projectDataToModif.listRessources[i]?.id,
+          ressource: projectDataToModif.listRessources[i]?.ressource,
+          source: projectDataToModif.listRessources[i]?.source,
+          type: projectDataToModif.listRessources[i]?.type,
         });
       }
       setRessourceList(ressourceData);
     }
-    if (projectDataToModif.phases.length > 0) {
-      for (let i = 0; i < projectDataToModif.phases.length; i++) {
+    if (projectDataToModif?.listPhases?.length > 0) {
+      for (let i = 0; i < projectDataToModif.listPhases.length; i++) {
         phaseData.push({
-          id: projectDataToModif.phases[i]?.id,
-          phase1: projectDataToModif.phases[i]?.phase1,
+          id: projectDataToModif.listPhases[i]?.id,
+          phase1: projectDataToModif.listPhases[i]?.phase1,
           expectedDeliverable:
-            projectDataToModif.phases[i]?.expectedDeliverable,
+            projectDataToModif.listPhases[i]?.expectedDeliverable,
         });
       }
       setPhaseAndLivrableList(phaseData);
+    }
+    if (projectDataToModif?.listUsers?.length > 0) {
+      for (let i = 0; i < projectDataToModif.listUsers.length; i++) {
+        team.push({
+          id: projectDataToModif.listUsers[i]?.userid,
+          name: projectDataToModif.listUsers[i]?.user?.name,
+          email: projectDataToModif.listUsers[i]?.user?.email,
+        });
+      }
+      setUserTeam(team);
     }
   }, [projectDataToModif]);
 
@@ -771,7 +782,7 @@ const UpdateProject = ({
                 <div className="hide-scrollbar overflow-y-scroll md:max-h-125 md:min-h-125">
                   <CutomInputUserSearch
                     placeholder="Recherche"
-                    label="Assigner"
+                    label=""
                     userSelected={userTeam}
                     setUserSelected={setUserTeam}
                   />
