@@ -22,6 +22,15 @@ export const getProjectByUserId = async (userid: string | undefined) => {
     throw new Error(`Error at fetching project by user service: ${error}`);
   }
 };
+//get project by project id
+export const getProjectById = async (projectid: string) => {
+  try {
+    const response = await axios.get(`${endPoint}/api/Project/${projectid}`);
+    return response.data;
+  } catch (error) {
+    throw new Error(`Error at fetching project by id service: ${error}`);
+  }
+};
 
 // ===== POST =======
 // create a new project

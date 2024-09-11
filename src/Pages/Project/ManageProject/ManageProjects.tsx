@@ -1,14 +1,20 @@
 import { useState, useEffect } from "react";
 import ProjectLayout from "../../../layout/ProjectLayout";
 import AddProject from "./AddProject";
+import UpdateProject from "./UpdateProject";
 import { TableProjet } from "../../../components/Tables/projets";
-import { getProjectByUserId } from "../../../services/Project/ProjectServices";
+import {
+  getProjectByUserId,
+  getProjectById,
+} from "../../../services/Project/ProjectServices";
 import { decodeToken } from "../../../services/Function/TokenService";
 
 const ManageProjects = () => {
   const [isAddProject, setIsAddProject] = useState(false);
-  const [isButtonAnimate, setIsButtonAnimate] = useState(false);
   const [projectData, setProjectData] = useState([]);
+  const [projectDataToModif, setProjectDataToModif] = useState();
+  const [projectToModif, setProjectToModif] = useState([]);
+  const [isModifProject, setIsModifProject] = useState(false);
 
   // fetch all project related to the user connected
   const fetchProject = async () => {
@@ -17,6 +23,17 @@ const ManageProjects = () => {
     const project = await getProjectByUserId(decode?.jti);
     setProjectData(project);
   };
+
+  const fetchProjectDataBeforeModif = async () => {
+    if (projectToModif.length > 0) {
+      const project = await getProjectById(projectToModif?.[0]);
+      setProjectDataToModif(project);
+      setProjectToModif([]);
+    }
+  };
+  useEffect(() => {
+    fetchProjectDataBeforeModif();
+  }, [isModifProject, projectToModif]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -27,7 +44,7 @@ const ManageProjects = () => {
   return (
     <ProjectLayout>
       <div>
-        {!isAddProject ? (
+        {!isAddProject && !isModifProject ? (
           <>
             {/* ===== ADD PROJECT START =====*/}
             <div className="w-full mb-2 flex justify-end  items-center">
@@ -56,15 +73,22 @@ const ManageProjects = () => {
             </div>
             {/* ===== ADD PROJECT END =====*/}
             {/* ===== TABLE PROJECT LIST START =====*/}
-            <TableProjet data={projectData} />
+            <TableProjet
+              data={projectData}
+              setProjectToModif={setProjectToModif}
+              setIsModifProject={setIsModifProject}
+            />
             {/* ===== TABLE PROJECT LIST END =====*/}
           </>
-        ) : (
-          <AddProject
-            setIsAddProject={setIsAddProject}
-            setIsButtonAnimate={setIsButtonAnimate}
+        ) : isAddProject ? (
+          <AddProject setIsAddProject={setIsAddProject} />
+        ) : projectDataToModif ? (
+          <UpdateProject
+            setIsModifProject={setIsModifProject}
+            projectDataToModif={projectDataToModif}
+            setProjectDataToModif={setProjectDataToModif}
           />
-        )}
+        ) : null}
       </div>
     </ProjectLayout>
   );

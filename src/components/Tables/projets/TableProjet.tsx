@@ -5,7 +5,15 @@ import { decodeToken } from "../../../services/Function/TokenService";
 import { getInitials } from "../../../services/Function/UserFunctionService";
 import Pagination from "../Pagination";
 
-const TableProjet = ({ data }: { data: Array<any> }) => {
+const TableProjet = ({
+  data,
+  setProjectToModif,
+  setIsModifProject
+}: {
+  data: Array<any>;
+  setProjectToModif: Function;
+  setIsModifProject: Function;
+}) => {
   const [entriesPerPage, setEntriesPerPage] = useState(5);
   const [actualPage, setActualPage] = useState(1);
   const [pageNumbers, setPageNumbers] = useState(1);
@@ -13,14 +21,6 @@ const TableProjet = ({ data }: { data: Array<any> }) => {
   const [isAllSelected, setIsAllSelected] = useState(false);
   const [projectSelected, setProjectSelected] = useState<string[]>([]);
   const userConnected = decodeToken("pr");
-
-  useEffect(() => {
-    console.log("****");
-    console.log(data);
-    console.log(userConnected);
-
-    console.log("****");
-  }, []);
 
   // TO GET THE NUMBER OF PAGE DEPENDING OF THE ENTRIES PER PAGE
   const getPageNumber = (dataLength: number) => {
@@ -58,7 +58,7 @@ const TableProjet = ({ data }: { data: Array<any> }) => {
             type="text"
             // value={"search.nameAndMail"}
             label="Recherche"
-            placeholder="Nom ou mail"
+            placeholder="Titre"
             rounded="medium"
             onChange={(e) => {
               //   setSearch({
@@ -191,16 +191,20 @@ const TableProjet = ({ data }: { data: Array<any> }) => {
         <div> {projectSelected.length} éléments séléctionné </div>
         <div>
           <CustomSelect
-            data={["Modifier habilitation(s)", "Supprimer habilitation(s)"]}
+            data={
+              projectSelected.length > 1
+                ? ["supprimer"]
+                : ["Modifier", "Supprimer"]
+            }
             className="mb-2  "
             placeholder="Actions"
             onValueChange={(e) => {
-              console.log(e);
-              // if (e.includes("Modifier")) {
-              //   setUserModif(true);
-              // } else {
-              //   setUserDelete(true);
-              // }
+              if (e.includes("Modifier")) {
+                setProjectToModif(projectSelected);
+                setIsModifProject(true)
+              } else {
+                console.log("first");
+              }
             }}
           />
         </div>
@@ -374,9 +378,6 @@ const TableProjet = ({ data }: { data: Array<any> }) => {
                     return user?.userid === userConnected?.jti;
                   }
                 );
-                console.log("////////");
-                console.log(project);
-                console.log("////////");
 
                 return (
                   <tr
