@@ -7,10 +7,12 @@ const TableAccess = ({
   data,
   setIsDeleteAccess,
   setAccessSelectedId,
+  setIsModalModifAccessVisible,
 }: {
   data: TableAccessProps["data"];
   setIsDeleteAccess: Function;
   setAccessSelectedId: Function;
+  setIsModalModifAccessVisible: Function;
 }) => {
   const [entriesPerPage, setEntriesPerPage] = useState(5);
   const [actualPage, setActualPage] = useState(1);
@@ -78,7 +80,8 @@ const TableAccess = ({
       //   console.log(`Unable to delete habilitations: ${error}`);
       // }
     } else {
-      console.log("2");
+      setAccessSelectedId(accessSelected);
+      setIsModalModifAccessVisible(true);
     }
   };
   return (

@@ -27,6 +27,17 @@ export const getAllHabilitationLabels = async () => {
     throw new Error(`Error at service fetching habilitation labels`);
   }
 };
+// get habilitations by his id
+export const getHabilitationById = async (habilitationId: string) => {
+  try {
+    const response = await axios.get(
+      `${endPoint}/api/Habilitation/${habilitationId}`
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(`Error at service fetching habilitation by id ${error}`);
+  }
+};
 
 /* ========= POST ========= */
 // CREATE HABILITATION
@@ -44,6 +55,22 @@ export const createHabilitation = async (
   }
 };
 
+/* ========= PUT ========= */
+export const updateHabilitation = async (
+  habilitationData: HabilitationDataProps,
+  habilitationId: string
+) => {
+  try {
+    const response = await axios.put(
+      `${endPoint}/api/Habilitation/update/${habilitationId}`,
+      habilitationData
+    );
+    return response.data
+  } catch (error) {
+    console.error(`Error service update habilitation service: ${error}`);
+  }
+};
+/* ========= DELETE ========= */
 // DELETE HABILITATION
 export const deleteHabilitation = async (ids: string[]) => {
   try {

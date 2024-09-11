@@ -1,16 +1,36 @@
 import { useState, useEffect } from "react";
 import DefaultLayout from "../../layout/DefaultLayout";
 import { TableAccess } from "../../components/Tables";
-import AddAccessModal from "../../components/Modals/Access/AddAccessModal";
-import { getAllHabilitation } from "../../services/User";
-import ConfirmSuppressAccess from "../../components/Modals/Access/ConfirmSuppressAccess";
+import {
+  AddAccessModal,
+  UpdateAccessModal,
+  ConfirmSuppressAccess,
+} from "../../components/Modals/Access";
+import { getAllHabilitation, getHabilitationById } from "../../services/User";
 
 const ManageAccess = () => {
   const [isAddModalAccessVisible, setIsModalAccessVisible] = useState(false);
+  const [isAddModalModifAccessVisible, setIsModalModifAccessVisible] =
+    useState(false);
   const [habilitationData, setHabilitationData] = useState([]);
+  const [habilitationToModifData, setHabilitationToModifData] = useState([]);
   const [isDeleteAccess, setIsDeleteAccess] = useState(false);
   const [accessSelectedId, setAccessSelectedId] = useState([]);
 
+  const fetchHabilitationById = async () => {
+    if (accessSelectedId.length > 0) {
+      const habilitation = await getHabilitationById(accessSelectedId?.[0]);
+      setHabilitationToModifData(habilitation);
+    }
+  };
+
+  useEffect(() => {
+    if (isAddModalModifAccessVisible) {
+      fetchHabilitationById();
+    }
+  }, [isAddModalModifAccessVisible, accessSelectedId]);
+
+  // fetch all habilitations
   const fetchHabilitation = async () => {
     const habilitation = await getAllHabilitation();
     console.log(habilitation);
@@ -60,6 +80,7 @@ const ManageAccess = () => {
           data={habilitationData}
           setIsDeleteAccess={setIsDeleteAccess}
           setAccessSelectedId={setAccessSelectedId}
+          setIsModalModifAccessVisible={setIsModalModifAccessVisible}
         />
         {/* ===== MODAL ADD ACCESS START ===== */}
         {isAddModalAccessVisible && (
@@ -69,8 +90,23 @@ const ManageAccess = () => {
           />
         )}
         {/* ===== MODAL ADD ACCESS END ===== */}
+        {/* ===== MODAL UPDATE ACCESS END ===== */}
+        {isAddModalModifAccessVisible && (
+          <UpdateAccessModal
+            setIsModalOpen={setIsModalModifAccessVisible}
+            setHabilitationToModifData={setHabilitationToModifData}
+            habilitationToModifData={habilitationToModifData}
+            habilitationId={accessSelectedId?.[0]}
+          />
+        )}
+        {/* ===== MODAL UPDATE ACCESS END ===== */}
         {/* ===== MODAL CONFIRM DELETE ACCESS START ===== */}
-        {isDeleteAccess && <ConfirmSuppressAccess setIsDeleteAccess={setIsDeleteAccess} accessSelectedId={accessSelectedId} />}
+        {isDeleteAccess && (
+          <ConfirmSuppressAccess
+            setIsDeleteAccess={setIsDeleteAccess}
+            accessSelectedId={accessSelectedId}
+          />
+        )}
         {/* ===== MODAL CONFIRM DELETE ACCESS END ===== */}
       </div>
     </DefaultLayout>

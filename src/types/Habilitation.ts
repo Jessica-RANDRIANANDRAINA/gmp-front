@@ -1,5 +1,5 @@
 export interface HabilitationDataProps {
-  id: string;
+  id?: string;
   label: string;
   habilitationAdmins: HabilitationAdminInterface[];
   habilitationProjects: {

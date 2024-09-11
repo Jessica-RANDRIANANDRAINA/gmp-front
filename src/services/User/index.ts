@@ -8,6 +8,8 @@ import {
   getAllHabilitation,
   getAllHabilitationLabels,
   deleteHabilitation,
+  getHabilitationById,
+  updateHabilitation,
 } from "./HabilitationServices";
 
 export {
@@ -18,4 +20,6 @@ export {
   getAllHabilitationLabels,
   deleteHabilitation,
   assignHabilitations,
+  getHabilitationById,
+  updateHabilitation,
 };

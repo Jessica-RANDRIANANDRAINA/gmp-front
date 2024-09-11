@@ -11,9 +11,6 @@ const Checkbox = ({
 
   useEffect(() => {
     active ? setIsChecked(true) : null;
-    if (active) {
-      console.log("asdasdasd");
-    }
   }, [active]);
 
   const handleCheck = (isCheck: boolean) => {

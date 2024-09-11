@@ -61,5 +61,5 @@ export type CheckBoxProp = {
   htmlFor?: string;
   checked?: boolean;
   onStateCheckChange?: (checked: boolean) => void;
-  active?: boolean;
+  active?: boolean | number;
 };
