@@ -16,6 +16,7 @@ const CustomInput = ({
   rounded = "none",
   cols,
   rows,
+  value,
   error,
   required = false,
   onChange,
@@ -43,6 +44,7 @@ const CustomInput = ({
           placeholder={placeholder}
           autoFocus={!!error}
           onChange={onChange}
+          value={value}
         ></textarea>
       ) : (
         <input
@@ -57,6 +59,7 @@ const CustomInput = ({
           }`}
           placeholder={placeholder}
           autoFocus={!!error}
+          value={value}
           {...rest}
         />
       )}

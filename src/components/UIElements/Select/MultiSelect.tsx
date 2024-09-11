@@ -14,6 +14,7 @@ const MultiSelect = ({
   setValueMulti,
   rounded = "none",
   id,
+  initialValue,
   placeholder,
   className,
   required = false,
@@ -39,8 +40,28 @@ const MultiSelect = ({
         setOptions(newOptions);
       }
     };
-
     loadOptions();
+  }, [id, value]);
+
+  useEffect(() => {
+    if (initialValue && selected.length === 0 && options.length > 0) {
+      const selectedIndices: number[] = [];
+      const newOptions = [...options];
+      const value = initialValue
+        ?.split(",")
+        ?.map((item: string) => item?.trim());
+
+      for (let i = 0; i < value.length; i++) {
+        for (let j = 0; j < options.length; j++) {
+          if (value[i] === options[j].value) {
+            selectedIndices.push(j);
+            newOptions[j].selected = true;
+          }
+        }
+      }
+      setSelected(selectedIndices);
+      setOptions(newOptions);
+    }
   }, [id, value]);
 
   const open = () => {

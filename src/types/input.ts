@@ -9,6 +9,7 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   rows?: number;
   cols?: number;
   label: string;
+  value?: string | number | undefined;
   onChange?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
 }
 
@@ -18,11 +19,11 @@ export interface InputUserSearchInterface {
   rounded?: "full" | "medium" | "large" | "none";
   label?: string;
   userSelected: {
-    id: string | undefined, 
-    name: string, 
-    email: string
-  }[]
-  setUserSelected: Function
+    id: string | undefined;
+    name: string;
+    email: string;
+  }[];
+  setUserSelected: Function;
 }
 
 export interface OptionMultiSelect {
@@ -40,7 +41,8 @@ export interface MultiSelectProps {
   placeholder?: string;
   rounded?: "full" | "medium" | "large" | "none";
   className?: string;
-  required?: boolean
+  required?: boolean;
+  initialValue?: string;
 }
 
 export interface InputSelectprops
