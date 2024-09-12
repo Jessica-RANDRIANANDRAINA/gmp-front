@@ -26,7 +26,7 @@ const Header = (props: {
       className="sticky top-0 z-999 flex w-full py-2 pr-6 bg-white drop-shadow-1 dark:bg-boxdark bg-cover bg-no-repeat dark:drop-shadow-none"
       style={{ backgroundImage: `url(${pattern})` }}
     >
-      <div className="flex flex-grow items-center justify-between px-4 py-4  md:px-6 2xl:px-11">
+      <div className="flex flex-grow items-center justify-between px-4  md:px-6 2xl:px-11">
         <div className="flex items-center gap-2  sm:gap-4">
           {/* hamburger toogle button */}
           <button
