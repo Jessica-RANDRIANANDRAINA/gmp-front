@@ -89,6 +89,7 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
   // ADD PHASE IN THE LIST
   const handleAddPhaseList = () => {
     let phaseData: PhaseInterface = {
+      rank: 0,
       phase1: "",
       expectedDeliverable: "",
     };
@@ -99,17 +100,20 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
   const handleAddDefaultPhaseList = () => {
     let phaseData: PhaseInterface[] = [
       {
-        id: uuid4(),
+        // id: uuid4(),
+        rank: 0,
         phase1: "Etude",
         expectedDeliverable: "Document d'étude de projet et de faisabilité",
       },
       {
-        id: uuid4(),
+        // id: uuid4(),
+        rank: 1,
         phase1: "Conception",
         expectedDeliverable: "Document de conception",
       },
       {
-        id: uuid4(),
+        // id: uuid4(),
+        // rank: 2,
         phase1: "Developpement",
         expectedDeliverable: "Document de documentation",
       },
@@ -164,6 +168,7 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
         idx === index
           ? {
               ...phase,
+              rank: index,
               [label === "phase" ? "phase1" : "expectedDeliverable"]: value,
             }
           : phase

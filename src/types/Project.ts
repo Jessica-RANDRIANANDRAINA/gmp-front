@@ -32,7 +32,8 @@ export interface ProjectDtoInterface {
   listUsers: UserProjectInterface[];
 }
 export interface PhaseInterface {
-  id?: string;
+  id?: number;
+  rank?: number;
   phase1: string;
   expectedDeliverable: string;
 }
