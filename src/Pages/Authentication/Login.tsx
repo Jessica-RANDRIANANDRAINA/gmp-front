@@ -140,8 +140,11 @@ const Login = () => {
             Se connecter
           </button>
           {loginError.error && (
-            <div className="text-red-500 mt-4 font-bold">
-              Vous n'avez pas accès à cette plateforme
+            <div className="text-red-500  mt-4 font-bold flex flex-col justify-center items-center ">
+              <span>Vous n'avez pas accès à cette plateforme,</span>
+              <span className=" text-center">
+                Veuillez vérifier votre connexion ou contacter l'administrateur
+              </span>
             </div>
           )}
         </form>

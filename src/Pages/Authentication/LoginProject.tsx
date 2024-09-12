@@ -130,7 +130,7 @@ const LoginProject = () => {
           </button>
           {loginError.error && (
             <div className="text-red-500 mt-4 font-bold">
-              Vous n'avez pas accès à cette plateforme
+              Vous n'avez pas accès à cette plateforme, veuillez vérifier votre connexion ou contacter l'administrateur
             </div>
           )}
         </form>
