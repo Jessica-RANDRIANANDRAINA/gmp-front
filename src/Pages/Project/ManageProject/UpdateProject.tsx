@@ -12,6 +12,7 @@ import {
   ProjectData,
 } from "../../../types/Project";
 import { getAllDepartments } from "../../../services/User";
+import { updateProject } from "../../../services/Project/ProjectServices";
 import { decodeToken } from "../../../services/Function/TokenService";
 import { v4 as uuid4 } from "uuid";
 import { PuffLoader } from "react-spinners";
@@ -94,6 +95,7 @@ const UpdateProject = ({
         phaseData.push({
           id: projectDataToModif.listPhases[i]?.id,
           phase1: projectDataToModif.listPhases[i]?.phase1,
+          rank: projectDataToModif.listPhases[i]?.rank,
           expectedDeliverable:
             projectDataToModif.listPhases[i]?.expectedDeliverable,
         });
@@ -142,17 +144,20 @@ const UpdateProject = ({
   const handleAddDefaultPhaseList = () => {
     let phaseData: PhaseInterface[] = [
       {
-        id: uuid4(),
+        // id: uuid4(),
+        rank: 0,
         phase1: "Etude",
         expectedDeliverable: "Document d'étude de projet et de faisabilité",
       },
       {
-        id: uuid4(),
+        // id: uuid4(),
+        rank: 1,
         phase1: "Conception",
         expectedDeliverable: "Document de conception",
       },
       {
-        id: uuid4(),
+        // id: uuid4(),
+        // rank: 2,
         phase1: "Developpement",
         expectedDeliverable: "Document de documentation",
       },
@@ -174,20 +179,12 @@ const UpdateProject = ({
     setUserTeam(filteredList);
   };
 
-  const handleRessourceDataChange = (
-    valueToChange: string,
-    index: number,
-    value: string
-  ) => {
-    let data = ressourceList;
-    if (valueToChange === "source") {
-      data[index].source = value;
-    } else if (valueToChange === "etat") {
-      data[index].type = value;
-    } else if (valueToChange === "ressource") {
-      data[index].ressource = value;
-    }
-    setRessourceList(data);
+  const handleRessourceDataChange = (field: string, index: number, value: string) => {
+    setRessourceList((prevState) => {
+      const newRessources = [...prevState];
+      newRessources[index] = { ...newRessources[index], [field]: value };
+      return newRessources;
+    });
   };
 
   const handlePhaseDataChange = (
@@ -207,8 +204,8 @@ const UpdateProject = ({
     );
   };
 
-  // create project
-  const handleCreateProject = async () => {
+  // update project
+  const handleUpdateProject = async () => {
     setIsCreateLoading(true);
     const projectid = uuid4();
     // trnasform the benefiary from an array to a string
@@ -246,7 +243,6 @@ const UpdateProject = ({
     // trenasform all the data to a single object
     const data = {
       ...projectData,
-      id: projectid,
       initiator: userConnected?.name,
       beneficiary: beneficiary,
       listBudgets: budgetData,
@@ -254,17 +250,18 @@ const UpdateProject = ({
       listPhases: phaseAndLivrableList,
       listUsers: userProject,
     };
+    console.log(data);
 
-    // try {
-    //   // create project service
-    //   await createProject(data);
-    //   setIsUpdateProject(false);
-    // } catch (error) {
-    //   console.log(`Error at create project: ${error}`);
-    // } finally {
-    //   // stop loading
-    //   setIsCreateLoading(false);
-    // }
+    try {
+      // create project service
+      await updateProject(data?.id, data);
+      setIsModifProject(false);
+    } catch (error) {
+      console.log(`Error at create project: ${error}`);
+    } finally {
+      // stop loading
+      setIsCreateLoading(false);
+    }
   };
 
   return (
@@ -525,6 +522,7 @@ const UpdateProject = ({
                     type="text"
                     rounded="medium"
                     placeholder="Code de budget"
+                    // disabled={true}
                     value={projectData?.codeBuget}
                     required
                     onChange={(e) => {
@@ -588,6 +586,7 @@ const UpdateProject = ({
                 </span>
                 <div className=" max-h-80 min-h-80 overflow-y-scroll">
                   {ressourceList?.map((ressource, index) => {
+                    console.log(ressource.source)
                     return (
                       <div key={ressource.id}>
                         <div className={"flex justify-between"}>
@@ -626,7 +625,7 @@ const UpdateProject = ({
                             data={["A acquérir", "Disponible"]}
                             value={ressource.type}
                             onValueChange={(e) => {
-                              handleRessourceDataChange("etat", index, e);
+                              handleRessourceDataChange("type", index, e);
                             }}
                             required
                           />
@@ -814,7 +813,7 @@ const UpdateProject = ({
                   Précédent
                 </button>
                 <button
-                  onClick={handleCreateProject}
+                  onClick={handleUpdateProject}
                   className="md:w-fit gap-2 w-full flex cursor-pointer mt-2 py-2 px-5  text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen dark:hover:bg-opacity-90"
                 >
                   {isCreateLoading && (
@@ -822,7 +821,7 @@ const UpdateProject = ({
                       <PuffLoader size={20} className="mr-2" />
                     </span>
                   )}
-                  Créer le projet
+                  Modifier le projet
                 </button>
               </div>
             </div>
