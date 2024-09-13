@@ -5,6 +5,7 @@ export interface ProjectData {
   priority: string;
   beneficiary: string;
   initiator: string;
+  completionPercentage: number;
   startDate?: string;
   endDate?: string;
   listBudgets: BudgetInterface[];

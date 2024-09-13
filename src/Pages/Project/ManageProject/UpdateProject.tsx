@@ -38,6 +38,7 @@ const UpdateProject = ({
     beneficiary: "",
     initiator: projectDataToModif?.initiator,
     startDate: projectDataToModif?.startDate,
+    completionPercentage: projectDataToModif?.completionPercentage,
     endDate: projectDataToModif?.endDate,
     listBudgets: [],
     listRessources: [],
@@ -58,7 +59,7 @@ const UpdateProject = ({
   const [pageCreate, setPageCreate] = useState(1);
   const [departments, setDepartments] = useState<string[]>([]);
   const [userTeam, setUserTeam] = useState<
-    { id: string | undefined; name: string; email: string }[]
+    { id: string | undefined; name: string; email: string; role: string }[]
   >([]);
   const [isCreateLoading, setIsCreateLoading] = useState(false);
   useEffect(() => {
@@ -108,6 +109,7 @@ const UpdateProject = ({
           id: projectDataToModif.listUsers[i]?.userid,
           name: projectDataToModif.listUsers[i]?.user?.name,
           email: projectDataToModif.listUsers[i]?.user?.email,
+          role: projectDataToModif.listUsers[i]?.role,
         });
       }
       setUserTeam(team);
@@ -179,7 +181,11 @@ const UpdateProject = ({
     setUserTeam(filteredList);
   };
 
-  const handleRessourceDataChange = (field: string, index: number, value: string) => {
+  const handleRessourceDataChange = (
+    field: string,
+    index: number,
+    value: string
+  ) => {
     setRessourceList((prevState) => {
       const newRessources = [...prevState];
       newRessources[index] = { ...newRessources[index], [field]: value };
@@ -252,16 +258,16 @@ const UpdateProject = ({
     };
     console.log(data);
 
-    try {
-      // create project service
-      await updateProject(data?.id, data);
-      setIsModifProject(false);
-    } catch (error) {
-      console.log(`Error at create project: ${error}`);
-    } finally {
-      // stop loading
-      setIsCreateLoading(false);
-    }
+    // try {
+    //   // create project service
+    //   await updateProject(data?.id, data);
+    //   setIsModifProject(false);
+    // } catch (error) {
+    //   console.log(`Error at create project: ${error}`);
+    // } finally {
+    //   // stop loading
+    //   setIsCreateLoading(false);
+    // }
   };
 
   return (
@@ -333,7 +339,7 @@ const UpdateProject = ({
               }
               setPageCreate(3);
             }}
-            className={`border p-2 border-slate-200 tranform duration-500 ease-linear cursor-pointer ${
+            className={`border p-2 border-slate-200 tranform duration-500 ease-linear ${
               pageCreate === 3 ? "bg-amber-200" : ""
             } 
             ${
@@ -360,7 +366,7 @@ const UpdateProject = ({
               }
               setPageCreate(4);
             }}
-            className={`border p-2 border-slate-200 tranform duration-500 ease-linear cursor-pointer ${
+            className={`border p-2 border-slate-200 tranform duration-500 ease-linear ${
               pageCreate === 4 ? "bg-amber-200" : ""
             }
             ${
@@ -388,20 +394,34 @@ const UpdateProject = ({
               pageCreate === 1 ? "opacity-100" : "opacity-0 h-0 overflow-hidden"
             }`}
           >
-            <CustomInput
-              label="Titre"
-              type="text"
-              rounded="medium"
-              placeholder="Titre du projet"
-              value={projectData?.title}
-              required
-              onChange={(e) => {
-                setProjectData({
-                  ...projectData,
-                  title: e.target.value,
-                });
-              }}
-            />
+            <div className="grid grid-cols-2 gap-4">
+              <CustomInput
+                label="Titre"
+                type="text"
+                rounded="medium"
+                placeholder="Titre du projet"
+                value={projectData?.title}
+                required
+                onChange={(e) => {
+                  setProjectData({
+                    ...projectData,
+                    title: e.target.value,
+                  });
+                }}
+              />
+              <CustomSelect
+                label="Avancement du projet"
+                placeholder="0"
+                data={["0%", "25%", "50%", "75%", "100%"]}
+                value={`${projectData?.completionPercentage}%`}
+                onValueChange={(e) => {
+                  setProjectData({
+                    ...projectData,
+                    completionPercentage: parseInt(e.split("%")?.[0]),
+                  });
+                }}
+              />
+            </div>
             <CustomInput
               label="Description"
               type="textarea"
@@ -586,7 +606,6 @@ const UpdateProject = ({
                 </span>
                 <div className=" max-h-80 min-h-80 overflow-y-scroll">
                   {ressourceList?.map((ressource, index) => {
-                    console.log(ressource.source)
                     return (
                       <div key={ressource.id}>
                         <div className={"flex justify-between"}>
@@ -786,22 +805,27 @@ const UpdateProject = ({
                     setUserSelected={setUserTeam}
                   />
                   <div className="flex gap-4 mt-6 flex-wrap">
-                    {userTeam?.map((team) => (
-                      <div
-                        key={team.id}
-                        className="border flex justify-center items-center gap-1 p-2 rounded text-sm"
-                      >
-                        {team?.name}
-                        <span
-                          className="cursor-pointer border rounded-full w-4 h-4 flex justify-center items-center bg-slate-400 text-whiten "
-                          onClick={() => {
-                            handleRemoveTeamList(team.id);
-                          }}
+                    {userTeam?.map((team) => {
+
+                      return (
+                        <div
+                          key={team.id}
+                          className="border flex justify-center items-center gap-1 p-2 rounded text-sm"
                         >
-                          x
-                        </span>
-                      </div>
-                    ))}
+                          {team?.name}
+                          <span
+                            className={`cursor-pointer border rounded-full w-4 h-4 flex justify-center items-center bg-slate-400 text-whiten
+                            ${team?.role === "Owner" ? "hidden" : ""}
+                            `}
+                            onClick={() => {
+                              handleRemoveTeamList(team.id);
+                            }}
+                          >
+                            x
+                          </span>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
               </div>
