@@ -1,5 +1,5 @@
-import React, { useRef } from "react";
-import { CustomInput, CustomSelect } from "../UIElements";
+import React, { useRef, useState } from "react";
+import { CustomInput, CutomInputUserSearch } from "../UIElements";
 import { UserInterface } from "../../types/user";
 
 const ModifyHierarchy = ({
@@ -10,9 +10,13 @@ const ModifyHierarchy = ({
   userToModify: UserInterface | null;
 }) => {
   const trigger = useRef<any>(null);
+  const [newSuperior, setNewSuperior] = useState<
+    { id: string; name: string; email: string }[]
+  >([]);
 
   const modifySuperior = (e: React.FormEvent) => {
     e.preventDefault();
+    console.log(newSuperior)
     console.log("reussi");
   };
   return (
@@ -58,15 +62,35 @@ const ModifyHierarchy = ({
               value={userToModify?.superiorName?.toString() ?? ""}
               disabled
             />
-            <CustomSelect
-              label="Nouveau supérieur"
-              placeholder="supérieur"
-              data={["a", "b"]}
-              value={"a"}
-              onValueChange={(e) => {
-                console.log(e);
-              }}
-            />
+            {newSuperior?.length === 0 && (
+              <CutomInputUserSearch
+                label="Nouveau supérieur"
+                placeholder="supérieur"
+                userSelected={newSuperior}
+                setUserSelected={setNewSuperior}
+                rounded="medium"
+              />
+            )}
+
+            <div
+              className={`  mt-3 ${
+                newSuperior?.length > 0 ? "block" : "hidden"
+              }`}
+            >
+              <label className="mb-2.5 font-poppins font-semibold leading-relaxed block text-sm text-black dark:text-white">Nouveau supérieur</label>
+              <div className="flex border rounded-md p-2  justify-between w-full  border-stroke bg-transparent py-3 pl-6 pr-10 text-black outline-none focus:border-primaryGreen focus-visible:shadow-none dark:border-neutral-500 dark:focus:border-primaryGreen">
+                {newSuperior?.[newSuperior?.length - 1]?.name}
+                <span
+                  className=""
+                  onClick={() => {
+                    setNewSuperior([]);
+                  }}
+                >
+                  x
+                </span>
+              </div>
+            </div>
+
             <input
               type="submit"
               value={"Modifier"}
