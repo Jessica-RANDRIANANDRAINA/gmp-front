@@ -46,3 +46,20 @@ export const createProject = async (projectData: ProjectDtoInterface) => {
     throw new Error(`Error at create new project services: ${error}`);
   }
 };
+
+// ===== PUT ===== //
+// update a given project
+export const updateProject = async (
+  projectId: string,
+  projectData: ProjectDtoInterface
+) => {
+  try {
+    const response = await axios.put(
+      `${endPoint}/api/Project/update/${projectId}`,
+      projectData
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(`Error at update project services: ${error}`);
+  }
+};
