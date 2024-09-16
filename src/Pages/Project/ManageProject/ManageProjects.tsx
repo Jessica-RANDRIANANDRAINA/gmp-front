@@ -39,7 +39,7 @@ const ManageProjects = () => {
     setTimeout(() => {
       fetchProject();
     }, 200);
-  }, [isAddProject]);
+  }, [isAddProject, isModifProject]);
 
   return (
     <ProjectLayout>
