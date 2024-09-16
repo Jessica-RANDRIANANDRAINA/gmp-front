@@ -62,6 +62,11 @@ export const useAuthService = () => {
       return response.data;
     } catch (error) {
       console.error(`Error while login ${error}`);
+      return {
+        message:
+          "Vous n'avez pas accès à cette plateforme, veuillez vérifier votre connexion ou contacter l'administrateur",
+        type: "error",
+      };
     }
   };
 
