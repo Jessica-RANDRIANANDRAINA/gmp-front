@@ -236,15 +236,8 @@ const UpdateProject = ({
     const userProject = userTeam?.map((team) => ({
       userid: team.id,
       projectid: projectid,
-      role: "User",
+      role: team?.role,
     }));
-
-    // make the user connected owner of the project
-    userProject.push({
-      userid: userConnected?.jti,
-      projectid: projectid,
-      role: "Owner",
-    });
 
     // trenasform all the data to a single object
     const data = {
@@ -258,16 +251,16 @@ const UpdateProject = ({
     };
     console.log(data);
 
-    // try {
-    //   // create project service
-    //   await updateProject(data?.id, data);
-    //   setIsModifProject(false);
-    // } catch (error) {
-    //   console.log(`Error at create project: ${error}`);
-    // } finally {
-    //   // stop loading
-    //   setIsCreateLoading(false);
-    // }
+    try {
+      // update project service
+      await updateProject(data?.id, data);
+      setIsModifProject(false);
+    } catch (error) {
+      console.log(`Error at create project: ${error}`);
+    } finally {
+      // stop loading
+      setIsCreateLoading(false);
+    }
   };
 
   return (
@@ -804,13 +797,12 @@ const UpdateProject = ({
                     userSelected={userTeam}
                     setUserSelected={setUserTeam}
                   />
-                  <div className="flex gap-4 mt-6 flex-wrap">
+                  <div className={`flex gap-4 mt-6 flex-wrap`}>
                     {userTeam?.map((team) => {
-
                       return (
                         <div
                           key={team.id}
-                          className="border flex justify-center items-center gap-1 p-2 rounded text-sm"
+                          className={`relative group border flex justify-center items-center gap-1 p-2 rounded text-sm cursor-pointer `}
                         >
                           {team?.name}
                           <span
@@ -823,6 +815,9 @@ const UpdateProject = ({
                           >
                             x
                           </span>
+                          <div className="absolute whitespace-nowrap text-xs hidden group-hover:block bg-white text-black border border-whiten shadow-5 rounded-md -top-9 p-2 z-10 transform -translate-x-1/2">
+                            {team?.role}
+                          </div>
                         </div>
                       );
                     })}
