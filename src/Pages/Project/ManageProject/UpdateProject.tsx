@@ -263,6 +263,15 @@ const UpdateProject = ({
     }
   };
 
+  // Function to compare if data is previous
+  const isPreviousDate = (date: string | number | Date | undefined) => {
+    if (!date) return false;
+    const inputDate = new Date(date);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return inputDate < today;
+  };
+
   return (
     <div>
       {/* ===== LINK RETURN START ===== */}
@@ -471,6 +480,7 @@ const UpdateProject = ({
                   });
                 }}
                 required
+                disabled={isPreviousDate(projectData?.startDate)}
               />
               <CustomInput
                 label="Date de fin prévue du projet"
