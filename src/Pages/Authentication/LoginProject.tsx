@@ -25,7 +25,7 @@ const LoginProject = () => {
     try {
       const loginAnswer = await loginUser(user);
       if (loginAnswer.type === "success") {
-        navigate("/tsikilo/home");
+        navigate("/tsikilo/project/home");
       } else if (loginAnswer.type === "unknown_user") {
         setLoginError({ ...loginError, mail: loginAnswer.message });
       } else if (loginAnswer.type === "incorrect_pass") {

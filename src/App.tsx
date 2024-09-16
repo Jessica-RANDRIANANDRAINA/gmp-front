@@ -61,7 +61,7 @@ const App = () => {
           }
         />
         <Route
-          path="/tsikilo/home"
+          path="/tsikilo/project/home"
           element={
             <>
               <PageTitle title="Tsikilo" />
@@ -70,7 +70,7 @@ const App = () => {
           }
         />
         <Route
-          path="/tsikilo/projet/list"
+          path="/tsikilo/project/list"
           element={
             <>
               <PageTitle title="Tsikilo" />
@@ -79,7 +79,7 @@ const App = () => {
           }
         />
         <Route
-          path="/tsikilo/hebdo"
+          path="/tsikilo/project/hebdo"
           element={
             <>
               <PageTitle title="Tsikilo" />
