@@ -448,7 +448,21 @@ const TableProjet = ({
                       </p>
                     </td>
                     <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                      <p className=" dark:text-white font-semibold rounded-md bg-yellow-200  text-amber-600 text-center py-1 px-2 text-xs  w-fit">
+                      <p
+                        className={` dark:text-white font-semibold rounded-md  text-center py-1 px-2 text-xs  w-fit
+                          ${
+                            project?.priority === "Urgent"
+                              ? "bg-yellow-200  text-amber-600"
+                              : project?.priority === "Moyen"
+                              ? "bg-cyan-100 text-cyan-700"
+                              : project?.priority === "Faible"
+                              ? "bg-lime-200 text-lime-600 "
+                              : project?.priority === "Critique"
+                              ? "bg-red-200 text-red-600"
+                              : ""
+                          }
+                          `}
+                      >
                         {project?.priority}
                       </p>
                     </td>
@@ -468,12 +482,12 @@ const TableProjet = ({
                               return (
                                 <div
                                   key={user?.userid}
-                                  className="relative group"
+                                  className="relative group -ml-2 first:ml-0 hover:z-50"
                                 >
                                   <p className="text-slate-50 border relative bg-secondaryGreen p-1 w-7 h-7 flex justify-center items-center text-xs rounded-full dark:text-white">
                                     {initials}
                                   </p>
-                                  <div className="absolute whitespace-nowrap text-xs hidden group-hover:block bg-white text-black p-2 border border-whiten shadow-5 rounded-md z-10 top-[-20px] left-1/2 transform -translate-x-1/2">
+                                  <div className="absolute whitespace-nowrap text-xs hidden group-hover:block bg-white text-black p-2 border border-whiten shadow-5 rounded-md z-10 top-[-35px] left-1/2 transform -translate-x-1/2">
                                     <p>{user?.user?.name}</p>
                                   </div>
                                 </div>
@@ -491,12 +505,12 @@ const TableProjet = ({
                                 return (
                                   <div
                                     key={user?.userid}
-                                    className="relative group"
+                                    className="relative group -ml-2 first:ml-0 hover:z-50"
                                   >
                                     <p className="text-slate-50 border relative bg-secondaryGreen p-1 w-7 h-7 flex justify-center items-center text-xs rounded-full dark:text-white">
                                       {initials}
                                     </p>
-                                    <div className="absolute whitespace-nowrap text-xs hidden group-hover:block bg-white text-black p-2 border border-whiten shadow-5 rounded-md z-10 top-[-20px] left-1/2 transform -translate-x-1/2">
+                                    <div className="absolute whitespace-nowrap text-xs hidden group-hover:block bg-white text-black p-2 border border-whiten shadow-5 rounded-md z-10 top-[-35px] left-1/2 transform -translate-x-1/2">
                                       <p>{user?.user?.name}</p>
                                     </div>
                                   </div>
@@ -504,8 +518,8 @@ const TableProjet = ({
                               }
                             )}
                       {project?.listUsers?.length > 3 && (
-                        <p className="text-slate-50 border relative bg-secondaryGreen p-1 w-7 h-7 flex justify-center items-center text-xs rounded-full dark:text-white">
-                          ...
+                        <p className="text-slate-50 border relative bg-secondaryGreen p-1 w-7 h-7 flex justify-center items-center text-xs rounded-full dark:text-white -ml-2 first:ml-0">
+                          +{project?.listUsers?.length - 3}
                         </p>
                       )}
                     </td>
