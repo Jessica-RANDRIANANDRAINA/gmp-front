@@ -45,6 +45,7 @@ const CustomInput = ({
           autoFocus={!!error}
           onChange={onChange}
           value={value}
+          required={required}
         ></textarea>
       ) : (
         <input
@@ -60,6 +61,7 @@ const CustomInput = ({
           placeholder={placeholder}
           autoFocus={!!error}
           value={value}
+          required={required}
           {...rest}
         />
       )}

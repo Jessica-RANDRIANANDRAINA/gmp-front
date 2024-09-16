@@ -354,10 +354,20 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
         {/* ===== FORM CREATE START ===== */}
         <div className="pt-2 md:w-1/2  ">
           {/* ===== CREATE PROJECT LEVEL ONE START INFO GENERAL ===== */}
-          <div
+          <form
             className={`space-y-2 transition-all duration-1000 ease-in-out ${
               pageCreate === 1 ? "opacity-100" : "opacity-0 h-0 overflow-hidden"
             }`}
+            onSubmit={(e) => {
+              e.preventDefault();
+              const form = e.target as HTMLFormElement;
+              if (form.reportValidity()) {
+                setPageCreate(2);
+                console.log("first");
+              } else {
+                console.log("second");
+              }
+            }}
           >
             <CustomInput
               label="Titre"
@@ -365,7 +375,7 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
               rounded="medium"
               placeholder="Titre du projet"
               value={projectData?.title}
-              required
+              required={true}
               onChange={(e) => {
                 setProjectData({
                   ...projectData,
@@ -408,7 +418,7 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
                 value={departments}
                 setValueMulti={setDirectionOwner}
                 rounded="large"
-                required
+                required={true}
               />
             </div>
             <div className="grid md:grid-cols-2 gap-4">
@@ -441,32 +451,15 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
             <div className="flex justify-end ">
               <button
                 // onClick={() => setPageCreate(2)}
-                onClick={() => {
-                  if (
-                    projectData?.title === "" ||
-                    projectData.startDate === undefined ||
-                    projectData.startDate === "" ||
-                    directionOwner.length === 0
-                  ) {
-                    return;
-                  }
-                  setPageCreate(2);
-                }}
+                type="submit"
                 className={`md:w-fit gap-2 w-full  mt-2 py-2 px-5  text-center font-medium text-white  lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen 
-                  ${
-                    projectData?.title === "" ||
-                    projectData?.startDate === undefined ||
-                    projectData?.startDate === "" ||
-                    directionOwner?.length === 0
-                      ? "cursor-default opacity-70"
-                      : "cursor-pointer hover:bg-opacity-90 dark:hover:bg-opacity-90"
-                  }
+                  
                   `}
               >
                 Suivant
               </button>
             </div>
-          </div>
+          </form>
           {/* ===== CREATE PROJECT LEVEL ONE END INFO GENERAL ===== */}
 
           {/* ===== CREATE PROJECT LEVEL TWO: BUDGET AND RESSOURCE START ===== */}

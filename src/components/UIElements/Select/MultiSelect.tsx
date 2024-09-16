@@ -184,6 +184,7 @@ const MultiSelect = ({
                     {selected.length === 0 && (
                       <div className="flex-1">
                         <input
+                          required={required}
                           placeholder={placeholder}
                           className="h-full w-full appearance-none bg-transparent p-1 px-2 outline-none"
                           defaultValue={selectedValues()}
