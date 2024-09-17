@@ -36,9 +36,7 @@ const ManageProjects = () => {
   }, [isModifProject, projectToModif]);
 
   useEffect(() => {
-    setTimeout(() => {
-      fetchProject();
-    }, 200);
+    fetchProject();
   }, [isAddProject, isModifProject]);
 
   return (

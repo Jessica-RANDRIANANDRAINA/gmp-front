@@ -35,7 +35,7 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
     codeBuget: "",
     directionSourceBudget: "",
     budgetAmount: 0,
-    budgetCurrency: "AR",
+    budgetCurrency: "MGA",
   });
   const [ressourceList, setRessourceList] = useState<Array<RessourceInterface>>(
     []
@@ -524,7 +524,7 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
                   <CustomSelect
                     label="Devise"
                     placeholder=" "
-                    data={["AR", "EUR"]}
+                    data={["MGA", "EUR"]}
                     value={projectData.budgetCurrency}
                     onValueChange={(e) => {
                       setProjectData({

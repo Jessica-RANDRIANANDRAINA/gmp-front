@@ -47,7 +47,7 @@ const UpdateProject = ({
     codeBuget: projectDataToModif?.listBudgets?.[0]?.code,
     directionSourceBudget: projectDataToModif?.listBudgets?.[0]?.direction,
     budgetAmount: projectDataToModif?.listBudgets?.[0]?.amount,
-    budgetCurrency: projectDataToModif?.listBudgets?.[0]?.currency ?? "Ar",
+    budgetCurrency: projectDataToModif?.listBudgets?.[0]?.currency ?? "MGA",
   });
   const [ressourceList, setRessourceList] = useState<Array<RessourceInterface>>(
     []
@@ -254,12 +254,14 @@ const UpdateProject = ({
     try {
       // update project service
       await updateProject(data?.id, data);
-      setIsModifProject(false);
+      
     } catch (error) {
       console.log(`Error at create project: ${error}`);
     } finally {
       // stop loading
       setIsCreateLoading(false);
+      // close modal
+      setIsModifProject(false);
     }
   };
 
@@ -591,7 +593,7 @@ const UpdateProject = ({
                   <CustomSelect
                     label="Devise"
                     placeholder=" "
-                    data={["AR", "EUR"]}
+                    data={["MGA", "EUR"]}
                     value={projectData.budgetCurrency}
                     onValueChange={(e) => {
                       setProjectData({
