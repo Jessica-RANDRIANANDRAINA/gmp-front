@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { InputSelectprops } from "../../../types/input";
 
 const CustomSelect = ({
@@ -67,6 +67,7 @@ const CustomSelect = ({
       </label>
       <button
         ref={trigger}
+        type="button"
         onClick={() => setIsOpen(!isOpen)}
         className={`w-full py-3 px-6 border flex items-center justify-between border-stroke rounded-lg bg-transparent text-left ${
           value ? "" : "text-bodydark2"
