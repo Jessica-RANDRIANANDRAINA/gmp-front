@@ -23,7 +23,7 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
     id: "",
     title: "",
     description: "",
-    priority: "Moyen",
+    priority: "Moyenne",
     beneficiary: "",
     initiator: "",
     startDate: undefined,
@@ -402,7 +402,7 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
               <CustomSelect
                 label="Priorité"
                 placeholder="Priorité"
-                data={["Faible", "Moyen", "Urgent", "Critique"]}
+                data={["Faible", "Moyenne", "Elevée"]}
                 value={projectData.priority}
                 onValueChange={(e) => {
                   setProjectData({

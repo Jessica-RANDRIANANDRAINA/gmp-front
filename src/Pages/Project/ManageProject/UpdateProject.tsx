@@ -445,7 +445,7 @@ const UpdateProject = ({
               <CustomSelect
                 label="Priorité"
                 placeholder="Priorité"
-                data={["Faible", "Moyen", "Urgent", "Critique"]}
+                data={["Faible", "Moyenne", "Elevée"]}
                 value={projectData.priority}
                 onValueChange={(e) => {
                   setProjectData({

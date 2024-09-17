@@ -451,13 +451,11 @@ const TableProjet = ({
                       <p
                         className={` dark:text-white font-semibold rounded-md  text-center py-1 px-2 text-xs  w-fit
                           ${
-                            project?.priority === "Urgent"
+                            project?.priority === "Moyenne"
                               ? "bg-yellow-200  text-amber-600"
-                              : project?.priority === "Moyen"
-                              ? "bg-cyan-100 text-cyan-700"
                               : project?.priority === "Faible"
-                              ? "bg-lime-200 text-lime-600 "
-                              : project?.priority === "Critique"
+                              ? "bg-cyan-100 text-cyan-700"
+                              : project?.priority === "Elevée"
                               ? "bg-red-200 text-red-600"
                               : ""
                           }
