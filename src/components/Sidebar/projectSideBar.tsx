@@ -101,7 +101,7 @@ const ProjectSideBar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             <ul>
               <SidebarLinkGroup
                 activeCondition={
-                  pathname === "/tsikilo/project" ||
+                  pathname === "/gem/project" ||
                   pathname.includes("project")
                 }
               >
@@ -111,7 +111,7 @@ const ProjectSideBar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                       <NavLink
                         to="#"
                         className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-tertiaryGreen dark:hover:bg-meta-4 ${
-                          (pathname === "/tsikilo/project" ||
+                          (pathname === "/gem/project" ||
                             pathname.includes("project")) &&
                           "bg-tertiaryGreen dark:bg-secondaryGreen"
                         }`}
@@ -174,9 +174,9 @@ const ProjectSideBar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                         <ul className="mb-5.5 mt-4 flex flex-col gap-2.5 pl-6">
                           <li>
                             <NavLink
-                              to="/tsikilo/project/home"
+                              to="/gem/project/home"
                               className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-tertiaryGreen dark:hover:bg-meta-4  ${
-                                pathname.includes("tsikilo/project/home") &&
+                                pathname.includes("gem/project/home") &&
                                 "bg-tertiaryGreen dark:bg-secondaryGreen"
                               }`}
                             >
@@ -210,9 +210,9 @@ const ProjectSideBar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           </li>
                           <li>
                             <NavLink
-                              to="/tsikilo/project/list"
+                              to="/gem/project/list"
                               className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-tertiaryGreen dark:hover:bg-meta-4  ${
-                                pathname.includes("tsikilo/project/list") &&
+                                pathname.includes("gem/project/list") &&
                                 "bg-tertiaryGreen dark:bg-secondaryGreen"
                               }`}
                             >
@@ -246,9 +246,9 @@ const ProjectSideBar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           </li>
                           <li>
                             <NavLink
-                              to="/tsikilo/project/hebdo"
+                              to="/gem/project/hebdo"
                               className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-tertiaryGreen dark:hover:bg-meta-4  ${
-                                pathname.includes("tsikilo/project/hebdo") &&
+                                pathname.includes("gem/project/hebdo") &&
                                 "bg-tertiaryGreen dark:bg-secondaryGreen"
                               }`}
                             >

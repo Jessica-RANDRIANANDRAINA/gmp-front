@@ -61,28 +61,28 @@ const App = () => {
           }
         />
         <Route
-          path="/tsikilo/project/home"
+          path="/gem/project/home"
           element={
             <>
-              <PageTitle title="Tsikilo" />
+              <PageTitle title="gem" />
               <Home />
             </>
           }
         />
         <Route
-          path="/tsikilo/project/list"
+          path="/gem/project/list"
           element={
             <>
-              <PageTitle title="Tsikilo" />
+              <PageTitle title="gem" />
               <ManageProjects />
             </>
           }
         />
         <Route
-          path="/tsikilo/project/hebdo"
+          path="/gem/project/hebdo"
           element={
             <>
-              <PageTitle title="Tsikilo" />
+              <PageTitle title="gem" />
               <Hebdo />
             </>
           }

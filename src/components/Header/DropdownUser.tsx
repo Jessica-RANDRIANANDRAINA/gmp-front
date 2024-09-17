@@ -43,7 +43,7 @@ const DropdownUser = (userConnected: any) => {
   const handleLogOut = () => {
     try {
       logout().then(() => {
-        if (pathname.includes("tsikilo")) {
+        if (pathname.includes("gem")) {
           navigate("/");
         } else {
           navigate("/admin");
