@@ -380,12 +380,13 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
               type="text"
               rounded="medium"
               placeholder="Titre du projet (80 caractères max)"
-              value={projectData?.title}
+              value={projectData?.title?.slice(0, 80)}
+              maxLength={80}
               required={true}
               onChange={(e) => {
                 setProjectData({
                   ...projectData,
-                  title: e.target.value,
+                  title: e.target.value.slice(0, 80),
                 });
               }}
             />
@@ -396,11 +397,11 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
               placeholder="Description du projet"
               rows={5}
               cols={5}
-              value={projectData?.description}
+              value={projectData?.description?.slice(0, 500)}
               onChange={(e) => {
                 setProjectData({
                   ...projectData,
-                  description: e.target.value,
+                  description: e.target.value?.slice(0, 500),
                 });
               }}
             />
@@ -486,7 +487,6 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
                     rounded="medium"
                     placeholder="Code budget"
                     value={projectData?.codeBuget}
-                    
                     onChange={(e) => {
                       setProjectData({
                         ...projectData,

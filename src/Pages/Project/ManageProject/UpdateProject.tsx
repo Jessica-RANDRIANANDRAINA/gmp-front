@@ -260,7 +260,6 @@ const UpdateProject = ({
     try {
       // update project service
       await updateProject(data?.id, data);
-      
     } catch (error) {
       console.log(`Error at create project: ${error}`);
     } finally {
@@ -410,12 +409,13 @@ const UpdateProject = ({
                 type="text"
                 rounded="medium"
                 placeholder="Titre du projet (80 caractères max)"
-                value={projectData?.title}
+                value={projectData?.title?.slice(0, 80)}
+                maxLength={80}
                 required
                 onChange={(e) => {
                   setProjectData({
                     ...projectData,
-                    title: e.target.value,
+                    title: e.target.value.slice(0, 80),
                   });
                 }}
               />
@@ -439,11 +439,11 @@ const UpdateProject = ({
               placeholder="Description du projet"
               rows={5}
               cols={5}
-              value={projectData?.description}
+              value={projectData?.description?.slice(0, 500)}
               onChange={(e) => {
                 setProjectData({
                   ...projectData,
-                  description: e.target.value,
+                  description: e.target.value?.slice(0, 500),
                 });
               }}
             />
@@ -555,7 +555,6 @@ const UpdateProject = ({
                     placeholder="Code budget"
                     // disabled={true}
                     value={projectData?.codeBuget}
-                    
                     onChange={(e) => {
                       setProjectData({
                         ...projectData,
