@@ -50,6 +50,7 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
     { id: string | undefined; name: string; email: string }[]
   >([]);
   const [isCreateLoading, setIsCreateLoading] = useState(false);
+  const [haveBudget, setHaveBudget] = useState(false);
   useEffect(() => {
     setIsLoaded(true);
   }, []);
@@ -480,66 +481,93 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
                 <span className="font-semibold tracking-wide underline">
                   BUDGET
                 </span>
-                <div className="grid md:grid-cols-2 gap-4">
-                  <CustomInput
-                    label="Code"
-                    type="text"
-                    rounded="medium"
-                    placeholder="Code budget"
-                    value={projectData?.codeBuget}
-                    onChange={(e) => {
-                      setProjectData({
-                        ...projectData,
-                        codeBuget: e.target.value,
-                      });
-                    }}
-                  />
-                  <CustomSelect
-                    label="Direction sponsor"
-                    placeholder="Choisir une direction"
-                    data={departments}
-                    value={projectData.directionSourceBudget}
-                    onValueChange={(e) => {
-                      setProjectData({
-                        ...projectData,
-                        directionSourceBudget: e,
-                      });
-                    }}
-                    required
-                  />
-                </div>
-                <div className="grid md:grid-cols-2 gap-3">
-                  <CustomInput
-                    label="Montant du budget"
-                    type="number"
-                    step={0.01}
-                    min={0}
-                    rounded="medium"
-                    placeholder="0"
-                    value={projectData?.budgetAmount}
-                    required
-                    onChange={(e) => {
-                      setProjectData({
-                        ...projectData,
-                        budgetAmount: parseFloat(
-                          parseFloat(e.target.value).toFixed(2)
-                        ),
-                      });
-                    }}
-                  />
-                  <CustomSelect
-                    label="Devise"
-                    placeholder=" "
-                    data={["MGA", "EUR"]}
-                    value={projectData.budgetCurrency}
-                    onValueChange={(e) => {
-                      setProjectData({
-                        ...projectData,
-                        budgetCurrency: e,
-                      });
-                    }}
-                  />
-                </div>
+                <button
+                  onClick={() => {
+                    setHaveBudget(true);
+                  }}
+                  className={`py-2 w-full mt-2 text-center border border-dashed border-stroke rounded-md hover:bg-stroke ${
+                    haveBudget ? "hidden" : ""
+                  }`}
+                >
+                  Est-ce que ce projet a un budget ?
+                </button>
+                {haveBudget && (
+                  <>
+                    <div className="flex justify-between">
+                      <div></div>
+                      <button
+                        className={`
+                      text-red-500 decoration-red-500 font-bold hover:font-black
+                      `}
+                        onClick={() => {
+                          setHaveBudget(false);
+                        }}
+                      >
+                        Supprimer
+                      </button>
+                    </div>
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <CustomInput
+                        label="Code"
+                        type="text"
+                        rounded="medium"
+                        placeholder="Code budget"
+                        value={projectData?.codeBuget}
+                        onChange={(e) => {
+                          setProjectData({
+                            ...projectData,
+                            codeBuget: e.target.value,
+                          });
+                        }}
+                      />
+                      <CustomSelect
+                        label="Direction sponsor"
+                        placeholder="Choisir une direction"
+                        data={departments}
+                        value={projectData.directionSourceBudget}
+                        onValueChange={(e) => {
+                          setProjectData({
+                            ...projectData,
+                            directionSourceBudget: e,
+                          });
+                        }}
+                        required={haveBudget}
+                      />
+                    </div>
+                    <div className="grid md:grid-cols-2 gap-3">
+                      <CustomInput
+                        label="Montant du budget"
+                        type="number"
+                        step={0.01}
+                        min={0}
+                        rounded="medium"
+                        placeholder="0"
+                        value={projectData?.budgetAmount}
+                        required={haveBudget}
+                        onChange={(e) => {
+                          setProjectData({
+                            ...projectData,
+                            budgetAmount: parseFloat(
+                              parseFloat(e.target.value).toFixed(2)
+                            ),
+                          });
+                        }}
+                      />
+                      <CustomSelect
+                        label="Devise"
+                        placeholder=" "
+                        data={["MGA", "EUR"]}
+                        value={projectData.budgetCurrency}
+                        onValueChange={(e) => {
+                          setProjectData({
+                            ...projectData,
+                            budgetCurrency: e,
+                          });
+                        }}
+                      />
+                    </div>
+                  </>
+                )}
               </div>
               <div>
                 {/* ===== RESSOURCES START ===== */}
@@ -694,6 +722,34 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
                           }}
                           required
                         />
+                        <CustomInput
+                          label="Date début"
+                          type="date"
+                          rounded="medium"
+                          // value={projectData?.startDate}
+                          onChange={(e) => {
+                            console.log(e.target.value);
+                            // setProjectData({
+                            //   ...projectData,
+                            //   startDate: e.target.value,
+                            // });
+                          }}
+                          required
+                        />
+                        <CustomInput
+                          label="Date fin"
+                          type="date"
+                          rounded="medium"
+                          // value={projectData?.startDate}
+                          onChange={(e) => {
+                            console.log(e.target.value);
+                            // setProjectData({
+                            //   ...projectData,
+                            //   startDate: e.target.value,
+                            // });
+                          }}
+                          required
+                        />
                       </div>
                     </div>
                   ))}
@@ -724,41 +780,108 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
           {/* ===== CREATE PROJECT LEVEL THREE: PHASES AND LIVRABLE END ===== */}
           {/* ===== CREATE PROJECT LEVEL FOUR: TEAM START ===== */}
           <div
-            className={`space-y-2 transition-all duration-1000 ease-in-out ${
+            className={`space-y-2  transition-all duration-1000 ease-in-out ${
               pageCreate === 4 ? "opacity-100" : "opacity-0 h-0 overflow-hidden"
             }`}
           >
-            <div className="space-y-4">
-              <div>
-                <span className="font-semibold tracking-wide underline">
-                  EQUIPES
-                </span>
-                <div className="hide-scrollbar overflow-y-scroll md:max-h-125 md:min-h-125">
-                  <CutomInputUserSearch
-                    placeholder="Recherche"
-                    label="Assigner"
-                    userSelected={userTeam}
-                    setUserSelected={setUserTeam}
-                  />
-                  <div className="flex gap-4 mt-6 flex-wrap">
-                    {userTeam?.map((team) => (
-                      <div
-                        key={team.id}
-                        className="border flex justify-center items-center gap-1 p-2 rounded text-sm"
-                      >
-                        {team?.name}
-                        <span
-                          className="cursor-pointer border rounded-full w-4 h-4 flex justify-center items-center bg-slate-400 text-whiten "
-                          onClick={() => {
-                            handleRemoveTeamList(team.id);
-                          }}
+            <div className="space-y-4  ">
+              <span className="font-semibold tracking-wide underline">
+                EQUIPES
+              </span>
+              <div className=" overflow-y-scroll ">
+                {/* ===== PROJECT DIRECTOR START ===== */}
+                <div>
+                  <div>Directeur de projet</div>
+                  <div className="hide-scrollbar  ">
+                    <CutomInputUserSearch
+                      placeholder="Recherche"
+                      label="Assigner"
+                      userSelected={userTeam}
+                      setUserSelected={setUserTeam}
+                    />
+                    <div className="flex gap-4 mt-6 flex-wrap">
+                      {userTeam?.map((team) => (
+                        <div
+                          key={team.id}
+                          className="border flex justify-center items-center gap-1 p-2 rounded text-sm"
                         >
-                          x
-                        </span>
-                      </div>
-                    ))}
+                          {team?.name}
+                          <span
+                            className="cursor-pointer border rounded-full w-4 h-4 flex justify-center items-center bg-slate-400 text-whiten "
+                            onClick={() => {
+                              handleRemoveTeamList(team.id);
+                            }}
+                          >
+                            x
+                          </span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
+                {/* ===== PROJECT DIRECTOR END ===== */}
+                {/* ===== PROJECT TEAM START ===== */}
+                <div>
+                  <div>Equipes</div>
+                  <div className="hide-scrollbar overflow-y-scroll">
+                    <CutomInputUserSearch
+                      placeholder="Recherche"
+                      label="Assigner"
+                      userSelected={userTeam}
+                      setUserSelected={setUserTeam}
+                    />
+                    <div className="flex gap-4 mt-6 flex-wrap">
+                      {userTeam?.map((team) => (
+                        <div
+                          key={team.id}
+                          className="border flex justify-center items-center gap-1 p-2 rounded text-sm"
+                        >
+                          {team?.name}
+                          <span
+                            className="cursor-pointer border rounded-full w-4 h-4 flex justify-center items-center bg-slate-400 text-whiten "
+                            onClick={() => {
+                              handleRemoveTeamList(team.id);
+                            }}
+                          >
+                            x
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+                {/* ===== PROJECT TEAM END ===== */}
+                {/* ===== PROJECT TEAM START ===== */}
+                <div>
+                  <div>Observateur</div>
+                  <div className="hide-scrollbar overflow-y-scroll">
+                    <CutomInputUserSearch
+                      placeholder="Recherche"
+                      label="Assigner"
+                      userSelected={userTeam}
+                      setUserSelected={setUserTeam}
+                    />
+                    <div className="flex gap-4 mt-6 flex-wrap">
+                      {userTeam?.map((team) => (
+                        <div
+                          key={team.id}
+                          className="border flex justify-center items-center gap-1 p-2 rounded text-sm"
+                        >
+                          {team?.name}
+                          <span
+                            className="cursor-pointer border rounded-full w-4 h-4 flex justify-center items-center bg-slate-400 text-whiten "
+                            onClick={() => {
+                              handleRemoveTeamList(team.id);
+                            }}
+                          >
+                            x
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+                {/* ===== PROJECT TEAM END ===== */}
               </div>
               <div className="flex justify-between gap-3">
                 <button
