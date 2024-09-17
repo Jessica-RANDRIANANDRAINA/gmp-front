@@ -102,20 +102,26 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
       {
         // id: uuid4(),
         rank: 0,
-        phase1: "Etude",
-        expectedDeliverable: "Document d'étude de projet et de faisabilité",
+        phase1: "Conception",
+        expectedDeliverable: "Document de cadrage",
       },
       {
         // id: uuid4(),
         rank: 1,
-        phase1: "Conception",
-        expectedDeliverable: "Document de conception",
+        phase1: "Réalisation",
+        expectedDeliverable: "Signature de mise en production",
       },
       {
         // id: uuid4(),
-        // rank: 2,
-        phase1: "Developpement",
-        expectedDeliverable: "Document de documentation",
+        rank: 2,
+        phase1: "Mise en production",
+        expectedDeliverable: "Plan de déploiement",
+      },
+      {
+        // id: uuid4(),
+        rank: 3,
+        phase1: "Clôture et maintenance",
+        expectedDeliverable: "PV de recette",
       },
     ];
     setPhaseAndLivrableList(phaseData);
@@ -373,7 +379,7 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
               label="Titre"
               type="text"
               rounded="medium"
-              placeholder="Titre du projet"
+              placeholder="Titre du projet (80 caractères max)"
               value={projectData?.title}
               required={true}
               onChange={(e) => {
@@ -414,7 +420,7 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
               <MultiSelect
                 id="001"
                 label={"Direction propriétaire"}
-                placeholder="Direction propriétaire"
+                placeholder="Choisir une direction"
                 value={departments}
                 setValueMulti={setDirectionOwner}
                 rounded="large"
@@ -423,7 +429,7 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
             </div>
             <div className="grid md:grid-cols-2 gap-4">
               <CustomInput
-                label="Date de début prévue du projet"
+                label="Date début prévisionnelle"
                 type="date"
                 rounded="medium"
                 value={projectData?.startDate}
@@ -436,7 +442,7 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
                 required
               />
               <CustomInput
-                label="Date de fin prévue du projet"
+                label="Date fin prévisionnelle"
                 type="date"
                 rounded="medium"
                 value={projectData?.endDate}
@@ -478,9 +484,9 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
                     label="Code"
                     type="text"
                     rounded="medium"
-                    placeholder="Code de budget"
+                    placeholder="Code budget"
                     value={projectData?.codeBuget}
-                    required
+                    
                     onChange={(e) => {
                       setProjectData({
                         ...projectData,
@@ -489,8 +495,8 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
                     }}
                   />
                   <CustomSelect
-                    label="Direction source"
-                    placeholder="Source du budget"
+                    label="Direction sponsor"
+                    placeholder="Choisir une direction"
                     data={departments}
                     value={projectData.directionSourceBudget}
                     onValueChange={(e) => {
@@ -674,7 +680,7 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
                           required
                         />
                         <CustomInput
-                          label="Livrable"
+                          label="Livrable(s)"
                           type="text"
                           rounded="medium"
                           placeholder="Ex: dossier de conception"
