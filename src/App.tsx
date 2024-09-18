@@ -64,7 +64,7 @@ const App = () => {
           path="/gem/project/home"
           element={
             <>
-              <PageTitle title="gem" />
+              <PageTitle title="G.E.M" />
               <Home />
             </>
           }
@@ -73,7 +73,7 @@ const App = () => {
           path="/gem/project/list"
           element={
             <>
-              <PageTitle title="gem" />
+              <PageTitle title="G.E.M" />
               <ManageProjects />
             </>
           }
@@ -82,7 +82,7 @@ const App = () => {
           path="/gem/project/hebdo"
           element={
             <>
-              <PageTitle title="gem" />
+              <PageTitle title="G.E.M" />
               <Hebdo />
             </>
           }
