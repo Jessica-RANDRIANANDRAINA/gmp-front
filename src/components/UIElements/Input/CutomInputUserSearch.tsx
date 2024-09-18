@@ -15,6 +15,7 @@ const CutomInputUserSearch = ({
   label,
   userSelected,
   setUserSelected,
+  role,
 }: InputUserSearchInterface) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [valueChange, setValueChange] = useState<string>("");
@@ -72,14 +73,18 @@ const CutomInputUserSearch = ({
           {userMatched?.map((user: { id: string; name: string }) => (
             <div
               key={user?.id}
-              className={`py-2 px-4 cursor-pointer  dark:text-bodydark hover:bg-gray-3 rounded-md`}
+              className={`py-2 px-4 cursor-pointer   dark:text-bodydark hover:bg-gray-3 rounded-md`}
               onClick={() => {
                 const isUserAlreadySelected = userSelected?.some(
                   (selected) => selected.id === user.id
                 );
 
                 if (!isUserAlreadySelected) {
-                  setUserSelected([...userSelected, user]);
+                  if (role) {
+                    setUserSelected([...userSelected, { ...user, role }]);
+                  } else {
+                    setUserSelected([...userSelected, user]);
+                  }
                 }
                 setValueChange("");
               }}
