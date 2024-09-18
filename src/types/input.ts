@@ -25,6 +25,7 @@ export interface InputUserSearchInterface {
     email: string;
   }[];
   setUserSelected: Function;
+  role?: string;
 }
 
 export interface OptionMultiSelect {

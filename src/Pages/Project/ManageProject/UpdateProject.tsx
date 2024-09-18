@@ -6,10 +6,10 @@ import {
   CutomInputUserSearch,
 } from "../../../components/UIElements";
 import {
-  RessourceInterface,
-  PhaseInterface,
-  BudgetInterface,
-  ProjectData,
+  IRessource,
+  IPhase,
+  IBudget,
+  IProjectData,
 } from "../../../types/Project";
 import { getAllDepartments } from "../../../services/User";
 import { updateProject } from "../../../services/Project/ProjectServices";
@@ -30,7 +30,7 @@ const UpdateProject = ({
     console.log(projectDataToModif);
   }, [projectDataToModif]);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [projectData, setProjectData] = useState<ProjectData>({
+  const [projectData, setProjectData] = useState<IProjectData>({
     id: projectDataToModif?.id,
     title: projectDataToModif?.title,
     description: projectDataToModif?.description,
@@ -49,11 +49,11 @@ const UpdateProject = ({
     budgetAmount: projectDataToModif?.listBudgets?.[0]?.amount,
     budgetCurrency: projectDataToModif?.listBudgets?.[0]?.currency ?? "MGA",
   });
-  const [ressourceList, setRessourceList] = useState<Array<RessourceInterface>>(
+  const [ressourceList, setRessourceList] = useState<Array<IRessource>>(
     []
   );
   const [phaseAndLivrableList, setPhaseAndLivrableList] = useState<
-    Array<PhaseInterface>
+    Array<IPhase>
   >([]);
   const [directionOwner, setDirectionOwner] = useState<string[]>([]);
   const [pageCreate, setPageCreate] = useState(1);
@@ -77,8 +77,8 @@ const UpdateProject = ({
 
   // Initialize ressource, phase, get the ancient ressource, phase
   useEffect(() => {
-    const ressourceData: RessourceInterface[] = [];
-    const phaseData: PhaseInterface[] = [];
+    const ressourceData: IRessource[] = [];
+    const phaseData: IPhase[] = [];
     const team = [];
     if (projectDataToModif?.listRessources?.length > 0) {
       for (let i = 0; i < projectDataToModif.listRessources.length; i++) {
@@ -118,7 +118,7 @@ const UpdateProject = ({
 
   // ADD RESSOURCE LIST
   const handleAddRessourceToList = () => {
-    let ressourceData: RessourceInterface = {
+    let ressourceData: IRessource = {
       id: uuid4(),
       ressource: "",
       source: "",
@@ -135,7 +135,7 @@ const UpdateProject = ({
 
   // ADD PHASE IN THE LIST
   const handleAddPhaseList = () => {
-    let phaseData: PhaseInterface = {
+    let phaseData: IPhase = {
       phase1: "",
       expectedDeliverable: "",
     };
@@ -144,7 +144,7 @@ const UpdateProject = ({
 
   // ADD DEFAULT VALUE IN PHASE LIST
   const handleAddDefaultPhaseList = () => {
-    let phaseData: PhaseInterface[] = [
+    let phaseData: IPhase[] = [
       {
         // id: uuid4(),
         rank: 0,
@@ -223,7 +223,7 @@ const UpdateProject = ({
     // trnasform the benefiary from an array to a string
     const beneficiary = directionOwner?.join(", ");
     // initilize budget data
-    var budgetData: BudgetInterface[] = [];
+    var budgetData: IBudget[] = [];
     // get the data of the user connected
     const userConnected = decodeToken("pr");
 

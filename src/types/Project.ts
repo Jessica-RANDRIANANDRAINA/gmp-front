@@ -1,25 +1,25 @@
-export interface ProjectData {
+export interface IProjectData {
   id: string;
   title: string;
   description: string;
   priority: string;
   beneficiary: string;
   initiator: string;
-  endDateImmuable?: boolean;
+  isEndDateImmuable?: boolean;
   completionPercentage?: number;
   startDate?: string;
   endDate?: string;
-  listBudgets: BudgetInterface[];
-  listRessources: RessourceInterface[];
-  listPhases: PhaseInterface[];
-  listUsers: UserProjectInterface[];
+  listBudgets: IBudget[];
+  listRessources: IRessource[];
+  listPhases: IPhase[];
+  listUsers: IUserProject[];
   codeBuget: string;
   directionSourceBudget: string;
-  budgetAmount: number;
+  budgetAmount: number | null;
   budgetCurrency: string;
 }
 
-export interface ProjectDtoInterface {
+export interface IProjectDto {
   id: string;
   title: string;
   description: string;
@@ -28,32 +28,35 @@ export interface ProjectDtoInterface {
   initiator: string | undefined;
   startDate?: string;
   endDate?: string;
-  listBudgets: BudgetInterface[];
-  listRessources: RessourceInterface[];
-  listPhases: PhaseInterface[];
-  listUsers: UserProjectInterface[];
+  listBudgets: IBudget[];
+  listRessources: IRessource[];
+  listPhases: IPhase[];
+  listUsers: IUserProject[];
 }
-export interface PhaseInterface {
-  id?: number;
+export interface IPhase {
+  id?: string;
   rank?: number;
   phase1: string;
   expectedDeliverable: string;
+  startDate?: string;
+  endDate?: string;
 }
-export interface RessourceInterface {
+export interface IRessource {
   id: string;
   source: string;
   type: string;
   ressource: string;
 }
 
-export interface BudgetInterface {
+export interface IBudget {
+  id?: string;
   code: string;
   direction: string;
   amount: number;
   currency: string;
 }
 
-export interface UserProjectInterface {
+export interface IUserProject {
   userid: string | undefined;
   projectid: string;
   role: string;

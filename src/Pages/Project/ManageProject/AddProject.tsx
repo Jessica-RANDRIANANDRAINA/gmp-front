@@ -4,23 +4,27 @@ import {
   CustomSelect,
   MultiSelect,
   CutomInputUserSearch,
-  Checkbox,
 } from "../../../components/UIElements";
 import {
-  RessourceInterface,
-  PhaseInterface,
-  BudgetInterface,
-  ProjectData,
+  IRessource,
+  IPhase,
+  IBudget,
+  IProjectData,
 } from "../../../types/Project";
 import { getAllDepartments } from "../../../services/User";
 import { createProject } from "../../../services/Project/ProjectServices";
 import { decodeToken } from "../../../services/Function/TokenService";
 import { v4 as uuid4 } from "uuid";
 import { PuffLoader } from "react-spinners";
+import { Notyf } from "notyf";
+import "notyf/notyf.min.css";
+import { getInitials } from "../../../services/Function/UserFunctionService";
+
+const notyf = new Notyf();
 
 const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [projectData, setProjectData] = useState<ProjectData>({
+  const [projectData, setProjectData] = useState<IProjectData>({
     id: "",
     title: "",
     description: "",
@@ -29,27 +33,25 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
     initiator: "",
     startDate: undefined,
     endDate: undefined,
-    endDateImmuable: false,
+    isEndDateImmuable: false,
     listBudgets: [],
     listRessources: [],
     listPhases: [],
     listUsers: [],
     codeBuget: "",
     directionSourceBudget: "",
-    budgetAmount: 0,
+    budgetAmount: null,
     budgetCurrency: "MGA",
   });
-  const [ressourceList, setRessourceList] = useState<Array<RessourceInterface>>(
-    []
-  );
+  const [ressourceList, setRessourceList] = useState<Array<IRessource>>([]);
   const [phaseAndLivrableList, setPhaseAndLivrableList] = useState<
-    Array<PhaseInterface>
+    Array<IPhase>
   >([]);
   const [directionOwner, setDirectionOwner] = useState<any>();
   const [pageCreate, setPageCreate] = useState(1);
   const [departments, setDepartments] = useState<string[]>([]);
   const [userTeam, setUserTeam] = useState<
-    { id: string | undefined; name: string; email: string }[]
+    { id: string | undefined; name: string; email: string; role: string }[]
   >([]);
   const [isCreateLoading, setIsCreateLoading] = useState(false);
   const [haveBudget, setHaveBudget] = useState(false);
@@ -68,7 +70,7 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
 
   // ADD RESSOURCE LIST
   const handleAddRessourceToList = () => {
-    let ressourceData: RessourceInterface = {
+    let ressourceData: IRessource = {
       id: uuid4(),
       ressource: "",
       source: "",
@@ -91,40 +93,50 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
 
   // ADD PHASE IN THE LIST
   const handleAddPhaseList = () => {
-    let phaseData: PhaseInterface = {
+    let phaseData: IPhase = {
       rank: 0,
       phase1: "",
       expectedDeliverable: "",
+      startDate: undefined,
+      endDate: undefined,
     };
     setPhaseAndLivrableList([...phaseAndLivrableList, phaseData]);
   };
 
   // ADD DEFAULT VALUE IN PHASE LIST
   const handleAddDefaultPhaseList = () => {
-    let phaseData: PhaseInterface[] = [
+    let phaseData: IPhase[] = [
       {
-        // id: uuid4(),
+        id: uuid4(),
         rank: 0,
         phase1: "Conception",
         expectedDeliverable: "Document de cadrage",
+        startDate: projectData?.startDate,
+        endDate: undefined,
       },
       {
-        // id: uuid4(),
+        id: uuid4(),
         rank: 1,
         phase1: "Réalisation",
         expectedDeliverable: "Signature de mise en production",
+        startDate: undefined,
+        endDate: undefined,
       },
       {
-        // id: uuid4(),
+        id: uuid4(),
         rank: 2,
         phase1: "Mise en production",
         expectedDeliverable: "Plan de déploiement",
+        startDate: undefined,
+        endDate: undefined,
       },
       {
-        // id: uuid4(),
+        id: uuid4(),
         rank: 3,
         phase1: "Clôture et maintenance",
         expectedDeliverable: "PV de recette",
+        startDate: undefined,
+        endDate: projectData?.endDate ?? undefined,
       },
     ];
     setPhaseAndLivrableList(phaseData);
@@ -178,7 +190,13 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
           ? {
               ...phase,
               rank: index,
-              [label === "phase" ? "phase1" : "expectedDeliverable"]: value,
+              [label === "phase"
+                ? "phase1"
+                : label === "livrable"
+                ? "expectedDeliverable"
+                : label === "startDate"
+                ? "startDate"
+                : "endDate"]: value,
             }
           : phase
       )
@@ -192,39 +210,36 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
     // trnasform the benefiary from an array to a string
     const beneficiary = directionOwner?.join(", ");
     // initilize budget data
-    var budgetData: BudgetInterface[] = [];
+    var budgetData: IBudget[] = [];
     // get the data of the user connected
     const userConnected = decodeToken("pr");
 
     // if there is budget add it in budgetData
-    if (projectData?.budgetAmount !== 0) {
+    if (projectData?.budgetAmount !== 0 && projectData?.budgetAmount !== null) {
       budgetData = [
         {
+          id: uuid4(),
           code: projectData?.codeBuget,
           direction: projectData?.directionSourceBudget,
-          amount: projectData?.budgetAmount,
+          amount: projectData?.budgetAmount ?? 0,
           currency: projectData?.budgetCurrency,
         },
       ];
+    } else {
+      budgetData = [];
     }
     // if there is team members, map them and store in userProject
     const userProject = userTeam?.map((team) => ({
       userid: team.id,
       projectid: projectid,
-      role: "User",
+      role: team.role,
     }));
-
-    // make the user connected owner of the project
-    userProject.push({
-      userid: userConnected?.jti,
-      projectid: projectid,
-      role: "Owner",
-    });
 
     // trenasform all the data to a single object
     const data = {
       ...projectData,
       id: projectid,
+      isEndDateImmuable: projectData?.isEndDateImmuable ? 1 : 0,
       initiator: userConnected?.name,
       beneficiary: beneficiary,
       listBudgets: budgetData,
@@ -232,7 +247,8 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
       listPhases: phaseAndLivrableList,
       listUsers: userProject,
     };
-
+    console.log(projectData?.budgetAmount);
+    console.log(data);
     try {
       // create project service
       await createProject(data);
@@ -406,11 +422,11 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
               placeholder="Description du projet"
               rows={5}
               cols={5}
-              value={projectData?.description?.slice(0, 500)}
+              value={projectData?.description?.slice(0, 1000)}
               onChange={(e) => {
                 setProjectData({
                   ...projectData,
-                  description: e.target.value?.slice(0, 500),
+                  description: e.target.value?.slice(0, 1000),
                 });
               }}
             />
@@ -488,11 +504,11 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
                         type="radio"
                         className="cursor-pointer"
                         name={"immuableEndDate"}
-                        checked={projectData?.endDateImmuable}
+                        checked={projectData?.isEndDateImmuable}
                         onChange={() => {
                           setProjectData({
                             ...projectData,
-                            endDateImmuable: true,
+                            isEndDateImmuable: true,
                           });
                         }}
                       />
@@ -507,10 +523,10 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
                         onChange={() => {
                           setProjectData({
                             ...projectData,
-                            endDateImmuable: false,
+                            isEndDateImmuable: false,
                           });
                         }}
-                        checked={!projectData?.endDateImmuable}
+                        checked={!projectData?.isEndDateImmuable}
                       />
                       <label htmlFor="">Non</label>
                     </span>
@@ -533,10 +549,17 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
           {/* ===== CREATE PROJECT LEVEL ONE END INFO GENERAL ===== */}
 
           {/* ===== CREATE PROJECT LEVEL TWO: BUDGET AND RESSOURCE START ===== */}
-          <div
+          <form
             className={`space-y-2 transition-all duration-1000 ease-in-out ${
               pageCreate === 2 ? "opacity-100" : "opacity-0 h-0 overflow-hidden"
             }`}
+            onSubmit={(e) => {
+              e.preventDefault();
+              const form = e.target as HTMLFormElement;
+              if (form.reportValidity()) {
+                setPageCreate(3);
+              }
+            }}
           >
             <div className="space-y-4">
               <div>
@@ -547,6 +570,7 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
                   onClick={() => {
                     setHaveBudget(true);
                   }}
+                  type="button"
                   className={`py-2 w-full mt-2 text-center border border-dashed border-stroke rounded-md hover:bg-stroke ${
                     haveBudget ? "hidden" : ""
                   }`}
@@ -558,6 +582,7 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
                     <div className="flex justify-between">
                       <div></div>
                       <button
+                        type="button"
                         className={`
                       text-red-500 decoration-red-500 font-bold hover:font-black
                       `}
@@ -604,7 +629,7 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
                         min={0}
                         rounded="medium"
                         placeholder="0"
-                        value={projectData?.budgetAmount}
+                        // value={projectData?.budgetAmount ?? 0}
                         required={haveBudget}
                         onChange={(e) => {
                           setProjectData({
@@ -642,6 +667,7 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
                       <div className={"flex justify-between"}>
                         <div className={"underline"}>Ressource {index + 1}</div>
                         <button
+                          type="button"
                           className={
                             "text-red-500 decoration-red-500 font-bold hover:font-black"
                           }
@@ -694,6 +720,7 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
                     </div>
                   ))}
                   <button
+                    type="button"
                     onClick={handleAddRessourceToList}
                     className={`py-2 w-full mt-2 text-center border border-dashed border-stroke rounded-md hover:bg-stroke`}
                   >
@@ -710,20 +737,32 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
                   Précédent
                 </button>
                 <button
-                  onClick={() => setPageCreate(3)}
+                  // onClick={() => setPageCreate(3)}
+                  type="submit"
                   className="md:w-fit gap-2 w-full cursor-pointer mt-2 py-2 px-5  text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen dark:hover:bg-opacity-90"
                 >
                   Suivant
                 </button>
               </div>
             </div>
-          </div>
+          </form>
           {/* ===== CREATE PROJECT LEVEL TWO: BUDGET AND RESSOURCE END ===== */}
           {/* ===== CREATE PROJECT LEVEL THREE: PHASES AND LIVRABLE START ===== */}
-          <div
+          <form
             className={`space-y-2 transition-all duration-1000 ease-in-out ${
               pageCreate === 3 ? "opacity-100" : "opacity-0 h-0 overflow-hidden"
             }`}
+            onSubmit={(e) => {
+              e.preventDefault();
+              const form = e.target as HTMLFormElement;
+              if (form.reportValidity()) {
+                if (phaseAndLivrableList.length > 0) {
+                  setPageCreate(4);
+                } else {
+                  notyf.error("Un projet doit contenir au moins une phase");
+                }
+              }
+            }}
           >
             <div className="space-y-4">
               <div>
@@ -732,6 +771,7 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
                 </span>
                 <div className="hide-scrollbar overflow-y-scroll md:max-h-125 md:min-h-125">
                   <button
+                    type="button"
                     onClick={handleAddDefaultPhaseList}
                     className={`py-2 w-full mt-2 text-center border border-dashed border-stroke rounded-md hover:bg-stroke`}
                   >
@@ -745,6 +785,7 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
                           className={
                             "text-red-500 decoration-red-500 font-bold hover:font-black"
                           }
+                          type="button"
                           onClick={() => {
                             handleRemovePhaseList(phase.phase1);
                           }}
@@ -788,34 +829,33 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
                           label="Date début"
                           type="date"
                           rounded="medium"
-                          // value={projectData?.startDate}
+                          value={phase?.startDate}
                           onChange={(e) => {
-                            console.log(e.target.value);
-                            // setProjectData({
-                            //   ...projectData,
-                            //   startDate: e.target.value,
-                            // });
+                            handlePhaseDataChange(
+                              "startDate",
+                              e.target.value,
+                              index
+                            );
                           }}
-                          required
                         />
                         <CustomInput
                           label="Date fin"
                           type="date"
                           rounded="medium"
-                          // value={projectData?.startDate}
+                          value={phase?.endDate}
                           onChange={(e) => {
-                            console.log(e.target.value);
-                            // setProjectData({
-                            //   ...projectData,
-                            //   startDate: e.target.value,
-                            // });
+                            handlePhaseDataChange(
+                              "endDate",
+                              e.target.value,
+                              index
+                            );
                           }}
-                          required
                         />
                       </div>
                     </div>
                   ))}
                   <button
+                    type="button"
                     onClick={handleAddPhaseList}
                     className={`py-2 w-full mt-2 text-center border border-dashed border-stroke rounded-md hover:bg-stroke`}
                   >
@@ -825,20 +865,22 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
               </div>
               <div className="flex justify-between gap-3">
                 <button
+                  type="button"
                   onClick={() => setPageCreate(2)}
                   className="md:w-fit gap-2 w-full cursor-pointer mt-2 py-2 px-5  text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen dark:hover:bg-opacity-90"
                 >
                   Précédent
                 </button>
                 <button
-                  onClick={() => setPageCreate(4)}
+                  type="submit"
+                  // onClick={() => setPageCreate(4)}
                   className="md:w-fit gap-2 w-full cursor-pointer mt-2 py-2 px-5  text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen dark:hover:bg-opacity-90"
                 >
                   Suivant
                 </button>
               </div>
             </div>
-          </div>
+          </form>
           {/* ===== CREATE PROJECT LEVEL THREE: PHASES AND LIVRABLE END ===== */}
           {/* ===== CREATE PROJECT LEVEL FOUR: TEAM START ===== */}
           <div
@@ -850,7 +892,7 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
               <span className="font-semibold tracking-wide underline">
                 EQUIPES
               </span>
-              <div className=" overflow-y-scroll ">
+              <div className="space-y-2 ">
                 {/* ===== PROJECT DIRECTOR START ===== */}
                 <div>
                   <div>Directeur de projet</div>
@@ -860,24 +902,30 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
                       label="Assigner"
                       userSelected={userTeam}
                       setUserSelected={setUserTeam}
+                      role="director"
                     />
-                    <div className="flex gap-4 mt-6 flex-wrap">
-                      {userTeam?.map((team) => (
-                        <div
-                          key={team.id}
-                          className="border flex justify-center items-center gap-1 p-2 rounded text-sm"
-                        >
-                          {team?.name}
-                          <span
-                            className="cursor-pointer border rounded-full w-4 h-4 flex justify-center items-center bg-slate-400 text-whiten "
-                            onClick={() => {
-                              handleRemoveTeamList(team.id);
-                            }}
-                          >
-                            x
-                          </span>
-                        </div>
-                      ))}
+                    <div className="flex gap-4 mt-2 flex-wrap">
+                      {userTeam
+                        ?.filter((team) => team.role === "director")
+                        ?.map((team) => {
+                          const initials = getInitials(team?.name);
+                          return (
+                            <div
+                              key={team.id}
+                              className="relative group -ml-2 first:ml-0 hover:z-50"
+                              onClick={() => {
+                                handleRemoveTeamList(team.id);
+                              }}
+                            >
+                              <p className=" cursor-pointer text-slate-50 border relative bg-secondaryGreen p-1 w-7 h-7 flex justify-center items-center text-xs rounded-full dark:text-white">
+                                {initials}
+                              </p>
+                              <div className="absolute whitespace-nowrap text-xs hidden group-hover:block bg-white text-black p-2 border border-whiten shadow-5 rounded-md z-10 top-[-35px] left-1/2 transform -translate-x-1/2">
+                                <p>{team?.name}</p>
+                              </div>
+                            </div>
+                          );
+                        })}
                     </div>
                   </div>
                 </div>
@@ -885,30 +933,36 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
                 {/* ===== PROJECT TEAM START ===== */}
                 <div>
                   <div>Equipes</div>
-                  <div className="hide-scrollbar overflow-y-scroll">
+                  <div className="hide-scrollbar ">
                     <CutomInputUserSearch
                       placeholder="Recherche"
                       label="Assigner"
                       userSelected={userTeam}
                       setUserSelected={setUserTeam}
+                      role="member"
                     />
-                    <div className="flex gap-4 mt-6 flex-wrap">
-                      {userTeam?.map((team) => (
-                        <div
-                          key={team.id}
-                          className="border flex justify-center items-center gap-1 p-2 rounded text-sm"
-                        >
-                          {team?.name}
-                          <span
-                            className="cursor-pointer border rounded-full w-4 h-4 flex justify-center items-center bg-slate-400 text-whiten "
-                            onClick={() => {
-                              handleRemoveTeamList(team.id);
-                            }}
-                          >
-                            x
-                          </span>
-                        </div>
-                      ))}
+                    <div className="flex gap-4 mt-2 flex-wrap">
+                      {userTeam
+                        ?.filter((team) => team.role === "member")
+                        ?.map((team) => {
+                          const initials = getInitials(team?.name);
+                          return (
+                            <div
+                              key={team.id}
+                              className="relative group -ml-2 first:ml-0 hover:z-50"
+                              onClick={() => {
+                                handleRemoveTeamList(team.id);
+                              }}
+                            >
+                              <p className=" cursor-pointer text-slate-50 border relative bg-secondaryGreen p-1 w-7 h-7 flex justify-center items-center text-xs rounded-full dark:text-white">
+                                {initials}
+                              </p>
+                              <div className="absolute whitespace-nowrap text-xs hidden group-hover:block bg-white text-black p-2 border border-whiten shadow-5 rounded-md z-10 top-[-35px] left-1/2 transform -translate-x-1/2">
+                                <p>{team?.name}</p>
+                              </div>
+                            </div>
+                          );
+                        })}
                     </div>
                   </div>
                 </div>
@@ -916,30 +970,36 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
                 {/* ===== PROJECT TEAM START ===== */}
                 <div>
                   <div>Observateur</div>
-                  <div className="hide-scrollbar overflow-y-scroll">
+                  <div className="hide-scrollbar ">
                     <CutomInputUserSearch
                       placeholder="Recherche"
                       label="Assigner"
                       userSelected={userTeam}
                       setUserSelected={setUserTeam}
+                      role="observator"
                     />
-                    <div className="flex gap-4 mt-6 flex-wrap">
-                      {userTeam?.map((team) => (
-                        <div
-                          key={team.id}
-                          className="border flex justify-center items-center gap-1 p-2 rounded text-sm"
-                        >
-                          {team?.name}
-                          <span
-                            className="cursor-pointer border rounded-full w-4 h-4 flex justify-center items-center bg-slate-400 text-whiten "
-                            onClick={() => {
-                              handleRemoveTeamList(team.id);
-                            }}
-                          >
-                            x
-                          </span>
-                        </div>
-                      ))}
+                    <div className="flex gap-4 mt-2 flex-wrap">
+                      {userTeam
+                        ?.filter((team) => team.role === "observator")
+                        ?.map((team) => {
+                          const initials = getInitials(team?.name);
+                          return (
+                            <div
+                              key={team.id}
+                              className="relative group -ml-2 first:ml-0 hover:z-50"
+                              onClick={() => {
+                                handleRemoveTeamList(team.id);
+                              }}
+                            >
+                              <p className=" cursor-pointer text-slate-50 border relative bg-secondaryGreen p-1 w-7 h-7 flex justify-center items-center text-xs rounded-full dark:text-white">
+                                {initials}
+                              </p>
+                              <div className="absolute whitespace-nowrap text-xs hidden group-hover:block bg-white text-black p-2 border border-whiten shadow-5 rounded-md z-10 top-[-35px] left-1/2 transform -translate-x-1/2">
+                                <p>{team?.name}</p>
+                              </div>
+                            </div>
+                          );
+                        })}
                     </div>
                   </div>
                 </div>

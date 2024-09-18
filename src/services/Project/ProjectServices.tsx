@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ProjectDtoInterface } from "../../types/Project";
+import { IProjectDto } from "../../types/Project";
 
 const endPoint = import.meta.env.VITE_API_ENDPOINT;
 
@@ -34,7 +34,7 @@ export const getProjectById = async (projectid: string) => {
 
 // ===== POST =======
 // create a new project
-export const createProject = async (projectData: ProjectDtoInterface) => {
+export const createProject = async (projectData: IProjectDto) => {
   try {
     console.log(projectData);
     const response = await axios.post(
@@ -51,7 +51,7 @@ export const createProject = async (projectData: ProjectDtoInterface) => {
 // update a given project
 export const updateProject = async (
   projectId: string,
-  projectData: ProjectDtoInterface
+  projectData: IProjectDto
 ) => {
   try {
     const response = await axios.put(
