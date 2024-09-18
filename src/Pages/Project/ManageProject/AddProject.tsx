@@ -4,6 +4,7 @@ import {
   CustomSelect,
   MultiSelect,
   CutomInputUserSearch,
+  Checkbox,
 } from "../../../components/UIElements";
 import {
   RessourceInterface,
@@ -28,6 +29,7 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
     initiator: "",
     startDate: undefined,
     endDate: undefined,
+    endDateImmuable: false,
     listBudgets: [],
     listRessources: [],
     listPhases: [],
@@ -352,6 +354,10 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
           >
             Equipe
           </div>
+          <div>
+            <span className="text-red-500 font-bold">*</span>
+            <span> : Champ obligatoire</span>
+          </div>
         </div>
 
         {/* ===== ADVANCEMENT STEP MENUE END ===== */}
@@ -380,6 +386,7 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
               label="Titre"
               type="text"
               rounded="medium"
+              help="Le titre du projet est obligatoire"
               placeholder="Titre du projet (80 caractères max)"
               value={projectData?.title?.slice(0, 80)}
               maxLength={80}
@@ -395,6 +402,7 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
               label="Description"
               type="textarea"
               rounded="medium"
+              help="Bref description du projet"
               placeholder="Description du projet"
               rows={5}
               cols={5}
@@ -443,18 +451,72 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
                 }}
                 required
               />
-              <CustomInput
-                label="Date fin prévisionnelle"
-                type="date"
-                rounded="medium"
-                value={projectData?.endDate}
-                onChange={(e) => {
-                  setProjectData({
-                    ...projectData,
-                    endDate: e.target.value,
-                  });
-                }}
-              />
+              <div className="grid grid-rows-2 gap-2">
+                <CustomInput
+                  label="Date fin prévisionnelle"
+                  type="date"
+                  rounded="medium"
+                  help={`${
+                    projectData.startDate ? "" : "Remplir la date de début."
+                  }`}
+                  value={projectData?.endDate}
+                  onChange={(e) => {
+                    setProjectData({
+                      ...projectData,
+                      endDate: e.target.value,
+                    });
+                  }}
+                  min={projectData.startDate}
+                  disabled={projectData.startDate ? false : true}
+                />
+                <div
+                  className={`${
+                    projectData?.endDate ? "opacity-100" : "opacity-50 hidden"
+                  } transform duration-300`}
+                >
+                  <span className={`cursor-help relative  group`}>
+                    Cette date est-elle imuable ?
+                    <span className="absolute text-xs  font-thin hidden group-hover:flex max-w-59 min-w-59 bg-white text-black p-2 border border-whiten shadow-5 rounded-md z-999999 top-[-35px] left-1/2 transform -translate-x-1/2">
+                      Si oui, Cette date sera impossible a modifier même en cas
+                      de retard
+                    </span>
+                  </span>
+                  <span className="flex flex-row flex-wrap gap-2">
+                    <span className="space-x-2">
+                      <input
+                        value={"Oui"}
+                        type="radio"
+                        className="cursor-pointer"
+                        name={"immuableEndDate"}
+                        checked={projectData?.endDateImmuable}
+                        onChange={() => {
+                          setProjectData({
+                            ...projectData,
+                            endDateImmuable: true,
+                          });
+                        }}
+                      />
+                      <label htmlFor="">Oui</label>
+                    </span>
+                    <span className="space-x-2">
+                      <input
+                        value={"Non"}
+                        className="cursor-pointer"
+                        type="radio"
+                        name={"immuableEndDate"}
+                        onChange={() => {
+                          setProjectData({
+                            ...projectData,
+                            endDateImmuable: false,
+                          });
+                        }}
+                        checked={!projectData?.endDateImmuable}
+                      />
+                      <label htmlFor="">Non</label>
+                    </span>
+                  </span>
+                </div>
+              </div>
             </div>
             <div className="flex justify-end ">
               <button

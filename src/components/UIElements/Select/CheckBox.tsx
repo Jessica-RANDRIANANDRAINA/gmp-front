@@ -4,6 +4,9 @@ import { CheckBoxProp } from "../../../types/input";
 const Checkbox = ({
   label,
   htmlFor,
+  className,
+  name,
+  type = "checkbox",
   onStateCheckChange,
   active,
 }: CheckBoxProp) => {
@@ -20,15 +23,16 @@ const Checkbox = ({
   };
 
   return (
-    <div className="mb-4">
+    <div className={`${className}`}>
       <label
         htmlFor={htmlFor}
         className="flex cursor-pointer select-none items-center"
       >
         <div className="relative">
           <input
-            type="checkbox"
+            type={type}
             id={htmlFor}
+            name={name}
             className="sr-only"
             onChange={() => {
               setIsChecked(!isChecked);

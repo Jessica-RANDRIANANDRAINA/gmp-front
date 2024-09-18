@@ -9,6 +9,7 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   rows?: number;
   cols?: number;
   label: string;
+  help?: string;
   value?: string | number | undefined;
   onChange?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
 }
@@ -58,8 +59,11 @@ export interface InputSelectprops
 
 export type CheckBoxProp = {
   label: string;
+  type?: "checkbox" | "radio";
+  name?: string;
   htmlFor?: string;
   checked?: boolean;
   onStateCheckChange?: (checked: boolean) => void;
   active?: boolean | number;
+  className?: string;
 };

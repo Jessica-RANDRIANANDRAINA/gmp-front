@@ -5,6 +5,7 @@ export interface ProjectData {
   priority: string;
   beneficiary: string;
   initiator: string;
+  endDateImmuable?: boolean;
   completionPercentage?: number;
   startDate?: string;
   endDate?: string;
