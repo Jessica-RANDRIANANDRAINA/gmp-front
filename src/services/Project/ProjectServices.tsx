@@ -36,7 +36,6 @@ export const getProjectById = async (projectid: string) => {
 // create a new project
 export const createProject = async (projectData: IProjectDto) => {
   try {
-    console.log(projectData);
     const response = await axios.post(
       `${endPoint}/api/Project/create`,
       projectData

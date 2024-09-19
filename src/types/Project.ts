@@ -13,6 +13,7 @@ export interface IProjectData {
   listRessources: IRessource[];
   listPhases: IPhase[];
   listUsers: IUserProject[];
+  idBudget?: string;
   codeBuget: string;
   directionSourceBudget: string;
   budgetAmount: number | null;

@@ -16,6 +16,11 @@ import { updateProject } from "../../../services/Project/ProjectServices";
 import { decodeToken } from "../../../services/Function/TokenService";
 import { v4 as uuid4 } from "uuid";
 import { PuffLoader } from "react-spinners";
+import { getInitials } from "../../../services/Function/UserFunctionService";
+import { Notyf } from "notyf";
+import "notyf/notyf.min.css";
+
+const notyf = new Notyf();
 
 const UpdateProject = ({
   setIsModifProject,
@@ -27,31 +32,34 @@ const UpdateProject = ({
   projectDataToModif: any;
 }) => {
   useEffect(() => {
+    console.log("**********************************");
     console.log(projectDataToModif);
+    console.log("**********************************");
   }, [projectDataToModif]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [projectData, setProjectData] = useState<IProjectData>({
     id: projectDataToModif?.id,
     title: projectDataToModif?.title,
+    completionPercentage: projectDataToModif?.completionPercentage,
     description: projectDataToModif?.description,
     priority: projectDataToModif?.priority,
     beneficiary: "",
     initiator: projectDataToModif?.initiator,
     startDate: projectDataToModif?.startDate,
-    completionPercentage: projectDataToModif?.completionPercentage,
     endDate: projectDataToModif?.endDate,
+    isEndDateImmuable:
+      projectDataToModif?.isEndDateImmuable === 0 ? false : true,
     listBudgets: [],
     listRessources: [],
     listPhases: [],
     listUsers: [],
+    idBudget: projectDataToModif?.listBudgets?.[0]?.id,
     codeBuget: projectDataToModif?.listBudgets?.[0]?.code,
     directionSourceBudget: projectDataToModif?.listBudgets?.[0]?.direction,
     budgetAmount: projectDataToModif?.listBudgets?.[0]?.amount,
     budgetCurrency: projectDataToModif?.listBudgets?.[0]?.currency ?? "MGA",
   });
-  const [ressourceList, setRessourceList] = useState<Array<IRessource>>(
-    []
-  );
+  const [ressourceList, setRessourceList] = useState<Array<IRessource>>([]);
   const [phaseAndLivrableList, setPhaseAndLivrableList] = useState<
     Array<IPhase>
   >([]);
@@ -62,6 +70,7 @@ const UpdateProject = ({
     { id: string | undefined; name: string; email: string; role: string }[]
   >([]);
   const [isCreateLoading, setIsCreateLoading] = useState(false);
+  const [haveBudget, setHaveBudget] = useState(false);
   useEffect(() => {
     setIsLoaded(true);
   }, []);
@@ -80,6 +89,9 @@ const UpdateProject = ({
     const ressourceData: IRessource[] = [];
     const phaseData: IPhase[] = [];
     const team = [];
+    if (projectDataToModif?.listBudgets?.length > 0) {
+      setHaveBudget(true);
+    }
     if (projectDataToModif?.listRessources?.length > 0) {
       for (let i = 0; i < projectDataToModif.listRessources.length; i++) {
         ressourceData.push({
@@ -99,6 +111,8 @@ const UpdateProject = ({
           rank: projectDataToModif.listPhases[i]?.rank,
           expectedDeliverable:
             projectDataToModif.listPhases[i]?.expectedDeliverable,
+          startDate: projectDataToModif.listPhases[i]?.startDate,
+          endDate: projectDataToModif.listPhases[i]?.endDate,
         });
       }
       setPhaseAndLivrableList(phaseData);
@@ -136,8 +150,11 @@ const UpdateProject = ({
   // ADD PHASE IN THE LIST
   const handleAddPhaseList = () => {
     let phaseData: IPhase = {
+      id: uuid4(),
       phase1: "",
       expectedDeliverable: "",
+      startDate: undefined,
+      endDate: undefined,
     };
     setPhaseAndLivrableList([...phaseAndLivrableList, phaseData]);
   };
@@ -209,7 +226,13 @@ const UpdateProject = ({
         idx === index
           ? {
               ...phase,
-              [label === "phase" ? "phase1" : "expectedDeliverable"]: value,
+              [label === "phase"
+                ? "phase1"
+                : label === "livrable"
+                ? "expectedDeliverable"
+                : label === "startDate"
+                ? "startDate"
+                : "endDate"]: value,
             }
           : phase
       )
@@ -228,15 +251,21 @@ const UpdateProject = ({
     const userConnected = decodeToken("pr");
 
     // if there is budget, add it in budgetData
-    if (projectData?.budgetAmount !== 0) {
+    if (
+      projectData.budgetAmount !== 0 &&
+      projectData.budgetAmount !== undefined
+    ) {
       budgetData = [
         {
+          id: projectData?.idBudget ?? uuid4(),
           code: projectData?.codeBuget,
           direction: projectData?.directionSourceBudget,
-          amount: projectData?.budgetAmount,
+          amount: projectData?.budgetAmount ?? 0,
           currency: projectData?.budgetCurrency,
         },
       ];
+    } else {
+      budgetData = [];
     }
     // if there is team members, map them and store in userProject
     const userProject = userTeam?.map((team) => ({
@@ -248,6 +277,7 @@ const UpdateProject = ({
     // trenasform all the data to a single object
     const data = {
       ...projectData,
+      isEndDateImmuable: projectData?.isEndDateImmuable ? 1 : 0,
       initiator: userConnected?.name,
       beneficiary: beneficiary,
       listBudgets: budgetData,
@@ -255,7 +285,6 @@ const UpdateProject = ({
       listPhases: phaseAndLivrableList,
       listUsers: userProject,
     };
-    console.log(data);
 
     try {
       // update project service
@@ -398,20 +427,28 @@ const UpdateProject = ({
         {/* ===== FORM CREATE START ===== */}
         <div className="pt-2 md:w-1/2  ">
           {/* ===== CREATE PROJECT LEVEL ONE START INFO GENERAL ===== */}
-          <div
+          <form
             className={`space-y-2 transition-all duration-1000 ease-in-out ${
               pageCreate === 1 ? "opacity-100" : "opacity-0 h-0 overflow-hidden"
             }`}
+            onSubmit={(e) => {
+              e.preventDefault();
+              const form = e.target as HTMLFormElement;
+              if (form.reportValidity()) {
+                setPageCreate(2);
+              }
+            }}
           >
             <div className="grid grid-cols-2 gap-4">
               <CustomInput
                 label="Titre"
                 type="text"
                 rounded="medium"
+                help="Le titre du projet est obligatoire"
                 placeholder="Titre du projet (80 caractères max)"
                 value={projectData?.title?.slice(0, 80)}
                 maxLength={80}
-                required
+                required={true}
                 onChange={(e) => {
                   setProjectData({
                     ...projectData,
@@ -439,11 +476,11 @@ const UpdateProject = ({
               placeholder="Description du projet"
               rows={5}
               cols={5}
-              value={projectData?.description?.slice(0, 500)}
+              value={projectData?.description?.slice(0, 1000)}
               onChange={(e) => {
                 setProjectData({
                   ...projectData,
-                  description: e.target.value?.slice(0, 500),
+                  description: e.target.value?.slice(0, 1000),
                 });
               }}
             />
@@ -468,7 +505,7 @@ const UpdateProject = ({
                 initialValue={projectDataToModif?.beneficiary}
                 setValueMulti={setDirectionOwner}
                 rounded="large"
-                required
+                required={true}
               />
             </div>
             <div className="grid md:grid-cols-2 gap-4">
@@ -490,124 +527,226 @@ const UpdateProject = ({
                 required
                 disabled={isPreviousDate(projectData?.startDate)}
               />
-              <CustomInput
-                label="Date fin prévisionnelle"
-                type="date"
-                rounded="medium"
-                value={
-                  projectData?.endDate ? projectData.endDate.split("T")[0] : ""
-                }
-                onChange={(e) => {
-                  setProjectData({
-                    ...projectData,
-                    endDate: e.target.value,
-                  });
-                }}
-              />
+              <div className="grid  gap-2">
+                <CustomInput
+                  label="Date fin prévisionnelle"
+                  type="date"
+                  rounded="medium"
+                  value={
+                    projectData?.endDate
+                      ? projectData.endDate.split("T")[0]
+                      : ""
+                  }
+                  help={
+                    projectData.isEndDateImmuable
+                      ? "Cette date est fixe"
+                      : projectData?.endDate
+                      ? "Tout changement de cette date devra être suivi de la raison"
+                      : undefined
+                  }
+                  onChange={(e) => {
+                    setProjectData({
+                      ...projectData,
+                      endDate: e.target.value,
+                    });
+                  }}
+                  min={
+                    projectData?.startDate
+                      ? projectData.startDate.split("T")[0]
+                      : ""
+                  }
+                  disabled={
+                    (projectData.startDate ? false : true) ||
+                    projectData.isEndDateImmuable
+                  }
+                />
+                <div className="">
+                  <div
+                    className={`${
+                      projectData?.endDate ===
+                      projectDataToModif?.endDate.split("T")[0]
+                        ? "hidden"
+                        : ""
+                    }`}
+                  >
+                    <CustomInput
+                      label="raison de changement"
+                      type="textarea"
+                      rounded="medium"
+                    />
+                  </div>
+                  <div
+                    className={`${
+                      projectData?.endDate ? "opacity-100" : "opacity-50 hidden"
+                    } transform duration-300
+                  ${projectDataToModif?.isEndDateImmuable ? "hidden" : ""}
+                  `}
+                  >
+                    <span className={`cursor-help relative  group`}>
+                      Cette date est-elle imuable ?
+                      <span className="absolute text-xs  font-thin hidden group-hover:flex max-w-59 min-w-59 bg-white text-black p-2 border border-whiten shadow-5 rounded-md z-999999 top-[-35px] left-1/2 transform -translate-x-1/2">
+                        Si oui, Cette date sera impossible a modifier même en
+                        cas de retard
+                      </span>
+                    </span>
+                    <span className="flex flex-row flex-wrap gap-2">
+                      <span className="space-x-2">
+                        <input
+                          value={"Oui"}
+                          type="radio"
+                          className="cursor-pointer"
+                          name={"immuableEndDate"}
+                          checked={projectData?.isEndDateImmuable}
+                          onChange={() => {
+                            setProjectData({
+                              ...projectData,
+                              isEndDateImmuable: true,
+                            });
+                          }}
+                        />
+                        <label>Oui</label>
+                      </span>
+                      <span className="space-x-2">
+                        <input
+                          value={"Non"}
+                          className="cursor-pointer"
+                          type="radio"
+                          name={"immuableEndDate"}
+                          onChange={() => {
+                            setProjectData({
+                              ...projectData,
+                              isEndDateImmuable: false,
+                            });
+                          }}
+                          checked={!projectData?.isEndDateImmuable}
+                        />
+                        <label>Non</label>
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
             </div>
             <div className="flex justify-end ">
               <button
                 // onClick={() => setPageCreate(2)}
-                onClick={() => {
-                  if (
-                    projectData?.title === "" ||
-                    projectData.startDate === undefined ||
-                    projectData.startDate === "" ||
-                    directionOwner.length === 0
-                  ) {
-                    return;
-                  }
-                  setPageCreate(2);
-                }}
-                className={`md:w-fit gap-2 w-full  mt-2 py-2 px-5  text-center font-medium text-white  lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen 
-                  ${
-                    projectData?.title === "" ||
-                    projectData?.startDate === undefined ||
-                    projectData?.startDate === "" ||
-                    directionOwner?.length === 0
-                      ? "cursor-default opacity-70"
-                      : "cursor-pointer hover:bg-opacity-90 dark:hover:bg-opacity-90"
-                  }
-                  `}
+                type="submit"
+                className={`md:w-fit gap-2 w-full  mt-2 py-2 px-5  text-center font-medium text-white  lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen `}
               >
                 Suivant
               </button>
             </div>
-          </div>
+          </form>
           {/* ===== CREATE PROJECT LEVEL ONE END INFO GENERAL ===== */}
 
           {/* ===== CREATE PROJECT LEVEL TWO: BUDGET AND RESSOURCE START ===== */}
-          <div
+          <form
             className={`space-y-2 transition-all duration-1000 ease-in-out ${
               pageCreate === 2 ? "opacity-100" : "opacity-0 h-0 overflow-hidden"
             }`}
+            onSubmit={(e) => {
+              e.preventDefault();
+              const form = e.target as HTMLFormElement;
+              if (form.reportValidity()) {
+                setPageCreate(3);
+              }
+            }}
           >
             <div className="space-y-4">
               <div>
                 <span className="font-semibold tracking-wide underline">
                   BUDGET
                 </span>
-                <div className="grid md:grid-cols-2 gap-4">
-                  <CustomInput
-                    label="Code"
-                    type="text"
-                    rounded="medium"
-                    placeholder="Code budget"
-                    // disabled={true}
-                    value={projectData?.codeBuget}
-                    onChange={(e) => {
-                      setProjectData({
-                        ...projectData,
-                        codeBuget: e.target.value,
-                      });
-                    }}
-                  />
-                  <CustomSelect
-                    label="Direction sponsor"
-                    placeholder="Choisir une direction"
-                    data={departments}
-                    value={projectData.directionSourceBudget}
-                    onValueChange={(e) => {
-                      setProjectData({
-                        ...projectData,
-                        directionSourceBudget: e,
-                      });
-                    }}
-                    required
-                  />
-                </div>
-                <div className="grid md:grid-cols-2 gap-3">
-                  <CustomInput
-                    label="Montant du budget"
-                    type="number"
-                    step={0.01}
-                    min={0}
-                    rounded="medium"
-                    placeholder="0"
-                    value={projectData?.budgetAmount}
-                    required
-                    onChange={(e) => {
-                      setProjectData({
-                        ...projectData,
-                        budgetAmount: parseFloat(
-                          parseFloat(e.target.value).toFixed(2)
-                        ),
-                      });
-                    }}
-                  />
-                  <CustomSelect
-                    label="Devise"
-                    placeholder=" "
-                    data={["MGA", "EUR"]}
-                    value={projectData.budgetCurrency}
-                    onValueChange={(e) => {
-                      setProjectData({
-                        ...projectData,
-                        budgetCurrency: e,
-                      });
-                    }}
-                  />
-                </div>
+                <button
+                  onClick={() => {
+                    setHaveBudget(true);
+                  }}
+                  type="button"
+                  className={`py-2 w-full mt-2 text-center border border-dashed border-stroke rounded-md hover:bg-stroke ${
+                    haveBudget ? "hidden" : ""
+                  }`}
+                >
+                  Est-ce que ce projet a un budget ?
+                </button>
+                {haveBudget && (
+                  <>
+                    <div className="flex justify-between">
+                      <div></div>
+                      <button
+                        type="button"
+                        className={`
+                      text-red-500 decoration-red-500 font-bold hover:font-black
+                      `}
+                        onClick={() => {
+                          setHaveBudget(false);
+                        }}
+                      >
+                        Supprimer
+                      </button>
+                    </div>
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <CustomInput
+                        label="Code"
+                        type="text"
+                        rounded="medium"
+                        placeholder="Code budget"
+                        // disabled={true}
+                        value={projectData?.codeBuget}
+                        onChange={(e) => {
+                          setProjectData({
+                            ...projectData,
+                            codeBuget: e.target.value,
+                          });
+                        }}
+                      />
+                      <CustomSelect
+                        label="Direction sponsor"
+                        placeholder="Choisir une direction"
+                        data={departments}
+                        value={projectData.directionSourceBudget}
+                        onValueChange={(e) => {
+                          setProjectData({
+                            ...projectData,
+                            directionSourceBudget: e,
+                          });
+                        }}
+                        required
+                      />
+                    </div>
+                    <div className="grid md:grid-cols-2 gap-3">
+                      <CustomInput
+                        label="Montant du budget"
+                        type="number"
+                        step={0.01}
+                        min={0}
+                        rounded="medium"
+                        placeholder="0"
+                        value={projectData?.budgetAmount ?? ""}
+                        required
+                        onChange={(e) => {
+                          setProjectData({
+                            ...projectData,
+                            budgetAmount: parseFloat(
+                              parseFloat(e.target.value).toFixed(2)
+                            ),
+                          });
+                        }}
+                      />
+                      <CustomSelect
+                        label="Devise"
+                        placeholder=" "
+                        data={["MGA", "EUR"]}
+                        value={projectData.budgetCurrency}
+                        onValueChange={(e) => {
+                          setProjectData({
+                            ...projectData,
+                            budgetCurrency: e,
+                          });
+                        }}
+                      />
+                    </div>
+                  </>
+                )}
               </div>
               <div>
                 {/* ===== RESSOURCES START ===== */}
@@ -689,25 +828,37 @@ const UpdateProject = ({
               <div className="flex justify-between gap-3">
                 <button
                   onClick={() => setPageCreate(1)}
+                  type="button"
                   className="md:w-fit gap-2 w-full cursor-pointer mt-2 py-2 px-5  text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen dark:hover:bg-opacity-90"
                 >
                   Précédent
                 </button>
                 <button
-                  onClick={() => setPageCreate(3)}
+                  type="submit"
                   className="md:w-fit gap-2 w-full cursor-pointer mt-2 py-2 px-5  text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen dark:hover:bg-opacity-90"
                 >
                   Suivant
                 </button>
               </div>
             </div>
-          </div>
+          </form>
           {/* ===== CREATE PROJECT LEVEL TWO: BUDGET AND RESSOURCE END ===== */}
           {/* ===== CREATE PROJECT LEVEL THREE: PHASES AND LIVRABLE START ===== */}
-          <div
+          <form
             className={`space-y-2 transition-all duration-1000 ease-in-out ${
               pageCreate === 3 ? "opacity-100" : "opacity-0 h-0 overflow-hidden"
             }`}
+            onSubmit={(e) => {
+              e.preventDefault();
+              const form = e.target as HTMLFormElement;
+              if (form.reportValidity()) {
+                if (phaseAndLivrableList.length > 0) {
+                  setPageCreate(4);
+                } else {
+                  notyf.error("Un projet doit contenir au moins une phase");
+                }
+              }
+            }}
           >
             <div className="space-y-4">
               <div>
@@ -717,6 +868,7 @@ const UpdateProject = ({
                 <div className="hide-scrollbar overflow-y-scroll md:max-h-125 md:min-h-125">
                   <button
                     onClick={handleAddDefaultPhaseList}
+                    type="button"
                     className={`py-2 w-full mt-2 text-center border border-dashed border-stroke rounded-md hover:bg-stroke`}
                   >
                     Utiliser les valeurs par défaut
@@ -726,6 +878,7 @@ const UpdateProject = ({
                       <div className={"flex justify-between"}>
                         <div className={"underline"}>Phase {index + 1}</div>
                         <button
+                          type="button"
                           className={
                             "text-red-500 decoration-red-500 font-bold hover:font-black"
                           }
@@ -768,10 +921,43 @@ const UpdateProject = ({
                           }}
                           required
                         />
+                        <CustomInput
+                          label="Date début"
+                          type="date"
+                          rounded="medium"
+                          value={
+                            phase?.startDate
+                              ? phase?.startDate?.split("T")[0]
+                              : 0
+                          }
+                          onChange={(e) => {
+                            handlePhaseDataChange(
+                              "startDate",
+                              e.target.value,
+                              index
+                            );
+                          }}
+                        />
+                        <CustomInput
+                          label="Date fin"
+                          type="date"
+                          rounded="medium"
+                          value={
+                            phase?.endDate ? phase?.endDate?.split("T")[0] : 0
+                          }
+                          onChange={(e) => {
+                            handlePhaseDataChange(
+                              "endDate",
+                              e.target.value,
+                              index
+                            );
+                          }}
+                        />
                       </div>
                     </div>
                   ))}
                   <button
+                    type="button"
                     onClick={handleAddPhaseList}
                     className={`py-2 w-full mt-2 text-center border border-dashed border-stroke rounded-md hover:bg-stroke`}
                   >
@@ -781,20 +967,22 @@ const UpdateProject = ({
               </div>
               <div className="flex justify-between gap-3">
                 <button
+                  type="button"
                   onClick={() => setPageCreate(2)}
                   className="md:w-fit gap-2 w-full cursor-pointer mt-2 py-2 px-5  text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen dark:hover:bg-opacity-90"
                 >
                   Précédent
                 </button>
                 <button
-                  onClick={() => setPageCreate(4)}
+                  // onClick={() => setPageCreate(4)}
+                  type="submit"
                   className="md:w-fit gap-2 w-full cursor-pointer mt-2 py-2 px-5  text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen dark:hover:bg-opacity-90"
                 >
                   Suivant
                 </button>
               </div>
             </div>
-          </div>
+          </form>
           {/* ===== CREATE PROJECT LEVEL THREE: PHASES AND LIVRABLE END ===== */}
           {/* ===== CREATE PROJECT LEVEL FOUR: TEAM START ===== */}
           <div
@@ -807,38 +995,118 @@ const UpdateProject = ({
                 <span className="font-semibold tracking-wide underline">
                   EQUIPES
                 </span>
-                <div className="hide-scrollbar overflow-y-scroll md:max-h-125 md:min-h-125">
-                  <CutomInputUserSearch
-                    placeholder="Recherche"
-                    label=""
-                    userSelected={userTeam}
-                    setUserSelected={setUserTeam}
-                  />
-                  <div className={`flex gap-4 mt-6 flex-wrap`}>
-                    {userTeam?.map((team) => {
-                      return (
-                        <div
-                          key={team.id}
-                          className={`relative group border flex justify-center items-center gap-1 p-2 rounded text-sm cursor-pointer `}
-                        >
-                          {team?.name}
-                          <span
-                            className={`cursor-pointer border rounded-full w-4 h-4 flex justify-center items-center bg-slate-400 text-whiten
-                            ${team?.role === "Owner" ? "hidden" : ""}
-                            `}
-                            onClick={() => {
-                              handleRemoveTeamList(team.id);
-                            }}
-                          >
-                            x
-                          </span>
-                          <div className="absolute whitespace-nowrap text-xs hidden group-hover:block bg-white text-black border border-whiten shadow-5 rounded-md -top-9 p-2 z-10 transform -translate-x-1/2">
-                            {team?.role}
-                          </div>
-                        </div>
-                      );
-                    })}
+                <div className="space-y-2">
+                  {/* ===== PROJECT DIRECTOR START ===== */}
+                  <div>
+                    <div>Directeur de projet</div>
+                    <div className="hide-scrollbar">
+                      <CutomInputUserSearch
+                        placeholder="Recherche"
+                        label="Assigner"
+                        userSelected={userTeam}
+                        setUserSelected={setUserTeam}
+                        role="director"
+                      />
+                      <div className="flex gap-4 mt-2 flex-wrap">
+                        {userTeam
+                          ?.filter((team) => team.role === "director")
+                          ?.map((team) => {
+                            const initials = getInitials(team.name);
+                            return (
+                              <div
+                                key={team.id}
+                                className="relative group -ml-2 first:ml-0 hover:z-50"
+                                onClick={() => {
+                                  handleRemoveTeamList(team.id);
+                                }}
+                              >
+                                <p className=" cursor-pointer text-slate-50 border relative bg-secondaryGreen p-1 w-7 h-7 flex justify-center items-center text-xs rounded-full dark:text-white">
+                                  {initials}
+                                </p>
+                                <div className="absolute whitespace-nowrap text-xs hidden group-hover:block bg-white text-black p-2 border border-whiten shadow-5 rounded-md z-10 top-[-35px] left-1/2 transform -translate-x-1/2">
+                                  <p>{team?.name}</p>
+                                </div>
+                              </div>
+                            );
+                          })}
+                      </div>
+                    </div>
                   </div>
+                  {/* ===== PROJECT DIRECTOR END ===== */}
+                  {/* ===== PROJECT TEAM START ===== */}
+                  <div>
+                    <div>Equipes</div>
+                    <div className="hide-scrollbar">
+                      <CutomInputUserSearch
+                        placeholder="Recherche"
+                        label="Assigner"
+                        userSelected={userTeam}
+                        setUserSelected={setUserTeam}
+                        role="member"
+                      />
+                      <div className="flex gap-4 mt-2 flex-wrap">
+                        {userTeam
+                          ?.filter((team) => team.role === "member")
+                          ?.map((team) => {
+                            const initials = getInitials(team.name);
+                            return (
+                              <div
+                                key={team.id}
+                                className="relative group -ml-2 first:ml-0 hover:z-50"
+                                onClick={() => {
+                                  handleRemoveTeamList(team.id);
+                                }}
+                              >
+                                <p className=" cursor-pointer text-slate-50 border relative bg-secondaryGreen p-1 w-7 h-7 flex justify-center items-center text-xs rounded-full dark:text-white">
+                                  {initials}
+                                </p>
+                                <div className="absolute whitespace-nowrap text-xs hidden group-hover:block bg-white text-black p-2 border border-whiten shadow-5 rounded-md z-10 top-[-35px] left-1/2 transform -translate-x-1/2">
+                                  <p>{team?.name}</p>
+                                </div>
+                              </div>
+                            );
+                          })}
+                      </div>
+                    </div>
+                  </div>
+                  {/* ===== PROJECT TEAM END ===== */}
+                  {/* ===== PROJECT OBSERVATOR START ===== */}
+                  <div>
+                    <div>Observateur</div>
+                    <div className="hide-scrollbar">
+                      <CutomInputUserSearch
+                        placeholder="Recherche"
+                        label="Assigner"
+                        userSelected={userTeam}
+                        setUserSelected={setUserTeam}
+                        role="observator"
+                      />
+                      <div className="flex gap-4 mt-2 flex-wrap">
+                        {userTeam
+                          ?.filter((team) => team.role === "observator")
+                          ?.map((team) => {
+                            const initials = getInitials(team.name);
+                            return (
+                              <div
+                                key={team.id}
+                                className="relative group -ml-2 first:ml-0 hover:z-50"
+                                onClick={() => {
+                                  handleRemoveTeamList(team.id);
+                                }}
+                              >
+                                <p className=" cursor-pointer text-slate-50 border relative bg-secondaryGreen p-1 w-7 h-7 flex justify-center items-center text-xs rounded-full dark:text-white">
+                                  {initials}
+                                </p>
+                                <div className="absolute whitespace-nowrap text-xs hidden group-hover:block bg-white text-black p-2 border border-whiten shadow-5 rounded-md z-10 top-[-35px] left-1/2 transform -translate-x-1/2">
+                                  <p>{team?.name}</p>
+                                </div>
+                              </div>
+                            );
+                          })}
+                      </div>
+                    </div>
+                  </div>
+                  {/* ===== PROJECT OBSERVATOR END ===== */}
                 </div>
               </div>
               <div className="flex justify-between gap-3">

@@ -16,9 +16,9 @@ import { createProject } from "../../../services/Project/ProjectServices";
 import { decodeToken } from "../../../services/Function/TokenService";
 import { v4 as uuid4 } from "uuid";
 import { PuffLoader } from "react-spinners";
+import { getInitials } from "../../../services/Function/UserFunctionService";
 import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
-import { getInitials } from "../../../services/Function/UserFunctionService";
 
 const notyf = new Notyf();
 
@@ -94,6 +94,7 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
   // ADD PHASE IN THE LIST
   const handleAddPhaseList = () => {
     let phaseData: IPhase = {
+      id: uuid4(),
       rank: 0,
       phase1: "",
       expectedDeliverable: "",
@@ -247,8 +248,6 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
       listPhases: phaseAndLivrableList,
       listUsers: userProject,
     };
-    console.log(projectData?.budgetAmount);
-    console.log(data);
     try {
       // create project service
       await createProject(data);
@@ -392,10 +391,7 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
               const form = e.target as HTMLFormElement;
               if (form.reportValidity()) {
                 setPageCreate(2);
-                console.log("first");
-              } else {
-                console.log("second");
-              }
+              } 
             }}
           >
             <CustomInput
@@ -512,7 +508,7 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
                           });
                         }}
                       />
-                      <label >Oui</label>
+                      <label>Oui</label>
                     </span>
                     <span className="space-x-2">
                       <input
@@ -528,7 +524,7 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
                         }}
                         checked={!projectData?.isEndDateImmuable}
                       />
-                      <label >Non</label>
+                      <label>Non</label>
                     </span>
                   </span>
                 </div>
@@ -538,9 +534,7 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
               <button
                 // onClick={() => setPageCreate(2)}
                 type="submit"
-                className={`md:w-fit gap-2 w-full  mt-2 py-2 px-5  text-center font-medium text-white  lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen 
-                  
-                  `}
+                className={`md:w-fit gap-2 w-full  mt-2 py-2 px-5  text-center font-medium text-white  lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen  `}
               >
                 Suivant
               </button>
