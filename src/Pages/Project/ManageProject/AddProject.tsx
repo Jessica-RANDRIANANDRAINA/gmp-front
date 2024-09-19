@@ -512,7 +512,7 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
                           });
                         }}
                       />
-                      <label htmlFor="">Oui</label>
+                      <label >Oui</label>
                     </span>
                     <span className="space-x-2">
                       <input
@@ -528,7 +528,7 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
                         }}
                         checked={!projectData?.isEndDateImmuable}
                       />
-                      <label htmlFor="">Non</label>
+                      <label >Non</label>
                     </span>
                   </span>
                 </div>
