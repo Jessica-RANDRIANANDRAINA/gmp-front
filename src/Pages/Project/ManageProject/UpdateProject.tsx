@@ -10,6 +10,7 @@ import {
   IPhase,
   IBudget,
   IProjectData,
+  IHistoricProject,
 } from "../../../types/Project";
 import { getAllDepartments } from "../../../services/User";
 import { updateProject } from "../../../services/Project/ProjectServices";
@@ -53,6 +54,7 @@ const UpdateProject = ({
     listRessources: [],
     listPhases: [],
     listUsers: [],
+    listHistoricProjects: [],
     idBudget: projectDataToModif?.listBudgets?.[0]?.id,
     codeBuget: projectDataToModif?.listBudgets?.[0]?.code,
     directionSourceBudget: projectDataToModif?.listBudgets?.[0]?.direction,
@@ -64,6 +66,15 @@ const UpdateProject = ({
     Array<IPhase>
   >([]);
   const [directionOwner, setDirectionOwner] = useState<string[]>([]);
+  const [hitoricProjectDate, setHistoricProjectDate] =
+    useState<IHistoricProject>({
+      id: "",
+      initiator: "",
+      elementChanged: "",
+      from: "",
+      to: "",
+      reason: "",
+    });
   const [pageCreate, setPageCreate] = useState(1);
   const [departments, setDepartments] = useState<string[]>([]);
   const [userTeam, setUserTeam] = useState<
@@ -267,6 +278,23 @@ const UpdateProject = ({
     } else {
       budgetData = [];
     }
+
+    var historic: IHistoricProject[] = [];
+    if (hitoricProjectDate?.reason !== "") {
+      historic = [
+        {
+          id: uuid4(),
+          initiator: userConnected?.jti,
+          elementChanged: "endDate",
+          from: projectDataToModif.endDate,
+          to: projectData.endDate,
+          reason: hitoricProjectDate?.reason,
+        },
+      ];
+    } else {
+      historic = [];
+    }
+
     // if there is team members, map them and store in userProject
     const userProject = userTeam?.map((team) => ({
       userid: team.id,
@@ -284,7 +312,9 @@ const UpdateProject = ({
       listRessources: ressourceList,
       listPhases: phaseAndLivrableList,
       listUsers: userProject,
+      listHistoricProjects: historic,
     };
+    console.log(data);
 
     try {
       // update project service
@@ -515,7 +545,7 @@ const UpdateProject = ({
                 rounded="medium"
                 value={
                   projectData?.startDate
-                    ? projectData.startDate.split("T")[0]
+                    ? projectData.startDate?.split("T")[0]
                     : ""
                 }
                 onChange={(e) => {
@@ -534,7 +564,7 @@ const UpdateProject = ({
                   rounded="medium"
                   value={
                     projectData?.endDate
-                      ? projectData.endDate.split("T")[0]
+                      ? projectData.endDate?.split("T")[0]
                       : ""
                   }
                   help={
@@ -552,7 +582,7 @@ const UpdateProject = ({
                   }}
                   min={
                     projectData?.startDate
-                      ? projectData.startDate.split("T")[0]
+                      ? projectData.startDate?.split("T")[0]
                       : ""
                   }
                   disabled={
@@ -563,16 +593,34 @@ const UpdateProject = ({
                 <div className="">
                   <div
                     className={`${
-                      projectData?.endDate ===
-                      projectDataToModif?.endDate.split("T")[0]
+                      projectData?.endDate?.split("T")[0] ===
+                        projectDataToModif?.endDate?.split("T")[0] ||
+                      projectDataToModif?.endDate === null
                         ? "hidden"
                         : ""
-                    }`}
+                    }
+                  
+                    `}
                   >
                     <CustomInput
                       label="raison de changement"
                       type="textarea"
                       rounded="medium"
+                      value={hitoricProjectDate?.reason?.slice(0, 1000)}
+                      maxLength={1000}
+                      required={
+                        !(
+                          projectData?.endDate?.split("T")[0] ===
+                            projectDataToModif?.endDate?.split("T")[0] ||
+                          projectDataToModif?.endDate === null
+                        )
+                      }
+                      onChange={(e) => {
+                        setHistoricProjectDate({
+                          ...hitoricProjectDate,
+                          reason: e.target.value.slice(0, 1000),
+                        });
+                      }}
                     />
                   </div>
                   <div

@@ -13,6 +13,7 @@ export interface IProjectData {
   listRessources: IRessource[];
   listPhases: IPhase[];
   listUsers: IUserProject[];
+  listHistoricProjects?: IHistoricProject[];
   idBudget?: string;
   codeBuget: string;
   directionSourceBudget: string;
@@ -33,6 +34,16 @@ export interface IProjectDto {
   listRessources: IRessource[];
   listPhases: IPhase[];
   listUsers: IUserProject[];
+  listHistoricProjects?: IHistoricProject[];
+}
+
+export interface IHistoricProject {
+  id: String;
+  initiator: String | undefined;
+  elementChanged: String;
+  from: String;
+  to: String | undefined;
+  reason: String;
 }
 export interface IPhase {
   id?: string;
