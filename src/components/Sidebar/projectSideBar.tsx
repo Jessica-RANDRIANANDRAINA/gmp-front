@@ -101,7 +101,7 @@ const ProjectSideBar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             <ul>
               <SidebarLinkGroup
                 activeCondition={
-                  pathname === "/gem/project" ||
+                  pathname === "/gmp/project" ||
                   pathname.includes("project")
                 }
               >
@@ -111,7 +111,7 @@ const ProjectSideBar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                       <NavLink
                         to="#"
                         className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-tertiaryGreen dark:hover:bg-meta-4 ${
-                          (pathname === "/gem/project" ||
+                          (pathname === "/gmp/project" ||
                             pathname.includes("project")) &&
                           "bg-tertiaryGreen dark:bg-secondaryGreen"
                         }`}
@@ -174,9 +174,9 @@ const ProjectSideBar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                         <ul className="mb-5.5 mt-4 flex flex-col gap-2.5 pl-6">
                           <li>
                             <NavLink
-                              to="/gem/project/home"
+                              to="/gmp/project/home"
                               className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-tertiaryGreen dark:hover:bg-meta-4  ${
-                                pathname.includes("gem/project/home") &&
+                                pathname.includes("gmp/project/home") &&
                                 "bg-tertiaryGreen dark:bg-secondaryGreen"
                               }`}
                             >
@@ -210,9 +210,9 @@ const ProjectSideBar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           </li>
                           <li>
                             <NavLink
-                              to="/gem/project/list"
+                              to="/gmp/project/list"
                               className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-tertiaryGreen dark:hover:bg-meta-4  ${
-                                pathname.includes("gem/project/list") &&
+                                pathname.includes("gmp/project/list") &&
                                 "bg-tertiaryGreen dark:bg-secondaryGreen"
                               }`}
                             >
@@ -246,9 +246,9 @@ const ProjectSideBar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           </li>
                           <li>
                             <NavLink
-                              to="/gem/project/hebdo"
+                              to="/gmp/project/hebdo"
                               className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-tertiaryGreen dark:hover:bg-meta-4  ${
-                                pathname.includes("gem/project/hebdo") &&
+                                pathname.includes("gmp/project/hebdo") &&
                                 "bg-tertiaryGreen dark:bg-secondaryGreen"
                               }`}
                             >

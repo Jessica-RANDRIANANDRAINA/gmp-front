@@ -61,7 +61,7 @@ const App = () => {
           }
         />
         <Route
-          path="/gem/project/home"
+          path="/gmp/project/home"
           element={
             <>
               <PageTitle title="G.E.M" />
@@ -70,7 +70,7 @@ const App = () => {
           }
         />
         <Route
-          path="/gem/project/list"
+          path="/gmp/project/list"
           element={
             <>
               <PageTitle title="G.E.M" />
@@ -79,7 +79,7 @@ const App = () => {
           }
         />
         <Route
-          path="/gem/project/hebdo"
+          path="/gmp/project/hebdo"
           element={
             <>
               <PageTitle title="G.E.M" />
