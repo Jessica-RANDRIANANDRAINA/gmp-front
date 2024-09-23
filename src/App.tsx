@@ -9,6 +9,9 @@ import NoAccessPage from "./components/NoAccessPage";
 import Home from "./Pages/Project/Home";
 import ManageProjects from "./Pages/Project/ManageProject/ManageProjects";
 import Hebdo from "./Pages/Project/Hebdo";
+import DetailsProject from "./Pages/Project/ManageProject/DetailsProject";
+import TaskProject from "./Pages/Project/ManageProject/TaskManager/TaskProject";
+import PhaseAdvancement from "./Pages/Project/ManageProject/TaskManager/PhaseAdvancement";
 import "./App.css";
 
 const App = () => {
@@ -66,6 +69,37 @@ const App = () => {
             <>
               <PageTitle title="G.E.M" />
               <Home />
+            </>
+          }
+        />
+        <Route
+          path="/gmp/project/details/:projectId"
+          element={
+            <>
+              <PageTitle title="G.E.M" />
+              <DetailsProject />
+            </>
+          }
+        />
+        <Route
+          path="/gmp/project/task/:projectId"
+          element={
+            <>
+              <PageTitle title="G.E.M" />
+              <TaskProject />
+            </>
+          }
+          children={
+            <>
+              <Route
+                path="/gmp/project/task/:projectId/:phaseId"
+                element={
+                  <>
+                    <PageTitle title="G.E.M" />
+                    <PhaseAdvancement />
+                  </>
+                }
+              />
             </>
           }
         />

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import ProjectLayout from "../../../layout/ProjectLayout";
 import AddProject from "./AddProject";
 import UpdateProject from "./UpdateProject";
@@ -15,6 +16,14 @@ const ManageProjects = () => {
   const [projectDataToModif, setProjectDataToModif] = useState();
   const [projectToModif, setProjectToModif] = useState([]);
   const [isModifProject, setIsModifProject] = useState(false);
+  const [idProjectForDetails, setIdProjectForDetails] = useState("");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (idProjectForDetails !== "") {
+      navigate(`/gmp/project/task/${idProjectForDetails}`);
+    }
+  }, [idProjectForDetails]);
 
   // fetch all project related to the user connected
   const fetchProject = async () => {
@@ -41,7 +50,7 @@ const ManageProjects = () => {
 
   return (
     <ProjectLayout>
-      <div>
+      <div className="mx-2 p-4 md:mx-10">
         {!isAddProject && !isModifProject ? (
           <>
             {/* ===== ADD PROJECT START =====*/}
@@ -75,6 +84,7 @@ const ManageProjects = () => {
               data={projectData}
               setProjectToModif={setProjectToModif}
               setIsModifProject={setIsModifProject}
+              setIdProjectForDetails={setIdProjectForDetails}
             />
             {/* ===== TABLE PROJECT LIST END =====*/}
           </>

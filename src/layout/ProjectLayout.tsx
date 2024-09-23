@@ -46,7 +46,7 @@ const ProjectLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
         {/* ===== SIDEBAR START END ===== */}
 
         {/* ===== CONTENT START ===== */}
-        <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
+        <div className="relative bg-whiten dark:bg-black flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
           {/* ===== HEADER START ===== */}
           <Header
             sidebarOpen={sidebarOpen}
@@ -56,9 +56,7 @@ const ProjectLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
           {/* ===== HEADER END ===== */}
           {/* ===== MAIN CONTENT START ===== */}
           <main>
-            <div className="mx-auto max-w-screen-2xl p-4 ">
-              {children}
-            </div>
+            <div className=" w-full">{children}</div>
           </main>
           {/* ===== MAIN CONTENT END ===== */}
         </div>

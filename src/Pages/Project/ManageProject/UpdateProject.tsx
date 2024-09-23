@@ -921,89 +921,91 @@ const UpdateProject = ({
                   >
                     Utiliser les valeurs par défaut
                   </button>
-                  {phaseAndLivrableList?.map((phase, index) => (
-                    <div key={phase?.id}>
-                      <div className={"flex justify-between"}>
-                        <div className={"underline"}>Phase {index + 1}</div>
-                        <button
-                          type="button"
-                          className={
-                            "text-red-500 decoration-red-500 font-bold hover:font-black"
-                          }
-                          onClick={() => {
-                            handleRemovePhaseList(phase.phase1);
-                          }}
-                        >
-                          Supprimer
-                        </button>
-                      </div>
+                  {phaseAndLivrableList
+                    ?.sort((a, b) => a.rank - b.rank)
+                    ?.map((phase, index) => (
+                      <div key={phase?.id}>
+                        <div className={"flex justify-between"}>
+                          <div className={"underline"}>Phase {index + 1}</div>
+                          <button
+                            type="button"
+                            className={
+                              "text-red-500 decoration-red-500 font-bold hover:font-black"
+                            }
+                            onClick={() => {
+                              handleRemovePhaseList(phase.phase1);
+                            }}
+                          >
+                            Supprimer
+                          </button>
+                        </div>
 
-                      <div className="grid md:grid-cols-2 gap-4">
-                        <CustomInput
-                          label="Phase"
-                          type="text"
-                          rounded="medium"
-                          placeholder="Ex: conception"
-                          value={phase?.phase1}
-                          onChange={(e) => {
-                            handlePhaseDataChange(
-                              "phase",
-                              e.target.value,
-                              index
-                            );
-                          }}
-                          required
-                        />
-                        <CustomInput
-                          label="Livrable(s)"
-                          type="text"
-                          rounded="medium"
-                          placeholder="Ex: dossier de conception"
-                          value={phase?.expectedDeliverable}
-                          onChange={(e) => {
-                            handlePhaseDataChange(
-                              "livrable",
-                              e.target.value,
-                              index
-                            );
-                          }}
-                          required
-                        />
-                        <CustomInput
-                          label="Date début"
-                          type="date"
-                          rounded="medium"
-                          value={
-                            phase?.startDate
-                              ? phase?.startDate?.split("T")[0]
-                              : 0
-                          }
-                          onChange={(e) => {
-                            handlePhaseDataChange(
-                              "startDate",
-                              e.target.value,
-                              index
-                            );
-                          }}
-                        />
-                        <CustomInput
-                          label="Date fin"
-                          type="date"
-                          rounded="medium"
-                          value={
-                            phase?.endDate ? phase?.endDate?.split("T")[0] : 0
-                          }
-                          onChange={(e) => {
-                            handlePhaseDataChange(
-                              "endDate",
-                              e.target.value,
-                              index
-                            );
-                          }}
-                        />
+                        <div className="grid md:grid-cols-2 gap-4">
+                          <CustomInput
+                            label="Phase"
+                            type="text"
+                            rounded="medium"
+                            placeholder="Ex: conception"
+                            value={phase?.phase1}
+                            onChange={(e) => {
+                              handlePhaseDataChange(
+                                "phase",
+                                e.target.value,
+                                index
+                              );
+                            }}
+                            required
+                          />
+                          <CustomInput
+                            label="Livrable(s)"
+                            type="text"
+                            rounded="medium"
+                            placeholder="Ex: dossier de conception"
+                            value={phase?.expectedDeliverable}
+                            onChange={(e) => {
+                              handlePhaseDataChange(
+                                "livrable",
+                                e.target.value,
+                                index
+                              );
+                            }}
+                            required
+                          />
+                          <CustomInput
+                            label="Date début"
+                            type="date"
+                            rounded="medium"
+                            value={
+                              phase?.startDate
+                                ? phase?.startDate?.split("T")[0]
+                                : 0
+                            }
+                            onChange={(e) => {
+                              handlePhaseDataChange(
+                                "startDate",
+                                e.target.value,
+                                index
+                              );
+                            }}
+                          />
+                          <CustomInput
+                            label="Date fin"
+                            type="date"
+                            rounded="medium"
+                            value={
+                              phase?.endDate ? phase?.endDate?.split("T")[0] : 0
+                            }
+                            onChange={(e) => {
+                              handlePhaseDataChange(
+                                "endDate",
+                                e.target.value,
+                                index
+                              );
+                            }}
+                          />
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
                   <button
                     type="button"
                     onClick={handleAddPhaseList}

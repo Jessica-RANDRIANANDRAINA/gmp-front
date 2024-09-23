@@ -9,10 +9,12 @@ const TableProjet = ({
   data,
   setProjectToModif,
   setIsModifProject,
+  setIdProjectForDetails,
 }: {
   data: Array<any>;
   setProjectToModif: Function;
   setIsModifProject: Function;
+  setIdProjectForDetails: Function;
 }) => {
   const [entriesPerPage, setEntriesPerPage] = useState(5);
   const [actualPage, setActualPage] = useState(1);
@@ -443,7 +445,12 @@ const TableProjet = ({
                       </button>
                     </td>
                     <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                      <p className="text-black dark:text-white font-bold ">
+                      <p
+                        className="text-black dark:text-white font-bold cursor-pointer"
+                        onClick={() => {
+                          setIdProjectForDetails(project.id);
+                        }}
+                      >
                         {project?.title}
                       </p>
                     </td>
