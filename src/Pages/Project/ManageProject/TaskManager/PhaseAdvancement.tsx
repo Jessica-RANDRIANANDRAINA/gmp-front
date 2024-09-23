@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import Modal from "../../../../components/Modals/Modal";
 
 // Initial data
 const initialData = {
@@ -43,6 +44,7 @@ const initialData = {
 
 const PhaseAdvancement = () => {
   const [data, setData] = useState(initialData);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const handleOnDragEnd = (result) => {
     const { destination, source, draggableId } = result;
@@ -152,7 +154,12 @@ const PhaseAdvancement = () => {
                   )}
                 </Droppable>
                 {columnId === "column-1" && (
-                  <div className="border ml-4 p-1 cursor-pointer border-slate-300 hover:bg-slate-100 flex justify-center text-xs">
+                  <div
+                    className="border ml-4 p-1 cursor-pointer border-slate-300 hover:bg-slate-100 flex justify-center text-xs"
+                    onClick={() => {
+                      setModalOpen(true);
+                    }}
+                  >
                     <span>+ ajouter une tache</span>
                   </div>
                 )}
@@ -160,6 +167,15 @@ const PhaseAdvancement = () => {
             );
           })}
         </div>
+        {modalOpen && (
+          <Modal
+            setModalOpen={setModalOpen}
+            header="Ajouter une tache"
+            // body={"aaa"}
+          >
+            <div>test test</div>
+          </Modal>
+        )}
       </DragDropContext>
     </div>
   );
