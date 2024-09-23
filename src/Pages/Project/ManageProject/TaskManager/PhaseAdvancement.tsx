@@ -1,35 +1,166 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { CustomInput } from "../../../../components/UIElements";
-import { IProjectData, IPhase } from "../../../../types/Project";
-import { getProjectById } from "../../../../services/Project/ProjectServices";
+import React, { useState } from "react";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+
+// Initial data
+const initialData = {
+  columns: {
+    "column-1": {
+      id: "column-1",
+      title: "Backlog",
+      taskIds: ["task-1", "task-2", "task-3"],
+    },
+    "column-2": {
+      id: "column-2",
+      title: "En cours",
+      taskIds: ["task-4", "task-5"],
+    },
+    "column-3": {
+      id: "column-3",
+      title: "Traité",
+      taskIds: ["task-6"],
+    },
+    "column-4": {
+      id: "column-4",
+      title: "En pause",
+      taskIds: [],
+    },
+    "column-5": {
+      id: "column-5",
+      title: "Abandonné",
+      taskIds: [],
+    },
+  },
+  tasks: {
+    "task-1": { id: "task-1", content: "Task 1" },
+    "task-2": { id: "task-2", content: "Task 2" },
+    "task-3": { id: "task-3", content: "Task 3" },
+    "task-4": { id: "task-4", content: "Task 4" },
+    "task-5": { id: "task-5", content: "Task 5" },
+    "task-6": { id: "task-6", content: "Task 6" },
+  },
+  columnOrder: ["column-1", "column-2", "column-3", "column-4", "column-5"],
+};
 
 const PhaseAdvancement = () => {
-  const { projectId, phaseId } = useParams();
-  const [phaseData, setPhaseData] = useState<IPhase>();
+  const [data, setData] = useState(initialData);
 
-  const fetchData = async () => {
-    if (projectId) {
-      const project = await getProjectById(projectId);
-      const phase = project?.listPhases?.filter((ph: IPhase) => {
-        return ph.id === phaseId;
+  const handleOnDragEnd = (result) => {
+    const { destination, source, draggableId } = result;
+
+    if (!destination) return;
+
+    if (
+      destination.droppableId === source.droppableId &&
+      destination.index === source.index
+    ) {
+      return;
+    }
+
+    const startColumn = data.columns[source.droppableId];
+    const endColumn = data.columns[destination.droppableId];
+
+    // Moving within the same column
+    if (startColumn === endColumn) {
+      const newTaskIds = Array.from(startColumn.taskIds);
+      newTaskIds.splice(source.index, 1);
+      newTaskIds.splice(destination.index, 0, draggableId);
+
+      const newColumn = {
+        ...startColumn,
+        taskIds: newTaskIds,
+      };
+
+      setData({
+        ...data,
+        columns: {
+          ...data.columns,
+          [newColumn.id]: newColumn,
+        },
       });
-      console.log(phase?.[0]);
-      setPhaseData(phase?.[0]);
+    } else {
+      // Moving between columns
+      const startTaskIds = Array.from(startColumn.taskIds);
+      startTaskIds.splice(source.index, 1);
+
+      const newStart = {
+        ...startColumn,
+        taskIds: startTaskIds,
+      };
+
+      const endTaskIds = Array.from(endColumn.taskIds);
+      endTaskIds.splice(destination.index, 0, draggableId);
+
+      const newEnd = {
+        ...endColumn,
+        taskIds: endTaskIds,
+      };
+
+      setData({
+        ...data,
+        columns: {
+          ...data.columns,
+          [newStart.id]: newStart,
+          [newEnd.id]: newEnd,
+        },
+      });
     }
   };
 
-  useEffect(() => {
-    fetchData();
-  }, [phaseId]);
-
   return (
     <div className="p-5 space-y-3">
-      <div>
-        <span className="w-5 h-5 flex justify-center items-center rounded-full border cursor-pointer"> 
-          +
-        </span>
-      </div>
+      <DragDropContext onDragEnd={handleOnDragEnd}>
+        <div style={{ display: "flex" }}>
+          {data.columnOrder.map((columnId) => {
+            const column = data.columns[columnId];
+            const tasks = column.taskIds.map((taskId) => data.tasks[taskId]);
+
+            return (
+              <div className="w-full">
+                <Droppable key={column.id} droppableId={column.id}>
+                  {(provided, snapshot) => (
+                    <div
+                      ref={provided.innerRef}
+                      className="m-2 rounded-md w-full p-2 "
+                      {...provided.droppableProps}
+                    >
+                      <h3 className="mb-3 text-sm">{column.title}</h3>
+                      {tasks.map((task, index) => (
+                        <Draggable
+                          key={task.id}
+                          draggableId={task.id}
+                          index={index}
+                        >
+                          {(provided, snapshot) => (
+                            <div
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                              className={`p-4 mb-1 text-xs rounded-md shadow-2 ${
+                                snapshot.isDragging ? "bg-green-50" : "bg-white"
+                              }`}
+                              style={{
+                                ...provided.draggableProps.style,
+                              }}
+                            >
+                              {task.content}
+                            </div>
+                          )}
+                        </Draggable>
+                      ))}
+                      {provided.placeholder}
+                    </div>
+                  )}
+                </Droppable>
+                {columnId === "column-1" && (
+                  <div className="border ml-4 p-1 cursor-pointer border-slate-300 hover:bg-slate-100 flex justify-center text-xs">
+                    <span>+ ajouter une tache</span>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </DragDropContext>
     </div>
   );
 };

@@ -5,24 +5,33 @@ import {
   Link,
   NavLink,
   Outlet,
+  useNavigate,
   useLocation,
 } from "react-router-dom";
 import { IProjectData } from "../../../../types/Project";
 import { getProjectById } from "../../../../services/Project/ProjectServices";
 
+
 const TaskProject = () => {
   const { projectId } = useParams();
+  const navigate = useNavigate()
   const [projectData, setProjectData] = useState<IProjectData>();
 
   const fetchProject = async () => {
     if (projectId) {
       const project = await getProjectById(projectId);
       setProjectData(project);
+      const phase = project?.listPhases?.sort((a, b)=>a.rank-b.rank)
+      console.log('///////////////')
+      console.log(phase)
+      console.log('///////////////')
+      navigate(`/gmp/project/task/${projectId}/${phase?.[0]?.id}`)      
     }
   };
 
   useEffect(() => {
     fetchProject();
+
   }, []);
 
   return (
