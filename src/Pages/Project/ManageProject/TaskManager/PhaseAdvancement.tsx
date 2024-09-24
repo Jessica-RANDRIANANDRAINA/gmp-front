@@ -5,6 +5,7 @@ import {
   ModalBody,
   ModalFooter,
 } from "../../../../components/Modals/Modal";
+import { CustomInput } from "../../../../components/UIElements";
 
 // Initial data
 const initialData = {
@@ -178,18 +179,33 @@ const PhaseAdvancement = () => {
           setModalOpen={setModalOpen}
           header="Ajouter une tache"
           heightSize="80vh"
-          // body={"aaa"}
+          widthSize="medium"
         >
           <ModalBody>
-            <div>test test</div>
-            <div>test test</div>
-            <div>test test</div>
-            <div>test test</div>
-            <div>test test</div>
-            <div>test test</div>
+            <>
+              <div className="space-y-2">
+                <div className="font-semibold text-xs">Assigné à:</div>
+                <div>
+                  <span className="w-5 h-5 p-3 border flex rounded-full justify-center items-center cursor-pointer bg-zinc-200 hover:bg-zinc-300 border-zinc-200">
+                    +
+                  </span>
+                </div>
+              </div>
+              <div>
+                <CustomInput type="textarea" label="Description" />
+              </div>
+            </>
           </ModalBody>
           <ModalFooter>
-            <button className="border w-full">envoyer</button>
+            <button
+              className="border text-xs p-2 rounded-md  font-semibold bg-transparent border-transparent hover:bg-zinc-100 "
+              type="button"
+            >
+              Annuler
+            </button>
+            <button className="border text-xs p-2 rounded-md bg-green-700 text-white font-semibold">
+              Créer
+            </button>
           </ModalFooter>
         </Modal>
       )}
