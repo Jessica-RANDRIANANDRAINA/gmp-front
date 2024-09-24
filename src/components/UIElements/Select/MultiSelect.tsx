@@ -145,15 +145,15 @@ const MultiSelect = ({
             <div className="relative flex flex-col items-center  ">
               <div ref={trigger} onClick={open} className="w-full ">
                 <div
-                  className={`mb-2 flex ${round[rounded]} border overflow-x-scroll  border-stroke py-2 pl-3 pr-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input`}
+                  className={`mb-2 flex ${round[rounded]} border overflow-x-auto  border-stroke py-2 pl-3 pr-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input`}
                 >
                   <div className="flex flex-auto  gap-3 ">
                     {selected.map((index) => (
                       <div
                         key={index}
-                        className="my-1.5 flex items-center justify-center rounded border-[.5px] border-stroke bg-gray px-2.5 py-1.5 text-sm font-medium dark:border-strokedark dark:bg-white/30"
+                        className=" flex items-center justify-center rounded border-[.5px] border-stroke bg-gray px-2.5 py-1.5 text-sm font-medium dark:border-strokedark dark:bg-white/30"
                       >
-                        <div className="max-w-full flex-initial  ">
+                        <div className="max-w-full text-xs flex-initial  ">
                           {options[index].text}
                         </div>
                         <div className="flex flex-auto  flex-row-reverse ">
@@ -229,7 +229,7 @@ const MultiSelect = ({
                   onFocus={() => setShow(true)}
                   onBlur={() => setShow(false)}
                 >
-                  <div className="flex w-full  flex-col">
+                  <div className="flex w-full flex-col">
                     {options.map((option, index) => (
                       <div key={index}>
                         <div
@@ -242,7 +242,7 @@ const MultiSelect = ({
                             }`}
                           >
                             <div className="flex w-full items-center">
-                              <div className="mx-2 leading-6">
+                              <div className="mx-2 text-sm leading-6">
                                 {option.text}
                               </div>
                             </div>

@@ -60,7 +60,7 @@ const CustomSelect = ({
   };
 
   return (
-    <div className={`relative ${className}`}>
+    <div className={`relative ${className} `}>
       <label className="mb-2.5 min-w-20 leading-relaxed block font-semibold font-poppins text-sm text-black dark:text-white">
         {label}
         {required && <span className="text-red-500 ml-1">*</span>}
@@ -69,7 +69,7 @@ const CustomSelect = ({
         ref={trigger}
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className={`w-full py-3 px-6 border flex items-center justify-between border-stroke rounded-lg bg-transparent text-left ${
+        className={`w-full text-sm py-3 px-6 border flex items-center justify-between border-stroke rounded-lg bg-transparent text-left ${
           value ? "" : "text-bodydark2"
         }`}
       >
@@ -112,7 +112,7 @@ const CustomSelect = ({
           <div
             key={index}
             onClick={() => handleSelect(option)}
-            className="py-2 px-4 cursor-pointer  dark:text-bodydark hover:bg-gray-3 rounded-md"
+            className="py-2 px-4 cursor-pointer text-sm  dark:text-bodydark hover:bg-gray-3 rounded-md"
             style={{
               height: "40px",
               whiteSpace: "nowrap",

@@ -261,9 +261,9 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
   };
 
   return (
-    <div>
+    <div className="text-sm">
       {/* ===== LINK RETURN START ===== */}
-      <div className={`w-full  mb-2 flex  items-center `}>
+      <div className={`w-full mb-2 flex  items-center `}>
         <button
           onClick={() => {
             setIsAddProject(false);
@@ -272,7 +272,7 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
             isLoaded ? "md:translate-x-0 " : "md:translate-x-[60vw]"
           }`}
         >
-          retour
+          Retour
         </button>
       </div>
       {/* ===== LINK RETURN END ===== */}
@@ -391,7 +391,7 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
               const form = e.target as HTMLFormElement;
               if (form.reportValidity()) {
                 setPageCreate(2);
-              } 
+              }
             }}
           >
             <CustomInput
@@ -655,7 +655,7 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
                 <span className="font-semibold tracking-wide underline">
                   RESSOURCES
                 </span>
-                <div className=" max-h-80 min-h-80 overflow-y-scroll">
+                <div className=" max-h-80 min-h-80 overflow-y-auto">
                   {ressourceList?.map((ressouce, index) => (
                     <div key={ressouce.id}>
                       <div className={"flex justify-between"}>
@@ -763,7 +763,7 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
                 <span className="font-semibold tracking-wide underline">
                   PHASES ET LIVRABLES
                 </span>
-                <div className="hide-scrollbar overflow-y-scroll md:max-h-125 md:min-h-125">
+                <div className="hide-scrollbar overflow-y-auto md:max-h-125 md:min-h-125">
                   <button
                     type="button"
                     onClick={handleAddDefaultPhaseList}

@@ -1,8 +1,7 @@
-import { Key, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { CustomInput, CustomSelect } from "../../UIElements";
 import { formatDate } from "../../../services/Function/DateServices";
 import { decodeToken } from "../../../services/Function/TokenService";
-import { getInitials } from "../../../services/Function/UserFunctionService";
 import Pagination from "../Pagination";
 import ListUsers from "../../UIElements/ListUsers";
 
@@ -53,7 +52,7 @@ const TableProjet = ({
   };
 
   return (
-    <div className="bg-white  pt-2 shadow-default dark:border-strokedark dark:bg-boxdark">
+    <div className="bg-white  pt-2 shadow-1 rounded-lg border border-zinc-200 dark:border-strokedark dark:bg-boxdark">
       {/* ===== FILTER START ===== */}
       <div className="flex m-5 flex-wrap justify-between items-center">
         <div className="grid md:grid-cols-4 grid-cols-1 gap-3 w-full">
@@ -102,7 +101,7 @@ const TableProjet = ({
           <div className="flex items-end pb-3 mx-2">
             <button
               //   onClick={handleDeleteFilter}
-              className="flex justify-center gap-1 h-fit"
+              className="flex justify-center gap-1 h-fit text-sm font-medium"
             >
               Effacer les filtres
               <svg
@@ -127,7 +126,7 @@ const TableProjet = ({
       {/* ===== FILTER END ===== */}
       {/* =====PAGINATE AND TITLE START===== */}
       <div
-        className={`pb-4 flex justify-between px-3 transition-opacity ${
+        className={`pb-4 items-center flex justify-between px-3 transition-opacity ${
           isAllSelected ? "opacity-0" : "opacity-100"
         }`}
       >
@@ -154,7 +153,7 @@ const TableProjet = ({
             />
           </svg>
         </button>
-        <div className="text-2xl text-title font-medium">
+        <div className="text-xl  text-title font-medium">
           Listes de tous les projets
         </div>
         <button
@@ -214,10 +213,10 @@ const TableProjet = ({
       </div>
       {/* ===== BULK END ===== */}
       {/* =====TABLE START===== */}
-      <div className="max-w-full mb-4 overflow-x-auto">
-        <table className="w-full table-auto">
+      <div className="max-w-full mb-4 overflow-x-auto ">
+        <table className="w-full text-sm table-auto">
           {/* ===== TABLE HEAD START ===== */}
-          <thead className="pt-5 rounded-t-xl bg-primaryGreen">
+          <thead className="pt-5  rounded-t-xl bg-primaryGreen">
             <tr className="border border-stone-300 border-opacity-[0.1] border-r-0 border-l-0 text-white text-left">
               <th className="pl-2">
                 <button
