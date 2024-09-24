@@ -4,6 +4,7 @@ import { formatDate } from "../../../services/Function/DateServices";
 import { decodeToken } from "../../../services/Function/TokenService";
 import { getInitials } from "../../../services/Function/UserFunctionService";
 import Pagination from "../Pagination";
+import ListUsers from "../../UIElements/ListUsers";
 
 const TableProjet = ({
   data,
@@ -477,60 +478,7 @@ const TableProjet = ({
                       </p>
                     </td>
                     <td className="border-b  gap-1 border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                      <div className="flex">
-                        {project?.listUsers?.length <= 2
-                          ? project.listUsers.map(
-                              (user: {
-                                [x: string]: any;
-                                userid: Key | null | undefined;
-                              }) => {
-                                const initials = getInitials(user?.user?.name);
-                                return (
-                                  <div
-                                    key={user?.userid}
-                                    className="relative group -ml-2 first:ml-0 hover:z-50"
-                                  >
-                                    <p className="text-slate-50 border relative bg-secondaryGreen p-1 w-7 h-7 flex justify-center items-center text-xs rounded-full dark:text-white">
-                                      {initials}
-                                    </p>
-                                    <div className="absolute whitespace-nowrap text-xs hidden group-hover:block bg-white text-black p-2 border border-whiten shadow-5 rounded-md z-10 top-[-35px] left-1/2 transform -translate-x-1/2">
-                                      <p>{user?.user?.name}</p>
-                                    </div>
-                                  </div>
-                                );
-                              }
-                            )
-                          : project.listUsers
-                              .slice(0, 3)
-                              .map(
-                                (user: {
-                                  [x: string]: any;
-                                  userid: Key | null | undefined;
-                                }) => {
-                                  const initials = getInitials(
-                                    user?.user?.name
-                                  );
-                                  return (
-                                    <div
-                                      key={user?.userid}
-                                      className="relative group -ml-2 first:ml-0 hover:z-50"
-                                    >
-                                      <p className="text-slate-50 border relative bg-secondaryGreen p-1 w-7 h-7 flex justify-center items-center text-xs rounded-full dark:text-white">
-                                        {initials}
-                                      </p>
-                                      <div className="absolute whitespace-nowrap text-xs hidden group-hover:block bg-white text-black p-2 border border-whiten shadow-5 rounded-md z-10 top-[-35px] left-1/2 transform -translate-x-1/2">
-                                        <p>{user?.user?.name}</p>
-                                      </div>
-                                    </div>
-                                  );
-                                }
-                              )}
-                        {project?.listUsers?.length > 3 && (
-                          <p className="text-slate-50 border relative bg-secondaryGreen p-1 w-7 h-7 flex justify-center items-center text-xs rounded-full dark:text-white -ml-2 first:ml-0">
-                            +{project?.listUsers?.length - 3}
-                          </p>
-                        )}
-                      </div>
+                      <ListUsers data={project?.listUsers} />
                     </td>
                     <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
                       <p className="text-black dark:text-white">{dateStart}</p>

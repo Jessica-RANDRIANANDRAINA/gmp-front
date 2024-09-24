@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import Modal from "../../../../components/Modals/Modal";
+import {
+  Modal,
+  ModalBody,
+  ModalFooter,
+} from "../../../../components/Modals/Modal";
 
 // Initial data
 const initialData = {
@@ -109,7 +113,7 @@ const PhaseAdvancement = () => {
   };
 
   return (
-    <div className="p-5 space-y-3">
+    <div className="p-5 ">
       <DragDropContext onDragEnd={handleOnDragEnd}>
         <div style={{ display: "flex" }}>
           {data.columnOrder.map((columnId) => {
@@ -167,16 +171,28 @@ const PhaseAdvancement = () => {
             );
           })}
         </div>
-        {modalOpen && (
-          <Modal
-            setModalOpen={setModalOpen}
-            header="Ajouter une tache"
-            // body={"aaa"}
-          >
-            <div>test test</div>
-          </Modal>
-        )}
       </DragDropContext>
+      {modalOpen && (
+        <Modal
+          modalOpen={modalOpen}
+          setModalOpen={setModalOpen}
+          header="Ajouter une tache"
+          heightSize="80vh"
+          // body={"aaa"}
+        >
+          <ModalBody>
+            <div>test test</div>
+            <div>test test</div>
+            <div>test test</div>
+            <div>test test</div>
+            <div>test test</div>
+            <div>test test</div>
+          </ModalBody>
+          <ModalFooter>
+            <button className="border w-full">envoyer</button>
+          </ModalFooter>
+        </Modal>
+      )}
     </div>
   );
 };
