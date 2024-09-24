@@ -69,7 +69,7 @@ const CustomSelect = ({
         ref={trigger}
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className={`w-full text-sm py-3 px-6 border flex items-center justify-between border-stroke rounded-lg bg-transparent text-left ${
+        className={`w-full text-sm py-2.5 px-6 border flex items-center justify-between border-stroke rounded-lg bg-transparent text-left ${
           value ? "" : "text-bodydark2"
         }`}
       >
