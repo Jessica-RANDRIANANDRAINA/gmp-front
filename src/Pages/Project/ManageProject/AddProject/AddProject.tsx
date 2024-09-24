@@ -4,19 +4,19 @@ import {
   CustomSelect,
   MultiSelect,
   CutomInputUserSearch,
-} from "../../../components/UIElements";
+} from "../../../../components/UIElements";
 import {
   IRessource,
   IPhase,
   IBudget,
   IProjectData,
-} from "../../../types/Project";
-import { getAllDepartments } from "../../../services/User";
-import { createProject } from "../../../services/Project/ProjectServices";
-import { decodeToken } from "../../../services/Function/TokenService";
+} from "../../../../types/Project";
+import { getAllDepartments } from "../../../../services/User";
+import { createProject } from "../../../../services/Project/ProjectServices";
+import { decodeToken } from "../../../../services/Function/TokenService";
 import { v4 as uuid4 } from "uuid";
 import { PuffLoader } from "react-spinners";
-import { getInitials } from "../../../services/Function/UserFunctionService";
+import { getInitials } from "../../../../services/Function/UserFunctionService";
 import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
 

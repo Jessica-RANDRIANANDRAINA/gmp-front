@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ProjectLayout from "../../../layout/ProjectLayout";
-import AddProject from "./AddProject";
+import AddProject from "./AddProject/AddProject";
 import UpdateProject from "./UpdateProject";
 import { TableProjet } from "../../../components/Tables/projets";
 import {
