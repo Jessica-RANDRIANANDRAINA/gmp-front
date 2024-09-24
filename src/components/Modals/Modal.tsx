@@ -9,7 +9,18 @@ const ModalBody = ({ children }: { children: ReactNode }) => {
 };
 
 const ModalFooter = ({ children }: { children: ReactNode }) => {
-  return <div className="sticky">{children}</div>;
+  return (
+    <div className="sticky pt-2 ">
+      <div className="flex justify-end gap-2">{children}</div>
+    </div>
+  );
+};
+
+const size = {
+  large: "w-5/6 md:w-1/2",
+  medium: "w-5/6 md:w-2/5",
+  small: "w-5/6 md:w-1/3",
+  xs: "w-5/6 md:w-1/4",
 };
 
 const Modal = ({
@@ -18,30 +29,19 @@ const Modal = ({
   setModalOpen,
   children,
   heightSize,
+  widthSize = "medium",
 }: {
   header: string;
   modalOpen: Boolean;
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   children: ReactNode;
   heightSize: string;
+  widthSize?: "large" | "medium" | "small" | "xs";
+  triggerCloseFromParent?: (closeModal: () => void) => void;
 }) => {
   const trigger = useRef<any>(null);
   const [showModal, setShowModal] = useState(false);
   const [closingModal, setClosingModal] = useState(false);
-
-  // close in click outside
-  useEffect(() => {
-    const clickHandler = ({ target }: MouseEvent) => {
-      if (!modalOpen  && trigger.current.contains(target))
-        return setModalOpen(false);
-    };
-    document.addEventListener("click", clickHandler);
-    return () => document.removeEventListener("click", clickHandler);
-  });
-
-  useEffect(() => {
-    setShowModal(true);
-  }, []);
 
   const closeModal = () => {
     setClosingModal(true);
@@ -50,12 +50,35 @@ const Modal = ({
     }, 200);
   };
 
+  // close in click outside
+  useEffect(() => {
+    const clickHandler = (event: MouseEvent) => {
+      if (trigger.current && !trigger.current.contains(event.target as Node)) {
+        closeModal();
+      }
+    };
+
+    if (modalOpen) {
+      document.addEventListener("mousedown", clickHandler);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", clickHandler);
+    };
+  });
+
+  useEffect(() => {
+    setShowModal(true);
+  }, []);
+
   return (
     <div className="fixed m-0 inset-0 flex justify-center bg-black z-999999 bg-opacity-50">
       <div
         ref={trigger}
         style={{ maxHeight: heightSize }}
-        className={`bg-white h-fit  my-20 dark:bg-[#24303F] rounded-md w-5/6 md:w-1/3 p-4 transfrom transition-all duration-300 ease-out ${
+        className={`bg-white h-fit  my-20 dark:bg-[#24303F] rounded-md ${
+          size[widthSize]
+        } p-4 transfrom transition-all duration-300 ease-out ${
           showModal && !closingModal
             ? "opacity-100 scale-100"
             : "opacity-0 scale-90"
