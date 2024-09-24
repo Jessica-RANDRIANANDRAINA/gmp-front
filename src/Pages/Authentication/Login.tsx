@@ -57,7 +57,7 @@ const Login = () => {
       ></div>
       <div className="relative rounded-lg flex flex-col justify-center items-center h-full w-full md:h-[500px] md:w-[450px]  bg-black bg-opacity-60 p-4 shadow-lg">
         <div className="text-white  text-center  flex flex-col  mb-4">
-          <span className="text-6xl">G.E.M</span>
+          <span className="text-6xl">G.M.P</span>
           <span className="">Admin</span>
         </div>
         <form className="flex flex-col items-center w-full">

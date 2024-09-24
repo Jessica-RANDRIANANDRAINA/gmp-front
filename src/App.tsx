@@ -67,7 +67,7 @@ const App = () => {
           path="/gmp/project/home"
           element={
             <>
-              <PageTitle title="G.E.M" />
+              <PageTitle title="G.M.P" />
               <Home />
             </>
           }
@@ -76,7 +76,7 @@ const App = () => {
           path="/gmp/project/details/:projectId"
           element={
             <>
-              <PageTitle title="G.E.M" />
+              <PageTitle title="G.M.P" />
               <DetailsProject />
             </>
           }
@@ -85,7 +85,7 @@ const App = () => {
           path="/gmp/project/task/:projectId"
           element={
             <>
-              <PageTitle title="G.E.M" />
+              <PageTitle title="G.M.P" />
               <TaskProject />
             </>
           }
@@ -95,7 +95,7 @@ const App = () => {
                 path="/gmp/project/task/:projectId/:phaseId"
                 element={
                   <>
-                    <PageTitle title="G.E.M" />
+                    <PageTitle title="G.M.P" />
                     <PhaseAdvancement />
                   </>
                 }
@@ -107,7 +107,7 @@ const App = () => {
           path="/gmp/project/list"
           element={
             <>
-              <PageTitle title="G.E.M" />
+              <PageTitle title="G.M.P" />
               <ManageProjects />
             </>
           }
@@ -116,7 +116,7 @@ const App = () => {
           path="/gmp/project/hebdo"
           element={
             <>
-              <PageTitle title="G.E.M" />
+              <PageTitle title="G.M.P" />
               <Hebdo />
             </>
           }
