@@ -603,7 +603,7 @@ const UpdateProject = ({
                     `}
                   >
                     <CustomInput
-                      label="raison de changement"
+                      label="Motif de la modification"
                       type="textarea"
                       rounded="medium"
                       value={hitoricProjectDate?.reason?.slice(0, 1000)}
