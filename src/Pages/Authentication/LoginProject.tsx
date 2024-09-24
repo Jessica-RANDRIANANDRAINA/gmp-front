@@ -19,6 +19,13 @@ const LoginProject = () => {
   const [isLoginLoading, setIsLoginLoading] = useState(false);
   const navigate = useNavigate();
 
+  useEffect(()=>{
+    const projectStorage = localStorage.getItem('_au_pr')
+    if (projectStorage) {
+      navigate("/gmp/project/home")
+    }
+  }, [])
+
   const handleLogin = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     setIsLoginLoading(true);
