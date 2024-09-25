@@ -37,7 +37,7 @@ const CustomInput = ({
         <span className={`${help ? "cursor-help relative group" : ""} `}>
           {label}
           {required && <span className="text-red-500 ml-1">*</span>}
-          <span className="absolute text-xs  font-thin hidden group-hover:flex max-w-54 min-w-52 bg-white text-black p-2 border border-whiten shadow-5 rounded-md z-999999 top-[-35px] left-1/2 transform -translate-x-1/2">
+          <span className="absolute text-xs  font-thin hidden group-hover:flex max-w-54 min-w-52 bg-white text-black p-2 border border-whiten shadow-5 rounded-md z-999999 top-[-35px] left-1 transform -translate-x-1">
             {help}
           </span>
         </span>

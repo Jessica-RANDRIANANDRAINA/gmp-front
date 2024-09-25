@@ -148,9 +148,9 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
       </div>
       {/* ===== LINK RETURN END ===== */}
       {/* ===== BLOC ADD PROJECT START ===== */}
-      <div className="flex flex-col items-center bg-white relative  overflow-y-scroll overflow-x-clip hide-scrollbar p-4 shadow-3  rounded-md dark:border-strokedark dark:bg-boxdark min-h-fit md:min-h-fit md:h-[72vh] lg:h-[75vh]">
+      <div className=" bg-white grid place-items-center overflow-y-scroll overflow-x-clip hide-scrollbar p-4 shadow-3  rounded-md dark:border-strokedark dark:bg-boxdark min-h-fit md:min-h-fit md:h-[72vh] lg:h-[75vh]">
         {/* ===== ADVANCEMENT STEP MENUE START ===== */}
-        <div className="absolute my-2 ml-2 top-0 left-0 space-y-3 md:block hidden">
+        {/* <div className="absolute my-2 ml-2 top-0 left-0 space-y-3 md:block hidden">
           <div
             onClick={() => setPageCreate(1)}
             className={`border p-2 border-slate-200 tranform duration-500 ease-linear cursor-pointer
@@ -250,14 +250,14 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
             <span className="text-red-500 font-bold">*</span>
             <span> : Champ obligatoire</span>
           </div>
-        </div>
+        </div> */}
 
         {/* ===== ADVANCEMENT STEP MENUE END ===== */}
-        <span className="font-bold tracking-widest text-lg   ">
+        <div className="font-bold w-full text-center tracking-widest text-lg   ">
           Ajouter un nouveau projet
-        </span>
+        </div>
         {/* ===== FORM CREATE START ===== */}
-        <div className="pt-2 md:w-1/2  ">
+        <div className="pt-2  w-full px-2 md:px-10 lg:px-30 xl:px-50 ">
           {/* ===== CREATE PROJECT LEVEL ONE START INFO GENERAL ===== */}
 
           <InfoGeneralAdd
@@ -292,6 +292,7 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
             setPhaseAndLivrableList={setPhaseAndLivrableList}
             phaseAndLivrableList={phaseAndLivrableList}
             projectData={projectData}
+            setProjectData={setProjectData}
           />
 
           {/* ===== CREATE PROJECT LEVEL THREE: PHASES AND LIVRABLE END ===== */}

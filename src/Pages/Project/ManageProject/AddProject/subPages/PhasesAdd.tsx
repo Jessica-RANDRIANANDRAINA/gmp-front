@@ -13,12 +13,14 @@ const PhasesAdd = ({
   setPhaseAndLivrableList,
   phaseAndLivrableList,
   projectData,
+  setProjectData,
 }: {
   setPageCreate: React.Dispatch<React.SetStateAction<number>>;
   pageCreate: number;
   setPhaseAndLivrableList: React.Dispatch<React.SetStateAction<Array<IPhase>>>;
   phaseAndLivrableList: IPhase[];
   projectData: IProjectData;
+  setProjectData: React.Dispatch<React.SetStateAction<IProjectData>>;
 }) => {
   const [inputErrors, setInputErrors] = useState<{
     [key: number]: { phase1?: string; expectedDeliverable?: string };
@@ -81,10 +83,10 @@ const PhasesAdd = ({
     let errors: { phase1?: string; expectedDeliverable?: string } = {};
 
     if (!previousPhase.phase1) {
-      errors.phase1 = "required";
+      errors.phase1 = "Veuillez rempir ce champ";
     }
     if (!previousPhase.expectedDeliverable) {
-      errors.expectedDeliverable = "required";
+      errors.expectedDeliverable = "Veuillez rempir ce champ";
     }
     setInputErrors((prevErrors) => ({
       ...prevErrors,
@@ -105,13 +107,14 @@ const PhasesAdd = ({
       phaseAndLivrableList.length > 0
         ? phaseAndLivrableList[phaseAndLivrableList.length - 1].endDate
         : projectData?.startDate;
+
     let phaseData: IPhase = {
       id: uuid4(),
       rank: phaseAndLivrableList.length,
       phase1: "",
       expectedDeliverable: "",
       startDate: previousPhaseEndDate,
-      endDate: undefined,
+      endDate: projectData?.endDate ? projectData?.endDate : undefined,
     };
     setPhaseAndLivrableList([...phaseAndLivrableList, phaseData]);
   };
@@ -149,6 +152,22 @@ const PhasesAdd = ({
         const form = e.target as HTMLFormElement;
         if (form.reportValidity()) {
           if (phaseAndLivrableList.length > 0) {
+            let latestEndDate = phaseAndLivrableList.reduce((latest, phase) => {
+              if (phase.endDate && latest) {
+                const phaseEndDate = new Date(phase.endDate);
+                const latestDate = new Date(latest);
+                return phaseEndDate > latestDate ? phase.endDate : latest;
+              }
+              return latest;
+            }, projectData.endDate ?? "");
+
+            if (new Date(latestEndDate) > new Date(projectData.endDate ?? "")) {
+              setProjectData((prevData) => ({
+                ...prevData,
+                endDate: latestEndDate,
+              }));
+            }
+
             setPageCreate(4);
           } else {
             notyf.error("Un projet doit contenir au moins une phase");

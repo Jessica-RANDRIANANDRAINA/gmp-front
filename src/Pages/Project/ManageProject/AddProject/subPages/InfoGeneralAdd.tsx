@@ -22,7 +22,7 @@ const InfoGeneralAdd = ({
 }) => {
   return (
     <form
-      className={`space-y-2 transition-all duration-1000 ease-in-out ${
+      className={`space-y-2 transition-all min-w-[50vw]  duration-1000 ease-in-out ${
         pageCreate === 1 ? "opacity-100" : "opacity-0 h-0 overflow-hidden"
       }`}
       onSubmit={(e) => {
