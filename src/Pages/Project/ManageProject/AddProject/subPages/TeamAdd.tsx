@@ -1,23 +1,189 @@
-// import {
-//   IRessource,
-//   IPhase,
-//   IBudget,
-//   IProjectData,
-// } from "../../../../../types/Project";
-// import {
-//   CustomInput,
-//   CutomInputUserSearch
-// } from "../../../../../components/UIElements";
-// import { getInitials } from "../../../../../services/Function/UserFunctionService";
-// import { v4 as uuid4 } from "uuid";
-// import { Notyf } from "notyf";
-// import "notyf/notyf.min.css";
+import { PuffLoader } from "react-spinners";
+import { CutomInputUserSearch } from "../../../../../components/UIElements";
+import { getInitials } from "../../../../../services/Function/UserFunctionService";
+import { Notyf } from "notyf";
+import "notyf/notyf.min.css";
 
-// const notyf = new Notyf();
-const TeamAdd = () => {
-  return (
-    <div>TeamAdd</div>
-  )
+const notyf = new Notyf();
+interface Iteam {
+  id: string | undefined;
+  name: string;
+  email: string;
+  role: string;
 }
 
-export default TeamAdd
+const TeamAdd = ({
+  pageCreate,
+  setPageCreate,
+  userTeam,
+  setUserTeam,
+  setCreateProjectState,
+  isCreateLoading,
+}: {
+  setPageCreate: React.Dispatch<React.SetStateAction<number>>;
+  setCreateProjectState: React.Dispatch<React.SetStateAction<boolean>>;
+  pageCreate: number;
+  userTeam: Iteam[];
+  setUserTeam: React.Dispatch<React.SetStateAction<Array<Iteam>>>;
+  isCreateLoading: boolean;
+}) => {
+  // REMOVE A USER FROM TEAM LIST
+  const handleRemoveTeamList = (id: string | undefined) => {
+    let filteredList = userTeam.filter((team) => team.id !== id);
+    setUserTeam(filteredList);
+  };
+
+  return (
+    <div
+      className={`space-y-2  transition-all duration-1000 ease-in-out ${
+        pageCreate === 4 ? "opacity-100" : "opacity-0 h-0 overflow-hidden"
+      }`}
+    >
+      <div className="space-y-4 grid md:max-h-125 md:min-h-150 ">
+        <div>
+          <span className="font-semibold tracking-wide underline">EQUIPES</span>
+          <div className="space-y-2 ">
+            {/* ===== PROJECT DIRECTOR START ===== */}
+            <div>
+              <div>Directeur de projet</div>
+              <div className="hide-scrollbar  ">
+                <CutomInputUserSearch
+                  placeholder="Recherche"
+                  label="Assigner"
+                  userSelected={userTeam}
+                  setUserSelected={setUserTeam}
+                  role="director"
+                />
+                <div className="flex gap-4 mt-2 flex-wrap">
+                  {userTeam
+                    ?.filter((team) => team.role === "director")
+                    ?.map((team) => {
+                      const initials = getInitials(team?.name);
+                      return (
+                        <div
+                          key={team.id}
+                          className="relative group -ml-2 first:ml-0 hover:z-50"
+                          onClick={() => {
+                            handleRemoveTeamList(team.id);
+                          }}
+                        >
+                          <p className=" cursor-pointer text-slate-50 border relative bg-secondaryGreen p-1 w-7 h-7 flex justify-center items-center text-xs rounded-full dark:text-white">
+                            {initials}
+                          </p>
+                          <div className="absolute whitespace-nowrap text-xs hidden group-hover:block bg-white text-black p-2 border border-whiten shadow-5 rounded-md z-10 top-[-35px] left-1/2 transform -translate-x-1/2">
+                            <p>{team?.name}</p>
+                          </div>
+                        </div>
+                      );
+                    })}
+                </div>
+              </div>
+            </div>
+            {/* ===== PROJECT DIRECTOR END ===== */}
+            {/* ===== PROJECT TEAM START ===== */}
+            <div>
+              <div>Equipes</div>
+              <div className="hide-scrollbar ">
+                <CutomInputUserSearch
+                  placeholder="Recherche"
+                  label="Assigner"
+                  userSelected={userTeam}
+                  setUserSelected={setUserTeam}
+                  role="member"
+                />
+                <div className="flex gap-4 mt-2 flex-wrap">
+                  {userTeam
+                    ?.filter((team) => team.role === "member")
+                    ?.map((team) => {
+                      const initials = getInitials(team?.name);
+                      return (
+                        <div
+                          key={team.id}
+                          className="relative group -ml-2 first:ml-0 hover:z-50"
+                          onClick={() => {
+                            handleRemoveTeamList(team.id);
+                          }}
+                        >
+                          <p className=" cursor-pointer text-slate-50 border relative bg-secondaryGreen p-1 w-7 h-7 flex justify-center items-center text-xs rounded-full dark:text-white">
+                            {initials}
+                          </p>
+                          <div className="absolute whitespace-nowrap text-xs hidden group-hover:block bg-white text-black p-2 border border-whiten shadow-5 rounded-md z-10 top-[-35px] left-1/2 transform -translate-x-1/2">
+                            <p>{team?.name}</p>
+                          </div>
+                        </div>
+                      );
+                    })}
+                </div>
+              </div>
+            </div>
+            {/* ===== PROJECT TEAM END ===== */}
+            {/* ===== PROJECT TEAM START ===== */}
+            <div>
+              <div>Observateur</div>
+              <div className="hide-scrollbar ">
+                <CutomInputUserSearch
+                  placeholder="Recherche"
+                  label="Assigner"
+                  userSelected={userTeam}
+                  setUserSelected={setUserTeam}
+                  role="observator"
+                />
+                <div className="flex gap-4 mt-2 flex-wrap">
+                  {userTeam
+                    ?.filter((team) => team.role === "observator")
+                    ?.map((team) => {
+                      const initials = getInitials(team?.name);
+                      return (
+                        <div
+                          key={team.id}
+                          className="relative group -ml-2 first:ml-0 hover:z-50"
+                          onClick={() => {
+                            handleRemoveTeamList(team.id);
+                          }}
+                        >
+                          <p className=" cursor-pointer text-slate-50 border relative bg-secondaryGreen p-1 w-7 h-7 flex justify-center items-center text-xs rounded-full dark:text-white">
+                            {initials}
+                          </p>
+                          <div className="absolute whitespace-nowrap text-xs hidden group-hover:block bg-white text-black p-2 border border-whiten shadow-5 rounded-md z-10 top-[-35px] left-1/2 transform -translate-x-1/2">
+                            <p>{team?.name}</p>
+                          </div>
+                        </div>
+                      );
+                    })}
+                </div>
+              </div>
+            </div>
+            {/* ===== PROJECT TEAM END ===== */}
+          </div>
+        </div>
+        <div className="flex justify-between gap-3">
+          <button
+            onClick={() => setPageCreate(3)}
+            className="md:w-fit max-h-10 gap-2 w-full cursor-pointer mt-2 py-2 px-5  text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen dark:hover:bg-opacity-90"
+          >
+            Précédent
+          </button>
+          <button
+            onClick={() => {
+              if (userTeam.length > 0) {
+                setCreateProjectState(true);
+              } else {
+                notyf.error("Veuiller choisir au moins une personne");
+              }
+            }}
+            className="md:w-fit max-h-10 whitespace-nowrap gap-2 w-full flex cursor-pointer mt-2 py-2 px-5  text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen dark:hover:bg-opacity-90"
+          >
+            {isCreateLoading && (
+              <span>
+                <PuffLoader size={20} className="mr-2" />
+              </span>
+            )}
+            Créer le projet
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default TeamAdd;

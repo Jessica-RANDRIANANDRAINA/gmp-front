@@ -175,12 +175,12 @@ const PhasesAdd = ({
         }
       }}
     >
-      <div className="space-y-4">
+      <div className="space-y-4 ">
         <div>
           <span className="font-semibold tracking-wide underline">
             PHASES ET LIVRABLES
           </span>
-          <div className="hide-scrollbar overflow-y-auto md:max-h-125 md:min-h-125">
+          <div className="overflow-y-auto md:max-h-125 md:min-h-125">
             <button
               type="button"
               onClick={handleAddDefaultPhaseList}
