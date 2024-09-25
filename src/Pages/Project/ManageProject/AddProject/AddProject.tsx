@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  CutomInputUserSearch,
-} from "../../../../components/UIElements";
+import { CutomInputUserSearch } from "../../../../components/UIElements";
 import {
   IRessource,
   IPhase,
