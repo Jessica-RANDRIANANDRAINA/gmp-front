@@ -16,6 +16,23 @@ function Pagination({
     const paginationLists = [];
     // const middlePage = Math.ceil(pageNumbers / 2);
 
+    if (pageNumbers === 1) {
+      paginationLists.push(
+        <span
+          className={`${
+            actualPage === 1
+              ? "font-black bg-gray dark:bg-graydark dark:text-white"
+              : ""
+          } h-8 w-8 flex border border-bodydark2 dark:border-form-strokedark place-items-center justify-center cursor-pointer rounded-md`}
+          key={1}
+          onClick={() => setActualPage(1)}
+        >
+          1
+        </span>
+      );
+      return paginationLists;
+    }
+
     // Always show the first page
     paginationLists.push(
       <span
