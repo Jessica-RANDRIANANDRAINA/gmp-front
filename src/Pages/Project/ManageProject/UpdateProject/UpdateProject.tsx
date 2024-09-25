@@ -4,20 +4,21 @@ import {
   CustomSelect,
   MultiSelect,
   CutomInputUserSearch,
-} from "../../../components/UIElements";
+} from "../../../../components/UIElements";
 import {
   IRessource,
   IPhase,
   IBudget,
   IProjectData,
   IHistoricProject,
-} from "../../../types/Project";
-import { getAllDepartments } from "../../../services/User";
-import { updateProject } from "../../../services/Project/ProjectServices";
-import { decodeToken } from "../../../services/Function/TokenService";
+} from "../../../../types/Project";
+import { getAllDepartments } from "../../../../services/User";
+import { updateProject } from "../../../../services/Project/ProjectServices";
+import { decodeToken } from "../../../../services/Function/TokenService";
+import { getInitials } from "../../../../services/Function/UserFunctionService";
+import { InfoGeneralUpdate } from "./subPages";
 import { v4 as uuid4 } from "uuid";
 import { PuffLoader } from "react-spinners";
-import { getInitials } from "../../../services/Function/UserFunctionService";
 import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
 
@@ -457,234 +458,11 @@ const UpdateProject = ({
         {/* ===== FORM CREATE START ===== */}
         <div className="pt-2 md:w-1/2  ">
           {/* ===== CREATE PROJECT LEVEL ONE START INFO GENERAL ===== */}
-          <form
-            className={`space-y-2 transition-all duration-1000 ease-in-out ${
-              pageCreate === 1 ? "opacity-100" : "opacity-0 h-0 overflow-hidden"
-            }`}
-            onSubmit={(e) => {
-              e.preventDefault();
-              const form = e.target as HTMLFormElement;
-              if (form.reportValidity()) {
-                setPageCreate(2);
-              }
-            }}
-          >
-            <div className="grid grid-cols-2 gap-4">
-              <CustomInput
-                label="Titre"
-                type="text"
-                rounded="medium"
-                help="Le titre du projet est obligatoire"
-                placeholder="Titre du projet (80 caractères max)"
-                value={projectData?.title?.slice(0, 80)}
-                maxLength={80}
-                required={true}
-                onChange={(e) => {
-                  setProjectData({
-                    ...projectData,
-                    title: e.target.value.slice(0, 80),
-                  });
-                }}
-              />
-              <CustomSelect
-                label="Avancement du projet"
-                placeholder="0"
-                data={["0%", "25%", "50%", "75%", "100%"]}
-                value={`${projectData?.completionPercentage}%`}
-                onValueChange={(e) => {
-                  setProjectData({
-                    ...projectData,
-                    completionPercentage: parseInt(e.split("%")?.[0]),
-                  });
-                }}
-              />
-            </div>
-            <CustomInput
-              label="Description"
-              type="textarea"
-              rounded="medium"
-              placeholder="Description du projet"
-              rows={5}
-              cols={5}
-              value={projectData?.description?.slice(0, 1000)}
-              onChange={(e) => {
-                setProjectData({
-                  ...projectData,
-                  description: e.target.value?.slice(0, 1000),
-                });
-              }}
-            />
-            <div className="grid  md:grid-cols-2 gap-4">
-              <CustomSelect
-                label="Priorité"
-                placeholder="Priorité"
-                data={["Faible", "Moyenne", "Elevée"]}
-                value={projectData.priority}
-                onValueChange={(e) => {
-                  setProjectData({
-                    ...projectData,
-                    priority: e,
-                  });
-                }}
-              />
-              <MultiSelect
-                id="001"
-                label={"Direction propriétaire"}
-                placeholder="Choisir une direction"
-                value={departments}
-                initialValue={projectDataToModif?.beneficiary}
-                setValueMulti={setDirectionOwner}
-                rounded="large"
-                required={true}
-              />
-            </div>
-            <div className="grid md:grid-cols-2 gap-4">
-              <CustomInput
-                label="Date début prévisionnelle"
-                type="date"
-                rounded="medium"
-                value={
-                  projectData?.startDate
-                    ? projectData.startDate?.split("T")[0]
-                    : ""
-                }
-                onChange={(e) => {
-                  setProjectData({
-                    ...projectData,
-                    startDate: e.target.value,
-                  });
-                }}
-                required
-                disabled={isPreviousDate(projectData?.startDate)}
-              />
-              <div className="grid  gap-2">
-                <CustomInput
-                  label="Date fin prévisionnelle"
-                  type="date"
-                  rounded="medium"
-                  value={
-                    projectData?.endDate
-                      ? projectData.endDate?.split("T")[0]
-                      : ""
-                  }
-                  help={
-                    projectData.isEndDateImmuable
-                      ? "Cette date est fixe"
-                      : projectData?.endDate
-                      ? "Tout changement de cette date devra être suivi de la raison"
-                      : undefined
-                  }
-                  onChange={(e) => {
-                    setProjectData({
-                      ...projectData,
-                      endDate: e.target.value,
-                    });
-                  }}
-                  min={
-                    projectData?.startDate
-                      ? projectData.startDate?.split("T")[0]
-                      : ""
-                  }
-                  disabled={
-                    (projectData.startDate ? false : true) ||
-                    projectData.isEndDateImmuable
-                  }
-                />
-                <div className="">
-                  <div
-                    className={`${
-                      projectData?.endDate?.split("T")[0] ===
-                        projectDataToModif?.endDate?.split("T")[0] ||
-                      projectDataToModif?.endDate === null
-                        ? "hidden"
-                        : ""
-                    }
-                  
-                    `}
-                  >
-                    <CustomInput
-                      label="Motif de la modification"
-                      type="textarea"
-                      rounded="medium"
-                      value={hitoricProjectDate?.reason?.slice(0, 1000)}
-                      maxLength={1000}
-                      required={
-                        !(
-                          projectData?.endDate?.split("T")[0] ===
-                            projectDataToModif?.endDate?.split("T")[0] ||
-                          projectDataToModif?.endDate === null
-                        )
-                      }
-                      onChange={(e) => {
-                        setHistoricProjectDate({
-                          ...hitoricProjectDate,
-                          reason: e.target.value.slice(0, 1000),
-                        });
-                      }}
-                    />
-                  </div>
-                  <div
-                    className={`${
-                      projectData?.endDate ? "opacity-100" : "opacity-50 hidden"
-                    } transform duration-300
-                  ${projectDataToModif?.isEndDateImmuable ? "hidden" : ""}
-                  `}
-                  >
-                    <span className={`cursor-help relative  group`}>
-                      Cette date est-elle imuable ?
-                      <span className="absolute text-xs  font-thin hidden group-hover:flex max-w-59 min-w-59 bg-white text-black p-2 border border-whiten shadow-5 rounded-md z-999999 top-[-35px] left-1/2 transform -translate-x-1/2">
-                        Si oui, Cette date sera impossible a modifier même en
-                        cas de retard
-                      </span>
-                    </span>
-                    <span className="flex flex-row flex-wrap gap-2">
-                      <span className="space-x-2">
-                        <input
-                          value={"Oui"}
-                          type="radio"
-                          className="cursor-pointer"
-                          name={"immuableEndDate"}
-                          checked={projectData?.isEndDateImmuable}
-                          onChange={() => {
-                            setProjectData({
-                              ...projectData,
-                              isEndDateImmuable: true,
-                            });
-                          }}
-                        />
-                        <label>Oui</label>
-                      </span>
-                      <span className="space-x-2">
-                        <input
-                          value={"Non"}
-                          className="cursor-pointer"
-                          type="radio"
-                          name={"immuableEndDate"}
-                          onChange={() => {
-                            setProjectData({
-                              ...projectData,
-                              isEndDateImmuable: false,
-                            });
-                          }}
-                          checked={!projectData?.isEndDateImmuable}
-                        />
-                        <label>Non</label>
-                      </span>
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="flex justify-end ">
-              <button
-                // onClick={() => setPageCreate(2)}
-                type="submit"
-                className={`md:w-fit gap-2 w-full  mt-2 py-2 px-5  text-center font-medium text-white  lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen `}
-              >
-                Suivant
-              </button>
-            </div>
-          </form>
+
+          <InfoGeneralUpdate 
+          
+          />
+          
           {/* ===== CREATE PROJECT LEVEL ONE END INFO GENERAL ===== */}
 
           {/* ===== CREATE PROJECT LEVEL TWO: BUDGET AND RESSOURCE START ===== */}
