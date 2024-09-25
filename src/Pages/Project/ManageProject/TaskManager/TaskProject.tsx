@@ -5,7 +5,6 @@ import {
   NavLink,
   Outlet,
   useNavigate,
-  useLocation,
 } from "react-router-dom";
 import { IProjectData } from "../../../../types/Project";
 import { getProjectById } from "../../../../services/Project/ProjectServices";

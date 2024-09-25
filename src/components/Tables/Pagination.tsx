@@ -14,7 +14,7 @@ function Pagination({
 }: PaginationProps) {
   const generatePagination = () => {
     const paginationLists = [];
-    const middlePage = Math.ceil(pageNumbers / 2);
+    // const middlePage = Math.ceil(pageNumbers / 2);
 
     // Always show the first page
     paginationLists.push(

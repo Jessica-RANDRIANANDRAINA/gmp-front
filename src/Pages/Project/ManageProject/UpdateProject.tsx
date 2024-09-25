@@ -922,7 +922,8 @@ const UpdateProject = ({
                     Utiliser les valeurs par défaut
                   </button>
                   {phaseAndLivrableList
-                    ?.sort((a, b) => a.rank - b.rank)
+                    ?.filter((phase) => phase?.rank !== undefined)
+                    ?.sort((a, b) => (a.rank ?? 0) - (b.rank ?? 0))
                     ?.map((phase, index) => (
                       <div key={phase?.id}>
                         <div className={"flex justify-between"}>

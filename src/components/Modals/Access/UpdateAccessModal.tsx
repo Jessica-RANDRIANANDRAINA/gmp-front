@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { CustomInput, Checkbox } from "../../UIElements";
-import { v4 as uuid4 } from "uuid";
+// import { v4 as uuid4 } from "uuid";
 import { updateHabilitation } from "../../../services/User";
 import { BeatLoader } from "react-spinners";
 
@@ -68,15 +68,15 @@ const UpdateAccessModal = ({
     e.preventDefault();
     setIsLoading(true);
     setLabelError("");
-    const id = uuid4();
+    // const id = uuid4();
     if (accessLabel.trim() === "") {
       setLabelError("Veuiller remplir ce champ");
       return;
     }
-    const adminId = uuid4();
-    const projectId = uuid4();
-    const transverseId = uuid4();
-    const intercontractId = uuid4();
+    // const adminId = uuid4();
+    // const projectId = uuid4();
+    // const transverseId = uuid4();
+    // const intercontractId = uuid4();
     const habilitationData = {
       label: accessLabel.trim(),
       habilitationAdmins: [{ ...adminAccess }],
@@ -85,10 +85,6 @@ const UpdateAccessModal = ({
       habilitationIntercontracts: [{ ...interContractAccess }],
     };
 
-    console.log("------");
-    console.log(habilitationData);
-    console.log(habilitationId);
-    console.log("------");
     try {
       updateHabilitation(habilitationData, habilitationId);
     } catch (error) {

@@ -3,7 +3,7 @@ import DefaultLayout from "../../layout/DefaultLayout";
 import {
   ModifyHierarchy,
   BodyHierarchy,
-  HeaderHierarchy,
+  // HeaderHierarchy,
 } from "../../components/Hierarchy";
 import { getAllUsers } from "../../services/User";
 import { UserInterface } from "../../types/user";
@@ -11,7 +11,7 @@ import { UserInterface } from "../../types/user";
 
 
 const ManageHierarchie = () => {
-  const [departChoosen, setDepartChoosen] = useState("");
+  const [departChoosen] = useState("");
   const [userData, setUserData] = useState([]);
   const [isModifyHierarchyOpen, setIsModifyHierarchyOpen] = useState(false);
   const [userToModify, setUserToModify] = useState<UserInterface | null>(null);

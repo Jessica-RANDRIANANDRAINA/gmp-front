@@ -1,4 +1,4 @@
-import React, { Key } from "react";
+import { Key } from "react";
 import { getInitials } from "../../services/Function/UserFunctionService";
 import { IUserProject } from "../../types/Project";
 

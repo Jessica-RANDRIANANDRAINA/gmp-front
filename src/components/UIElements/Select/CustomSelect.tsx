@@ -12,7 +12,7 @@ const CustomSelect = ({
 }: InputSelectprops) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isNearLeft, setIsNearLeft] = useState(false);
-  const [isNearRight, setIsNearRight] = useState(false);
+  // const [isNearRight, setIsNearRight] = useState(false);
   // const [selected, setSelected] = useState(value);
 
   const trigger = useRef<any>(null);
@@ -41,7 +41,7 @@ const CustomSelect = ({
         const threshold = 50; // distance à laquelle tu considères l'élément comme proche du bord
 
         setIsNearLeft(rect.left < threshold);
-        setIsNearRight(window.innerWidth - rect.right < threshold);
+        // setIsNearRight(window.innerWidth - rect.right < threshold);
       }
     };
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import {
   Modal,
@@ -48,10 +48,10 @@ const initialData = {
 };
 
 const PhaseAdvancement = () => {
-  const [data, setData] = useState(initialData);
+  const [data, setData] = useState<any>(initialData);
   const [modalOpen, setModalOpen] = useState(false);
 
-  const handleOnDragEnd = (result) => {
+  const handleOnDragEnd = (result: { destination: any; source: any; draggableId: any; }) => {
     const { destination, source, draggableId } = result;
 
     if (!destination) return;
@@ -63,8 +63,8 @@ const PhaseAdvancement = () => {
       return;
     }
 
-    const startColumn = data.columns[source.droppableId];
-    const endColumn = data.columns[destination.droppableId];
+    const startColumn = data?.columns[source.droppableId];
+    const endColumn = data?.columns[destination.droppableId];
 
     // Moving within the same column
     if (startColumn === endColumn) {
@@ -117,21 +117,21 @@ const PhaseAdvancement = () => {
     <div className="p-5 ">
       <DragDropContext onDragEnd={handleOnDragEnd}>
         <div style={{ display: "flex" }}>
-          {data.columnOrder.map((columnId) => {
+          {data.columnOrder.map((columnId: string) => {
             const column = data.columns[columnId];
-            const tasks = column.taskIds.map((taskId) => data.tasks[taskId]);
+            const tasks = column.taskIds.map((taskId: string | number) => data.tasks[taskId]);
 
             return (
               <div className="w-full">
                 <Droppable key={column.id} droppableId={column.id}>
-                  {(provided, snapshot) => (
+                  {(provided) => (
                     <div
                       ref={provided.innerRef}
                       className="m-2 rounded-md w-full p-2 "
                       {...provided.droppableProps}
                     >
                       <h3 className="mb-3 text-sm">{column.title}</h3>
-                      {tasks.map((task, index) => (
+                      {tasks.map((task: any, index: any) => (
                         <Draggable
                           key={task.id}
                           draggableId={task.id}

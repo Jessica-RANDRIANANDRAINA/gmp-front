@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import {
-  CustomInput,
   CutomInputUserSearch,
 } from "../../../../components/UIElements";
 import {
@@ -16,10 +15,6 @@ import { v4 as uuid4 } from "uuid";
 import { PuffLoader } from "react-spinners";
 import { getInitials } from "../../../../services/Function/UserFunctionService";
 import { InfoGeneralAdd, BudgetAndRessourceAdd, PhasesAdd } from "./subPages";
-import { Notyf } from "notyf";
-import "notyf/notyf.min.css";
-
-const notyf = new Notyf();
 
 const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -67,7 +62,6 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
     fetchDepartment();
   }, []);
 
-
   useEffect(() => {
     const data = ressourceList;
     // setTimeout(() => {
@@ -80,8 +74,6 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
     let filteredList = userTeam.filter((team) => team.id !== id);
     setUserTeam(filteredList);
   };
-
-
 
   // create project
   const handleCreateProject = async () => {
@@ -128,17 +120,17 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
       listUsers: userProject,
     };
 
-    console.log(data)
-    // try {
-    //   // create project service
-    //   await createProject(data);
-    //   setIsAddProject(false);
-    // } catch (error) {
-    //   console.log(`Error at create project: ${error}`);
-    // } finally {
-    //   // stop loading
-    //   setIsCreateLoading(false);
-    // }
+    console.log(data);
+    try {
+      // create project service
+      await createProject(data);
+      setIsAddProject(false);
+    } catch (error) {
+      console.log(`Error at create project: ${error}`);
+    } finally {
+      // stop loading
+      setIsCreateLoading(false);
+    }
   };
 
   return (
@@ -149,8 +141,9 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
           onClick={() => {
             setIsAddProject(false);
           }}
-          className={`md:w-fit gap-2  w-full cursor-pointer mt-2 py-2 px-5  text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen dark:hover:bg-opacity-90 md:ease-out md:duration-300 md:transform   ${isLoaded ? "md:translate-x-0 " : "md:translate-x-[60vw]"
-            }`}
+          className={`md:w-fit gap-2  w-full cursor-pointer mt-2 py-2 px-5  text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen dark:hover:bg-opacity-90 md:ease-out md:duration-300 md:transform   ${
+            isLoaded ? "md:translate-x-0 " : "md:translate-x-[60vw]"
+          }`}
         >
           Retour
         </button>
@@ -174,7 +167,7 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
               if (
                 projectData?.title === "" ||
                 projectData?.startDate === undefined ||
-                projectData?.startDate === "" 
+                projectData?.startDate === ""
                 // ||
                 // directionOwner?.length === 0
               ) {
@@ -182,16 +175,18 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
               }
               setPageCreate(2);
             }}
-            className={`border p-2 border-slate-200 tranform duration-500 ease-linear  ${pageCreate === 2 ? "bg-amber-200" : ""
-              } 
-            ${projectData?.title === "" ||
-                projectData?.startDate === undefined ||
-                projectData?.startDate === "" 
-                // ||
-                // directionOwner?.length === 0
-                ? "cursor-default opacity-70"
+            className={`border p-2 border-slate-200 tranform duration-500 ease-linear  ${
+              pageCreate === 2 ? "bg-amber-200" : ""
+            } 
+            ${
+              projectData?.title === "" ||
+              projectData?.startDate === undefined ||
+              projectData?.startDate === ""
+                ? // ||
+                  // directionOwner?.length === 0
+                  "cursor-default opacity-70"
                 : "cursor-pointer"
-              }
+            }
             `}
           >
             Budget et ressources
@@ -201,7 +196,7 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
               if (
                 projectData?.title === "" ||
                 projectData?.startDate === undefined ||
-                projectData?.startDate === "" 
+                projectData?.startDate === ""
                 // ||
                 // directionOwner?.length === 0
               ) {
@@ -209,16 +204,18 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
               }
               setPageCreate(3);
             }}
-            className={`border p-2 border-slate-200 tranform duration-500 ease-linear cursor-pointer ${pageCreate === 3 ? "bg-amber-200" : ""
-              } 
-            ${projectData?.title === "" ||
-                projectData?.startDate === undefined ||
-                projectData?.startDate === "" 
-                // ||
-                // directionOwner?.length === 0
-                ? "cursor-default opacity-70"
+            className={`border p-2 border-slate-200 tranform duration-500 ease-linear cursor-pointer ${
+              pageCreate === 3 ? "bg-amber-200" : ""
+            } 
+            ${
+              projectData?.title === "" ||
+              projectData?.startDate === undefined ||
+              projectData?.startDate === ""
+                ? // ||
+                  // directionOwner?.length === 0
+                  "cursor-default opacity-70"
                 : "cursor-pointer"
-              }
+            }
             `}
           >
             Phases et livrables
@@ -228,7 +225,7 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
               if (
                 projectData?.title === "" ||
                 projectData?.startDate === undefined ||
-                projectData?.startDate === "" 
+                projectData?.startDate === ""
                 // ||
                 // directionOwner?.length === 0
               ) {
@@ -236,16 +233,18 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
               }
               setPageCreate(4);
             }}
-            className={`border p-2 border-slate-200 tranform duration-500 ease-linear cursor-pointer ${pageCreate === 4 ? "bg-amber-200" : ""
-              }
-            ${projectData?.title === "" ||
-                projectData?.startDate === undefined ||
-                projectData?.startDate === "" 
-                // ||
-                // directionOwner?.length === 0
-                ? "cursor-default opacity-70"
+            className={`border p-2 border-slate-200 tranform duration-500 ease-linear cursor-pointer ${
+              pageCreate === 4 ? "bg-amber-200" : ""
+            }
+            ${
+              projectData?.title === "" ||
+              projectData?.startDate === undefined ||
+              projectData?.startDate === ""
+                ? // ||
+                  // directionOwner?.length === 0
+                  "cursor-default opacity-70"
                 : "cursor-pointer"
-              } `}
+            } `}
           >
             Equipe
           </div>
@@ -263,12 +262,18 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
         <div className="pt-2 md:w-1/2  ">
           {/* ===== CREATE PROJECT LEVEL ONE START INFO GENERAL ===== */}
 
-          <InfoGeneralAdd setPageCreate={setPageCreate} pageCreate={pageCreate} setProjectData={setProjectData} projectData={projectData} departments={departments} setDirectionOwner={setDirectionOwner} />
+          <InfoGeneralAdd
+            setPageCreate={setPageCreate}
+            pageCreate={pageCreate}
+            setProjectData={setProjectData}
+            projectData={projectData}
+            departments={departments}
+            setDirectionOwner={setDirectionOwner}
+          />
 
           {/* ===== CREATE PROJECT LEVEL ONE END INFO GENERAL ===== */}
 
           {/* ===== CREATE PROJECT LEVEL TWO: BUDGET AND RESSOURCE START ===== */}
-
 
           <BudgetAndRessourceAdd
             setPageCreate={setPageCreate}
@@ -279,10 +284,9 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
             setRessourceList={setRessourceList}
             ressourceList={ressourceList}
           />
-          
+
           {/* ===== CREATE PROJECT LEVEL TWO: BUDGET AND RESSOURCE END ===== */}
           {/* ===== CREATE PROJECT LEVEL THREE: PHASES AND LIVRABLE START ===== */}
-
 
           <PhasesAdd
             setPageCreate={setPageCreate}
@@ -295,8 +299,9 @@ const AddProject = ({ setIsAddProject }: { setIsAddProject: Function }) => {
           {/* ===== CREATE PROJECT LEVEL THREE: PHASES AND LIVRABLE END ===== */}
           {/* ===== CREATE PROJECT LEVEL FOUR: TEAM START ===== */}
           <div
-            className={`space-y-2  transition-all duration-1000 ease-in-out ${pageCreate === 4 ? "opacity-100" : "opacity-0 h-0 overflow-hidden"
-              }`}
+            className={`space-y-2  transition-all duration-1000 ease-in-out ${
+              pageCreate === 4 ? "opacity-100" : "opacity-0 h-0 overflow-hidden"
+            }`}
           >
             <div className="space-y-4  ">
               <span className="font-semibold tracking-wide underline">

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { TableAccessProps } from "../../types/table";
 import { CustomSelect, CustomInput } from "../UIElements";
-import { deleteHabilitation } from "../../services/User";
+// import { deleteHabilitation } from "../../services/User";
 
 const TableAccess = ({
   data,
@@ -14,7 +14,7 @@ const TableAccess = ({
   setAccessSelectedId: Function;
   setIsModalModifAccessVisible: Function;
 }) => {
-  const [entriesPerPage, setEntriesPerPage] = useState(5);
+  const [entriesPerPage] = useState(5);
   const [actualPage, setActualPage] = useState(1);
   const [pageNumbers, setPageNumbers] = useState(1);
   const [accessSelected, setAccessSelected] = useState<string[]>([]);

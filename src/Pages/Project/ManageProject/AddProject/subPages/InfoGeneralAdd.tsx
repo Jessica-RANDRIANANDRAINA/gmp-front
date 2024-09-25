@@ -3,23 +3,28 @@ import {
   CustomSelect,
   MultiSelect,
 } from "../../../../../components/UIElements";
-import {
-  IProjectData,
-} from "../../../../../types/Project";
+import { IProjectData } from "../../../../../types/Project";
 
-const InfoGeneralAdd = ({ setPageCreate, pageCreate, setProjectData, projectData, departments, setDirectionOwner }:
-  {
-    setPageCreate: React.Dispatch<React.SetStateAction<number>>;
-    pageCreate: number;
-    setProjectData: React.Dispatch<React.SetStateAction<IProjectData>>;
-    projectData: IProjectData;
-    departments: string[];
-    setDirectionOwner: Function
-  }) => {
+const InfoGeneralAdd = ({
+  setPageCreate,
+  pageCreate,
+  setProjectData,
+  projectData,
+  departments,
+  setDirectionOwner,
+}: {
+  setPageCreate: React.Dispatch<React.SetStateAction<number>>;
+  pageCreate: number;
+  setProjectData: React.Dispatch<React.SetStateAction<IProjectData>>;
+  projectData: IProjectData;
+  departments: string[];
+  setDirectionOwner: Function;
+}) => {
   return (
     <form
-      className={`space-y-2 transition-all duration-1000 ease-in-out ${pageCreate === 1 ? "opacity-100" : "opacity-0 h-0 overflow-hidden"
-        }`}
+      className={`space-y-2 transition-all duration-1000 ease-in-out ${
+        pageCreate === 1 ? "opacity-100" : "opacity-0 h-0 overflow-hidden"
+      }`}
       onSubmit={(e) => {
         e.preventDefault();
         const form = e.target as HTMLFormElement;
@@ -102,8 +107,7 @@ const InfoGeneralAdd = ({ setPageCreate, pageCreate, setProjectData, projectData
             label="Date fin prévisionnelle"
             type="date"
             rounded="medium"
-            help={`${projectData.startDate ? "" : "Remplir la date de début."
-              }`}
+            help={`${projectData.startDate ? "" : "Remplir la date de début."}`}
             value={projectData?.endDate}
             onChange={(e) => {
               setProjectData({
@@ -115,14 +119,15 @@ const InfoGeneralAdd = ({ setPageCreate, pageCreate, setProjectData, projectData
             disabled={projectData.startDate ? false : true}
           />
           <div
-            className={`${projectData?.endDate ? "opacity-100" : "opacity-50 hidden"
-              } transform duration-300`}
+            className={`${
+              projectData?.endDate ? "opacity-100" : "opacity-50 hidden"
+            } transform duration-300`}
           >
             <span className={`cursor-help relative  group`}>
               Cette date est-elle imuable ?
               <span className="absolute text-xs  font-thin hidden group-hover:flex max-w-59 min-w-59 bg-white text-black p-2 border border-whiten shadow-5 rounded-md z-999999 top-[-35px] left-1/2 transform -translate-x-1/2">
-                Si oui, Cette date sera impossible a modifier même en cas
-                de retard
+                Si oui, Cette date sera impossible a modifier même en cas de
+                retard
               </span>
             </span>
             <span className="flex flex-row flex-wrap gap-2">
@@ -172,7 +177,7 @@ const InfoGeneralAdd = ({ setPageCreate, pageCreate, setProjectData, projectData
         </button>
       </div>
     </form>
-  )
-}
+  );
+};
 
-export default InfoGeneralAdd
+export default InfoGeneralAdd;
