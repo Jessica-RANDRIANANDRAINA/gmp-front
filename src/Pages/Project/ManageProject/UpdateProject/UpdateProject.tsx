@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import {
   CustomInput,
   CustomSelect,
-  MultiSelect,
   CutomInputUserSearch,
 } from "../../../../components/UIElements";
 import {
@@ -237,15 +236,15 @@ const UpdateProject = ({
       prevList.map((phase, idx) =>
         idx === index
           ? {
-              ...phase,
-              [label === "phase"
-                ? "phase1"
-                : label === "livrable"
+            ...phase,
+            [label === "phase"
+              ? "phase1"
+              : label === "livrable"
                 ? "expectedDeliverable"
                 : label === "startDate"
-                ? "startDate"
-                : "endDate"]: value,
-            }
+                  ? "startDate"
+                  : "endDate"]: value,
+          }
           : phase
       )
     );
@@ -330,14 +329,7 @@ const UpdateProject = ({
     }
   };
 
-  // Function to compare if data is previous
-  const isPreviousDate = (date: string | number | Date | undefined) => {
-    if (!date) return false;
-    const inputDate = new Date(date);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    return inputDate < today;
-  };
+
 
   return (
     <div>
@@ -348,9 +340,8 @@ const UpdateProject = ({
             setIsModifProject(false);
             setProjectDataToModif();
           }}
-          className={`md:w-fit gap-2  w-full cursor-pointer mt-2 py-2 px-5  text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen dark:hover:bg-opacity-90 md:ease-out md:duration-300 md:transform   ${
-            isLoaded ? "md:translate-x-0 " : "md:translate-x-[60vw]"
-          }`}
+          className={`md:w-fit gap-2  w-full cursor-pointer mt-2 py-2 px-5  text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen dark:hover:bg-opacity-90 md:ease-out md:duration-300 md:transform   ${isLoaded ? "md:translate-x-0 " : "md:translate-x-[60vw]"
+            }`}
         >
           retour
         </button>
@@ -381,17 +372,15 @@ const UpdateProject = ({
               }
               setPageCreate(2);
             }}
-            className={`border p-2 border-slate-200 tranform duration-500 ease-linear  ${
-              pageCreate === 2 ? "bg-amber-200" : ""
-            } 
-            ${
-              projectData?.title === "" ||
-              projectData?.startDate === undefined ||
-              projectData?.startDate === "" ||
-              directionOwner?.length === 0
+            className={`border p-2 border-slate-200 tranform duration-500 ease-linear  ${pageCreate === 2 ? "bg-amber-200" : ""
+              } 
+            ${projectData?.title === "" ||
+                projectData?.startDate === undefined ||
+                projectData?.startDate === "" ||
+                directionOwner?.length === 0
                 ? "cursor-default opacity-70"
                 : "cursor-pointer"
-            }
+              }
             `}
           >
             Budget et ressources
@@ -408,17 +397,15 @@ const UpdateProject = ({
               }
               setPageCreate(3);
             }}
-            className={`border p-2 border-slate-200 tranform duration-500 ease-linear ${
-              pageCreate === 3 ? "bg-amber-200" : ""
-            } 
-            ${
-              projectData?.title === "" ||
-              projectData?.startDate === undefined ||
-              projectData?.startDate === "" ||
-              directionOwner?.length === 0
+            className={`border p-2 border-slate-200 tranform duration-500 ease-linear ${pageCreate === 3 ? "bg-amber-200" : ""
+              } 
+            ${projectData?.title === "" ||
+                projectData?.startDate === undefined ||
+                projectData?.startDate === "" ||
+                directionOwner?.length === 0
                 ? "cursor-default opacity-70"
                 : "cursor-pointer"
-            }
+              }
             `}
           >
             Phases et livrables
@@ -435,17 +422,15 @@ const UpdateProject = ({
               }
               setPageCreate(4);
             }}
-            className={`border p-2 border-slate-200 tranform duration-500 ease-linear ${
-              pageCreate === 4 ? "bg-amber-200" : ""
-            }
-            ${
-              projectData?.title === "" ||
-              projectData?.startDate === undefined ||
-              projectData?.startDate === "" ||
-              directionOwner?.length === 0
+            className={`border p-2 border-slate-200 tranform duration-500 ease-linear ${pageCreate === 4 ? "bg-amber-200" : ""
+              }
+            ${projectData?.title === "" ||
+                projectData?.startDate === undefined ||
+                projectData?.startDate === "" ||
+                directionOwner?.length === 0
                 ? "cursor-default opacity-70"
                 : "cursor-pointer"
-            } `}
+              } `}
           >
             Equipe
           </div>
@@ -459,17 +444,24 @@ const UpdateProject = ({
         <div className="pt-2 md:w-1/2  ">
           {/* ===== CREATE PROJECT LEVEL ONE START INFO GENERAL ===== */}
 
-          <InfoGeneralUpdate 
-          
+          <InfoGeneralUpdate
+            pageCreate={pageCreate}
+            setPageCreate={setPageCreate}
+            projectData={projectData}
+            setProjectData={setProjectData}
+            departments={departments}
+            setDirectionOwner={setDirectionOwner}
+            setHistoricProjectDate={setHistoricProjectDate}
+            hitoricProjectDate={hitoricProjectDate}
+            projectDataToModif={projectDataToModif}
           />
-          
+
           {/* ===== CREATE PROJECT LEVEL ONE END INFO GENERAL ===== */}
 
           {/* ===== CREATE PROJECT LEVEL TWO: BUDGET AND RESSOURCE START ===== */}
           <form
-            className={`space-y-2 transition-all duration-1000 ease-in-out ${
-              pageCreate === 2 ? "opacity-100" : "opacity-0 h-0 overflow-hidden"
-            }`}
+            className={`space-y-2 transition-all duration-1000 ease-in-out ${pageCreate === 2 ? "opacity-100" : "opacity-0 h-0 overflow-hidden"
+              }`}
             onSubmit={(e) => {
               e.preventDefault();
               const form = e.target as HTMLFormElement;
@@ -488,9 +480,8 @@ const UpdateProject = ({
                     setHaveBudget(true);
                   }}
                   type="button"
-                  className={`py-2 w-full mt-2 text-center border border-dashed border-stroke rounded-md hover:bg-stroke ${
-                    haveBudget ? "hidden" : ""
-                  }`}
+                  className={`py-2 w-full mt-2 text-center border border-dashed border-stroke rounded-md hover:bg-stroke ${haveBudget ? "hidden" : ""
+                    }`}
                 >
                   Est-ce que ce projet a un budget ?
                 </button>
@@ -671,9 +662,8 @@ const UpdateProject = ({
           {/* ===== CREATE PROJECT LEVEL TWO: BUDGET AND RESSOURCE END ===== */}
           {/* ===== CREATE PROJECT LEVEL THREE: PHASES AND LIVRABLE START ===== */}
           <form
-            className={`space-y-2 transition-all duration-1000 ease-in-out ${
-              pageCreate === 3 ? "opacity-100" : "opacity-0 h-0 overflow-hidden"
-            }`}
+            className={`space-y-2 transition-all duration-1000 ease-in-out ${pageCreate === 3 ? "opacity-100" : "opacity-0 h-0 overflow-hidden"
+              }`}
             onSubmit={(e) => {
               e.preventDefault();
               const form = e.target as HTMLFormElement;
@@ -815,9 +805,8 @@ const UpdateProject = ({
           {/* ===== CREATE PROJECT LEVEL THREE: PHASES AND LIVRABLE END ===== */}
           {/* ===== CREATE PROJECT LEVEL FOUR: TEAM START ===== */}
           <div
-            className={`space-y-2 transition-all duration-1000 ease-in-out ${
-              pageCreate === 4 ? "opacity-100" : "opacity-0 h-0 overflow-hidden"
-            }`}
+            className={`space-y-2 transition-all duration-1000 ease-in-out ${pageCreate === 4 ? "opacity-100" : "opacity-0 h-0 overflow-hidden"
+              }`}
           >
             <div className="space-y-4">
               <div>

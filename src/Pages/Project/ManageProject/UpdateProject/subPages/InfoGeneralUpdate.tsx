@@ -1,23 +1,46 @@
 import {
   CustomInput,
   CustomSelect,
+  MultiSelect
 } from "../../../../../components/UIElements";
-import { IRessource, IProjectData } from "../../../../../types/Project";
+import { IProjectData, IHistoricProject } from "../../../../../types/Project";
 
 const InfoGeneralUpdate = ({
   pageCreate,
   setPageCreate,
   projectData,
+  setProjectData,
+  departments,
+  setDirectionOwner,
+  setHistoricProjectDate,
+  hitoricProjectDate,
+  projectDataToModif
 }: {
   pageCreate: number;
   setPageCreate: React.Dispatch<React.SetStateAction<number>>;
+  setProjectData: React.Dispatch<React.SetStateAction<IProjectData>>;
   projectData: IProjectData;
+  departments: string[];
+  setDirectionOwner: Function;
+  setHistoricProjectDate: React.Dispatch<React.SetStateAction<IHistoricProject>>
+  hitoricProjectDate: IHistoricProject;
+  projectDataToModif: any
 }) => {
+
+
+  // Function to compare if data is previous
+  const isPreviousDate = (date: string | number | Date | undefined) => {
+    if (!date) return false;
+    const inputDate = new Date(date);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return inputDate < today;
+  };
+
   return (
     <form
-      className={`space-y-2 transition-all duration-1000 ease-in-out ${
-        pageCreate === 1 ? "opacity-100" : "opacity-0 h-0 overflow-hidden"
-      }`}
+      className={`space-y-2 transition-all duration-1000 ease-in-out ${pageCreate === 1 ? "opacity-100" : "opacity-0 h-0 overflow-hidden"
+        }`}
       onSubmit={(e) => {
         e.preventDefault();
         const form = e.target as HTMLFormElement;
@@ -124,8 +147,8 @@ const InfoGeneralUpdate = ({
               projectData.isEndDateImmuable
                 ? "Cette date est fixe"
                 : projectData?.endDate
-                ? "Tout changement de cette date devra être suivi de la raison"
-                : undefined
+                  ? "Tout changement de cette date devra être suivi de la raison"
+                  : undefined
             }
             onChange={(e) => {
               setProjectData({
@@ -143,13 +166,12 @@ const InfoGeneralUpdate = ({
           />
           <div className="">
             <div
-              className={`${
-                projectData?.endDate?.split("T")[0] ===
-                  projectDataToModif?.endDate?.split("T")[0] ||
+              className={`${projectData?.endDate?.split("T")[0] ===
+                projectDataToModif?.endDate?.split("T")[0] ||
                 projectDataToModif?.endDate === null
-                  ? "hidden"
-                  : ""
-              }
+                ? "hidden"
+                : ""
+                }
                   
                     `}
             >
@@ -162,7 +184,7 @@ const InfoGeneralUpdate = ({
                 required={
                   !(
                     projectData?.endDate?.split("T")[0] ===
-                      projectDataToModif?.endDate?.split("T")[0] ||
+                    projectDataToModif?.endDate?.split("T")[0] ||
                     projectDataToModif?.endDate === null
                   )
                 }
@@ -175,9 +197,8 @@ const InfoGeneralUpdate = ({
               />
             </div>
             <div
-              className={`${
-                projectData?.endDate ? "opacity-100" : "opacity-50 hidden"
-              } transform duration-300
+              className={`${projectData?.endDate ? "opacity-100" : "opacity-50 hidden"
+                } transform duration-300
                   ${projectDataToModif?.isEndDateImmuable ? "hidden" : ""}
                   `}
             >
