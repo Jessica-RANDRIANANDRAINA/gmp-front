@@ -1,10 +1,6 @@
-import {
-  IPhase,
-  IProjectData,
-} from "../../../../../types/Project";
-import {
-  CustomInput,
-} from "../../../../../components/UIElements";
+import { useState } from "react";
+import { IPhase, IProjectData } from "../../../../../types/Project";
+import { CustomInput } from "../../../../../components/UIElements";
 import { v4 as uuid4 } from "uuid";
 import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
@@ -16,7 +12,7 @@ const PhasesAdd = ({
   setPageCreate,
   setPhaseAndLivrableList,
   phaseAndLivrableList,
-  projectData
+  projectData,
 }: {
   setPageCreate: React.Dispatch<React.SetStateAction<number>>;
   pageCreate: number;
@@ -24,6 +20,9 @@ const PhasesAdd = ({
   phaseAndLivrableList: IPhase[];
   projectData: IProjectData;
 }) => {
+  const [inputErrors, setInputErrors] = useState<{
+    [key: number]: { phase1?: string; expectedDeliverable?: string };
+  }>({});
 
   // ADD DEFAULT VALUE IN PHASE LIST
   const handleAddDefaultPhaseList = () => {
@@ -72,54 +71,79 @@ const PhasesAdd = ({
     setPhaseAndLivrableList(filteredList);
   };
 
+  // VERIFY IF THE PREVIOUS PHASE IS VALID
+  const isPreviousPhaseValid = () => {
+    if (phaseAndLivrableList.length === 0) {
+      return true;
+    }
+
+    const previousPhase = phaseAndLivrableList[phaseAndLivrableList.length - 1];
+    let errors: { phase1?: string; expectedDeliverable?: string } = {};
+
+    if (!previousPhase.phase1) {
+      errors.phase1 = "required";
+    }
+    if (!previousPhase.expectedDeliverable) {
+      errors.expectedDeliverable = "required";
+    }
+    setInputErrors((prevErrors) => ({
+      ...prevErrors,
+      [phaseAndLivrableList.length - 1]: errors,
+    }));
+
+    // Return true if no errors
+    return !errors.phase1 && !errors.expectedDeliverable;
+  };
+
   // ADD PHASE IN THE LIST
   const handleAddPhaseList = () => {
+    if (!isPreviousPhaseValid()) {
+      return;
+    }
+
+    let previousPhaseEndDate =
+      phaseAndLivrableList.length > 0
+        ? phaseAndLivrableList[phaseAndLivrableList.length - 1].endDate
+        : projectData?.startDate;
     let phaseData: IPhase = {
       id: uuid4(),
-      rank: 0,
+      rank: phaseAndLivrableList.length,
       phase1: "",
       expectedDeliverable: "",
-      startDate: undefined,
+      startDate: previousPhaseEndDate,
       endDate: undefined,
     };
     setPhaseAndLivrableList([...phaseAndLivrableList, phaseData]);
   };
-
 
   const handlePhaseDataChange = (
     label: string,
     value: string,
     index: number
   ) => {
-    // let data = phaseAndLivrableList;
-    // if (label === "phase") {
-    //   data[index].phase1 = value;
-    // } else if (label === "livrable") {
-    //   data[index].expectedDeliverable = value;
-    // }
-    // setPhaseAndLivrableList(data);
     setPhaseAndLivrableList((prevList) =>
       prevList.map((phase, idx) =>
         idx === index
           ? {
-            ...phase,
-            rank: index,
-            [label === "phase"
-              ? "phase1"
-              : label === "livrable"
+              ...phase,
+              rank: index,
+              [label === "phase"
+                ? "phase1"
+                : label === "livrable"
                 ? "expectedDeliverable"
                 : label === "startDate"
-                  ? "startDate"
-                  : "endDate"]: value,
-          }
+                ? "startDate"
+                : "endDate"]: value,
+            }
           : phase
       )
     );
   };
   return (
     <form
-      className={`space-y-2 transition-all duration-1000 ease-in-out ${pageCreate === 3 ? "opacity-100" : "opacity-0 h-0 overflow-hidden"
-        }`}
+      className={`space-y-2 transition-all duration-1000 ease-in-out ${
+        pageCreate === 3 ? "opacity-100" : "opacity-0 h-0 overflow-hidden"
+      }`}
       onSubmit={(e) => {
         e.preventDefault();
         const form = e.target as HTMLFormElement;
@@ -169,41 +193,49 @@ const PhasesAdd = ({
                     rounded="medium"
                     placeholder="Ex: conception"
                     value={phase?.phase1}
+                    help="Le nom de la phase"
                     onChange={(e) => {
-                      handlePhaseDataChange(
-                        "phase",
-                        e.target.value,
-                        index
-                      );
+                      handlePhaseDataChange("phase", e.target.value, index);
+                      setInputErrors((prev) => ({
+                        ...prev,
+                        [index]: {
+                          ...prev[index],
+                          phase1: "",
+                        },
+                      }));
                     }}
                     required
+                    error={inputErrors[index]?.phase1}
                   />
                   <CustomInput
                     label="Livrable(s)"
                     type="text"
                     rounded="medium"
                     placeholder="Ex: dossier de conception"
+                    help="Document attendu pour valider la finalité de cette phase"
                     value={phase?.expectedDeliverable}
                     onChange={(e) => {
-                      handlePhaseDataChange(
-                        "livrable",
-                        e.target.value,
-                        index
-                      );
+                      handlePhaseDataChange("livrable", e.target.value, index);
+                      setInputErrors((prev) => ({
+                        ...prev,
+                        [index]: {
+                          ...prev[index],
+                          expectedDeliverable: "",
+                        },
+                      }));
                     }}
                     required
+                    error={inputErrors[index]?.expectedDeliverable}
                   />
                   <CustomInput
                     label="Date début"
                     type="date"
                     rounded="medium"
                     value={phase?.startDate}
+                    min={projectData?.startDate}
+                    max={projectData?.endDate ? projectData?.endDate : ""}
                     onChange={(e) => {
-                      handlePhaseDataChange(
-                        "startDate",
-                        e.target.value,
-                        index
-                      );
+                      handlePhaseDataChange("startDate", e.target.value, index);
                     }}
                   />
                   <CustomInput
@@ -212,11 +244,7 @@ const PhasesAdd = ({
                     rounded="medium"
                     value={phase?.endDate}
                     onChange={(e) => {
-                      handlePhaseDataChange(
-                        "endDate",
-                        e.target.value,
-                        index
-                      );
+                      handlePhaseDataChange("endDate", e.target.value, index);
                     }}
                   />
                 </div>
@@ -249,7 +277,7 @@ const PhasesAdd = ({
         </div>
       </div>
     </form>
-  )
-}
+  );
+};
 
-export default PhasesAdd
+export default PhasesAdd;
