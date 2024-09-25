@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ProjectLayout from "../../../layout/ProjectLayout";
-import AddProject from "./AddProject/AddProject";
 import UpdateProject from "./UpdateProject";
 import { TableProjet } from "../../../components/Tables/projets";
 import {
@@ -11,7 +10,6 @@ import {
 import { decodeToken } from "../../../services/Function/TokenService";
 
 const ManageProjects = () => {
-  const [isAddProject, setIsAddProject] = useState(false);
   const [projectData, setProjectData] = useState([]);
   const [projectDataToModif, setProjectDataToModif] = useState();
   const [projectToModif, setProjectToModif] = useState([]);
@@ -46,17 +44,17 @@ const ManageProjects = () => {
 
   useEffect(() => {
     fetchProject();
-  }, [isAddProject, isModifProject]);
+  }, [isModifProject]);
 
   return (
     <ProjectLayout>
       <div className="mx-2 p-4 md:mx-10">
-        {!isAddProject && !isModifProject ? (
+        {!isModifProject ? (
           <>
             {/* ===== ADD PROJECT START =====*/}
             <div className="w-full mb-2 flex justify-end  items-center">
               <button
-                onClick={() => setIsAddProject(true)}
+                onClick={() => navigate("/gmp/project/add")}
                 className={`md:w-fit gap-2 flex justify-center w-full cursor-pointer mt-2 py-2 lg:px-3 xl:px-2  text-center font-medium text-sm text-white hover:bg-opacity-90  border border-primaryGreen bg-primaryGreen rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen dark:hover:bg-opacity-90  md:ease-in md:duration-300 md:transform  
                    `}
               >
@@ -88,8 +86,6 @@ const ManageProjects = () => {
             />
             {/* ===== TABLE PROJECT LIST END =====*/}
           </>
-        ) : isAddProject ? (
-          <AddProject setIsAddProject={setIsAddProject} />
         ) : projectDataToModif ? (
           <UpdateProject
             setIsModifProject={setIsModifProject}

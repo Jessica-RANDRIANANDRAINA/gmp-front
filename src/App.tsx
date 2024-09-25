@@ -8,6 +8,7 @@ import ManageHierarchie from "./Pages/Admin/ManageHierarchie";
 import NoAccessPage from "./components/NoAccessPage";
 import Home from "./Pages/Project/Home";
 import ManageProjects from "./Pages/Project/ManageProject/ManageProjects";
+import AddProject from "./Pages/Project/ManageProject/AddProject/AddProject";
 import Hebdo from "./Pages/Project/Hebdo";
 import DetailsProject from "./Pages/Project/ManageProject/DetailsProject";
 import TaskProject from "./Pages/Project/ManageProject/TaskManager/TaskProject";
@@ -109,6 +110,15 @@ const App = () => {
             <>
               <PageTitle title="G.M.P" />
               <ManageProjects />
+            </>
+          }
+        />
+        <Route
+          path="/gmp/project/add"
+          element={
+            <>
+              <PageTitle title="G.M.P" />
+              <AddProject />
             </>
           }
         />
