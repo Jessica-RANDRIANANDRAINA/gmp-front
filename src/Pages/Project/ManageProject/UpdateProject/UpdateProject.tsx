@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
   CustomInput,
-  CustomSelect,
   CutomInputUserSearch,
 } from "../../../../components/UIElements";
 import {
@@ -19,7 +18,7 @@ import {
 } from "../../../../services/Project/ProjectServices";
 import { decodeToken } from "../../../../services/Function/TokenService";
 import { getInitials } from "../../../../services/Function/UserFunctionService";
-import { InfoGeneralUpdate } from "./subPages";
+import { InfoGeneralUpdate, BudgetAndRessourcesUpdate } from "./subPages";
 import ProjectLayout from "../../../../layout/ProjectLayout";
 import { v4 as uuid4 } from "uuid";
 import { PuffLoader } from "react-spinners";
@@ -175,23 +174,6 @@ const UpdateProject = () => {
     fetchDepartment();
   }, []);
 
-  // ADD RESSOURCE LIST
-  const handleAddRessourceToList = () => {
-    let ressourceData: IRessource = {
-      id: uuid4(),
-      ressource: "",
-      source: "",
-      type: "",
-    };
-    setRessourceList([...ressourceList, ressourceData]);
-  };
-
-  // REMOVE A RESSOURCE TO THE LIST
-  const handleRemoveRessourceToList = (id: string) => {
-    let filteredList = ressourceList.filter((ressource) => ressource.id !== id);
-    setRessourceList(filteredList);
-  };
-
   // ADD PHASE IN THE LIST
   const handleAddPhaseList = () => {
     let phaseData: IPhase = {
@@ -247,18 +229,6 @@ const UpdateProject = () => {
   const handleRemoveTeamList = (id: string | undefined) => {
     let filteredList = userTeam.filter((team) => team.id !== id);
     setUserTeam(filteredList);
-  };
-
-  const handleRessourceDataChange = (
-    field: string,
-    index: number,
-    value: string
-  ) => {
-    setRessourceList((prevState) => {
-      const newRessources = [...prevState];
-      newRessources[index] = { ...newRessources[index], [field]: value };
-      return newRessources;
-    });
   };
 
   const handlePhaseDataChange = (
@@ -512,210 +482,19 @@ const UpdateProject = () => {
               {/* ===== CREATE PROJECT LEVEL ONE END INFO GENERAL ===== */}
 
               {/* ===== CREATE PROJECT LEVEL TWO: BUDGET AND RESSOURCE START ===== */}
-              <form
-                className={`space-y-2 transition-all duration-1000 ease-in-out ${
-                  pageCreate === 2
-                    ? "opacity-100"
-                    : "opacity-0 h-0 overflow-hidden"
-                }`}
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  const form = e.target as HTMLFormElement;
-                  if (form.reportValidity()) {
-                    setPageCreate(3);
-                  }
-                }}
-              >
-                <div className="space-y-4">
-                  <div>
-                    <span className="font-semibold tracking-wide underline">
-                      BUDGET
-                    </span>
-                    <button
-                      onClick={() => {
-                        setHaveBudget(true);
-                      }}
-                      type="button"
-                      className={`py-2 w-full mt-2 text-center border border-dashed border-stroke rounded-md hover:bg-stroke ${
-                        haveBudget ? "hidden" : ""
-                      }`}
-                    >
-                      Est-ce que ce projet a un budget ?
-                    </button>
-                    {haveBudget && (
-                      <>
-                        <div className="flex justify-between">
-                          <div></div>
-                          <button
-                            type="button"
-                            className={`
-                      text-red-500 decoration-red-500 font-bold hover:font-black
-                      `}
-                            onClick={() => {
-                              setHaveBudget(false);
-                            }}
-                          >
-                            Supprimer
-                          </button>
-                        </div>
-                        <div className="grid md:grid-cols-2 gap-4">
-                          <CustomInput
-                            label="Code"
-                            type="text"
-                            rounded="medium"
-                            placeholder="Code budget"
-                            // disabled={true}
-                            value={projectData?.codeBuget}
-                            onChange={(e) => {
-                              setProjectData({
-                                ...projectData,
-                                codeBuget: e.target.value,
-                              });
-                            }}
-                          />
-                          <CustomSelect
-                            label="Direction sponsor"
-                            placeholder="Choisir une direction"
-                            data={departments}
-                            value={projectData.directionSourceBudget}
-                            onValueChange={(e) => {
-                              setProjectData({
-                                ...projectData,
-                                directionSourceBudget: e,
-                              });
-                            }}
-                            required
-                          />
-                        </div>
-                        <div className="grid md:grid-cols-2 gap-3">
-                          <CustomInput
-                            label="Montant du budget"
-                            type="number"
-                            step={0.01}
-                            min={0}
-                            rounded="medium"
-                            placeholder="0"
-                            value={projectData?.budgetAmount ?? ""}
-                            required
-                            onChange={(e) => {
-                              setProjectData({
-                                ...projectData,
-                                budgetAmount: parseFloat(
-                                  parseFloat(e.target.value).toFixed(2)
-                                ),
-                              });
-                            }}
-                          />
-                          <CustomSelect
-                            label="Devise"
-                            placeholder=" "
-                            data={["MGA", "EUR"]}
-                            value={projectData.budgetCurrency}
-                            onValueChange={(e) => {
-                              setProjectData({
-                                ...projectData,
-                                budgetCurrency: e,
-                              });
-                            }}
-                          />
-                        </div>
-                      </>
-                    )}
-                  </div>
-                  <div>
-                    {/* ===== RESSOURCES START ===== */}
-                    <span className="font-semibold tracking-wide underline">
-                      RESSOURCES
-                    </span>
-                    <div className=" max-h-80 min-h-80 overflow-y-scroll">
-                      {ressourceList?.map((ressource, index) => {
-                        return (
-                          <div key={ressource.id}>
-                            <div className={"flex justify-between"}>
-                              <div className={"underline"}>
-                                Ressource {index + 1}
-                              </div>
-                              <button
-                                className={
-                                  "text-red-500 decoration-red-500 font-bold hover:font-black"
-                                }
-                                onClick={() => {
-                                  handleRemoveRessourceToList(ressource.id);
-                                }}
-                              >
-                                Supprimer
-                              </button>
-                            </div>
-                            <div className="grid md:grid-cols-2 gap-2">
-                              <CustomInput
-                                label="Source"
-                                type="text"
-                                rounded="medium"
-                                placeholder="Ex: Massin"
-                                value={ressource?.source}
-                                onChange={(e) => {
-                                  handleRessourceDataChange(
-                                    "source",
-                                    index,
-                                    e.target.value
-                                  );
-                                }}
-                              />
-                              <CustomSelect
-                                label="Etat"
-                                placeholder="Disponible"
-                                data={["A acquérir", "Disponible"]}
-                                value={ressource.type}
-                                onValueChange={(e) => {
-                                  handleRessourceDataChange("type", index, e);
-                                }}
-                                required
-                              />
-                            </div>
-                            <CustomInput
-                              label="Resssource"
-                              type="textarea"
-                              rounded="medium"
-                              placeholder="La ressource ex: un serveur"
-                              value={ressource.ressource}
-                              onChange={(e) => {
-                                handleRessourceDataChange(
-                                  "ressource",
-                                  index,
-                                  e.target.value
-                                );
-                              }}
-                              required
-                            />
-                          </div>
-                        );
-                      })}
-                      <button
-                        onClick={handleAddRessourceToList}
-                        className={`py-2 w-full mt-2 text-center border border-dashed border-stroke rounded-md hover:bg-stroke`}
-                      >
-                        Ajouter une ressource
-                      </button>
-                    </div>
-                    {/* ===== RESSOURCES END ===== */}
-                  </div>
-                  <div className="flex justify-between gap-3">
-                    <button
-                      onClick={() => setPageCreate(1)}
-                      type="button"
-                      className="md:w-fit gap-2 w-full cursor-pointer mt-2 py-2 px-5  text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen dark:hover:bg-opacity-90"
-                    >
-                      Précédent
-                    </button>
-                    <button
-                      type="submit"
-                      className="md:w-fit gap-2 w-full cursor-pointer mt-2 py-2 px-5  text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen dark:hover:bg-opacity-90"
-                    >
-                      Suivant
-                    </button>
-                  </div>
-                </div>
-              </form>
+
+              <BudgetAndRessourcesUpdate
+                pageCreate={pageCreate}
+                setPageCreate={setPageCreate}
+                haveBudget={haveBudget}
+                setHaveBudget={setHaveBudget}
+                projectData={projectData}
+                setProjectData={setProjectData}
+                departments={departments}
+                ressourceList={ressourceList}
+                setRessourceList={setRessourceList}
+              />
+
               {/* ===== CREATE PROJECT LEVEL TWO: BUDGET AND RESSOURCE END ===== */}
               {/* ===== CREATE PROJECT LEVEL THREE: PHASES AND LIVRABLE START ===== */}
               <form
