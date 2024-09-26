@@ -18,7 +18,7 @@ export const useAuthService = () => {
       const response = await axios.post(
         `${endPoint}/api/Login`,
         userCredentials,
-        { withCredentials: true }
+        { withCredentials: false }
       );
 
       if (response.data && response.data.type === "success") {
