@@ -8,12 +8,10 @@ import ListUsers from "../../UIElements/ListUsers";
 const TableProjet = ({
   data,
   setProjectToModif,
-  setIsModifProject,
   setIdProjectForDetails,
 }: {
   data: Array<any>;
   setProjectToModif: Function;
-  setIsModifProject: Function;
   setIdProjectForDetails: Function;
 }) => {
   const [entriesPerPage, setEntriesPerPage] = useState(5);
@@ -203,7 +201,6 @@ const TableProjet = ({
             onValueChange={(e) => {
               if (e.includes("Modifier")) {
                 setProjectToModif(projectSelected);
-                setIsModifProject(true);
               } else {
                 console.log("first");
               }

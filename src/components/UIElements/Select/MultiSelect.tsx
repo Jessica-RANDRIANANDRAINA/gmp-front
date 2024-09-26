@@ -62,7 +62,7 @@ const MultiSelect = ({
       setSelected(selectedIndices);
       setOptions(newOptions);
     }
-  }, [id, value]);
+  }, [id, value, initialValue, options]);
 
   const open = () => {
     setShow(true);

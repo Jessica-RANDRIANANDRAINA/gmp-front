@@ -69,6 +69,7 @@ export interface IBudget {
 }
 
 export interface IUserProject {
+  user?: any;
   userid: string | undefined;
   projectid: string;
   role: string;
