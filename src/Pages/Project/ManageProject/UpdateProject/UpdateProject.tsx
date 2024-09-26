@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { CutomInputUserSearch } from "../../../../components/UIElements";
 import {
   IRessource,
   IPhase,
@@ -14,19 +13,19 @@ import {
   getProjectById,
 } from "../../../../services/Project/ProjectServices";
 import { decodeToken } from "../../../../services/Function/TokenService";
-import { getInitials } from "../../../../services/Function/UserFunctionService";
 import {
   InfoGeneralUpdate,
   BudgetAndRessourcesUpdate,
   PhasesUpdate,
+  TeamProjectUpdate,
 } from "./subPages";
 import ProjectLayout from "../../../../layout/ProjectLayout";
 import { v4 as uuid4 } from "uuid";
-import { PuffLoader } from "react-spinners";
 
 const UpdateProject = () => {
   const navigate = useNavigate();
   const { projectId } = useParams();
+  const [updateProjectState, setUpdateProjectState] = useState(false);
   const [projectDataToModif, setProjectDataToModif] = useState<IProjectData>();
   const [isLoaded, setIsLoaded] = useState(false);
   const [allDataIsLoaded, setAllDataIsLoaded] = useState(false);
@@ -171,11 +170,11 @@ const UpdateProject = () => {
     fetchDepartment();
   }, []);
 
-  // REMOVE A USER FROM TEAM LIST
-  const handleRemoveTeamList = (id: string | undefined) => {
-    let filteredList = userTeam.filter((team) => team.id !== id);
-    setUserTeam(filteredList);
-  };
+  useEffect(() => {
+    if (updateProjectState) {
+      handleUpdateProject();
+    }
+  }, [updateProjectState]);
 
   // update project
   const handleUpdateProject = async () => {
@@ -246,13 +245,13 @@ const UpdateProject = () => {
     try {
       // update project service
       await updateProject(data?.id, data);
+      navigate("/gmp/project/list");
     } catch (error) {
       console.log(`Error at create project: ${error}`);
     } finally {
       // stop loading
       setIsCreateLoading(false);
-      // close modal
-      navigate("/gmp/project/list");
+      setUpdateProjectState(false);
     }
   };
 
@@ -430,153 +429,14 @@ const UpdateProject = () => {
 
               {/* ===== CREATE PROJECT LEVEL THREE: PHASES AND LIVRABLE END ===== */}
               {/* ===== CREATE PROJECT LEVEL FOUR: TEAM START ===== */}
-              <div
-                className={`space-y-2 transition-all duration-1000 ease-in-out ${
-                  pageCreate === 4
-                    ? "opacity-100"
-                    : "opacity-0 h-0 overflow-hidden"
-                }`}
-              >
-                <div className="space-y-4">
-                  <div>
-                    <span className="font-semibold tracking-wide underline">
-                      EQUIPES
-                    </span>
-                    <div className="space-y-2">
-                      {/* ===== PROJECT DIRECTOR START ===== */}
-                      <div>
-                        <div>Directeur de projet</div>
-                        <div className="hide-scrollbar">
-                          <CutomInputUserSearch
-                            placeholder="Recherche"
-                            label="Assigner"
-                            userSelected={userTeam}
-                            setUserSelected={setUserTeam}
-                            role="director"
-                          />
-                          <div className="flex gap-4 mt-2 flex-wrap">
-                            {userTeam
-                              ?.filter((team) => team.role === "director")
-                              ?.map((team) => {
-                                const initials = getInitials(team.name);
-                                return (
-                                  <div
-                                    key={team.id}
-                                    className="relative group -ml-2 first:ml-0 hover:z-50"
-                                    onClick={() => {
-                                      handleRemoveTeamList(team.id);
-                                    }}
-                                  >
-                                    <p className=" cursor-pointer text-slate-50 border relative bg-secondaryGreen p-1 w-7 h-7 flex justify-center items-center text-xs rounded-full dark:text-white">
-                                      {initials}
-                                    </p>
-                                    <div className="absolute whitespace-nowrap text-xs hidden group-hover:block bg-white text-black p-2 border border-whiten shadow-5 rounded-md z-10 top-[-35px] left-1/2 transform -translate-x-1/2">
-                                      <p>{team?.name}</p>
-                                    </div>
-                                  </div>
-                                );
-                              })}
-                          </div>
-                        </div>
-                      </div>
-                      {/* ===== PROJECT DIRECTOR END ===== */}
-                      {/* ===== PROJECT TEAM START ===== */}
-                      <div>
-                        <div>Equipes</div>
-                        <div className="hide-scrollbar">
-                          <CutomInputUserSearch
-                            placeholder="Recherche"
-                            label="Assigner"
-                            userSelected={userTeam}
-                            setUserSelected={setUserTeam}
-                            role="member"
-                          />
-                          <div className="flex gap-4 mt-2 flex-wrap">
-                            {userTeam
-                              ?.filter((team) => team.role === "member")
-                              ?.map((team) => {
-                                const initials = getInitials(team.name);
-                                return (
-                                  <div
-                                    key={team.id}
-                                    className="relative group -ml-2 first:ml-0 hover:z-50"
-                                    onClick={() => {
-                                      handleRemoveTeamList(team.id);
-                                    }}
-                                  >
-                                    <p className=" cursor-pointer text-slate-50 border relative bg-secondaryGreen p-1 w-7 h-7 flex justify-center items-center text-xs rounded-full dark:text-white">
-                                      {initials}
-                                    </p>
-                                    <div className="absolute whitespace-nowrap text-xs hidden group-hover:block bg-white text-black p-2 border border-whiten shadow-5 rounded-md z-10 top-[-35px] left-1/2 transform -translate-x-1/2">
-                                      <p>{team?.name}</p>
-                                    </div>
-                                  </div>
-                                );
-                              })}
-                          </div>
-                        </div>
-                      </div>
-                      {/* ===== PROJECT TEAM END ===== */}
-                      {/* ===== PROJECT OBSERVATOR START ===== */}
-                      <div>
-                        <div>Observateur</div>
-                        <div className="hide-scrollbar">
-                          <CutomInputUserSearch
-                            placeholder="Recherche"
-                            label="Assigner"
-                            userSelected={userTeam}
-                            setUserSelected={setUserTeam}
-                            role="observator"
-                          />
-                          <div className="flex gap-4 mt-2 flex-wrap">
-                            {userTeam
-                              ?.filter((team) => team.role === "observator")
-                              ?.map((team) => {
-                                const initials = getInitials(team.name);
-                                return (
-                                  <div
-                                    key={team.id}
-                                    className="relative group -ml-2 first:ml-0 hover:z-50"
-                                    onClick={() => {
-                                      handleRemoveTeamList(team.id);
-                                    }}
-                                  >
-                                    <p className=" cursor-pointer text-slate-50 border relative bg-secondaryGreen p-1 w-7 h-7 flex justify-center items-center text-xs rounded-full dark:text-white">
-                                      {initials}
-                                    </p>
-                                    <div className="absolute whitespace-nowrap text-xs hidden group-hover:block bg-white text-black p-2 border border-whiten shadow-5 rounded-md z-10 top-[-35px] left-1/2 transform -translate-x-1/2">
-                                      <p>{team?.name}</p>
-                                    </div>
-                                  </div>
-                                );
-                              })}
-                          </div>
-                        </div>
-                      </div>
-                      {/* ===== PROJECT OBSERVATOR END ===== */}
-                    </div>
-                  </div>
-                  <div className="flex justify-between gap-3">
-                    <button
-                      onClick={() => setPageCreate(3)}
-                      className="md:w-fit gap-2 w-full cursor-pointer mt-2 py-2 px-5  text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen dark:hover:bg-opacity-90"
-                    >
-                      Précédent
-                    </button>
-                    <button
-                      onClick={handleUpdateProject}
-                      className="md:w-fit gap-2 w-full flex cursor-pointer mt-2 py-2 px-5  text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen dark:hover:bg-opacity-90"
-                    >
-                      {isCreateLoading && (
-                        <span>
-                          <PuffLoader size={20} className="mr-2" />
-                        </span>
-                      )}
-                      Modifier le projet
-                    </button>
-                  </div>
-                </div>
-              </div>
+              <TeamProjectUpdate
+                pageCreate={pageCreate}
+                setPageCreate={setPageCreate}
+                userTeam={userTeam}
+                setUserTeam={setUserTeam}
+                isCreateLoading={isCreateLoading}
+                setUpdateProjectState={setUpdateProjectState}
+              />
               {/* ===== CREATE PROJECT LEVEL FOUR: TEAM END ===== */}
             </div>
             {/* ===== FORM CREATE END ===== */}
