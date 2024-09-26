@@ -534,7 +534,7 @@ const TableUser = ({
         </table>
       </div>
       {/* ===== PAGINATE BEGIN ===== */}
-      <div className="flex flex-col md:flex-row justify-end px-4 items-center">
+      <div className="flex flex-col flex-wrap md:flex-row justify-end px-4 items-center">
         <div>
           <CustomSelect
             label="Par page: "
