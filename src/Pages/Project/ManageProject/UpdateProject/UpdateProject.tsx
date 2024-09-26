@@ -273,7 +273,7 @@ const UpdateProject = () => {
         </div>
         {/* ===== LINK RETURN END ===== */}
         {/* ===== BLOC UPDATE PROJECT START ===== */}
-        <div className=" bg-white relative  overflow-y-scroll overflow-x-clip hide-scrollbar p-4 shadow-3  rounded-md dark:border-strokedark dark:bg-boxdark min-h-fit md:min-h-fit md:h-[72vh] lg:h-[75vh]">
+        <div className=" grid place-items-center bg-white relative  overflow-y-scroll overflow-x-clip hide-scrollbar p-4 shadow-3  rounded-md dark:border-strokedark dark:bg-boxdark min-h-fit md:min-h-fit md:h-[72vh] lg:h-[75vh]">
           {/* ===== LOADING START ===== */}
           <div
             className={`justify-center items-center h-full ${
@@ -284,109 +284,196 @@ const UpdateProject = () => {
           </div>
           {/* ===== LOADING END ===== */}
           <div
-            className={` flex-col items-center ${
+            className={`w-full h-full flex-col items-center ${
               allDataIsLoaded ? "flex" : "hidden"
             }`}
           >
             {/* ===== ADVANCEMENT STEP MENUE START ===== */}
             <div className="absolute my-2 ml-2 top-0 left-0 space-y-3 md:block hidden">
               <div
-                onClick={() => setPageCreate(1)}
-                className={`border p-2 border-slate-200 tranform duration-500 ease-linear cursor-pointer
-               ${pageCreate === 1 ? "bg-amber-200" : ""}
+                // onClick={() => setPageCreate(1)}
+                className={`relative border border-dotted w-10 h-10 flex justify-center items-center rounded-full p-2 border-slate-500 tranform duration-500 ease-linear cursor-pointer
+               ${pageCreate === 1 ? "bg-amber-200" : "bg-emerald-600"}
                
                `}
               >
-                Info générale
+                <span
+                  className={`absolute transition-transform duration-500 ease-in-out transform ${
+                    pageCreate !== 1 ? "scale-0" : "scale-100"
+                  }`}
+                >
+                  1
+                </span>
+                <svg
+                  className={`transition-transform duration-500 ease-in-out transform stroke-current ${
+                    pageCreate !== 1 ? "scale-100" : "scale-0"
+                  }`}
+                  width="64px"
+                  height="64px"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  stroke="#fff"
+                >
+                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                  <g
+                    id="SVGRepo_tracerCarrier"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  ></g>
+                  <g id="SVGRepo_iconCarrier">
+                    {" "}
+                    <path
+                      d="M4 12.6111L8.92308 17.5L20 6.5"
+                      stroke="#fff"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    ></path>{" "}
+                  </g>
+                </svg>
               </div>
               <div
-                onClick={() => {
-                  if (
-                    projectData?.title === "" ||
-                    projectData?.startDate === undefined ||
-                    projectData?.startDate === "" ||
-                    directionOwner?.length === 0
-                  ) {
-                    return;
-                  }
-                  setPageCreate(2);
-                }}
-                className={`border p-2 border-slate-200 tranform duration-500 ease-linear  ${
-                  pageCreate === 2 ? "bg-amber-200" : ""
-                } 
-            ${
-              projectData?.title === "" ||
-              projectData?.startDate === undefined ||
-              projectData?.startDate === "" ||
-              directionOwner?.length === 0
-                ? "cursor-default opacity-70"
-                : "cursor-pointer"
-            }
-            `}
+                // onClick={() => setPageCreate(2)}
+                className={`relative border border-dotted w-10 h-10 flex justify-center items-center rounded-full p-2 border-slate-500 tranform duration-500 ease-linear cursor-pointer
+               ${pageCreate === 2 ? "bg-amber-200" : ""}
+               
+               `}
               >
-                Budget et ressources
+                <span
+                  className={`absolute transition-transform duration-500 ease-in-out transform ${
+                    pageCreate > 2 ? "scale-0" : "scale-100"
+                  }`}
+                >
+                  2
+                </span>
+                <svg
+                  className={`transition-transform duration-500 ease-in-out transform stroke-current ${
+                    pageCreate > 2 ? "scale-100" : "scale-0"
+                  }`}
+                  width="64px"
+                  height="64px"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  stroke="#317f15"
+                >
+                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                  <g
+                    id="SVGRepo_tracerCarrier"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  ></g>
+                  <g id="SVGRepo_iconCarrier">
+                    {" "}
+                    <path
+                      d="M4 12.6111L8.92308 17.5L20 6.5"
+                      stroke="#317f15"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    ></path>{" "}
+                  </g>
+                </svg>
               </div>
               <div
-                onClick={() => {
-                  if (
-                    projectData?.title === "" ||
-                    projectData?.startDate === undefined ||
-                    projectData?.startDate === "" ||
-                    directionOwner?.length === 0
-                  ) {
-                    return;
-                  }
-                  setPageCreate(3);
-                }}
-                className={`border p-2 border-slate-200 tranform duration-500 ease-linear ${
-                  pageCreate === 3 ? "bg-amber-200" : ""
-                } 
-            ${
-              projectData?.title === "" ||
-              projectData?.startDate === undefined ||
-              projectData?.startDate === "" ||
-              directionOwner?.length === 0
-                ? "cursor-default opacity-70"
-                : "cursor-pointer"
-            }
-            `}
+                // onClick={() => setPageCreate(2)}
+                className={`relative border border-dotted w-10 h-10 flex justify-center items-center rounded-full p-2 border-slate-500 tranform duration-500 ease-linear cursor-pointer
+               ${pageCreate === 3 ? "bg-amber-200" : ""}
+               
+               `}
               >
-                Phases et livrables
+                <span
+                  className={`absolute transition-transform duration-500 ease-in-out transform ${
+                    pageCreate > 3 ? "scale-0" : "scale-100"
+                  }`}
+                >
+                  3
+                </span>
+                <svg
+                  className={`transition-transform duration-500 ease-in-out transform stroke-current ${
+                    pageCreate > 3 ? "scale-100" : "scale-0"
+                  }`}
+                  width="64px"
+                  height="64px"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  stroke="#317f15"
+                >
+                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                  <g
+                    id="SVGRepo_tracerCarrier"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  ></g>
+                  <g id="SVGRepo_iconCarrier">
+                    {" "}
+                    <path
+                      d="M4 12.6111L8.92308 17.5L20 6.5"
+                      stroke="#317f15"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    ></path>{" "}
+                  </g>
+                </svg>
               </div>
               <div
-                onClick={() => {
-                  if (
-                    projectData?.title === "" ||
-                    projectData?.startDate === undefined ||
-                    projectData?.startDate === "" ||
-                    directionOwner?.length === 0
-                  ) {
-                    return;
-                  }
-                  setPageCreate(4);
-                }}
-                className={`border p-2 border-slate-200 tranform duration-500 ease-linear ${
-                  pageCreate === 4 ? "bg-amber-200" : ""
-                }
-            ${
-              projectData?.title === "" ||
-              projectData?.startDate === undefined ||
-              projectData?.startDate === "" ||
-              directionOwner?.length === 0
-                ? "cursor-default opacity-70"
-                : "cursor-pointer"
-            } `}
+                // onClick={() => setPageCreate(2)}
+                className={`relative border border-dotted w-10 h-10 flex justify-center items-center rounded-full p-2 border-slate-500 tranform duration-500 ease-linear cursor-pointer
+               ${pageCreate === 4 ? "bg-amber-200" : ""}
+               
+               `}
               >
-                Equipe
+                <span
+                  className={`absolute transition-transform duration-500 ease-in-out transform ${
+                    userTeam.length > 0 ? "scale-0" : "scale-100"
+                  }`}
+                >
+                  4
+                </span>
+                <svg
+                  className={`transition-transform duration-500 ease-in-out transform stroke-current ${
+                    userTeam.length > 0 ? "scale-100" : "scale-0"
+                  }`}
+                  width="64px"
+                  height="64px"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  stroke="#317f15"
+                >
+                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                  <g
+                    id="SVGRepo_tracerCarrier"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  ></g>
+                  <g id="SVGRepo_iconCarrier">
+                    {" "}
+                    <path
+                      d="M4 12.6111L8.92308 17.5L20 6.5"
+                      stroke="#317f15"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    ></path>{" "}
+                  </g>
+                </svg>
               </div>
+              {/* <div className="text-sm font-semibold text-zinc-700">
+            <span className="text-red-500 font-bold">*</span>
+            <span> : Champ obligatoire</span>
+          </div> */}
             </div>
 
             {/* ===== ADVANCEMENT STEP MENUE END ===== */}
-            <span className="font-bold tracking-widest text-lg   ">
+            <div className="font-bold w-full text-center tracking-widest text-lg  ">
               Modifier le projet
-            </span>
+            </div>
             {/* ===== FORM CREATE START ===== */}
-            <div className="pt-2 md:w-1/2  ">
+            <div className="pt-2  w-full px-2 md:px-20 lg:px-30 xl:px-50">
               {/* ===== CREATE PROJECT LEVEL ONE START INFO GENERAL ===== */}
 
               <InfoGeneralUpdate
