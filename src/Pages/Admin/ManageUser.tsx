@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import DefaultLayout from "../../layout/DefaultLayout";
+import ProjectLayout from "../../layout/ProjectLayout";
 import { TableUser } from "../../components/Tables";
 import { getAllUsers } from "../../services/User";
 
@@ -25,15 +25,15 @@ const ManageUser = () => {
     fetchUser();
   };
   return (
-    <DefaultLayout>
-      <div>
+    <ProjectLayout>
+      <div className="mx-2 p-4 md:mx-10">
         <TableUser
           data={userData}
           setOnModification={setOnModification}
           onModification={onModification}
         />
       </div>
-    </DefaultLayout>
+    </ProjectLayout>
   );
 };
 

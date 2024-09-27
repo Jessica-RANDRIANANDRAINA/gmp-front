@@ -121,20 +121,20 @@ const UpdateAccessModal = ({
   };
 
   return (
-    <div className="fixed  inset-0 flex justify-center place-items-center bg-black z-999999 bg-opacity-50">
+    <div className="fixed text-sm inset-0 flex justify-center place-items-center bg-black z-999999 bg-opacity-50">
       <div
         ref={trigger}
         className={
-          "bg-white dark:bg-[#24303F] max-h-[80%] overflow-auto hide-scrollbar rounded-md w-5/6 md:w-1/3 "
+          "bg-white dark:bg-[#24303F] max-h-[80%] overflow-auto hide-scrollbar rounded-md w-11/12 md:w-1/3 "
         }
       >
         {/* =====HEADER START===== */}
         <header
           className={
-            "fixed flex rounded-t-md shadow-md z-99 bg-white dark:bg-[#24303F] w-5/6 md:w-1/3 justify-between  p-2 h-12"
+            "fixed flex rounded-t-md shadow-md z-99 bg-white dark:bg-[#24303F] w-11/12 md:w-1/3 justify-between  p-2 h-12"
           }
         >
-          <div className={"font-bold flex justify-center  w-full items-center"}>
+          <div className={"font-bold text-center text-base w-full"}>
             Modifier cet accès
           </div>
           <div
@@ -177,11 +177,11 @@ const UpdateAccessModal = ({
               }}
               error={labelError}
             />
-            <div className="mb-4 border-b-2 border-b-slate-400">
+            <div className="mb-4 pb-2 border-b-2 border-b-slate-400">
               <label className="block text-gray-700 text-sm font-bold mb-2">
                 Accès Admin
               </label>
-              <div className="pl-3">
+              <div className="pl-3 space-y-1">
                 <Checkbox
                   label="Modifier la hiérarchie"
                   active={
@@ -244,11 +244,11 @@ const UpdateAccessModal = ({
                 />
               </div>
             </div>
-            <div className="mb-4 border-b-2 border-b-slate-400">
+            <div className="mb-4 pb-2 border-b-2 border-b-slate-400">
               <label className="block text-gray-700 text-sm font-bold mb-2">
                 Accès Projet
               </label>
-              <div className="pl-3">
+              <div className="pl-3 space-y-1">
                 <Checkbox
                   active={
                     habilitationToModifData?.habilitationProjects?.[0]?.create
@@ -295,11 +295,11 @@ const UpdateAccessModal = ({
                 />
               </div>
             </div>
-            <div className="mb-4 border-b-2 border-b-slate-400">
+            <div className="mb-4 pb-2 border-b-2 border-b-slate-400">
               <label className="block text-gray-700 text-sm font-bold mb-2">
                 Accès Transverse
               </label>
-              <div className="pl-3">
+              <div className="pl-3 space-y-1">
                 <Checkbox
                   active={
                     habilitationToModifData?.habilitationTransverses?.[0]
@@ -338,11 +338,11 @@ const UpdateAccessModal = ({
                 />
               </div>
             </div>
-            <div className="mb-4 border-b-2 border-b-slate-400">
+            <div className="mb-4 pb-2 border-b-2 border-b-slate-400">
               <label className="block text-gray-700 text-sm font-bold mb-2">
                 Accès Inter-contrat
               </label>
-              <div className="pl-3">
+              <div className="pl-3 space-y-1">
                 <Checkbox
                   active={
                     habilitationToModifData?.habilitationIntercontracts?.[0]
@@ -384,12 +384,12 @@ const UpdateAccessModal = ({
 
             <button
               type="submit"
-              className="w-full cursor-pointer mt-2 py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen dark:hover:bg-opacity-90"
+              className="w-full cursor-pointer py-2 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen dark:hover:bg-opacity-90"
             >
               {isLoading ? (
                 <BeatLoader size={8} className="mr-2" color={"#fff"} />
               ) : null}
-              Modifier
+              Enregistrer les modifications
             </button>
           </form>
         </div>

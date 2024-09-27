@@ -39,7 +39,7 @@ const App = () => {
           }
         />
         <Route
-          path="/admin/user"
+          path="gmp/admin/user"
           element={
             <>
               <PageTitle title="Admin" />
@@ -48,7 +48,7 @@ const App = () => {
           }
         />
         <Route
-          path="/admin/access"
+          path="gmp/admin/access"
           element={
             <>
               <PageTitle title="Admin" />
@@ -57,7 +57,7 @@ const App = () => {
           }
         />
         <Route
-          path="/admin/hierarchy"
+          path="gmp/admin/hierarchy"
           element={
             <>
               <PageTitle title="Admin" />

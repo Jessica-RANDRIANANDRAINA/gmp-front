@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import DefaultLayout from "../../layout/DefaultLayout";
+import ProjectLayout from "../../layout/ProjectLayout";
 import {
   ModifyHierarchy,
   BodyHierarchy,
@@ -7,8 +7,6 @@ import {
 } from "../../components/Hierarchy";
 import { getAllUsers } from "../../services/User";
 import { UserInterface } from "../../types/user";
-
-
 
 const ManageHierarchie = () => {
   const [departChoosen] = useState("");
@@ -29,20 +27,22 @@ const ManageHierarchie = () => {
   }, [departChoosen]);
 
   return (
-    <DefaultLayout>
-      {/* <HeaderHierarchy setDepartChoosen={setDepartChoosen} /> */}
-      <BodyHierarchy
-        userData={userData}
-        setIsModifyHierarchyOpen={setIsModifyHierarchyOpen}
-        setUserToModify={setUserToModify}
-      />
-      {isModifyHierarchyOpen && (
-        <ModifyHierarchy
+    <ProjectLayout>
+      <div className="mx-2 p-4 md:mx-10">
+        {/* <HeaderHierarchy setDepartChoosen={setDepartChoosen} /> */}
+        <BodyHierarchy
+          userData={userData}
           setIsModifyHierarchyOpen={setIsModifyHierarchyOpen}
-          userToModify={userToModify}
+          setUserToModify={setUserToModify}
         />
-      )}
-    </DefaultLayout>
+        {isModifyHierarchyOpen && (
+          <ModifyHierarchy
+            setIsModifyHierarchyOpen={setIsModifyHierarchyOpen}
+            userToModify={userToModify}
+          />
+        )}
+      </div>
+    </ProjectLayout>
   );
 };
 

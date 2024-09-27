@@ -41,6 +41,11 @@ export const useAuthService = () => {
             );
           }
         );
+        // const habAdmin = response.data.user.habilitations.map((hab)=>{
+        //   hab.map((admin)=>{
+        //     admin.
+        //   })
+        // })
 
         if (adminPrivilege && userCredentials.type === "admin") {
           localStorage.setItem("_au_ad", response.data.token);
