@@ -207,7 +207,8 @@ const AddProject = () => {
             <div
               // onClick={() => setPageCreate(2)}
               className={`relative border border-dotted w-10 h-10 flex justify-center items-center rounded-full p-2 border-slate-500 tranform duration-500 ease-linear cursor-pointer
-               ${pageCreate === 2 ? "bg-amber-200" : ""}
+                ${pageCreate < 2 ? "bg-whiten" : ""}
+                ${pageCreate === 2 ? "bg-amber-200" : "bg-emerald-600"}
                
                `}
             >
@@ -239,7 +240,7 @@ const AddProject = () => {
                   {" "}
                   <path
                     d="M4 12.6111L8.92308 17.5L20 6.5"
-                    stroke="#317f15"
+                    stroke="#fff"
                     stroke-width="2"
                     stroke-linecap="round"
                     stroke-linejoin="round"
@@ -250,7 +251,8 @@ const AddProject = () => {
             <div
               // onClick={() => setPageCreate(2)}
               className={`relative border border-dotted w-10 h-10 flex justify-center items-center rounded-full p-2 border-slate-500 tranform duration-500 ease-linear cursor-pointer
-               ${pageCreate === 3 ? "bg-amber-200" : ""}
+                ${pageCreate < 3 ? "bg-whiten" : ""}
+                ${pageCreate === 3 ? "bg-amber-200" : "bg-emerald-600"}
                
                `}
             >
@@ -282,7 +284,7 @@ const AddProject = () => {
                   {" "}
                   <path
                     d="M4 12.6111L8.92308 17.5L20 6.5"
-                    stroke="#317f15"
+                    stroke="#fff"
                     stroke-width="2"
                     stroke-linecap="round"
                     stroke-linejoin="round"

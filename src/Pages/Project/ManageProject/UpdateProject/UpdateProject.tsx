@@ -336,7 +336,7 @@ const UpdateProject = () => {
               <div
                 // onClick={() => setPageCreate(2)}
                 className={`relative border border-dotted w-10 h-10 flex justify-center items-center rounded-full p-2 border-slate-500 tranform duration-500 ease-linear cursor-pointer
-                  ${pageCreate < 2 ? "bg-whiten":""}
+                  ${pageCreate < 2 ? "bg-whiten" : ""}
                   ${pageCreate === 2 ? "bg-amber-200" : "bg-emerald-600"}
                
                `}
@@ -380,7 +380,7 @@ const UpdateProject = () => {
               <div
                 // onClick={() => setPageCreate(2)}
                 className={`relative  border border-dotted w-10 h-10 flex justify-center items-center rounded-full p-2 border-slate-500 tranform duration-500 ease-linear cursor-pointer
-                  ${pageCreate < 3 ? "bg-whiten":""}
+                  ${pageCreate < 3 ? "bg-whiten" : ""}
                   ${pageCreate === 3 ? "bg-amber-200" : "bg-emerald-600"}
                
                `}
