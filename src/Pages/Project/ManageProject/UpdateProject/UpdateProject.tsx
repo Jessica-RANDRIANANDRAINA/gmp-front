@@ -512,6 +512,7 @@ const UpdateProject = () => {
                 setPageCreate={setPageCreate}
                 phaseAndLivrableList={phaseAndLivrableList}
                 setPhaseAndLivrableList={setPhaseAndLivrableList}
+                projectData={projectData}
               />
 
               {/* ===== CREATE PROJECT LEVEL THREE: PHASES AND LIVRABLE END ===== */}

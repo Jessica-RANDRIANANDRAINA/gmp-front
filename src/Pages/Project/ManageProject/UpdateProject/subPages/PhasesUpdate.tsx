@@ -1,5 +1,5 @@
 import { CustomInput } from "../../../../../components/UIElements";
-import { IPhase } from "../../../../../types/Project";
+import { IPhase, IProjectData } from "../../../../../types/Project";
 import { v4 as uuid4 } from "uuid";
 import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
@@ -11,11 +11,13 @@ const PhasesUpdate = ({
   setPageCreate,
   phaseAndLivrableList,
   setPhaseAndLivrableList,
+  projectData,
 }: {
   pageCreate: number;
   setPageCreate: React.Dispatch<React.SetStateAction<number>>;
   phaseAndLivrableList: Array<IPhase>;
   setPhaseAndLivrableList: React.Dispatch<React.SetStateAction<Array<IPhase>>>;
+  projectData: IProjectData;
 }) => {
   // ADD DEFAULT VALUE IN PHASE LIST
   const handleAddDefaultPhaseList = () => {
@@ -58,11 +60,11 @@ const PhasesUpdate = ({
   const handlePhaseDataChange = (
     label: string,
     value: string,
-    index: number
+    index: string
   ) => {
     setPhaseAndLivrableList((prevList) =>
-      prevList.map((phase, idx) =>
-        idx === index
+      prevList.map((phase) =>
+        phase?.id === index
           ? {
               ...phase,
               [label === "phase"
@@ -147,7 +149,12 @@ const PhasesUpdate = ({
                       placeholder="Ex: conception"
                       value={phase?.phase1}
                       onChange={(e) => {
-                        handlePhaseDataChange("phase", e.target.value, index);
+                        if (phase?.id)
+                          handlePhaseDataChange(
+                            "phase",
+                            e.target.value,
+                            phase?.id
+                          );
                       }}
                       required
                     />
@@ -158,11 +165,12 @@ const PhasesUpdate = ({
                       placeholder="Ex: dossier de conception"
                       value={phase?.expectedDeliverable}
                       onChange={(e) => {
-                        handlePhaseDataChange(
-                          "livrable",
-                          e.target.value,
-                          index
-                        );
+                        if (phase?.id)
+                          handlePhaseDataChange(
+                            "livrable",
+                            e.target.value,
+                            phase?.id
+                          );
                       }}
                       required
                     />
@@ -170,24 +178,36 @@ const PhasesUpdate = ({
                       label="Date début"
                       type="date"
                       rounded="medium"
+                      min={projectData?.startDate?.split("T")[0]}
                       value={
                         phase?.startDate ? phase?.startDate?.split("T")[0] : 0
                       }
                       onChange={(e) => {
-                        handlePhaseDataChange(
-                          "startDate",
-                          e.target.value,
-                          index
-                        );
+                        if (phase?.id)
+                          handlePhaseDataChange(
+                            "startDate",
+                            e.target.value,
+                            phase?.id
+                          );
                       }}
                     />
                     <CustomInput
                       label="Date fin"
                       type="date"
                       rounded="medium"
+                      min={
+                        phase?.startDate
+                          ? phase?.startDate.split("T")[0]
+                          : undefined
+                      }
                       value={phase?.endDate ? phase?.endDate?.split("T")[0] : 0}
                       onChange={(e) => {
-                        handlePhaseDataChange("endDate", e.target.value, index);
+                        if (phase?.id)
+                          handlePhaseDataChange(
+                            "endDate",
+                            e.target.value,
+                            phase?.id
+                          );
                       }}
                     />
                   </div>

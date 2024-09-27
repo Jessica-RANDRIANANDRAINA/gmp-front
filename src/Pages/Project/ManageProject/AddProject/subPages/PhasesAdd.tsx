@@ -262,6 +262,7 @@ const PhasesAdd = ({
                     type="date"
                     rounded="medium"
                     value={phase?.endDate}
+                    min={phaseAndLivrableList?.[index]?.startDate}
                     onChange={(e) => {
                       handlePhaseDataChange("endDate", e.target.value, index);
                     }}
