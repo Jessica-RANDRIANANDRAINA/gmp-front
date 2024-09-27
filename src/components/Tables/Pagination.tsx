@@ -15,6 +15,10 @@ function Pagination({
   const generatePagination = () => {
     const paginationLists = [];
     // const middlePage = Math.ceil(pageNumbers / 2);
+    if (pageNumbers === 0) {
+      paginationLists.push(<span></span>);
+      return paginationLists;
+    }
 
     if (pageNumbers === 1) {
       paginationLists.push(
