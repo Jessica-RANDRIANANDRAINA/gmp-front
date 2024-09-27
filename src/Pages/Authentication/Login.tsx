@@ -3,7 +3,7 @@ import { useAuthService } from "../../services/login";
 import { useNavigate } from "react-router-dom";
 import { PuffLoader } from "react-spinners";
 
-import fond from "../../../src/assets/DJI_0028.jpg.webp";
+import fond from "../../../src/assets/DJI_0028.jpg";
 
 const Login = () => {
   const { loginUser } = useAuthService();

@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import Logo from "../../assets/ravinala.webp";
+import Logo from "../../assets/ravinala.jpg";
 
 interface SidebarProps {
   sidebarOpen: boolean;

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthService } from "../../services/login";
 import { PuffLoader } from "react-spinners";
-import fond from "../../../src/assets/DJI_0028.jpg.webp";
+import fond from "../../../src/assets/DJI_0028.jpg";
 
 const LoginProject = () => {
   const { loginUser } = useAuthService();
