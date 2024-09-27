@@ -159,7 +159,7 @@ const TeamProjectUpdate = ({
         <div className="flex justify-between gap-3">
           <button
             onClick={() => setPageCreate(3)}
-            className="md:w-fit gap-2 w-full cursor-pointer mt-2 py-2 px-5  text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen dark:hover:bg-opacity-90"
+            className="md:w-fit gap-2 w-full cursor-pointer mt-2 py-2 px-3  text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen dark:hover:bg-opacity-90"
           >
             Précédent
           </button>
@@ -171,14 +171,14 @@ const TeamProjectUpdate = ({
                 notyf.error("Veuiller choisir au moins une personne");
               }
             }}
-            className="md:w-fit gap-2 w-full flex cursor-pointer mt-2 py-2 px-5  text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen dark:hover:bg-opacity-90"
+            className="md:w-fit gap-2 w-full flex cursor-pointer mt-2 py-2 px-3 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen dark:hover:bg-opacity-90"
           >
             {isCreateLoading && (
               <span>
                 <PuffLoader size={20} className="mr-2" />
               </span>
             )}
-            Modifier le projet
+            Enregistrer les modifications
           </button>
         </div>
       </div>
