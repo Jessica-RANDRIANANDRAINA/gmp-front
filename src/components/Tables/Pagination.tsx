@@ -16,7 +16,7 @@ function Pagination({
     const paginationLists = [];
     // const middlePage = Math.ceil(pageNumbers / 2);
     if (pageNumbers === 0) {
-      paginationLists.push(<span></span>);
+      paginationLists.push(<></>);
       return paginationLists;
     }
 
@@ -57,7 +57,7 @@ function Pagination({
       paginationLists.push(
         <span
           className="h-8 w-8 flex place-items-center justify-center"
-          key={paginationLists.length + 1}
+          key={"first-ellipsis"}
         >
           ...
         </span>
@@ -116,7 +116,7 @@ function Pagination({
       paginationLists.push(
         <span
           className="h-8 w-8 flex place-items-center justify-center"
-          key={paginationLists.length + 1}
+          key={"last-ellipsis"}
         >
           ...
         </span>
