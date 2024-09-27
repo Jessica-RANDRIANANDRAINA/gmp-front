@@ -13,7 +13,8 @@ const ManageProjects = () => {
 
   useEffect(() => {
     if (idProjectForDetails !== "") {
-      navigate(`/gmp/project/task/${idProjectForDetails}`);
+      // navigate(`/gmp/project/task/${idProjectForDetails}`);
+      console.log("details: ", idProjectForDetails);
     }
   }, [idProjectForDetails]);
 
