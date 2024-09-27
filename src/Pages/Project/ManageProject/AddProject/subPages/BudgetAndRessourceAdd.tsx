@@ -174,7 +174,7 @@ const BudgetAndRessourceAdd = ({
           <span className="font-semibold tracking-wide underline">
             RESSOURCES
           </span>
-          <div className=" max-h-80 min-h-80 overflow-y-auto">
+          <div className=" md:max-h-80 md:min-h-80 overflow-y-auto">
             {ressourceList?.map((ressouce, index) => (
               <div key={ressouce.id}>
                 <div className={"flex justify-between"}>
@@ -242,11 +242,11 @@ const BudgetAndRessourceAdd = ({
           </div>
           {/* ===== RESSOURCES END ===== */}
         </div>
-        <div className="flex justify-between gap-3">
+        <div className="flex justify-end gap-3">
           <button
             onClick={() => setPageCreate(1)}
             type="button"
-            className="md:w-fit gap-2 w-full cursor-pointer mt-2 py-2 px-5  text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen dark:hover:bg-opacity-90"
+            className="md:w-fit gap-2 w-full cursor-pointer mt-2 py-2 px-5  text-center font-semibold text-zinc-700 hover:bg-zinc-50 lg:px-8 xl:px-5 border border-zinc-300 rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen dark:hover:bg-opacity-90"
           >
             Précédent
           </button>

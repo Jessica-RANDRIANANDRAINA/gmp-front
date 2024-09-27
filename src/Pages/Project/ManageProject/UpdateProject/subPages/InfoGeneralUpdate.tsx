@@ -39,7 +39,7 @@ const InfoGeneralUpdate = ({
 
   return (
     <form
-      className={`space-y-2 transition-all duration-1000 ease-in-out ${pageCreate === 1 ? "opacity-100" : "opacity-0 h-0 overflow-hidden"
+      className={`space-y-2 transition-all duration-300 ease-in-out ${pageCreate === 1 ? "opacity-100" : "opacity-0 h-0 overflow-hidden"
         }`}
       onSubmit={(e) => {
         e.preventDefault();

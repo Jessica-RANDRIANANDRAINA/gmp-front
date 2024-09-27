@@ -257,7 +257,7 @@ const UpdateProject = () => {
 
   return (
     <ProjectLayout>
-      <div className="text-sm mx-2 p-4 md:mx-10 ">
+      <div className="text-sm mx-2 p-4 md:mx-10">
         {/* ===== LINK RETURN START ===== */}
         <div className={`w-full  mb-2 flex  items-center `}>
           <button
@@ -273,7 +273,7 @@ const UpdateProject = () => {
         </div>
         {/* ===== LINK RETURN END ===== */}
         {/* ===== BLOC UPDATE PROJECT START ===== */}
-        <div className=" grid place-items-center bg-white relative  overflow-y-scroll overflow-x-clip hide-scrollbar p-4 shadow-3  rounded-md dark:border-strokedark dark:bg-boxdark min-h-fit md:min-h-fit md:h-[72vh] lg:h-[75vh]">
+        <div className=" grid place-items-center bg-white relative  overflow-y-auto overflow-x-clip  p-4 shadow-3  rounded-md dark:border-strokedark dark:bg-boxdark  md:h-[72vh] lg:h-[75vh]">
           {/* ===== LOADING START ===== */}
           <div
             className={`justify-center items-center h-full ${

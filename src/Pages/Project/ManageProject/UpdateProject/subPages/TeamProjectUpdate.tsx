@@ -35,7 +35,7 @@ const TeamProjectUpdate = ({
   };
   return (
     <div
-      className={`space-y-2 transition-all duration-1000 ease-in-out ${
+      className={`space-y-2 transition-all duration-300 ease-in-out ${
         pageCreate === 4 ? "opacity-100" : "opacity-0 h-0 overflow-hidden"
       }`}
     >
@@ -156,10 +156,10 @@ const TeamProjectUpdate = ({
             {/* ===== PROJECT OBSERVATOR END ===== */}
           </div>
         </div>
-        <div className="flex justify-between gap-3">
+        <div className="flex justify-end gap-3">
           <button
             onClick={() => setPageCreate(3)}
-            className="md:w-fit gap-2 w-full cursor-pointer mt-2 py-2 px-3  text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen dark:hover:bg-opacity-90"
+            className="md:w-fit gap-2 w-full cursor-pointer mt-2 py-2 px-5  text-center font-semibold text-zinc-700 hover:bg-zinc-50 lg:px-8 xl:px-5 border border-zinc-300 rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen dark:hover:bg-opacity-90"
           >
             Précédent
           </button>
