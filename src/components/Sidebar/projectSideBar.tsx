@@ -6,9 +6,13 @@ import Logo from "../../assets/ravinala.jpg";
 interface SidebarProps {
   sidebarOpen: boolean;
   setSidebarOpen: (arg: boolean) => void;
+ 
 }
 
-const ProjectSideBar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
+const ProjectSideBar = ({
+  sidebarOpen,
+  setSidebarOpen,
+}: SidebarProps) => {
   const location = useLocation();
   const { pathname } = location;
 
@@ -16,6 +20,7 @@ const ProjectSideBar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const [sidebarExpanded, setSidebarExpanded] = useState(
     storedSidebarExpanded === null ? false : storedSidebarExpanded === "true"
   );
+
 
   const trigger = useRef<any>(null);
   const sidebar = useRef<any>(null);
