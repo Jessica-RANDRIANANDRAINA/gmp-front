@@ -23,7 +23,7 @@ const Header = (props: {
 
   return (
     <header
-      className="sticky top-0 z-999 flex w-full py-2 pr-6 bg-white drop-shadow-1 dark:bg-boxdark bg-cover bg-no-repeat dark:drop-shadow-none"
+      className="sticky top-0 z-999 flex w-full py-2 pr-6 bg-white drop-shadow-1 dark:bg-tertiaryGreen bg-cover bg-no-repeat dark:drop-shadow-none"
       style={{ backgroundImage: `url(${pattern})` }}
     >
       <div className="flex flex-grow items-center justify-between px-4  md:px-6 2xl:px-11">

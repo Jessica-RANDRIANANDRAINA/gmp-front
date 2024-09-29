@@ -159,7 +159,7 @@ const TableAccess = ({
             />
           </svg>
         </button>
-        <div className="text-xl text-title font-medium">
+        <div className="text-xl text-title font-medium dark:text-whiten">
           Listes de tous les accès
         </div>
         <button
@@ -212,7 +212,7 @@ const TableAccess = ({
       {/* =====TABLE START===== */}
       <div className="max-w-full overflow-x-auto">
         <table className="w-full text-sm table-auto">
-          <thead className="pt-5 rounded-t-xl bg-primaryGreen">
+          <thead className=" rounded-t-xl bg-primaryGreen dark:bg-darkgreen">
             <tr className="border border-stone-300 border-opacity-[0.1] border-r-0 border-l-0 text-white text-left">
               <th className=" pl-2 ">
                 <button

@@ -130,7 +130,7 @@ const MultiSelect = ({
         {label}
         {required && <span className="text-red-500 ml-1">*</span>}
       </label>
-      <div>
+      <div >
         <select className="hidden" id={id}>
           {value?.map((opt, key) => (
             <option value={opt} key={key}>
@@ -145,13 +145,13 @@ const MultiSelect = ({
             <div className="relative flex flex-col items-center  ">
               <div ref={trigger} onClick={open} className="w-full ">
                 <div
-                  className={`mb-2 flex ${round[rounded]} border overflow-x-auto  border-stroke py-2 pl-3 pr-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input`}
+                  className={`mb-2 flex ${round[rounded]} border overflow-x-auto  border-stroke md:py-1 pl-3 pr-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input`}
                 >
                   <div className="flex flex-auto  gap-3 ">
                     {selected.map((index) => (
                       <div
                         key={index}
-                        className=" flex items-center justify-center rounded border-[.5px] border-stroke bg-gray px-2.5 py-1.5 text-sm font-medium dark:border-strokedark dark:bg-white/30"
+                        className=" flex items-center  justify-center rounded border-[.5px] border-stroke bg-gray px-2.5 py-1.5 text-sm font-medium dark:border-strokedark dark:bg-white/30"
                       >
                         <div className="max-w-full text-xs flex-initial  ">
                           {options[index].text}

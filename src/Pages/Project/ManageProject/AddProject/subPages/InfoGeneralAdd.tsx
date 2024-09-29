@@ -88,7 +88,7 @@ const InfoGeneralAdd = ({
           required={true}
         />
       </div>
-      <div className="grid md:grid-cols-2 gap-4">
+      <div className="grid md:grid-cols-2 gap-4 ">
         <CustomInput
           label="Date début prévisionnelle"
           type="date"
@@ -102,7 +102,7 @@ const InfoGeneralAdd = ({
           }}
           required
         />
-        <div className="grid grid-rows-2 gap-2">
+        <div className="space-y-2">
           <CustomInput
             label="Date fin prévisionnelle"
             type="date"
@@ -171,7 +171,7 @@ const InfoGeneralAdd = ({
         <button
           // onClick={() => setPageCreate(2)}
           type="submit"
-          className={`md:w-fit gap-2 w-full  mt-2 py-2 px-5  text-center font-medium text-white  lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen  `}
+          className={`md:w-fit gap-2 w-full  mt-2 py-2 px-5  text-center font-medium text-white dark:font-semibold  lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-darkgreen dark:bg-darkgreen  `}
         >
           Suivant
         </button>

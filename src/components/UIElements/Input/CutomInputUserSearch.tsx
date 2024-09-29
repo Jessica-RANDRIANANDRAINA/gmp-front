@@ -58,7 +58,7 @@ const CutomInputUserSearch = ({
         <input
           ref={inputRef}
           type="text"
-          className={`w-full border  border-stroke bg-transparent py-3 pl-6 pr-10 text-black outline-none focus:border-primaryGreen focus-visible:shadow-none dark:border-neutral-500 dark:focus:border-primaryGreen ${className} ${round[rounded]}`}
+          className={`w-full border  border-stroke bg-transparent py-3 pl-6 pr-10 text-black dark:text-gray outline-none focus:border-primaryGreen focus-visible:shadow-none dark:border-neutral-500 dark:focus:border-primaryGreen ${className} ${round[rounded]}`}
           value={valueChange}
           placeholder={placeholder}
           onChange={handleuserMatch}

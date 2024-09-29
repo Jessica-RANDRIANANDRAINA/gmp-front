@@ -180,11 +180,11 @@ const PhasesAdd = ({
           <span className="font-semibold tracking-wide underline">
             PHASES ET LIVRABLES
           </span>
-          <div className="overflow-y-auto md:max-h-125 md:min-h-125">
+          <div className="overflow-y-auto xxl:max-h-125 max-h-100 ">
             <button
               type="button"
               onClick={handleAddDefaultPhaseList}
-              className={`py-2 w-full mt-2 text-center border border-dashed border-stroke rounded-md hover:bg-stroke`}
+              className={`py-2 w-full mt-2 text-center border border-dashed border-stroke rounded-md hover:bg-stroke dark:hover:bg-boxdark2`}
             >
               Utiliser les valeurs par défaut
             </button>
@@ -273,7 +273,7 @@ const PhasesAdd = ({
             <button
               type="button"
               onClick={handleAddPhaseList}
-              className={`py-2 w-full mt-2 text-center border border-dashed border-stroke rounded-md hover:bg-stroke`}
+              className={`py-2 w-full mt-2 text-center border border-dashed border-stroke rounded-md hover:bg-stroke dark:hover:bg-boxdark2`}
             >
               Ajouter une phase
             </button>
@@ -283,14 +283,14 @@ const PhasesAdd = ({
           <button
             type="button"
             onClick={() => setPageCreate(2)}
-            className="md:w-fit gap-2 w-full cursor-pointer mt-2 py-2 px-5  text-center font-semibold text-zinc-700 hover:bg-zinc-50 lg:px-8 xl:px-5 border border-zinc-300 rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen dark:hover:bg-opacity-90"
+            className="md:w-fit gap-2 w-full cursor-pointer mt-2 py-2 px-5  text-center font-semibold text-zinc-700 dark:text-whiten hover:bg-zinc-50 lg:px-8 xl:px-5 border border-zinc-300 rounded-lg  dark:bg-transparent dark:hover:bg-boxdark2"
           >
             Précédent
           </button>
           <button
             type="submit"
             // onClick={() => setPageCreate(4)}
-            className="md:w-fit gap-2 w-full cursor-pointer mt-2 py-2 px-5  text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen dark:hover:bg-opacity-90"
+            className="md:w-fit gap-2 w-full cursor-pointer mt-2 py-2 px-5  text-center font-semibold text-white hover:bg-opacity-90 lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-darkgreen dark:bg-darkgreen dark:hover:bg-opacity-90"
           >
             Suivant
           </button>

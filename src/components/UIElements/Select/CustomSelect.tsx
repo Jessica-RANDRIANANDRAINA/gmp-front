@@ -69,7 +69,7 @@ const CustomSelect = ({
         ref={trigger}
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className={`w-full text-sm py-2.5 px-6 border flex items-center justify-between border-stroke rounded-lg bg-transparent text-left ${
+        className={`w-full text-sm py-2.5 px-6 md:h-10 border flex items-center justify-between border-stroke rounded-lg bg-transparent text-left ${
           value ? "" : "text-bodydark2"
         }`}
       >
@@ -101,7 +101,7 @@ const CustomSelect = ({
       </button>
       <div
         ref={dropdown}
-        className={`absolute z-999999 min-w-fit w-full bg-white border border-stroke rounded-lg mt-1 transition-transform duration-200 ease-in-out transform ${
+        className={`absolute z-999999 min-w-fit w-full bg-white dark:bg-black border border-stroke rounded-lg mt-1 transition-transform duration-200 ease-in-out transform ${
           isOpen
             ? "scale-y-100 scale-x-100 opacity-100 "
             : " scale-y-0 scale-x-0 opacity-0 "
@@ -112,7 +112,7 @@ const CustomSelect = ({
           <div
             key={index}
             onClick={() => handleSelect(option)}
-            className="py-2 px-4 cursor-pointer text-sm  dark:text-bodydark hover:bg-gray-3 rounded-md"
+            className="py-2 px-4 cursor-pointer text-sm  dark:text-bodydark hover:bg-gray-3 dark:hover:bg-boxdark2 rounded-md"
             style={{
               height: "40px",
               whiteSpace: "nowrap",

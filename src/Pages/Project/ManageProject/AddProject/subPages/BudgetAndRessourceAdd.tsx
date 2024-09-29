@@ -75,7 +75,7 @@ const BudgetAndRessourceAdd = ({
         }
       }}
     >
-      <div className="space-y-4">
+      <div className="space-y-4 ">
         <div>
           <span className="font-semibold tracking-wide underline">
             BUDGET
@@ -85,7 +85,7 @@ const BudgetAndRessourceAdd = ({
               setHaveBudget(true);
             }}
             type="button"
-            className={`py-2 w-full mt-2 text-center border border-dashed border-stroke rounded-md hover:bg-stroke ${haveBudget ? "hidden" : ""
+            className={`py-2 w-full mt-2 text-center border border-dashed border-stroke rounded-md hover:bg-stroke dark:hover:bg-boxdark2 ${haveBudget ? "hidden" : ""
               }`}
           >
             Est-ce que ce projet a un budget ?
@@ -169,12 +169,12 @@ const BudgetAndRessourceAdd = ({
             </>
           )}
         </div>
-        <div>
+        <div >
           {/* ===== RESSOURCES START ===== */}
           <span className="font-semibold tracking-wide underline">
             RESSOURCES
           </span>
-          <div className=" md:max-h-80 md:min-h-80 overflow-y-auto">
+          <div className=" md:max-h-60  overflow-y-auto">
             {ressourceList?.map((ressouce, index) => (
               <div key={ressouce.id}>
                 <div className={"flex justify-between"}>
@@ -235,7 +235,7 @@ const BudgetAndRessourceAdd = ({
             <button
               type="button"
               onClick={handleAddRessourceToList}
-              className={`py-2 w-full mt-2 text-center border border-dashed border-stroke rounded-md hover:bg-stroke`}
+              className={`py-2 w-full mt-2 text-center border border-dashed border-stroke rounded-md hover:bg-stroke dark:hover:bg-boxdark2 `}
             >
               Ajouter une ressource
             </button>
@@ -246,14 +246,14 @@ const BudgetAndRessourceAdd = ({
           <button
             onClick={() => setPageCreate(1)}
             type="button"
-            className="md:w-fit gap-2 w-full cursor-pointer mt-2 py-2 px-5  text-center font-semibold text-zinc-700 hover:bg-zinc-50 lg:px-8 xl:px-5 border border-zinc-300 rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen dark:hover:bg-opacity-90"
+            className="md:w-fit gap-2 w-full cursor-pointer mt-2 py-2 px-5  text-center font-semibold text-zinc-700 dark:text-whiten hover:bg-zinc-50 lg:px-8 xl:px-5 border border-zinc-300 rounded-lg  dark:bg-transparent dark:hover:bg-boxdark2 "
           >
             Précédent
           </button>
           <button
             // onClick={() => setPageCreate(3)}
             type="submit"
-            className="md:w-fit gap-2 w-full cursor-pointer mt-2 py-2 px-5  text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen dark:hover:bg-opacity-90"
+            className="md:w-fit gap-2 w-full cursor-pointer mt-2 py-2 px-5  text-center font-semibold text-white hover:bg-opacity-90 lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-darkgreen dark:bg-darkgreen dark:hover:bg-opacity-90"
           >
             Suivant
           </button>
