@@ -182,7 +182,7 @@ const TableProjet = ({
       {/* =====PAGINATE AND TITLE END===== */}
       {/* ===== BULK START ===== */}
       <div
-        className={` mt-[-60px] border-primaryGreen border  bg-white z-40 relative px-2 flex items-center justify-between transition-transform duration-200 ease-in-out transform ${
+        className={` mt-[-60px] border-primaryGreen border dark:border-white  bg-white dark:bg-boxdark z-40 relative px-2 flex items-center justify-between transition-transform duration-200 ease-in-out transform ${
           projectSelected.length > 0
             ? "scale-y-100 opacity-100"
             : "scale-y-0 opacity-0"
@@ -404,7 +404,7 @@ const TableProjet = ({
                 return (
                   <tr
                     key={project?.id}
-                    className="hover:bg-whiten dark:hover:bg-whitenGreen"
+                    className="hover:bg-whiten dark:hover:bg-boxdark2"
                   >
                     <td className="pl-2">
                       <button
@@ -433,7 +433,7 @@ const TableProjet = ({
                         >
                           <path
                             d="M4 12.6111L8.92308 17.5L20 6.5"
-                            stroke="#000"
+                            className="stroke-black-2 dark:stroke-whiten"
                             strokeWidth="2"
                             strokeLinecap="round"
                             strokeLinejoin="round"
@@ -456,11 +456,11 @@ const TableProjet = ({
                         className={` dark:text-white font-semibold rounded-md  text-center py-1 px-2 text-xs  w-fit
                           ${
                             project?.priority === "Moyenne"
-                              ? "bg-yellow-200  text-amber-600"
+                              ? "bg-orange3  text-orange dark:text-amber-100 dark:bg-orange2"
                               : project?.priority === "Faible"
-                              ? "bg-cyan-100 text-cyan-700"
+                              ? "bg-cyan-100 border border-cyan-100 text-cyan-700 dark:text-cyan-700 "
                               : project?.priority === "Elevée"
-                              ? "bg-red-200 text-red-600"
+                              ? "bg-red-200 text-red-600 dark:text-red-600"
                               : ""
                           }
                           `}

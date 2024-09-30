@@ -14,7 +14,7 @@ const ListUsers = ({ data }: { data: IUserProject[] }) => {
                   key={user?.userid}
                   className="relative group -ml-2 first:ml-0 hover:z-99 cursor-pointer "
                 >
-                  <p className="text-slate-50 border relative bg-secondaryGreen p-1 w-7 h-7 flex justify-center items-center text-xs rounded-full dark:text-white">
+                  <p className="text-slate-50 border relative bg-secondaryGreen p-1 w-7 h-7 flex justify-center items-center text-xs rounded-full dark:text-white dark:border-transparent">
                     {initials}
                   </p>
                   <div className="absolute whitespace-nowrap text-xs hidden group-hover:block bg-white text-black p-2 border border-whiten shadow-5 rounded-md z-999 top-[-35px] left-1/2 transform -translate-x-1/2">
@@ -34,7 +34,7 @@ const ListUsers = ({ data }: { data: IUserProject[] }) => {
                     key={user?.userid}
                     className="relative group -ml-2 first:ml-0 hover:z-50 cursor-pointer"
                   >
-                    <p className="text-slate-50 border relative bg-secondaryGreen p-1 w-7 h-7 flex justify-center items-center text-xs rounded-full dark:text-white">
+                    <p className="text-slate-50 border relative bg-secondaryGreen p-1 w-7 h-7 flex justify-center items-center text-xs rounded-full dark:text-white dark:border-boxdark2">
                       {initials}
                     </p>
                     <div className="absolute whitespace-nowrap text-xs hidden group-hover:block bg-white text-black p-2 border border-whiten shadow-5 rounded-md z-999 top-[-35px] left-1/2 transform -translate-x-1/2">

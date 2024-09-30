@@ -27,6 +27,7 @@ export default {
         black: "#111827",
         orange: "#FA7828",
         orange2: "#f7b318",
+        orange3: "#ffd2004a",
         "black-2": "#010101",
         darkbody:"#2D452F",
         bodydark: "#AEB7C0",
