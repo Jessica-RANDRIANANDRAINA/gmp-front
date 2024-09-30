@@ -163,7 +163,7 @@ const AddProject = () => {
           <div className="absolute my-2 ml-2 top-0 left-0 space-y-3 md:block hidden">
             <div
               // onClick={() => setPageCreate(1)}
-              className={`relative border border-dotted w-10 h-10 flex justify-center items-center rounded-full p-2 border-slate-500 tranform duration-500 ease-linear cursor-pointer
+              className={`relative border border-dotted w-10 h-10 flex justify-center items-center rounded-full p-2 border-slate-500 tranform duration-500 ease-linear 
                ${pageCreate === 1 ? "bg-amber-200 dark:bg-orange2 dark:text-black-2" : "bg-emerald-600"}
                
                `}

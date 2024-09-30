@@ -73,7 +73,7 @@ const BudgetAndRessourcesUpdate = ({
               setHaveBudget(true);
             }}
             type="button"
-            className={`py-2 w-full mt-2 text-center border border-dashed border-stroke rounded-md hover:bg-stroke ${
+            className={`py-2 w-full mt-2 text-center border border-dashed border-stroke rounded-md hover:bg-stroke dark:hover:bg-boxdark2 ${
               haveBudget ? "hidden" : ""
             }`}
           >
@@ -164,7 +164,9 @@ const BudgetAndRessourcesUpdate = ({
           <span className="font-semibold tracking-wide underline">
             RESSOURCES
           </span>
-          <div className="  md:max-h-50 md:min-h-50 lg:max-h-80 lg:min-h-80   overflow-y-scroll">
+          <div className={`   overflow-y-auto ${
+              haveBudget ? "xl:max-h-75 md:max-h-60" : "xl:max-h-115 md:max-h-72"
+            }`}>
             {ressourceList?.map((ressource, index) => {
               return (
                 <div key={ressource.id}>
@@ -228,7 +230,7 @@ const BudgetAndRessourcesUpdate = ({
             <button
               onClick={handleAddRessourceToList}
               type="button"
-              className={`py-2 w-full mt-2 text-center border border-dashed border-stroke rounded-md hover:bg-stroke`}
+              className={`py-2 w-full mt-2 text-center border border-dashed border-stroke rounded-md hover:bg-stroke dark:hover:bg-boxdark2`}
             >
               Ajouter une ressource
             </button>
@@ -239,13 +241,13 @@ const BudgetAndRessourcesUpdate = ({
           <button
             onClick={() => setPageCreate(1)}
             type="button"
-            className="md:w-fit gap-2 w-full cursor-pointer mt-2 py-2 px-5  text-center font-semibold text-zinc-700 hover:bg-zinc-50 lg:px-8 xl:px-5 border border-zinc-300 rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen dark:hover:bg-opacity-90"
+            className="md:w-fit gap-2 w-full cursor-pointer mt-2 py-2 px-5  text-center font-semibold text-zinc-700 dark:text-whiten hover:bg-zinc-50 lg:px-8 xl:px-5 border border-zinc-300 rounded-lg  dark:bg-transparent dark:hover:bg-boxdark2"
           >
             Précédent
           </button>
           <button
             type="submit"
-            className="md:w-fit gap-2 w-full cursor-pointer mt-2 py-2 px-5  text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen dark:hover:bg-opacity-90"
+            className="md:w-fit gap-2 w-full cursor-pointer mt-2 py-2 px-5  text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-darkgreen dark:bg-darkgreen dark:hover:bg-opacity-90"
           >
             Suivant
           </button>

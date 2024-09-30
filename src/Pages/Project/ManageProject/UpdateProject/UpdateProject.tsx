@@ -264,11 +264,11 @@ const UpdateProject = () => {
             onClick={() => {
               navigate("/gmp/project/list");
             }}
-            className={`md:w-fit gap-2  w-full cursor-pointer mt-2 py-2 px-5  text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen dark:hover:bg-opacity-90 md:ease-out md:duration-300 md:transform   ${
+            className={`md:w-fit gap-2  w-full cursor-pointer mt-2 py-2 px-5  text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-darkgreen dark:bg-darkgreen dark:hover:bg-opacity-90 md:ease-out md:duration-300 md:transform   ${
               isLoaded ? "md:translate-x-0 " : "md:translate-x-[60vw]"
             }`}
           >
-            retour
+            Retour
           </button>
         </div>
         {/* ===== LINK RETURN END ===== */}
@@ -292,8 +292,8 @@ const UpdateProject = () => {
             <div className="absolute my-2 ml-2 top-0 left-0 space-y-3 md:block hidden">
               <div
                 // onClick={() => setPageCreate(1)}
-                className={`relative border border-dotted w-10 h-10 flex justify-center items-center rounded-full p-2 border-slate-500 tranform duration-500 ease-linear cursor-pointer
-               ${pageCreate === 1 ? "bg-amber-200" : "bg-emerald-600"}
+                className={`relative border border-dotted w-10 h-10 flex justify-center items-center rounded-full p-2 border-slate-500 tranform duration-500 ease-linear 
+               ${pageCreate === 1 ? "bg-amber-200 dark:bg-orange2 dark:text-black-2" : "bg-emerald-600"}
                
                `}
               >
@@ -335,9 +335,9 @@ const UpdateProject = () => {
               </div>
               <div
                 // onClick={() => setPageCreate(2)}
-                className={`relative border border-dotted w-10 h-10 flex justify-center items-center rounded-full p-2 border-slate-500 tranform duration-500 ease-linear cursor-pointer
-                  ${pageCreate < 2 ? "bg-whiten" : ""}
-                  ${pageCreate === 2 ? "bg-amber-200" : "bg-emerald-600"}
+                className={`relative border border-dotted w-10 h-10 flex justify-center items-center rounded-full p-2 border-slate-500 tranform duration-500 ease-linear
+                  ${pageCreate < 2 ? "bg-transparent" : ""}
+                  ${pageCreate === 2 ? "bg-amber-200 dark:bg-orange2 dark:text-black-2" : "bg-emerald-600"}
                
                `}
               >
@@ -379,9 +379,9 @@ const UpdateProject = () => {
               </div>
               <div
                 // onClick={() => setPageCreate(2)}
-                className={`relative  border border-dotted w-10 h-10 flex justify-center items-center rounded-full p-2 border-slate-500 tranform duration-500 ease-linear cursor-pointer
-                  ${pageCreate < 3 ? "bg-whiten" : ""}
-                  ${pageCreate === 3 ? "bg-amber-200" : "bg-emerald-600"}
+                className={`relative  border border-dotted w-10 h-10 flex justify-center items-center rounded-full p-2 border-slate-500 tranform duration-500 ease-linear
+                  ${pageCreate < 3 ? "bg-transparent" : ""}
+                  ${pageCreate === 3 ? "bg-amber-200 dark:bg-orange2 dark:text-black-2" : "bg-emerald-600"}
                
                `}
               >
@@ -423,8 +423,8 @@ const UpdateProject = () => {
               </div>
               <div
                 // onClick={() => setPageCreate(2)}
-                className={`relative border border-dotted w-10 h-10 flex justify-center items-center rounded-full p-2 border-slate-500 tranform duration-500 ease-linear cursor-pointer
-               ${pageCreate === 4 ? "bg-amber-200" : ""}
+                className={`relative border border-dotted w-10 h-10 flex justify-center items-center rounded-full p-2 border-slate-500 tranform duration-500 ease-linear 
+               ${pageCreate === 4 ? "bg-amber-200 dark:bg-orange2 dark:text-black-2" : ""}
                
                `}
               >
