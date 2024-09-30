@@ -43,19 +43,15 @@ const BudgetAndRessourceAdd = ({
   };
 
   const handleRessourceDataChange = (
-    valueToChange: string,
+    field: string,
     index: number,
     value: string
   ) => {
-    let data = ressourceList;
-    if (valueToChange === "source") {
-      data[index].source = value;
-    } else if (valueToChange === "etat") {
-      data[index].type = value;
-    } else if (valueToChange === "ressource") {
-      data[index].ressource = value;
-    }
-    setRessourceList(data);
+    setRessourceList((prevState) => {
+      const newRessources = [...prevState];
+      newRessources[index] = { ...newRessources[index], [field]: value };
+      return newRessources;
+    });
   };
   return (
     <form
@@ -172,7 +168,9 @@ const BudgetAndRessourceAdd = ({
           </span>
           <div
             className={`   overflow-y-auto ${
-              haveBudget ? "xl:max-h-75 md:max-h-60" : "xl:max-h-115 md:max-h-72"
+              haveBudget
+                ? "xl:max-h-75 md:max-h-60"
+                : "xl:max-h-115 md:max-h-72"
             }`}
           >
             {ressourceList?.map((ressouce, index) => (
@@ -211,7 +209,7 @@ const BudgetAndRessourceAdd = ({
                     data={["A acquérir", "Disponible"]}
                     value={ressouce.type}
                     onValueChange={(e) => {
-                      handleRessourceDataChange("etat", index, e);
+                      handleRessourceDataChange("type", index, e);
                     }}
                     required
                   />
