@@ -164,7 +164,7 @@ const TableUser = ({
   };
 
   return (
-    <div className="bg-white md:mt-15 min-h-[80vh] pt-2 shadow-1 rounded-lg border border-zinc-200 dark:border-strokedark dark:bg-boxdark">
+    <div className="bg-white min-h-[80vh] pt-2 shadow-1 rounded-lg border border-zinc-200 dark:border-strokedark dark:bg-boxdark">
       {/* ==== FILTER START ===== */}
       <div className="flex m-5 flex-wrap justify-between items-center">
         <div className="grid md:grid-cols-4 grid-cols-1 gap-3 w-full">
@@ -291,7 +291,7 @@ const TableUser = ({
       {/* =====PAGINATE AND TITLE END===== */}
       {/* ===== BULK START ===== */}
       <div
-        className={` mt-[-60px] border-primaryGreen border  bg-white z-40 relative px-2 flex items-center justify-between transition-transform duration-200 ease-in-out transform ${
+        className={` mt-[-60px] border-primaryGreen border dark:border-white  bg-white z-40 dark:bg-boxdark relative px-2 flex items-center justify-between transition-transform duration-200 ease-in-out transform ${
           userSelected.length > 0
             ? "scale-y-100 opacity-100"
             : "scale-y-0 opacity-0"
@@ -461,7 +461,7 @@ const TableUser = ({
               .map((user) => (
                 <tr
                   key={user?.id}
-                  className="hover:bg-whiten dark:hover:bg-whitenGreen"
+                  className="hover:bg-whiten dark:hover:bg-boxdark2"
                 >
                   <td className="pl-2">
                     <button
@@ -490,7 +490,7 @@ const TableUser = ({
                       >
                         <path
                           d="M4 12.6111L8.92308 17.5L20 6.5"
-                          stroke="#000"
+                          className="stroke-black-2 dark:stroke-whiten"
                           strokeWidth="2"
                           strokeLinecap="round"
                           strokeLinejoin="round"

@@ -20,6 +20,16 @@ export const assignHabilitations = async (
   }
 };
 
+// ACTUALISE USER DATA
+export const actualiseUserData = async () => {
+  try {
+    const response = await axios.post(`${endPoint}/api/User/Actualize`);
+    return response;
+  } catch (error) {
+    console.error(`Error while actualising user data: ${error}`);
+  }
+};
+
 /* ======= GET ======= */
 
 // GET ALL USERS

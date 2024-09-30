@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { assignHabilitations } from "../../services/User";
-import { Notyf } from 'notyf';
-import 'notyf/notyf.min.css';
+import { Notyf } from "notyf";
+import "notyf/notyf.min.css";
 
 const notyf = new Notyf();
 
@@ -18,10 +18,10 @@ const ConfirmDeleteHabilitationuser = ({
     console.log(userSelected);
     try {
       await assignHabilitations({ userIds: userSelected, habilitationIds: [] });
-      notyf.success("Suppression des habilitations réussi")
+      notyf.success("Suppression des habilitations réussi");
     } catch (error) {
-      notyf.error("Un problème est survenu lors de la suppression")
-      notyf.error("Veuillez reessayer plus tard")
+      notyf.error("Un problème est survenu lors de la suppression");
+      notyf.error("Veuillez reessayer plus tard");
       console.error(`Error while delete user habilitation`);
     } finally {
       setUserDelete(false);
