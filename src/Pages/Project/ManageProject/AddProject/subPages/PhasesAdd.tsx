@@ -180,7 +180,7 @@ const PhasesAdd = ({
           <span className="font-semibold tracking-wide underline">
             PHASES ET LIVRABLES
           </span>
-          <div className="overflow-y-auto xxl:max-h-125 max-h-100 ">
+          <div className="overflow-y-auto xl:max-h-125 max-h-100 ">
             <button
               type="button"
               onClick={handleAddDefaultPhaseList}

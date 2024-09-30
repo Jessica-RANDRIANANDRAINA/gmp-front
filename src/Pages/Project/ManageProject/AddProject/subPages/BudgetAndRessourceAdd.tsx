@@ -3,10 +3,7 @@ import {
   CustomInput,
   CustomSelect,
 } from "../../../../../components/UIElements";
-import {
-  IRessource,
-  IProjectData,
-} from "../../../../../types/Project";
+import { IRessource, IProjectData } from "../../../../../types/Project";
 import { v4 as uuid4 } from "uuid";
 
 const BudgetAndRessourceAdd = ({
@@ -16,18 +13,17 @@ const BudgetAndRessourceAdd = ({
   projectData,
   departments,
   setRessourceList,
-  ressourceList
+  ressourceList,
 }: {
   setPageCreate: React.Dispatch<React.SetStateAction<number>>;
   pageCreate: number;
   setProjectData: React.Dispatch<React.SetStateAction<IProjectData>>;
   projectData: IProjectData;
   departments: string[];
-  setRessourceList: React.Dispatch<React.SetStateAction<Array<IRessource>>>
-  ressourceList: IRessource[]
+  setRessourceList: React.Dispatch<React.SetStateAction<Array<IRessource>>>;
+  ressourceList: IRessource[];
 }) => {
   const [haveBudget, setHaveBudget] = useState(false);
-
 
   // ADD RESSOURCE LIST
   const handleAddRessourceToList = () => {
@@ -63,30 +59,30 @@ const BudgetAndRessourceAdd = ({
   };
   return (
     <form
-      className={`space-y-2 transition-all duration-1000 ease-in-out ${pageCreate === 2 ? "opacity-100" : "opacity-0 h-0 overflow-hidden"
-        }`}
+      className={`space-y-2 transition-all duration-1000 ease-in-out ${
+        pageCreate === 2 ? "opacity-100" : "opacity-0 h-0 overflow-hidden"
+      }`}
       onSubmit={(e) => {
         e.preventDefault();
         const form = e.target as HTMLFormElement;
         if (form.reportValidity()) {
-          console.log("-------")
+          console.log("-------");
           setPageCreate(3);
-          console.log("-------")
+          console.log("-------");
         }
       }}
     >
       <div className="space-y-4 ">
         <div>
-          <span className="font-semibold tracking-wide underline">
-            BUDGET
-          </span>
+          <span className="font-semibold tracking-wide underline">BUDGET</span>
           <button
             onClick={() => {
               setHaveBudget(true);
             }}
             type="button"
-            className={`py-2 w-full mt-2 text-center border border-dashed border-stroke rounded-md hover:bg-stroke dark:hover:bg-boxdark2 ${haveBudget ? "hidden" : ""
-              }`}
+            className={`py-2 w-full mt-2 text-center border border-dashed border-stroke rounded-md hover:bg-stroke dark:hover:bg-boxdark2 ${
+              haveBudget ? "hidden" : ""
+            }`}
           >
             Est-ce que ce projet a un budget ?
           </button>
@@ -169,12 +165,16 @@ const BudgetAndRessourceAdd = ({
             </>
           )}
         </div>
-        <div >
+        <div>
           {/* ===== RESSOURCES START ===== */}
           <span className="font-semibold tracking-wide underline">
             RESSOURCES
           </span>
-          <div className=" md:max-h-60  overflow-y-auto">
+          <div
+            className={`   overflow-y-auto ${
+              haveBudget ? "xl:max-h-75 md:max-h-60" : "xl:max-h-115 md:max-h-72"
+            }`}
+          >
             {ressourceList?.map((ressouce, index) => (
               <div key={ressouce.id}>
                 <div className={"flex justify-between"}>
@@ -260,7 +260,7 @@ const BudgetAndRessourceAdd = ({
         </div>
       </div>
     </form>
-  )
-}
+  );
+};
 
-export default BudgetAndRessourceAdd
+export default BudgetAndRessourceAdd;
