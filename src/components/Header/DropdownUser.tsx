@@ -75,7 +75,9 @@ const DropdownUser = (userConnected: any) => {
         <span className="h-12 w-12 rounded-full">
           {/* <img src={UserOne} alt="User" /> */}
           <img
-            src={UserOne}
+            src={`${import.meta.env.VITE_PROFILE_PICTURE_LINK}${
+              userConnected?.userConnected?.email?.split("@")[0]
+            }%40ravinala-airports.aero`}
             alt="User"
             className="rounded-full size-12  ring-1 ring-stroke dark:ring-strokedark"
           />
