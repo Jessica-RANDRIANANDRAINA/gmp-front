@@ -1,6 +1,9 @@
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
-import { HabilitationAdminInterface } from "../types/Habilitation";
+import {
+  HabilitationAdminInterface,
+  HabilitationProjectInterface,
+} from "../types/Habilitation";
 
 const endPoint = import.meta.env.VITE_API_ENDPOINT;
 
@@ -23,9 +26,13 @@ export const useAuthService = () => {
 
       if (response.data && response.data.type === "success") {
         let adminPrivilege = false;
+        let projectPrivilege = false;
         const habilitation = response.data.user.habilitations;
         habilitation?.forEach(
-          (hab: { habilitationAdmins: HabilitationAdminInterface[] }) => {
+          (hab: {
+            habilitationAdmins: HabilitationAdminInterface[];
+            habilitationProjects: HabilitationProjectInterface[];
+          }) => {
             hab.habilitationAdmins.forEach(
               (admin: HabilitationAdminInterface) => {
                 if (
@@ -39,29 +46,28 @@ export const useAuthService = () => {
                 }
               }
             );
+            hab.habilitationProjects.forEach(
+              (project: HabilitationProjectInterface) => {
+                if (
+                  project.create === 1 ||
+                  project.update === 1 ||
+                  project.delete === 1 ||
+                  project.assign === 1
+                ) {
+                  projectPrivilege = true;
+                }
+              }
+            );
           }
         );
-        // const habAdmin = response.data.user.habilitations.map((hab)=>{
-        //   hab.map((admin)=>{
-        //     admin.
-        //   })
-        // })
 
-        if (adminPrivilege && userCredentials.type === "admin") {
+        if (adminPrivilege) {
           localStorage.setItem("_au_ad", response.data.token);
-
-          login(response.data.user);
-        } else if (userCredentials.type === "project") {
-          localStorage.setItem("_au_pr", response.data.token);
-
-          login(response.data.user);
-        } else {
-          return {
-            message:
-              "Vous n'avez pas accès à cette plateforme, veuillez vérifier votre connexion ou contacter l'administrateur",
-            type: "error",
-          };
         }
+        if (projectPrivilege) {
+          localStorage.setItem("_au_pr", response.data.token);
+        }
+        login(response.data.user);
       }
 
       return response.data;

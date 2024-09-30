@@ -6,13 +6,9 @@ import Logo from "../../assets/ravinala.jpg";
 interface SidebarProps {
   sidebarOpen: boolean;
   setSidebarOpen: (arg: boolean) => void;
- 
 }
 
-const ProjectSideBar = ({
-  sidebarOpen,
-  setSidebarOpen,
-}: SidebarProps) => {
+const ProjectSideBar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const location = useLocation();
   const { pathname } = location;
 
@@ -20,10 +16,23 @@ const ProjectSideBar = ({
   const [sidebarExpanded, setSidebarExpanded] = useState(
     storedSidebarExpanded === null ? false : storedSidebarExpanded === "true"
   );
-
+  const [isAdminHabilitate, setIsAdminHabilitate] = useState(false);
+  const [isProjectHabilitate, setIsProjectHabilitate] = useState(false);
 
   const trigger = useRef<any>(null);
   const sidebar = useRef<any>(null);
+
+  useEffect(() => {
+    let admin = localStorage.getItem("_au_ad");
+    let project = localStorage.getItem("_au_pr");
+
+    if (admin) {
+      setIsAdminHabilitate(true);
+    }
+    if (project) {
+      setIsProjectHabilitate(true);
+    }
+  }, []);
 
   //close on click outside
   useEffect(() => {
@@ -99,7 +108,7 @@ const ProjectSideBar = ({
         {/* ======SIDEBAR MENU START====== */}
         <nav className="mt-5 h-full py-4 px-4 lg:mt-9 lg:px-6 flex flex-col ">
           {/* ======ADMIN GROUP START====== */}
-          <div>
+          <div className={`${isAdminHabilitate ? "" : "hidden"}`}>
             <h3 className="mb-4 ml-4 text-sm font-semibold text-whiten">
               ADMIN
             </h3>
@@ -295,7 +304,7 @@ const ProjectSideBar = ({
           </div>
           {/* ======ADMIN GROUP END====== */}
           {/* ======PROJECT GROUP START====== */}
-          <div>
+          <div className={`${isProjectHabilitate ? "" : "hidden"}`}>
             <h3 className="mb-4 ml-4 text-sm font-semibold text-whiten">
               PROJET
             </h3>

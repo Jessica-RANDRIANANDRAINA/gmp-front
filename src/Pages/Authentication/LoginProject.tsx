@@ -19,12 +19,12 @@ const LoginProject = () => {
   const [isLoginLoading, setIsLoginLoading] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(()=>{
-    const projectStorage = localStorage.getItem('_au_pr')
-    if (projectStorage) {
-      navigate("/gmp/project/home")
-    }
-  }, [])
+  useEffect(() => {
+    // const projectStorage = localStorage.getItem("_au_pr");
+    // if (projectStorage) {
+    navigate("/gmp/project/home");
+    // }
+  }, []);
 
   const handleLogin = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
@@ -136,9 +136,12 @@ const LoginProject = () => {
             Se connecter
           </button>
           {loginError.error && (
-            <div className="text-red-500 mt-4 font-bold">
-             {loginError.error}
-             </div>
+            <div className="text-red-500 mt-4 font-bold flex flex-col justify-center items-center ">
+              <span>Vous n'avez pas accès à cette plateforme,</span>
+              <span className=" text-center">
+                Veuillez vérifier votre connexion ou contacter l'administrateur
+              </span>
+            </div>
           )}
         </form>
       </div>

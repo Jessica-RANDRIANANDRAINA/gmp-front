@@ -2,12 +2,7 @@ export interface HabilitationDataProps {
   id?: string;
   label: string;
   habilitationAdmins: HabilitationAdminInterface[];
-  habilitationProjects: {
-    create: number;
-    update: number;
-    delete: number;
-    assign: number;
-  }[];
+  habilitationProjects: HabilitationProjectInterface[];
   habilitationTransverses: {
     create: number;
     update: number;
@@ -18,6 +13,13 @@ export interface HabilitationDataProps {
     update: number;
     delete: number;
   }[];
+}
+
+export interface HabilitationProjectInterface {
+  create: number;
+  update: number;
+  delete: number;
+  assign: number;
 }
 
 export interface HabilitationAdminInterface {
