@@ -70,7 +70,7 @@ const CustomSelect = ({
         type="button"
         onClick={() => setIsOpen(!isOpen)}
         className={`w-full text-sm py-2.5 px-6 md:h-10 border flex items-center justify-between border-stroke dark:border-neutral-500 rounded-lg bg-transparent text-left ${
-          value ? "text-gray" : "text-bodydark2"
+          value ? "dark:text-gray text-black" : "text-bodydark2"
         }`}
       >
         {value || placeholder}

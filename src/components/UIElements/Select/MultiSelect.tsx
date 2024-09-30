@@ -233,7 +233,7 @@ const MultiSelect = ({
                     {options.map((option, index) => (
                       <div key={index}>
                         <div
-                          className="w-full  cursor-pointer  border-b border-stroke dark:border-strokedark dark:bg-black dark:hover:bg-boxdark2 "
+                          className="w-full  cursor-pointer  border-b border-stroke hover:bg-gray-3 dark:border-strokedark dark:bg-black dark:hover:bg-boxdark2 "
                           onClick={(event) => select(index, event)}
                         >
                           <div
