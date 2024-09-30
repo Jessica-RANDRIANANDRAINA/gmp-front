@@ -73,7 +73,7 @@ const CutomInputUserSearch = ({
           {userMatched?.map((user: { id: string; name: string }) => (
             <div
               key={user?.id}
-              className={`py-2 px-4 cursor-pointer   dark:text-bodydark hover:bg-gray-3 rounded-md`}
+              className={`py-2 px-4 cursor-pointer   dark:text-bodydark hover:bg-gray-3 dark:bg-black dark:hover:bg-boxdark2 `}
               onClick={() => {
                 const isUserAlreadySelected = userSelected?.some(
                   (selected) => selected.id === user.id

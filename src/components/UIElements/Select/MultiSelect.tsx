@@ -145,7 +145,7 @@ const MultiSelect = ({
             <div className="relative flex flex-col items-center  ">
               <div ref={trigger} onClick={open} className="w-full ">
                 <div
-                  className={`mb-2 flex ${round[rounded]} border overflow-x-auto  border-stroke md:py-1 pl-3 pr-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input`}
+                  className={`mb-2 flex ${round[rounded]} border overflow-x-auto  border-stroke md:py-1 pl-3 pr-3 outline-none transition focus:border-primary active:border-primary dark:text-gray dark:border-form-strokedark dark:bg-form-input`}
                 >
                   <div className="flex flex-auto  gap-3 ">
                     {selected.map((index) => (
@@ -233,7 +233,7 @@ const MultiSelect = ({
                     {options.map((option, index) => (
                       <div key={index}>
                         <div
-                          className="w-full  cursor-pointer  border-b border-stroke dark:border-strokedark dark:bg-boxdark dark:hover:bg-boxdark-2 "
+                          className="w-full  cursor-pointer  border-b border-stroke dark:border-strokedark dark:bg-black dark:hover:bg-boxdark2 "
                           onClick={(event) => select(index, event)}
                         >
                           <div
