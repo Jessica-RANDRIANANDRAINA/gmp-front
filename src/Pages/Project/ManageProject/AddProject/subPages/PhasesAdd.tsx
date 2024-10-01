@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { IPhase, IProjectData } from "../../../../../types/Project";
-import { CustomInput } from "../../../../../components/UIElements";
+import {
+  CustomInput,
+  CustomSelect,
+} from "../../../../../components/UIElements";
 import { v4 as uuid4 } from "uuid";
 import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
@@ -25,6 +28,7 @@ const PhasesAdd = ({
   const [inputErrors, setInputErrors] = useState<{
     [key: number]: { phase1?: string; expectedDeliverable?: string };
   }>({});
+  const [phasesNames, setPhasesNames] = useState<Array<string>>([]);
 
   // ADD DEFAULT VALUE IN PHASE LIST
   const handleAddDefaultPhaseList = () => {
@@ -36,6 +40,7 @@ const PhasesAdd = ({
         expectedDeliverable: "Document de cadrage",
         startDate: projectData?.startDate,
         endDate: undefined,
+        dependantOf: undefined
       },
       {
         id: uuid4(),
@@ -44,6 +49,7 @@ const PhasesAdd = ({
         expectedDeliverable: "Signature de mise en production",
         startDate: undefined,
         endDate: undefined,
+        dependantOf: undefined
       },
       {
         id: uuid4(),
@@ -52,6 +58,7 @@ const PhasesAdd = ({
         expectedDeliverable: "Plan de déploiement",
         startDate: undefined,
         endDate: undefined,
+        dependantOf: undefined
       },
       {
         id: uuid4(),
@@ -60,9 +67,12 @@ const PhasesAdd = ({
         expectedDeliverable: "PV de recette",
         startDate: undefined,
         endDate: projectData?.endDate ?? undefined,
+        dependantOf: undefined
       },
     ];
     setPhaseAndLivrableList(phaseData);
+    const phasesNamesData = phaseData.map((phase) => phase.phase1);
+    setPhasesNames(phasesNamesData);
   };
 
   // REMOVE A PHASE TO THE LIST
@@ -121,7 +131,7 @@ const PhasesAdd = ({
 
   const handlePhaseDataChange = (
     label: string,
-    value: string,
+    value: string | undefined,
     index: number
   ) => {
     setPhaseAndLivrableList((prevList) =>
@@ -136,6 +146,8 @@ const PhasesAdd = ({
                 ? "expectedDeliverable"
                 : label === "startDate"
                 ? "startDate"
+                : label === "depandantOf"
+                ? "dependantOf"
                 : "endDate"]: value,
             }
           : phase
@@ -191,7 +203,9 @@ const PhasesAdd = ({
             {phaseAndLivrableList?.map((phase, index) => (
               <div key={phase?.id}>
                 <div className={"flex justify-between"}>
-                  <div className={"underline"}>Phase {index + 1}</div>
+                  <div className={"underline font-bold text-base"}>
+                    Phase {index + 1}
+                  </div>
                   <button
                     className={
                       "text-red-500 decoration-red-500 font-bold hover:font-black"
@@ -205,7 +219,7 @@ const PhasesAdd = ({
                   </button>
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-4">
+                <div className="grid md:grid-cols-2 gap-4 border-b pb-2 mb-4">
                   <CustomInput
                     label="Phase"
                     type="text"
@@ -246,12 +260,38 @@ const PhasesAdd = ({
                     required
                     error={inputErrors[index]?.expectedDeliverable}
                   />
+                  <CustomSelect
+                    className={`md:col-span-2 ${index === 0 ? "hidden" : ""}`}
+                    label="Dépendante de"
+                    placeholder="Une phase obligatoire avant celle-ci"
+                    data={phasesNames?.filter((p) => p != phase?.phase1)}
+                    value={phaseAndLivrableList[index].dependantOf}
+                    onValueChange={(e) => {
+                      const phaseAssociated = phaseAndLivrableList.filter(
+                        (phase) => {
+                          return phase.phase1 === e;
+                        }
+                      );
+                      handlePhaseDataChange(
+                        "depandantOf",
+                        phaseAssociated?.[0]?.id,
+                        index
+                      );
+                      console.log(phaseAssociated?.[0]);
+                    }}
+                  />
                   <CustomInput
                     label="Date début"
                     type="date"
                     rounded="medium"
                     value={phase?.startDate}
-                    min={projectData?.startDate}
+                    min={
+                      phase.dependantOf
+                        ? phaseAndLivrableList.find(
+                            (p) => p.id === phase.dependantOf
+                          )?.endDate
+                        : projectData?.startDate
+                    }
                     max={projectData?.endDate ? projectData?.endDate : ""}
                     onChange={(e) => {
                       handlePhaseDataChange("startDate", e.target.value, index);

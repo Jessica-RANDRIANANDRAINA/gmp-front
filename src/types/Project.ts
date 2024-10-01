@@ -52,6 +52,7 @@ export interface IPhase {
   expectedDeliverable: string;
   startDate?: string;
   endDate?: string;
+  dependantOf?: string;
 }
 export interface IRessource {
   id: string;
