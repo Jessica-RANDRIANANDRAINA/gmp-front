@@ -45,7 +45,7 @@ const TeamAdd = ({
           <div className="space-y-2 ">
             {/* ===== PROJECT DIRECTOR START ===== */}
             <div>
-              <div>Directeur de projet</div>
+              <div>Chef de projet</div>
               <div className="hide-scrollbar  ">
                 <CutomInputUserSearch
                   placeholder="Recherche"
