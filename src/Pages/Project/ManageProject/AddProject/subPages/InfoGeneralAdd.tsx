@@ -38,14 +38,14 @@ const InfoGeneralAdd = ({
         type="text"
         rounded="medium"
         help="Le titre du projet est obligatoire"
-        placeholder="Titre du projet (80 caractères max)"
-        value={projectData?.title?.slice(0, 80)}
+        placeholder="Titre du projet"
+        value={projectData?.title?.slice(0, 1000)}
         maxLength={80}
         required={true}
         onChange={(e) => {
           setProjectData({
             ...projectData,
-            title: e.target.value.slice(0, 80),
+            title: e.target.value.slice(0, 1000),
           });
         }}
       />
@@ -57,11 +57,11 @@ const InfoGeneralAdd = ({
         placeholder="Description du projet"
         rows={5}
         cols={5}
-        value={projectData?.description?.slice(0, 1000)}
+        value={projectData?.description?.slice(0, 3000)}
         onChange={(e) => {
           setProjectData({
             ...projectData,
-            description: e.target.value?.slice(0, 1000),
+            description: e.target.value?.slice(0, 3000),
           });
         }}
       />
