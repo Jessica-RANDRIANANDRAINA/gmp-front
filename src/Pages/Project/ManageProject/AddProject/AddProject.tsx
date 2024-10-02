@@ -26,6 +26,7 @@ const AddProject = () => {
     title: "",
     description: "",
     priority: "Moyenne",
+    criticality: "Moins urgente",
     beneficiary: "",
     initiator: "",
     startDate: undefined,

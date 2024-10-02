@@ -1,7 +1,7 @@
 import {
   CustomInput,
   CustomSelect,
-  MultiSelect
+  MultiSelect,
 } from "../../../../../components/UIElements";
 import { IProjectData, IHistoricProject } from "../../../../../types/Project";
 
@@ -14,7 +14,7 @@ const InfoGeneralUpdate = ({
   setDirectionOwner,
   setHistoricProjectDate,
   hitoricProjectDate,
-  projectDataToModif
+  projectDataToModif,
 }: {
   pageCreate: number;
   setPageCreate: React.Dispatch<React.SetStateAction<number>>;
@@ -22,12 +22,12 @@ const InfoGeneralUpdate = ({
   projectData: IProjectData;
   departments: string[];
   setDirectionOwner: Function;
-  setHistoricProjectDate: React.Dispatch<React.SetStateAction<IHistoricProject>>
+  setHistoricProjectDate: React.Dispatch<
+    React.SetStateAction<IHistoricProject>
+  >;
   hitoricProjectDate: IHistoricProject;
-  projectDataToModif: any
+  projectDataToModif: any;
 }) => {
-
-
   // Function to compare if data is previous
   const isPreviousDate = (date: string | number | Date | undefined) => {
     if (!date) return false;
@@ -39,8 +39,9 @@ const InfoGeneralUpdate = ({
 
   return (
     <form
-      className={`space-y-2 transition-all duration-300 ease-in-out ${pageCreate === 1 ? "opacity-100" : "opacity-0 h-0 overflow-hidden"
-        }`}
+      className={`space-y-2 transition-all duration-300 ease-in-out ${
+        pageCreate === 1 ? "opacity-100" : "opacity-0 h-0 overflow-hidden"
+      }`}
       onSubmit={(e) => {
         e.preventDefault();
         const form = e.target as HTMLFormElement;
@@ -94,7 +95,7 @@ const InfoGeneralUpdate = ({
           });
         }}
       />
-      <div className="grid  md:grid-cols-2 gap-4">
+      <div className="grid  md:grid-cols-3 gap-4">
         <CustomSelect
           label="Priorité"
           placeholder="Priorité"
@@ -104,6 +105,18 @@ const InfoGeneralUpdate = ({
             setProjectData({
               ...projectData,
               priority: e,
+            });
+          }}
+        />
+        <CustomSelect
+          label="Criticité"
+          placeholder="Criticité"
+          data={["Moins urgente", "Urgente", "Très urgente"]}
+          value={projectData.criticality}
+          onValueChange={(e) => {
+            setProjectData({
+              ...projectData,
+              criticality: e,
             });
           }}
         />
@@ -147,8 +160,8 @@ const InfoGeneralUpdate = ({
               projectData.isEndDateImmuable
                 ? "Cette date est fixe"
                 : projectData?.endDate
-                  ? "Tout changement de cette date devra être suivi de la raison"
-                  : undefined
+                ? "Tout changement de cette date devra être suivi de la raison"
+                : undefined
             }
             onChange={(e) => {
               setProjectData({
@@ -166,12 +179,13 @@ const InfoGeneralUpdate = ({
           />
           <div className="">
             <div
-              className={`${projectData?.endDate?.split("T")[0] ===
-                projectDataToModif?.endDate?.split("T")[0] ||
+              className={`${
+                projectData?.endDate?.split("T")[0] ===
+                  projectDataToModif?.endDate?.split("T")[0] ||
                 projectDataToModif?.endDate === null
-                ? "hidden"
-                : ""
-                }
+                  ? "hidden"
+                  : ""
+              }
                   
                     `}
             >
@@ -184,7 +198,7 @@ const InfoGeneralUpdate = ({
                 required={
                   !(
                     projectData?.endDate?.split("T")[0] ===
-                    projectDataToModif?.endDate?.split("T")[0] ||
+                      projectDataToModif?.endDate?.split("T")[0] ||
                     projectDataToModif?.endDate === null
                   )
                 }
@@ -197,8 +211,9 @@ const InfoGeneralUpdate = ({
               />
             </div>
             <div
-              className={`${projectData?.endDate ? "opacity-100" : "opacity-50 hidden"
-                } transform duration-300
+              className={`${
+                projectData?.endDate ? "opacity-100" : "opacity-50 hidden"
+              } transform duration-300
                   ${projectDataToModif?.isEndDateImmuable ? "hidden" : ""}
                   `}
             >

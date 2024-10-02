@@ -35,6 +35,7 @@ const UpdateProject = () => {
     completionPercentage: 0,
     description: "",
     priority: "Moyenne",
+    criticality: "Moins urgente",
     beneficiary: "",
     initiator: "",
     startDate: undefined,
@@ -94,6 +95,7 @@ const UpdateProject = () => {
         completionPercentage: projectDataToModif?.completionPercentage,
         description: projectDataToModif?.description,
         priority: projectDataToModif?.priority,
+        criticality: projectDataToModif?.criticality,
         beneficiary: "",
         initiator: projectDataToModif?.initiator,
         startDate: projectDataToModif?.startDate,
@@ -293,7 +295,11 @@ const UpdateProject = () => {
               <div
                 // onClick={() => setPageCreate(1)}
                 className={`relative border border-dotted w-10 h-10 flex justify-center items-center rounded-full p-2 border-slate-500 tranform duration-500 ease-linear 
-               ${pageCreate === 1 ? "bg-amber-200 dark:bg-orange2 dark:text-black-2" : "bg-emerald-600"}
+               ${
+                 pageCreate === 1
+                   ? "bg-amber-200 dark:bg-orange2 dark:text-black-2"
+                   : "bg-emerald-600"
+               }
                
                `}
               >
@@ -337,7 +343,11 @@ const UpdateProject = () => {
                 // onClick={() => setPageCreate(2)}
                 className={`relative border border-dotted w-10 h-10 flex justify-center items-center rounded-full p-2 border-slate-500 tranform duration-500 ease-linear
                   ${pageCreate < 2 ? "bg-transparent" : ""}
-                  ${pageCreate === 2 ? "bg-amber-200 dark:bg-orange2 dark:text-black-2" : "bg-emerald-600"}
+                  ${
+                    pageCreate === 2
+                      ? "bg-amber-200 dark:bg-orange2 dark:text-black-2"
+                      : "bg-emerald-600"
+                  }
                
                `}
               >
@@ -381,7 +391,11 @@ const UpdateProject = () => {
                 // onClick={() => setPageCreate(2)}
                 className={`relative  border border-dotted w-10 h-10 flex justify-center items-center rounded-full p-2 border-slate-500 tranform duration-500 ease-linear
                   ${pageCreate < 3 ? "bg-transparent" : ""}
-                  ${pageCreate === 3 ? "bg-amber-200 dark:bg-orange2 dark:text-black-2" : "bg-emerald-600"}
+                  ${
+                    pageCreate === 3
+                      ? "bg-amber-200 dark:bg-orange2 dark:text-black-2"
+                      : "bg-emerald-600"
+                  }
                
                `}
               >
@@ -424,7 +438,11 @@ const UpdateProject = () => {
               <div
                 // onClick={() => setPageCreate(2)}
                 className={`relative border border-dotted w-10 h-10 flex justify-center items-center rounded-full p-2 border-slate-500 tranform duration-500 ease-linear 
-               ${pageCreate === 4 ? "bg-amber-200 dark:bg-orange2 dark:text-black-2" : ""}
+               ${
+                 pageCreate === 4
+                   ? "bg-amber-200 dark:bg-orange2 dark:text-black-2"
+                   : ""
+               }
                
                `}
               >

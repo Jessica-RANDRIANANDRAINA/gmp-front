@@ -3,6 +3,7 @@ export interface IProjectData {
   title: string;
   description: string;
   priority: string;
+  criticality: string;
   beneficiary: string;
   initiator: string;
   isEndDateImmuable?: boolean;

@@ -65,7 +65,7 @@ const InfoGeneralAdd = ({
           });
         }}
       />
-      <div className="grid  md:grid-cols-2 gap-4">
+      <div className="grid  md:grid-cols-3 gap-4">
         <CustomSelect
           label="Priorité"
           placeholder="Priorité"
@@ -75,6 +75,18 @@ const InfoGeneralAdd = ({
             setProjectData({
               ...projectData,
               priority: e,
+            });
+          }}
+        />
+        <CustomSelect
+          label="Criticité"
+          placeholder="Criticité"
+          data={["Moins urgente", "Urgente", "Très urgente"]}
+          value={projectData.criticality}
+          onValueChange={(e) => {
+            setProjectData({
+              ...projectData,
+              criticality: e,
             });
           }}
         />
