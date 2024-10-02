@@ -4,6 +4,7 @@ import { formatDate } from "../../../services/Function/DateServices";
 import { decodeToken } from "../../../services/Function/TokenService";
 import Pagination from "../Pagination";
 import ListUsers from "../../UIElements/ListUsers";
+import { IProjectData } from "../../../types/Project";
 
 const TableProjet = ({
   data,
@@ -17,10 +18,30 @@ const TableProjet = ({
   const [entriesPerPage, setEntriesPerPage] = useState(5);
   const [actualPage, setActualPage] = useState(1);
   const [pageNumbers, setPageNumbers] = useState(1);
+  const [search, setSearch] = useState({
+    title: "",
+    member: "",
+  });
 
   const [isAllSelected, setIsAllSelected] = useState(false);
   const [projectSelected, setProjectSelected] = useState<string[]>([]);
   const userConnected = decodeToken("pr");
+
+  // filter data by title for the title search
+  const filteredData = data?.filter((item: IProjectData) => {
+    const lowerCaseSearchTitle = search.title.toLowerCase();
+
+    return item?.title.toLowerCase().includes(lowerCaseSearchTitle);
+  });
+
+  // DELETE FILTER
+  const handleDeleteFilter = () => {
+    setSearch({
+      ...search,
+      title: "",
+      member: "",
+    });
+  };
 
   // TO GET THE NUMBER OF PAGE DEPENDING OF THE ENTRIES PER PAGE
   const getPageNumber = (dataLength: number) => {
@@ -35,8 +56,8 @@ const TableProjet = ({
 
   // GET THE NUMBER OF PAGES EACH TIME A ENTRIES PER PAGE OR THE FILTEREDDATA CHANGE
   useEffect(() => {
-    setPageNumbers(getPageNumber(data.length));
-  }, [entriesPerPage, data.length]);
+    setPageNumbers(getPageNumber(filteredData.length));
+  }, [entriesPerPage, filteredData.length]);
 
   const handleSelectAllProject = () => {
     if (projectSelected.length < data.length) {
@@ -56,23 +77,22 @@ const TableProjet = ({
         <div className="grid md:grid-cols-4 grid-cols-1 gap-3 w-full">
           <CustomInput
             type="text"
-            // value={"search.nameAndMail"}
-            label="Recherche"
-            placeholder="Titre"
+            value={search.title}
+            label="Titre"
+            placeholder="Rechercher"
             rounded="medium"
             onChange={(e) => {
-              //   setSearch({
-              //     ...search,
-              //     nameAndMail: e.target.value,
-              //   });
-              console.log(e);
+              setSearch({
+                ...search,
+                title: e.target.value,
+              });
             }}
           />
           <CustomInput
             type="text"
             // value={"search.nameAndMail"}
-            label="Recherche"
-            placeholder="Nom ou mail"
+            label="Membres"
+            placeholder="Rechercher"
             rounded="medium"
             onChange={(e) => {
               //   setSearch({
@@ -82,23 +102,10 @@ const TableProjet = ({
               console.log(e);
             }}
           />
-          <CustomInput
-            type="text"
-            // value={"search.nameAndMail"}
-            label="Recherche"
-            placeholder="Nom ou mail"
-            rounded="medium"
-            onChange={(e) => {
-              //   setSearch({
-              //     ...search,
-              //     nameAndMail: e.target.value,
-              //   });
-              console.log(e);
-            }}
-          />
+
           <div className="flex items-end pb-3 mx-2">
             <button
-              //   onClick={handleDeleteFilter}
+                onClick={handleDeleteFilter}
               className="flex justify-center gap-1 h-fit text-sm font-medium"
             >
               Effacer les filtres
@@ -152,7 +159,7 @@ const TableProjet = ({
           </svg>
         </button>
         <div className="text-xl  text-title font-medium dark:text-whiten">
-          Listes de tous les projets
+          Liste de tous les projets
         </div>
         <button
           disabled={actualPage === pageNumbers}
@@ -227,7 +234,7 @@ const TableProjet = ({
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
                     className={`${
-                      projectSelected.length === data.length
+                      projectSelected.length === filteredData.length
                         ? "visible"
                         : "invisible"
                     }`}
@@ -390,7 +397,7 @@ const TableProjet = ({
           {/* ===== TABLE HEAD END ===== */}
           {/* ===== TABLE BODY END ===== */}
           <tbody>
-            {data
+            {filteredData
               ?.filter((_project, index) => indexInPaginationRange(index))
               .map((project) => {
                 const dateStart = formatDate(project?.startDate);
