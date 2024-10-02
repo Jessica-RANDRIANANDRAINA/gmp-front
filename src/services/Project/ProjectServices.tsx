@@ -62,3 +62,27 @@ export const updateProject = async (
     throw new Error(`Error at update project services: ${error}`);
   }
 };
+
+// archive project(s)
+export const archiveProject = async (ids: Array<string>) => {
+  try {
+    const response = await axios.put(`${endPoint}/api/Project/archives`, {
+      data: ids,
+    });
+    if (response.status === 200) {
+      return {
+        state: "success",
+        message: "Archive project success",
+      };
+    } else {
+      return {
+        state: "error",
+        message: "something went wrong",
+      };
+    }
+  } catch (error) {
+    console.error(`An error occured while archiving projects: ${error}`);
+
+    throw error;
+  }
+};

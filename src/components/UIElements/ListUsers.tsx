@@ -1,13 +1,9 @@
-import { Key, useEffect } from "react";
+import { Key } from "react";
 import { getInitials } from "../../services/Function/UserFunctionService";
 import { IUserProject } from "../../types/Project";
 
 const ListUsers = ({ data, type }: { data: IUserProject[]; type?: string }) => {
-  useEffect(() => {
-    console.log("7777777777777777");
-    console.log(type);
-    console.log("7777777777777777");
-  }, [type]);
+
   return (
     <>
       {type === "all" ? (

@@ -15,7 +15,6 @@ const ConfirmDeleteHabilitationuser = ({
   const trigger = useRef<any>(null);
 
   const handleDelete = async () => {
-    console.log(userSelected);
     try {
       await assignHabilitations({ userIds: userSelected, habilitationIds: [] });
       notyf.success("Suppression des habilitations réussi");

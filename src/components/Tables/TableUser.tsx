@@ -304,7 +304,6 @@ const TableUser = ({
             className="mb-2  "
             placeholder="Actions"
             onValueChange={(e) => {
-              console.log(e);
               if (e.includes("Modifier")) {
                 setUserModif(true);
               } else {

@@ -2,13 +2,20 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ProjectLayout from "../../../layout/ProjectLayout";
 import { TableProjet } from "../../../components/Tables/projets";
+import {
+  Modal,
+  ModalBody,
+  ModalFooter,
+} from "../../../components/Modals/Modal";
 import { getProjectByUserId } from "../../../services/Project/ProjectServices";
 import { decodeToken } from "../../../services/Function/TokenService";
 
 const ManageProjects = () => {
   const [projectData, setProjectData] = useState([]);
   const [projectToModif, setProjectToModif] = useState([]);
+  const [projectsToDetele, setProjectsToDelete] = useState<Array<string>>([]);
   const [idProjectForDetails, setIdProjectForDetails] = useState("");
+  const [showModalDelete, setShowModalDelete] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -68,11 +75,49 @@ const ManageProjects = () => {
           {/* ===== ADD PROJECT END =====*/}
           {/* ===== TABLE PROJECT LIST START =====*/}
           <TableProjet
+            setShowModalDelete={setShowModalDelete}
             data={projectData}
             setProjectToModif={setProjectToModif}
+            setProjectsToDelete={setProjectsToDelete}
             setIdProjectForDetails={setIdProjectForDetails}
           />
           {/* ===== TABLE PROJECT LIST END =====*/}
+          {/* ===== MODAL DELETE START ===== */}
+          {showModalDelete && (
+            <Modal
+              modalOpen={showModalDelete}
+              setModalOpen={setShowModalDelete}
+              header={`${
+                projectsToDetele.length === 1
+                  ? "Voulez vous vraiment archiver ce projet ?"
+                  : `Voulez vous vraiment archiver ces ${projectsToDetele.length} projets ?`
+              }`}
+              heightSize="40vh"
+              widthSize="medium"
+            >
+              <ModalBody>
+                <></>
+              </ModalBody>
+              <ModalFooter>
+                <button
+                  type="button"
+                  className="border text-xs p-2 rounded-md  font-semibold bg-transparent border-transparent hover:bg-zinc-100"
+                  onClick={() => {
+                    setShowModalDelete(false);
+                  }}
+                >
+                  Annuler
+                </button>
+                <button
+                  type="button"
+                  className="border text-xs p-2 rounded-md bg-green-700 text-white font-semibold"
+                >
+                  Archiver
+                </button>
+              </ModalFooter>
+            </Modal>
+          )}
+          {/* ===== MODAL DELETE END ===== */}
         </>
       </div>
     </ProjectLayout>

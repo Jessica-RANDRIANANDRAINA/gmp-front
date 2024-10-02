@@ -62,9 +62,7 @@ const BudgetAndRessourceAdd = ({
         e.preventDefault();
         const form = e.target as HTMLFormElement;
         if (form.reportValidity()) {
-          console.log("-------");
           setPageCreate(3);
-          console.log("-------");
         }
       }}
     >

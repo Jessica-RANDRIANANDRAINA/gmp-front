@@ -9,11 +9,15 @@ import { IProjectData } from "../../../types/Project";
 const TableProjet = ({
   data,
   setProjectToModif,
+  setProjectsToDelete,
   setIdProjectForDetails,
+  setShowModalDelete,
 }: {
   data: Array<any>;
   setProjectToModif: Function;
   setIdProjectForDetails: Function;
+  setProjectsToDelete: React.Dispatch<React.SetStateAction<Array<string>>>;
+  setShowModalDelete: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const [entriesPerPage, setEntriesPerPage] = useState(5);
   const [actualPage, setActualPage] = useState(1);
@@ -201,7 +205,12 @@ const TableProjet = ({
             : "scale-y-0 opacity-0"
         }`}
       >
-        <div> {projectSelected.length} éléments séléctionné </div>
+        <div>
+          {" "}
+          {projectSelected.length === 1
+            ? "1 élément séléctionné"
+            : `${projectSelected.length} éléments séléctionné`}{" "}
+        </div>
         <div>
           <CustomSelect
             data={
@@ -215,7 +224,8 @@ const TableProjet = ({
               if (e.includes("Modifier")) {
                 setProjectToModif(projectSelected);
               } else {
-                console.log("first");
+                setProjectsToDelete(projectSelected);
+                setShowModalDelete(true);
               }
             }}
           />
