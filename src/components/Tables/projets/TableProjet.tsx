@@ -532,7 +532,7 @@ const TableProjet = ({
       <div className="flex flex-col flex-wrap md:flex-row justify-end px-4 items-center">
         <div>
           <CustomSelect
-            label="Par page: "
+            label="Par page : "
             data={["5", "10", "15", "20"]}
             placeholder="5"
             className="flex"

@@ -27,7 +27,7 @@ function Pagination({
             actualPage === 1
               ? "font-black bg-gray dark:bg-graydark dark:text-white"
               : ""
-          } h-8 w-8 flex border border-bodydark2 dark:border-form-strokedark place-items-center justify-center cursor-pointer rounded-md`}
+          } h-9 w-8 flex border border-bodydark2 dark:border-form-strokedark place-items-center justify-center cursor-pointer rounded-md`}
           key={1}
           onClick={() => setActualPage(1)}
         >
