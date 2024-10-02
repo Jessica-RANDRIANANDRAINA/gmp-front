@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { CustomInput, CustomSelect } from "../../UIElements";
 import { formatDate } from "../../../services/Function/DateServices";
-import { decodeToken } from "../../../services/Function/TokenService";
+// import { decodeToken } from "../../../services/Function/TokenService";
 import Pagination from "../Pagination";
 import ListUsers from "../../UIElements/ListUsers";
 import { IProjectData } from "../../../types/Project";
@@ -25,13 +25,19 @@ const TableProjet = ({
 
   const [isAllSelected, setIsAllSelected] = useState(false);
   const [projectSelected, setProjectSelected] = useState<string[]>([]);
-  const userConnected = decodeToken("pr");
+  // const userConnected = decodeToken("pr");
 
-  // filter data by title for the title search
+  // filter data by title and member for the title search
   const filteredData = data?.filter((item: IProjectData) => {
     const lowerCaseSearchTitle = search.title.toLowerCase();
+    const lowerCaseSearchName = search.member.toLowerCase();
 
-    return item?.title.toLowerCase().includes(lowerCaseSearchTitle);
+    return (
+      item?.title.toLowerCase().includes(lowerCaseSearchTitle) &&
+      item?.listUsers?.some((listUser) =>
+        listUser?.user?.name?.toLowerCase().includes(lowerCaseSearchName)
+      )
+    );
   });
 
   // DELETE FILTER
@@ -90,22 +96,22 @@ const TableProjet = ({
           />
           <CustomInput
             type="text"
-            // value={"search.nameAndMail"}
+            value={search.member}
             label="Membres"
             placeholder="Rechercher"
             rounded="medium"
             onChange={(e) => {
-              //   setSearch({
-              //     ...search,
-              //     nameAndMail: e.target.value,
-              //   });
-              console.log(e);
+              setSearch({
+                ...search,
+                member: e.target.value,
+              });
+              console.log(e.target.value);
             }}
           />
 
           <div className="flex items-end pb-3 mx-2">
             <button
-                onClick={handleDeleteFilter}
+              onClick={handleDeleteFilter}
               className="flex justify-center gap-1 h-fit text-sm font-medium"
             >
               Effacer les filtres
@@ -297,25 +303,7 @@ const TableProjet = ({
               </th>
               <th className="py-4 px-4 font-bold text-white dark:text-white xl:pl-11">
                 <div className="flex items-center">
-                  <button
-                    className={`
-                     transform transition-transform duration-200`}
-                  >
-                    <svg
-                      className="fill-current"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M5.29289 8.29289C5.68342 7.90237 6.31658 7.90237 6.70711 8.29289L12 13.5858L17.2929 8.29289C17.6834 7.90237 18.3166 7.90237 18.7071 8.29289C19.0976 8.68342 19.0976 9.31658 18.7071 9.70711L12.7071 15.7071C12.3166 16.0976 11.6834 16.0976 11.2929 15.7071L5.29289 9.70711C4.90237 9.31658 4.90237 8.68342 5.29289 8.29289Z"
-                        fill=""
-                      />
-                    </svg>
-                  </button>
-                  <span>Role</span>
+                  <span>CDP</span>
                 </div>
               </th>
               <th className="py-4 px-4 font-bold text-white dark:text-white xl:pl-11">
@@ -402,11 +390,12 @@ const TableProjet = ({
               .map((project) => {
                 const dateStart = formatDate(project?.startDate);
                 const dateEnd = formatDate(project?.endDate);
-                const userDetails = project.listUsers?.filter(
-                  (user: { userid: string | undefined }) => {
-                    return user?.userid === userConnected?.jti;
-                  }
-                );
+
+                // const userDetails = project.listUsers?.filter(
+                //   (user: { userid: string | undefined }) => {
+                //     return user?.userid === userConnected?.jti;
+                //   }
+                // );
 
                 return (
                   <tr
@@ -476,12 +465,10 @@ const TableProjet = ({
                       </p>
                     </td>
                     <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                      <p className="text-black dark:text-white">
-                        {userDetails?.[0]?.role}
-                      </p>
+                      <ListUsers data={project?.listUsers} type="director" />
                     </td>
                     <td className="border-b  gap-1 border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                      <ListUsers data={project?.listUsers} />
+                      <ListUsers data={project?.listUsers} type="all" />
                     </td>
                     <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
                       <p className="text-black dark:text-white">{dateStart}</p>

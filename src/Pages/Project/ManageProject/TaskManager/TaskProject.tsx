@@ -40,6 +40,7 @@ const TaskProject = () => {
             <div>
               <ListUsers
                 data={projectData?.listUsers ? projectData?.listUsers : []}
+                type="all"
               />
             </div>
           </div>
