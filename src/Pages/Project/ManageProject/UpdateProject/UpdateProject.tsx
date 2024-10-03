@@ -140,6 +140,7 @@ const UpdateProject = () => {
               projectDataToModif.listPhases[i]?.expectedDeliverable,
             startDate: projectDataToModif.listPhases[i]?.startDate,
             endDate: projectDataToModif.listPhases[i]?.endDate,
+            dependantOf: projectDataToModif.listPhases[i].dependantOf,
           });
         }
         setPhaseAndLivrableList(phaseData);

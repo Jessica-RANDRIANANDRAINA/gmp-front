@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import {
   CustomInput,
   CustomSelect,
@@ -22,35 +23,56 @@ const PhasesUpdate = ({
   setPhaseAndLivrableList: React.Dispatch<React.SetStateAction<Array<IPhase>>>;
   projectData: IProjectData;
 }) => {
+  const [phasesNames, setPhasesNames] = useState<Array<string>>(
+    phaseAndLivrableList.map((phase) => phase.phase1)
+  );
+  useEffect(() => {
+    setPhasesNames(phaseAndLivrableList.map((phase) => phase.phase1));
+  }, [phaseAndLivrableList]);
+
   // ADD DEFAULT VALUE IN PHASE LIST
   const handleAddDefaultPhaseList = () => {
     let phaseData: IPhase[] = [
       {
-        // id: uuid4(),
+        id: uuid4(),
         rank: 0,
         phase1: "Conception",
         expectedDeliverable: "Document de cadrage",
+        startDate: projectData?.startDate,
+        endDate: undefined,
+        dependantOf: undefined,
       },
       {
-        // id: uuid4(),
+        id: uuid4(),
         rank: 1,
         phase1: "Réalisation",
         expectedDeliverable: "Signature de mise en production",
+        startDate: undefined,
+        endDate: undefined,
+        dependantOf: undefined,
       },
       {
-        // id: uuid4(),
+        id: uuid4(),
         rank: 2,
         phase1: "Mise en production",
         expectedDeliverable: "Plan de déploiement",
+        startDate: undefined,
+        endDate: undefined,
+        dependantOf: undefined,
       },
       {
-        // id: uuid4(),
+        id: uuid4(),
         rank: 3,
         phase1: "Clôture et maintenance",
         expectedDeliverable: "PV de recette",
+        startDate: undefined,
+        endDate: undefined,
+        dependantOf: undefined,
       },
     ];
     setPhaseAndLivrableList(phaseData);
+    const phasesNamesData = phaseData.map((phase) => phase.phase1);
+    setPhasesNames(phasesNamesData);
   };
   // REMOVE A PHASE TO THE LIST
   const handleRemovePhaseList = (phase1: string) => {
@@ -62,12 +84,12 @@ const PhasesUpdate = ({
 
   const handlePhaseDataChange = (
     label: string,
-    value: string,
-    index: string
+    value: string | undefined,
+    index: number
   ) => {
     setPhaseAndLivrableList((prevList) =>
-      prevList.map((phase) =>
-        phase?.id === index
+      prevList.map((phase, idx) =>
+        idx === index
           ? {
               ...phase,
               [label === "phase"
@@ -76,6 +98,8 @@ const PhasesUpdate = ({
                 ? "expectedDeliverable"
                 : label === "startDate"
                 ? "startDate"
+                : label === "depandantOf"
+                ? "dependantOf"
                 : "endDate"]: value,
             }
           : phase
@@ -127,116 +151,125 @@ const PhasesUpdate = ({
             {phaseAndLivrableList
               ?.filter((phase) => phase?.rank !== undefined)
               ?.sort((a, b) => (a.rank ?? 0) - (b.rank ?? 0))
-              ?.map((phase, index) => (
-                <div key={phase?.id}>
-                  <div className={"flex justify-between"}>
-                    <div className={"underline"}>Phase {index + 1}</div>
-                    <button
-                      type="button"
-                      className={
-                        "text-red-500 decoration-red-500 font-bold hover:font-black"
-                      }
-                      onClick={() => {
-                        handleRemovePhaseList(phase.phase1);
-                      }}
-                    >
-                      Supprimer
-                    </button>
-                  </div>
+              ?.map((phase, index) => {
+                console.log(phasesNames);
+                return (
+                  <div key={phase?.id}>
+                    <div className={"flex justify-between"}>
+                      <div className={"underline"}>Phase {index + 1}</div>
+                      <button
+                        type="button"
+                        className={
+                          "text-red-500 decoration-red-500 font-bold hover:font-black"
+                        }
+                        onClick={() => {
+                          handleRemovePhaseList(phase.phase1);
+                        }}
+                      >
+                        Supprimer
+                      </button>
+                    </div>
 
-                  <div className="grid md:grid-cols-2 gap-4 border-b-2 pb-2 mb-4">
-                    <CustomInput
-                      label="Phase"
-                      type="text"
-                      className="font-bold"
-                      rounded="medium"
-                      placeholder="Ex: conception"
-                      value={phase?.phase1}
-                      onChange={(e) => {
-                        if (phase?.id)
-                          handlePhaseDataChange(
-                            "phase",
-                            e.target.value,
-                            phase?.id
+                    <div className="grid md:grid-cols-2 gap-4 border-b-2 pb-2 mb-4">
+                      <CustomInput
+                        label="Phase"
+                        type="text"
+                        className="font-bold"
+                        rounded="medium"
+                        placeholder="Ex: conception"
+                        value={phase?.phase1}
+                        onChange={(e) => {
+                          if (phase?.id)
+                            handlePhaseDataChange(
+                              "phase",
+                              e.target.value,
+                              index
+                            );
+                        }}
+                        required
+                      />
+                      <CustomInput
+                        label="Livrable(s)"
+                        type="text"
+                        rounded="medium"
+                        placeholder="Ex: dossier de conception"
+                        value={phase?.expectedDeliverable}
+                        onChange={(e) => {
+                          if (phase?.id)
+                            handlePhaseDataChange(
+                              "livrable",
+                              e.target.value,
+                              index
+                            );
+                        }}
+                        required
+                      />
+                      <CustomSelect
+                        className={`md:col-span-2 ${
+                          index === 0 ? "hidden" : ""
+                        }`}
+                        label="Dépendante de"
+                        placeholder="Une phase obligatoire avant celle-ci"
+                        data={phasesNames
+                          ?.slice()
+                          ?.reverse()
+                          ?.filter((p) => p != phase?.phase1)}
+                        value={phaseAndLivrableList[index].dependantOf}
+                        onValueChange={(e) => {
+                          const phaseAssociated = phaseAndLivrableList.filter(
+                            (phase) => {
+                              return phase.phase1 === e;
+                            }
                           );
-                      }}
-                      required
-                    />
-                    <CustomInput
-                      label="Livrable(s)"
-                      type="text"
-                      rounded="medium"
-                      placeholder="Ex: dossier de conception"
-                      value={phase?.expectedDeliverable}
-                      onChange={(e) => {
-                        if (phase?.id)
                           handlePhaseDataChange(
-                            "livrable",
-                            e.target.value,
-                            phase?.id
+                            "depandantOf",
+                            phaseAssociated?.[0]?.id,
+                            index
                           );
-                      }}
-                      required
-                    />
-                    {/* <CustomSelect
-                      className={`md:col-span-2 ${index === 0 ? "hidden" : ""}`}
-                      label="Dépendante de"
-                      placeholder="Une phase obligatoire avant celle-ci"
-                      data={phasesNames?.filter((p) => p != phase?.phase1)}
-                      value={phaseAndLivrableList[index].dependantOf}
-                      onValueChange={(e) => {
-                        const phaseAssociated = phaseAndLivrableList.filter(
-                          (phase) => {
-                            return phase.phase1 === e;
-                          }
-                        );
-                        handlePhaseDataChange(
-                          "depandantOf",
-                          phaseAssociated?.[0]?.id,
-                          index
-                        );
-                        console.log(phaseAssociated?.[0]);
-                      }}
-                    /> */}
-                    <CustomInput
-                      label="Date début"
-                      type="date"
-                      rounded="medium"
-                      min={projectData?.startDate?.split("T")[0]}
-                      value={
-                        phase?.startDate ? phase?.startDate?.split("T")[0] : 0
-                      }
-                      onChange={(e) => {
-                        if (phase?.id)
-                          handlePhaseDataChange(
-                            "startDate",
-                            e.target.value,
-                            phase?.id
-                          );
-                      }}
-                    />
-                    <CustomInput
-                      label="Date fin"
-                      type="date"
-                      rounded="medium"
-                      min={
-                        phase?.startDate
-                          ? phase?.startDate.split("T")[0]
-                          : undefined
-                      }
-                      value={phase?.endDate ? phase?.endDate?.split("T")[0] : 0}
-                      onChange={(e) => {
-                        if (phase?.id)
-                          handlePhaseDataChange(
-                            "endDate",
-                            e.target.value,
-                            phase?.id
-                          );
-                      }}
-                    />
+                        }}
+                      />
+                      <CustomInput
+                        label="Date début"
+                        type="date"
+                        rounded="medium"
+                        min={projectData?.startDate?.split("T")[0]}
+                        value={
+                          phase?.startDate ? phase?.startDate?.split("T")[0] : 0
+                        }
+                        onChange={(e) => {
+                          if (phase?.id)
+                            handlePhaseDataChange(
+                              "startDate",
+                              e.target.value,
+                              index
+                            );
+                        }}
+                      />
+                      <CustomInput
+                        label="Date fin"
+                        type="date"
+                        rounded="medium"
+                        min={
+                          phase?.startDate
+                            ? phase?.startDate.split("T")[0]
+                            : undefined
+                        }
+                        value={
+                          phase?.endDate ? phase?.endDate?.split("T")[0] : 0
+                        }
+                        onChange={(e) => {
+                          if (phase?.id)
+                            handlePhaseDataChange(
+                              "endDate",
+                              e.target.value,
+                              index
+                            );
+                        }}
+                      />
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             <button
               type="button"
               onClick={handleAddPhaseList}
