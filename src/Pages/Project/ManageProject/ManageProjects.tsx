@@ -3,7 +3,10 @@ import { useNavigate } from "react-router-dom";
 import ProjectLayout from "../../../layout/ProjectLayout";
 import { TableProjet } from "../../../components/Tables/projets";
 import ArchiveProject from "../../../components/Modals/Project/ArchiveProject";
-import { getProjectByUserId } from "../../../services/Project/ProjectServices";
+import {
+  // getProjectByUserId,
+  getAllLevelProjectByUserId,
+} from "../../../services/Project/ProjectServices";
 import { decodeToken } from "../../../services/Function/TokenService";
 
 const ManageProjects = () => {
@@ -31,13 +34,14 @@ const ManageProjects = () => {
   const fetchProject = async () => {
     const decode = decodeToken("pr");
 
-    const project = await getProjectByUserId(decode?.jti);
+    // const project = await getProjectByUserId(decode?.jti);
+    const project = await getAllLevelProjectByUserId(decode?.jti);
     setProjectData(project);
   };
 
   useEffect(() => {
     fetchProject();
-    console.log("first")
+    console.log("first");
   }, [showModalDelete]);
 
   return (

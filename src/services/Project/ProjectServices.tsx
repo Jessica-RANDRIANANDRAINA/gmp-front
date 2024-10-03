@@ -19,9 +19,26 @@ export const getProjectByUserId = async (userid: string | undefined) => {
     const response = await axios.get(`${endPoint}/api/Project/user/${userid}`);
     return response.data;
   } catch (error) {
-    throw new Error(`Error at fetching project by user service: ${error}`);
+    throw new Error(`Error at fetching project by user id service: ${error}`);
   }
 };
+
+// get project by user id (project related to the user and all his subordinates)
+export const getAllLevelProjectByUserId = async (
+  userid: string | undefined
+) => {
+  try {
+    const response = await axios.get(
+      `${endPoint}/api/Project/user/${userid}/all-level`
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(
+      `Error at fetching all level project by user id service: ${error}`
+    );
+  }
+};
+
 //get project by project id
 export const getProjectById = async (projectid: string) => {
   try {
