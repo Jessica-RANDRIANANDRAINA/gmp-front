@@ -12,12 +12,18 @@ const TableProjet = ({
   setProjectsToDelete,
   setIdProjectForDetails,
   setShowModalDelete,
+  setGoToDetails,
+  setGoToHistoric,
+  setProjectsSelected,
 }: {
   data: Array<any>;
   setProjectToModif: Function;
   setIdProjectForDetails: Function;
   setProjectsToDelete: React.Dispatch<React.SetStateAction<Array<string>>>;
+  setProjectsSelected: React.Dispatch<React.SetStateAction<Array<string>>>;
   setShowModalDelete: React.Dispatch<React.SetStateAction<boolean>>;
+  setGoToDetails: React.Dispatch<React.SetStateAction<boolean>>;
+  setGoToHistoric: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const [entriesPerPage, setEntriesPerPage] = useState(5);
   const [actualPage, setActualPage] = useState(1);
@@ -295,17 +301,24 @@ const TableProjet = ({
           <CustomSelect
             data={
               projectSelected.length > 1
-                ? ["supprimer"]
-                : ["Modifier", "Supprimer"]
+                ? ["Supprimer"]
+                : // : ["Modifier", "Supprimer", "Gérer", "Détails", "Historique"]
+                  ["Modifier", "Supprimer", "Détails", "Historique"]
             }
             className="mb-2  "
             placeholder="Actions"
             onValueChange={(e) => {
               if (e.includes("Modifier")) {
                 setProjectToModif(projectSelected);
-              } else {
+              } else if (e.includes("Supprimer")) {
                 setProjectsToDelete(projectSelected);
                 setShowModalDelete(true);
+              } else if (e.includes("Détails")) {
+                setProjectsSelected(projectSelected);
+                setGoToDetails(true);
+              } else if (e.includes("Historique")) {
+                setProjectsSelected(projectSelected);
+                setGoToHistoric(true);
               }
             }}
           />

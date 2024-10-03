@@ -13,8 +13,11 @@ const ManageProjects = () => {
   const [projectData, setProjectData] = useState([]);
   const [projectToModif, setProjectToModif] = useState([]);
   const [projectsToDetele, setProjectsToDelete] = useState<Array<string>>([]);
+  const [projectsSelected, setProjectsSelected] = useState<Array<string>>([]);
   const [idProjectForDetails, setIdProjectForDetails] = useState("");
   const [showModalDelete, setShowModalDelete] = useState(false);
+  const [goToDetails, setGoToDetails] = useState(false);
+  const [goToHistoric, setGoToHistoric] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,6 +26,16 @@ const ManageProjects = () => {
       console.log("details: ", idProjectForDetails);
     }
   }, [idProjectForDetails]);
+
+  useEffect(() => {
+    if (projectsSelected.length > 0) {
+      if (goToDetails) {
+        navigate(`/gmp/project/details/${projectsSelected?.[0]}/details`);
+      } else if (goToHistoric) {
+        navigate(`/gmp/project/details/${projectsSelected?.[0]}/historic`);
+      }
+    }
+  }, [goToDetails, goToHistoric]);
 
   useEffect(() => {
     if (projectToModif.length > 0) {
@@ -46,7 +59,7 @@ const ManageProjects = () => {
 
   return (
     <ProjectLayout>
-      <div className="mx-2 p-4 md:mx-10">
+      <div className="mx-2 p-4 md:mx-10 ">
         <>
           {/* ===== ADD PROJECT START =====*/}
           <div className="w-full mb-2 flex justify-end  items-center">
@@ -81,6 +94,9 @@ const ManageProjects = () => {
             setProjectToModif={setProjectToModif}
             setProjectsToDelete={setProjectsToDelete}
             setIdProjectForDetails={setIdProjectForDetails}
+            setGoToDetails={setGoToDetails}
+            setGoToHistoric={setGoToHistoric}
+            setProjectsSelected={setProjectsSelected}
           />
           {/* ===== TABLE PROJECT LIST END =====*/}
           {/* ===== MODAL DELETE START ===== */}

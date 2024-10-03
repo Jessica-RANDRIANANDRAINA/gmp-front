@@ -11,9 +11,11 @@ import ManageProjects from "./Pages/Project/ManageProject/ManageProjects";
 import AddProject from "./Pages/Project/ManageProject/AddProject/AddProject";
 import UpdateProject from "./Pages/Project/ManageProject/UpdateProject/UpdateProject";
 import Hebdo from "./Pages/Project/Hebdo";
-import DetailsProject from "./Pages/Project/ManageProject/DetailsProject";
 import TaskProject from "./Pages/Project/ManageProject/TaskManager/TaskProject";
 import PhaseAdvancement from "./Pages/Project/ManageProject/TaskManager/PhaseAdvancement";
+import DetailsAndHistoricProject from "./Pages/Project/ManageProject/DetailsAndHistoric/Index";
+import DetailsProject from "./Pages/Project/ManageProject/DetailsAndHistoric/DetailsProject";
+import HistoricProject from "./Pages/Project/ManageProject/DetailsAndHistoric/HistoricProject";
 import "./App.css";
 
 const App = () => {
@@ -79,7 +81,29 @@ const App = () => {
           element={
             <>
               <PageTitle title="G.M.P" />
-              <DetailsProject />
+              <DetailsAndHistoricProject />
+            </>
+          }
+          children={
+            <>
+              <Route
+                path="/gmp/project/details/:projectId/historic"
+                element={
+                  <>
+                    <PageTitle title="G.M.P" />
+                    <HistoricProject />
+                  </>
+                }
+              />
+              <Route
+                path="/gmp/project/details/:projectId/details"
+                element={
+                  <>
+                    <PageTitle title="G.M.P" />
+                    <DetailsProject />
+                  </>
+                }
+              />
             </>
           }
         />
