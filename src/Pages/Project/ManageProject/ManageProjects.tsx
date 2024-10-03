@@ -2,11 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ProjectLayout from "../../../layout/ProjectLayout";
 import { TableProjet } from "../../../components/Tables/projets";
-import {
-  Modal,
-  ModalBody,
-  ModalFooter,
-} from "../../../components/Modals/Modal";
+import ArchiveProject from "../../../components/Modals/Project/ArchiveProject";
 import { getProjectByUserId } from "../../../services/Project/ProjectServices";
 import { decodeToken } from "../../../services/Function/TokenService";
 
@@ -41,7 +37,8 @@ const ManageProjects = () => {
 
   useEffect(() => {
     fetchProject();
-  }, []);
+    console.log("first")
+  }, [showModalDelete]);
 
   return (
     <ProjectLayout>
@@ -84,38 +81,11 @@ const ManageProjects = () => {
           {/* ===== TABLE PROJECT LIST END =====*/}
           {/* ===== MODAL DELETE START ===== */}
           {showModalDelete && (
-            <Modal
-              modalOpen={showModalDelete}
-              setModalOpen={setShowModalDelete}
-              header={`${
-                projectsToDetele.length === 1
-                  ? "Voulez vous vraiment archiver ce projet ?"
-                  : `Voulez vous vraiment archiver ces ${projectsToDetele.length} projets ?`
-              }`}
-              heightSize="40vh"
-              widthSize="medium"
-            >
-              <ModalBody>
-                <></>
-              </ModalBody>
-              <ModalFooter>
-                <button
-                  type="button"
-                  className="border text-xs p-2 rounded-md  font-semibold bg-transparent border-transparent hover:bg-zinc-100"
-                  onClick={() => {
-                    setShowModalDelete(false);
-                  }}
-                >
-                  Annuler
-                </button>
-                <button
-                  type="button"
-                  className="border text-xs p-2 rounded-md bg-green-700 text-white font-semibold"
-                >
-                  Archiver
-                </button>
-              </ModalFooter>
-            </Modal>
+            <ArchiveProject
+              showModalDelete={showModalDelete}
+              setShowModalDelete={setShowModalDelete}
+              projectsToDetele={projectsToDetele}
+            />
           )}
           {/* ===== MODAL DELETE END ===== */}
         </>

@@ -66,9 +66,7 @@ export const updateProject = async (
 // archive project(s)
 export const archiveProject = async (ids: Array<string>) => {
   try {
-    const response = await axios.put(`${endPoint}/api/Project/archives`, {
-      data: ids,
-    });
+    const response = await axios.put(`${endPoint}/api/Project/archives`, ids);
     if (response.status === 200) {
       return {
         state: "success",
