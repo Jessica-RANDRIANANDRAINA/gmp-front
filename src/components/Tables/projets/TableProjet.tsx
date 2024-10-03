@@ -26,13 +26,93 @@ const TableProjet = ({
     title: "",
     member: "",
   });
+  const [dataSorted, setDataSorted] = useState({
+    title: 0,
+    startDate: 0,
+    endDate: 0,
+    completionPercentage: 0,
+    priority: 0,
+    criticality: 0,
+  });
 
   const [isAllSelected, setIsAllSelected] = useState(false);
   const [projectSelected, setProjectSelected] = useState<string[]>([]);
   // const userConnected = decodeToken("pr");
 
+  const sortedData = data.slice().sort((a: IProjectData, b: IProjectData) => {
+    // sort by title
+    if (dataSorted.title === 1) {
+      return a.title.localeCompare(b.title);
+    } else if (dataSorted.title === 2) {
+      return b.title.localeCompare(a.title);
+    }
+
+    // sort by start date
+    if (dataSorted.startDate === 1) {
+      return a.startDate?.localeCompare(b.startDate ?? "") || 0;
+    } else if (dataSorted.startDate === 2) {
+      return b.startDate?.localeCompare(a.startDate ?? "") || 0;
+    }
+
+    //sort by end date
+    if (dataSorted.endDate === 1) {
+      if (a.endDate === null) return 1;
+      if (b.endDate === null) return -1;
+      return a.endDate?.localeCompare(b.endDate ?? "") || 0;
+    } else if (dataSorted.endDate === 2) {
+      if (a.endDate === null) return 1;
+      if (b.endDate === null) return -1;
+      return b.endDate?.localeCompare(a.endDate ?? "") || 0;
+    }
+
+    // sort by completion percentage
+    if (dataSorted.completionPercentage === 1) {
+      if (a.completionPercentage === undefined) return 1;
+      if (b.completionPercentage === undefined) return -1;
+      return a.completionPercentage - b.completionPercentage;
+    } else if (dataSorted.completionPercentage === 2) {
+      if (a.completionPercentage === undefined) return 1;
+      if (b.completionPercentage === undefined) return -1;
+      return b.completionPercentage - a.completionPercentage;
+    }
+
+    // sort by priority
+    const priorityOrder: { [key: string]: number } = {
+      Faible: 1,
+      Moyenne: 2,
+      Elevée: 3,
+    };
+    if (dataSorted.priority === 1) {
+      const priorityA = priorityOrder[a.priority] ?? 0;
+      const priorityB = priorityOrder[b.priority] ?? 0;
+      return priorityA - priorityB;
+    } else if (dataSorted.priority === 2) {
+      const priorityA = priorityOrder[a.priority] ?? 0;
+      const priorityB = priorityOrder[b.priority] ?? 0;
+      return priorityB - priorityA;
+    }
+
+    // sort by criticality
+    const criticalityOrder: { [key: string]: number } = {
+      "Moins urgente": 1,
+      Urgente: 2,
+      "Très urgente": 3,
+    };
+    if (dataSorted.criticality === 1) {
+      const criticalityA = criticalityOrder[a.criticality] ?? 0;
+      const criticalityB = criticalityOrder[b.criticality] ?? 0;
+      return criticalityA - criticalityB;
+    } else if (dataSorted.criticality === 2) {
+      const criticalityA = criticalityOrder[a.criticality] ?? 0;
+      const criticalityB = criticalityOrder[b.criticality] ?? 0;
+      return criticalityB - criticalityA;
+    }
+
+    return 0;
+  });
+
   // filter data by title and member for the title search
-  const filteredData = data?.filter((item: IProjectData) => {
+  const filteredData = sortedData?.filter((item: IProjectData) => {
     const lowerCaseSearchTitle = search.title.toLowerCase();
     const lowerCaseSearchName = search.member.toLowerCase();
 
@@ -266,72 +346,193 @@ const TableProjet = ({
                 </button>
               </th>
               <th className="py-4 px-4 font-bold text-white dark:text-white xl:pl-11">
-                <div className="flex items-center">
-                  <button
-                    className={`
-                     transform transition-transform duration-200`}
-                  >
-                    <svg
-                      className="fill-current"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M5.29289 8.29289C5.68342 7.90237 6.31658 7.90237 6.70711 8.29289L12 13.5858L17.2929 8.29289C17.6834 7.90237 18.3166 7.90237 18.7071 8.29289C19.0976 8.68342 19.0976 9.31658 18.7071 9.70711L12.7071 15.7071C12.3166 16.0976 11.6834 16.0976 11.2929 15.7071L5.29289 9.70711C4.90237 9.31658 4.90237 8.68342 5.29289 8.29289Z"
-                        fill=""
-                      />
-                    </svg>
-                  </button>
+                <div className="flex items-center gap-1">
                   <span>Titre</span>
-                </div>
-              </th>
-              <th className="py-4 px-4 font-bold text-white dark:text-white xl:pl-11">
-                <div className="flex items-center">
                   <button
                     className={`
                      transform transition-transform duration-200`}
+                    onClick={() => {
+                      setDataSorted({
+                        ...dataSorted,
+                        startDate: 0,
+                        endDate: 0,
+                        completionPercentage: 0,
+                        criticality: 0,
+                        priority: 0,
+                        title: dataSorted.title < 2 ? dataSorted.title + 1 : 0,
+                      });
+                    }}
                   >
                     <svg
-                      className="fill-current"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
+                      className="fill-white"
+                      height="15"
+                      width="15"
+                      version="1.1"
+                      id="Layer_1"
+                      viewBox="0 0 425 425"
                     >
-                      <path
-                        d="M5.29289 8.29289C5.68342 7.90237 6.31658 7.90237 6.70711 8.29289L12 13.5858L17.2929 8.29289C17.6834 7.90237 18.3166 7.90237 18.7071 8.29289C19.0976 8.68342 19.0976 9.31658 18.7071 9.70711L12.7071 15.7071C12.3166 16.0976 11.6834 16.0976 11.2929 15.7071L5.29289 9.70711C4.90237 9.31658 4.90237 8.68342 5.29289 8.29289Z"
-                        fill=""
-                      />
+                      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                      <g
+                        id="SVGRepo_tracerCarrier"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      ></g>
+                      <g id="SVGRepo_iconCarrier">
+                        {" "}
+                        <g>
+                          {" "}
+                          <polygon
+                            className={`${
+                              dataSorted.title === 0
+                                ? "fill-white"
+                                : dataSorted.title === 1
+                                ? "fill-black"
+                                : "fill-primaryGreen dark:fill-darkgreen"
+                            }`}
+                            points="212.5,0 19.371,192.5 405.629,192.5 "
+                          ></polygon>{" "}
+                          <polygon
+                            className={`${
+                              dataSorted.title === 0
+                                ? "fill-white"
+                                : dataSorted.title === 1
+                                ? "fill-primaryGreen dark:fill-darkgreen"
+                                : "fill-black"
+                            }`}
+                            points="212.5,425 405.629,232.5 19.371,232.5 "
+                          ></polygon>{" "}
+                        </g>{" "}
+                      </g>
                     </svg>
                   </button>
+                </div>
+              </th>
+              <th className="py-4 px-4 font-bold text-white dark:text-white xl:pl-11">
+                <div className="flex items-center gap-1">
                   <span>Priorité</span>
-                </div>
-              </th>
-              <th className="py-4 px-4 font-bold text-white dark:text-white xl:pl-11">
-                <div className="flex items-center">
                   <button
                     className={`
                      transform transition-transform duration-200`}
+                    onClick={() => {
+                      setDataSorted({
+                        ...dataSorted,
+                        startDate: 0,
+                        endDate: 0,
+                        completionPercentage: 0,
+                        criticality: 0,
+                        title: 0,
+                        priority:
+                          dataSorted.priority < 2 ? dataSorted.priority + 1 : 0,
+                      });
+                    }}
                   >
                     <svg
-                      className="fill-current"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
+                      className="fill-white"
+                      height="15"
+                      width="15"
+                      version="1.1"
+                      id="Layer_1"
+                      viewBox="0 0 425 425"
                     >
-                      <path
-                        d="M5.29289 8.29289C5.68342 7.90237 6.31658 7.90237 6.70711 8.29289L12 13.5858L17.2929 8.29289C17.6834 7.90237 18.3166 7.90237 18.7071 8.29289C19.0976 8.68342 19.0976 9.31658 18.7071 9.70711L12.7071 15.7071C12.3166 16.0976 11.6834 16.0976 11.2929 15.7071L5.29289 9.70711C4.90237 9.31658 4.90237 8.68342 5.29289 8.29289Z"
-                        fill=""
-                      />
+                      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                      <g
+                        id="SVGRepo_tracerCarrier"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      ></g>
+                      <g id="SVGRepo_iconCarrier">
+                        {" "}
+                        <g>
+                          {" "}
+                          <polygon
+                            className={`${
+                              dataSorted.priority === 0
+                                ? "fill-white"
+                                : dataSorted.priority === 1
+                                ? "fill-black"
+                                : "fill-primaryGreen dark:fill-darkgreen"
+                            }`}
+                            points="212.5,0 19.371,192.5 405.629,192.5 "
+                          ></polygon>{" "}
+                          <polygon
+                            className={`${
+                              dataSorted.priority === 0
+                                ? "fill-white"
+                                : dataSorted.priority === 1
+                                ? "fill-primaryGreen dark:fill-darkgreen"
+                                : "fill-black"
+                            }`}
+                            points="212.5,425 405.629,232.5 19.371,232.5 "
+                          ></polygon>{" "}
+                        </g>{" "}
+                      </g>
                     </svg>
                   </button>
+                </div>
+              </th>
+              <th className="py-4 px-4 font-bold text-white dark:text-white xl:pl-11">
+                <div className="flex items-center gap-1">
                   <span>Criticité</span>
+                  <button
+                    className={`
+                     transform transition-transform duration-200`}
+                    onClick={() => {
+                      setDataSorted({
+                        ...dataSorted,
+                        startDate: 0,
+                        endDate: 0,
+                        completionPercentage: 0,
+                        priority: 0,
+                        title: 0,
+                        criticality:
+                          dataSorted.criticality < 2
+                            ? dataSorted.criticality + 1
+                            : 0,
+                      });
+                    }}
+                  >
+                    <svg
+                      className="fill-white"
+                      height="15"
+                      width="15"
+                      version="1.1"
+                      id="Layer_1"
+                      viewBox="0 0 425 425"
+                    >
+                      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                      <g
+                        id="SVGRepo_tracerCarrier"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      ></g>
+                      <g id="SVGRepo_iconCarrier">
+                        {" "}
+                        <g>
+                          {" "}
+                          <polygon
+                            className={`${
+                              dataSorted.criticality === 0
+                                ? "fill-white"
+                                : dataSorted.criticality === 1
+                                ? "fill-black"
+                                : "fill-primaryGreen dark:fill-darkgreen"
+                            }`}
+                            points="212.5,0 19.371,192.5 405.629,192.5 "
+                          ></polygon>{" "}
+                          <polygon
+                            className={`${
+                              dataSorted.criticality === 0
+                                ? "fill-white"
+                                : dataSorted.criticality === 1
+                                ? "fill-primaryGreen dark:fill-darkgreen"
+                                : "fill-black"
+                            }`}
+                            points="212.5,425 405.629,232.5 19.371,232.5 "
+                          ></polygon>{" "}
+                        </g>{" "}
+                      </g>
+                    </svg>
+                  </button>
                 </div>
               </th>
               <th className="py-4 px-4 font-bold text-white dark:text-white xl:pl-11">
@@ -345,72 +546,196 @@ const TableProjet = ({
                 </div>
               </th>
               <th className="py-4 px-4 font-bold text-white dark:text-white xl:pl-11">
-                <div className="flex items-center">
+                <div className="flex items-center gap-1">
+                  <span>Date début</span>
                   <button
                     className={`
                      transform transition-transform duration-200`}
+                    onClick={() => {
+                      setDataSorted({
+                        ...dataSorted,
+                        title: 0,
+                        endDate: 0,
+                        completionPercentage: 0,
+                        criticality: 0,
+                        priority: 0,
+                        startDate:
+                          dataSorted.startDate < 2
+                            ? dataSorted.startDate + 1
+                            : 0,
+                      });
+                    }}
                   >
                     <svg
-                      className="fill-current"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
+                      className="fill-white"
+                      height="15"
+                      width="15"
+                      version="1.1"
+                      id="Layer_1"
+                      viewBox="0 0 425 425"
                     >
-                      <path
-                        d="M5.29289 8.29289C5.68342 7.90237 6.31658 7.90237 6.70711 8.29289L12 13.5858L17.2929 8.29289C17.6834 7.90237 18.3166 7.90237 18.7071 8.29289C19.0976 8.68342 19.0976 9.31658 18.7071 9.70711L12.7071 15.7071C12.3166 16.0976 11.6834 16.0976 11.2929 15.7071L5.29289 9.70711C4.90237 9.31658 4.90237 8.68342 5.29289 8.29289Z"
-                        fill=""
-                      />
+                      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                      <g
+                        id="SVGRepo_tracerCarrier"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      ></g>
+                      <g id="SVGRepo_iconCarrier">
+                        {" "}
+                        <g>
+                          {" "}
+                          <polygon
+                            className={`${
+                              dataSorted.startDate === 0
+                                ? "fill-white"
+                                : dataSorted.startDate === 1
+                                ? "fill-black"
+                                : "fill-primaryGreen dark:fill-darkgreen"
+                            }`}
+                            points="212.5,0 19.371,192.5 405.629,192.5 "
+                          ></polygon>{" "}
+                          <polygon
+                            className={`${
+                              dataSorted.startDate === 0
+                                ? "fill-white"
+                                : dataSorted.startDate === 1
+                                ? "fill-primaryGreen dark:fill-darkgreen"
+                                : "fill-black"
+                            }`}
+                            points="212.5,425 405.629,232.5 19.371,232.5 "
+                          ></polygon>{" "}
+                        </g>{" "}
+                      </g>
                     </svg>
                   </button>
-                  <span>Date début</span>
                 </div>
               </th>
               <th className="py-4 px-4 font-bold text-white dark:text-white xl:pl-11">
-                <div className="flex items-center">
+                <div className="flex items-center gap-1">
+                  <span>Date de fin</span>
                   <button
                     className={`
                      transform transition-transform duration-200`}
+                    onClick={() => {
+                      setDataSorted({
+                        ...dataSorted,
+                        title: 0,
+                        startDate: 0,
+                        completionPercentage: 0,
+                        criticality: 0,
+                        priority: 0,
+                        endDate:
+                          dataSorted.endDate < 2 ? dataSorted.endDate + 1 : 0,
+                      });
+                    }}
                   >
                     <svg
-                      className="fill-current"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
+                      className="fill-white"
+                      height="15"
+                      width="15"
+                      version="1.1"
+                      id="Layer_1"
+                      viewBox="0 0 425 425"
                     >
-                      <path
-                        d="M5.29289 8.29289C5.68342 7.90237 6.31658 7.90237 6.70711 8.29289L12 13.5858L17.2929 8.29289C17.6834 7.90237 18.3166 7.90237 18.7071 8.29289C19.0976 8.68342 19.0976 9.31658 18.7071 9.70711L12.7071 15.7071C12.3166 16.0976 11.6834 16.0976 11.2929 15.7071L5.29289 9.70711C4.90237 9.31658 4.90237 8.68342 5.29289 8.29289Z"
-                        fill=""
-                      />
+                      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                      <g
+                        id="SVGRepo_tracerCarrier"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      ></g>
+                      <g id="SVGRepo_iconCarrier">
+                        {" "}
+                        <g>
+                          {" "}
+                          <polygon
+                            className={`${
+                              dataSorted.endDate === 0
+                                ? "fill-white"
+                                : dataSorted.endDate === 1
+                                ? "fill-black"
+                                : "fill-primaryGreen dark:fill-darkgreen"
+                            }`}
+                            points="212.5,0 19.371,192.5 405.629,192.5 "
+                          ></polygon>{" "}
+                          <polygon
+                            className={`${
+                              dataSorted.endDate === 0
+                                ? "fill-white"
+                                : dataSorted.endDate === 1
+                                ? "fill-primaryGreen dark:fill-darkgreen"
+                                : "fill-black"
+                            }`}
+                            points="212.5,425 405.629,232.5 19.371,232.5 "
+                          ></polygon>{" "}
+                        </g>{" "}
+                      </g>
                     </svg>
                   </button>
-                  <span>Date de fin</span>
                 </div>
               </th>
               <th className="py-4 px-4  font-bold text-white dark:text-white xl:pl-11">
-                <div className="flex items-center">
+                <div className="flex items-center gap-1">
+                  <span>Avancement</span>
                   <button
                     className={`
                      transform transition-transform duration-200`}
+                    onClick={() => {
+                      setDataSorted({
+                        ...dataSorted,
+                        title: 0,
+                        startDate: 0,
+                        endDate: 0,
+                        criticality: 0,
+                        priority: 0,
+                        completionPercentage:
+                          dataSorted.completionPercentage < 2
+                            ? dataSorted.completionPercentage + 1
+                            : 0,
+                      });
+                    }}
                   >
                     <svg
-                      className="fill-current"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
+                      className="fill-white"
+                      height="15"
+                      width="15"
+                      version="1.1"
+                      id="Layer_1"
+                      viewBox="0 0 425 425"
                     >
-                      <path
-                        d="M5.29289 8.29289C5.68342 7.90237 6.31658 7.90237 6.70711 8.29289L12 13.5858L17.2929 8.29289C17.6834 7.90237 18.3166 7.90237 18.7071 8.29289C19.0976 8.68342 19.0976 9.31658 18.7071 9.70711L12.7071 15.7071C12.3166 16.0976 11.6834 16.0976 11.2929 15.7071L5.29289 9.70711C4.90237 9.31658 4.90237 8.68342 5.29289 8.29289Z"
-                        fill=""
-                      />
+                      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                      <g
+                        id="SVGRepo_tracerCarrier"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      ></g>
+                      <g id="SVGRepo_iconCarrier">
+                        {" "}
+                        <g>
+                          {" "}
+                          <polygon
+                            className={`${
+                              dataSorted.completionPercentage === 0
+                                ? "fill-white"
+                                : dataSorted.completionPercentage === 1
+                                ? "fill-black"
+                                : "fill-primaryGreen dark:fill-darkgreen"
+                            }`}
+                            points="212.5,0 19.371,192.5 405.629,192.5 "
+                          ></polygon>{" "}
+                          <polygon
+                            className={`${
+                              dataSorted.completionPercentage === 0
+                                ? "fill-white"
+                                : dataSorted.completionPercentage === 1
+                                ? "fill-primaryGreen dark:fill-darkgreen"
+                                : "fill-black"
+                            }`}
+                            points="212.5,425 405.629,232.5 19.371,232.5 "
+                          ></polygon>{" "}
+                        </g>{" "}
+                      </g>
                     </svg>
                   </button>
-                  <span>Avancement</span>
                 </div>
               </th>
             </tr>
