@@ -1,4 +1,7 @@
-import { CustomInput } from "../../../../../components/UIElements";
+import {
+  CustomInput,
+  CustomSelect,
+} from "../../../../../components/UIElements";
 import { IPhase, IProjectData } from "../../../../../types/Project";
 import { v4 as uuid4 } from "uuid";
 import { Notyf } from "notyf";
@@ -141,10 +144,11 @@ const PhasesUpdate = ({
                     </button>
                   </div>
 
-                  <div className="grid md:grid-cols-2 gap-4">
+                  <div className="grid md:grid-cols-2 gap-4 border-b-2 pb-2 mb-4">
                     <CustomInput
                       label="Phase"
                       type="text"
+                      className="font-bold"
                       rounded="medium"
                       placeholder="Ex: conception"
                       value={phase?.phase1}
@@ -174,6 +178,26 @@ const PhasesUpdate = ({
                       }}
                       required
                     />
+                    {/* <CustomSelect
+                      className={`md:col-span-2 ${index === 0 ? "hidden" : ""}`}
+                      label="Dépendante de"
+                      placeholder="Une phase obligatoire avant celle-ci"
+                      data={phasesNames?.filter((p) => p != phase?.phase1)}
+                      value={phaseAndLivrableList[index].dependantOf}
+                      onValueChange={(e) => {
+                        const phaseAssociated = phaseAndLivrableList.filter(
+                          (phase) => {
+                            return phase.phase1 === e;
+                          }
+                        );
+                        handlePhaseDataChange(
+                          "depandantOf",
+                          phaseAssociated?.[0]?.id,
+                          index
+                        );
+                        console.log(phaseAssociated?.[0]);
+                      }}
+                    /> */}
                     <CustomInput
                       label="Date début"
                       type="date"

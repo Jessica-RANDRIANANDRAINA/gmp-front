@@ -43,11 +43,7 @@ const DropdownUser = (userConnected: any) => {
   const handleLogOut = () => {
     try {
       logout().then(() => {
-        if (pathname.includes("gmp")) {
-          navigate("/");
-        } else {
-          navigate("/admin");
-        }
+        navigate("/");
       });
       console.log("loged out");
     } catch (error) {

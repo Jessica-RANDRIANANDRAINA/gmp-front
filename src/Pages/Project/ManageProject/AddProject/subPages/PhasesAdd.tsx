@@ -40,7 +40,7 @@ const PhasesAdd = ({
         expectedDeliverable: "Document de cadrage",
         startDate: projectData?.startDate,
         endDate: undefined,
-        dependantOf: undefined
+        dependantOf: undefined,
       },
       {
         id: uuid4(),
@@ -49,7 +49,7 @@ const PhasesAdd = ({
         expectedDeliverable: "Signature de mise en production",
         startDate: undefined,
         endDate: undefined,
-        dependantOf: undefined
+        dependantOf: undefined,
       },
       {
         id: uuid4(),
@@ -58,7 +58,7 @@ const PhasesAdd = ({
         expectedDeliverable: "Plan de déploiement",
         startDate: undefined,
         endDate: undefined,
-        dependantOf: undefined
+        dependantOf: undefined,
       },
       {
         id: uuid4(),
@@ -67,7 +67,7 @@ const PhasesAdd = ({
         expectedDeliverable: "PV de recette",
         startDate: undefined,
         endDate: projectData?.endDate ?? undefined,
-        dependantOf: undefined
+        dependantOf: undefined,
       },
     ];
     setPhaseAndLivrableList(phaseData);
@@ -219,9 +219,10 @@ const PhasesAdd = ({
                   </button>
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-4 border-b pb-2 mb-4">
+                <div className="grid md:grid-cols-2 gap-4 border-b-2 pb-2 mb-4">
                   <CustomInput
                     label="Phase"
+                    className="font-bold"
                     type="text"
                     rounded="medium"
                     placeholder="Ex: conception"
