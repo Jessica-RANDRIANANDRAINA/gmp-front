@@ -301,16 +301,16 @@ const TableProjet = ({
           <CustomSelect
             data={
               projectSelected.length > 1
-                ? ["Supprimer"]
+                ? ["Archiver"]
                 : // : ["Modifier", "Supprimer", "Gérer", "Détails", "Historique"]
-                  ["Modifier", "Supprimer", "Détails", "Historique"]
+                  ["Modifier", "Archiver", "Détails", "Historique"]
             }
             className="mb-2  "
             placeholder="Actions"
             onValueChange={(e) => {
               if (e.includes("Modifier")) {
                 setProjectToModif(projectSelected);
-              } else if (e.includes("Supprimer")) {
+              } else if (e.includes("Archiver")) {
                 setProjectsToDelete(projectSelected);
                 setShowModalDelete(true);
               } else if (e.includes("Détails")) {
