@@ -47,13 +47,16 @@ const TeamProjectUpdate = ({
             <div>
               <div>Chef de projet</div>
               <div className="hide-scrollbar">
-                <CutomInputUserSearch
-                  placeholder="Recherche"
-                  label="Assigner"
-                  userSelected={userTeam}
-                  setUserSelected={setUserTeam}
-                  role="director"
-                />
+                {userTeam?.filter((team) => team.role === "director").length ===
+                  0 && (
+                  <CutomInputUserSearch
+                    placeholder="Recherche"
+                    label="Assigner"
+                    userSelected={userTeam}
+                    setUserSelected={setUserTeam}
+                    role="director"
+                  />
+                )}
                 <div className="flex gap-4 mt-2 flex-wrap">
                   {userTeam
                     ?.filter((team) => team.role === "director")
@@ -82,7 +85,7 @@ const TeamProjectUpdate = ({
             {/* ===== PROJECT DIRECTOR END ===== */}
             {/* ===== PROJECT TEAM START ===== */}
             <div>
-              <div>Equipes</div>
+              <div>Membres</div>
               <div className="hide-scrollbar">
                 <CutomInputUserSearch
                   placeholder="Recherche"
