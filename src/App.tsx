@@ -1,6 +1,5 @@
 import { Route, Routes } from "react-router-dom";
 import PageTitle from "./components/PageTitle";
-import Login from "./Pages/Authentication/Login";
 import LoginProject from "./Pages/Authentication/LoginProject";
 import ManageUser from "./Pages/Admin/ManageUser";
 import ManageAccess from "./Pages/Admin/ManageAccess";
@@ -31,15 +30,7 @@ const App = () => {
             </>
           }
         ></Route>
-        <Route
-          path="/admin"
-          element={
-            <>
-              <PageTitle title="Login" />
-              <Login />
-            </>
-          }
-        />
+
         <Route
           path="gmp/admin/user"
           element={
