@@ -1,12 +1,5 @@
 import { jwtDecode } from "jwt-decode";
-
-interface DecodedToken {
-  sub: string;
-  name: string;
-  jti: string;
-  exp: number;
-}
-
+import { IDecodedToken } from "../../types/user";
 
 export const decodeToken = (source: string) => {
   var token;
@@ -17,7 +10,7 @@ export const decodeToken = (source: string) => {
   }
   if (token) {
     try {
-      const decoded = jwtDecode<DecodedToken>(token);
+      const decoded = jwtDecode<IDecodedToken>(token);
       return decoded;
     } catch (error) {
       console.error(`Invalid token ${error}`);

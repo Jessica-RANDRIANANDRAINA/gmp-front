@@ -2,18 +2,12 @@ import { ReactNode, useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import AdminSideBar from "../components/Sidebar/AdminSideBar";
 import Header from "../components/Header";
+import { IDecodedToken } from "../types/user";
 import { decodeToken } from "../services/Function/TokenService";
-
-interface DecodedToken {
-  sub: string;
-  name: string;
-  jti: string;
-  exp: number;
-}
 
 const DefaultLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [decodedToken, setDecodedToken] = useState<DecodedToken>();
+  const [decodedToken, setDecodedToken] = useState<IDecodedToken>();
   const navigate = useNavigate();
   const location = useLocation();
 
