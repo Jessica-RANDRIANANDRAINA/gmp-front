@@ -54,6 +54,7 @@ export interface IPhase {
   startDate?: string;
   endDate?: string;
   dependantOf?: string;
+  status?: string;
 }
 export interface IRessource {
   id: string;

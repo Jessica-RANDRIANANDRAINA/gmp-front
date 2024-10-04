@@ -1,9 +1,9 @@
-import React from "react";
 import ProjectLayout from "../../../../layout/ProjectLayout";
 import { Outlet, NavLink, useParams } from "react-router-dom";
 
 const DetailsAndHistoricProject = () => {
   const { projectId } = useParams();
+
   return (
     <ProjectLayout>
       <div>
@@ -31,7 +31,7 @@ const DetailsAndHistoricProject = () => {
             </NavLink>
           </div>
         </div>
-        <div className="border mx-9 rounded-lg p-4 bg-white min-h-[80vh] shadow-1 border-zinc-200 dark:border-strokedark dark:bg-boxdark ">
+        <div className="border mx-4 md:mx-9 rounded-lg p-4 bg-white min-h-[80vh] shadow-1 border-zinc-200 dark:border-strokedark dark:bg-boxdark ">
           <Outlet />
         </div>
       </div>
