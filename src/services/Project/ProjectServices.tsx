@@ -49,6 +49,19 @@ export const getProjectById = async (projectid: string) => {
   }
 };
 
+export const getProjectByIDs = async (projectid: Array<string>) => {
+  try {
+    const response = await axios.post(
+      `${endPoint}/api/Project/by-ids`,
+      projectid
+    );
+
+    return response.data;
+  } catch (error) {
+    throw new Error(`Error at get project by ids services: ${error}`);
+  }
+};
+
 // ===== POST =======
 // create a new project
 export const createProject = async (projectData: IProjectDto) => {
