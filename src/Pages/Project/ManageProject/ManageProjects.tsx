@@ -22,8 +22,7 @@ const ManageProjects = () => {
 
   useEffect(() => {
     if (idProjectForDetails !== "") {
-      // navigate(`/gmp/project/task/${idProjectForDetails}`);
-      console.log("details: ", idProjectForDetails);
+      navigate(`/gmp/project/details/${idProjectForDetails}/details`);
     }
   }, [idProjectForDetails]);
 
@@ -54,7 +53,6 @@ const ManageProjects = () => {
 
   useEffect(() => {
     fetchProject();
-    console.log("first");
   }, [showModalDelete]);
 
   return (

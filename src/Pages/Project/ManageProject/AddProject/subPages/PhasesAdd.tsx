@@ -278,7 +278,6 @@ const PhasesAdd = ({
                         phaseAssociated?.[0]?.id,
                         index
                       );
-                      console.log(phaseAssociated?.[0]);
                     }}
                   />
                   <CustomInput

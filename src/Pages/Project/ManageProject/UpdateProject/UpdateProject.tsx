@@ -243,7 +243,7 @@ const UpdateProject = () => {
       listUsers: userProject,
       listHistoricProjects: historic,
     };
-    console.log(data);
+    // console.log(data);
 
     try {
       // update project service

@@ -17,10 +17,6 @@ const DetailsProject = () => {
   };
 
   useEffect(() => {
-    console.log(projectData);
-  }, [projectData]);
-
-  useEffect(() => {
     fetchProjectData();
   }, []);
   return (

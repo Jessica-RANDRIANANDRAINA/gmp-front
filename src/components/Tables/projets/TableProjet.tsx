@@ -195,7 +195,6 @@ const TableProjet = ({
                 ...search,
                 member: e.target.value,
               });
-              console.log(e.target.value);
             }}
           />
 
