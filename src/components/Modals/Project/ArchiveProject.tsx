@@ -5,151 +5,11 @@ import {
   getProjectByIDs,
 } from "../../../services/Project/ProjectServices";
 import { IDecodedToken } from "../../../types/user";
+import { IProjectData } from "../../../types/Project";
 import { BeatLoader } from "react-spinners";
 import { decodeToken } from "../../../services/Function/TokenService";
 import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
-
-// data:[{…}]
-// 0
-// :
-// beneficiary
-// :
-// ""
-// completionPercentage
-// :
-// null
-// createdAt
-// :
-// null
-// criticality
-// :
-// null
-// description
-// :
-// ""
-// endDate
-// :
-// null
-// id
-// :
-// "8ebb8431-155a-46a4-883f-abc4f6fe7982"
-// initiator
-// :
-// ""
-// isEndDateImmuable
-// :
-// null
-// listBudgets
-// :
-// []
-// listHistoricProjects
-// :
-// []
-// listPhases
-// :
-// []
-// listRessources
-// :
-// []
-// listUsers
-// :
-// Array(4)
-// 0
-// :
-// projectid
-// :
-// "8ebb8431-155a-46a4-883f-abc4f6fe7982"
-// role
-// :
-// "member"
-// user
-// :
-// null
-// userid
-// :
-// "4a71606b-673d-4ea9-bddc-3121a1313539"
-// [[Prototype]]
-// :
-// Object
-// 1
-// :
-// projectid
-// :
-// "8ebb8431-155a-46a4-883f-abc4f6fe7982"
-// role
-// :
-// "member"
-// user
-// :
-// null
-// userid
-// :
-// "6b9efa34-aa61-4dfe-8691-ef5f74557989"
-// [[Prototype]]
-// :
-// Object
-// 2
-// :
-// projectid
-// :
-// "8ebb8431-155a-46a4-883f-abc4f6fe7982"
-// role
-// :
-// "director"
-// user
-// :
-// null
-// userid
-// :
-// "9a9dcfed-d5a8-45c9-8be9-0acacf29ae56"
-// [[Prototype]]
-// :
-// Object
-// 3
-// :
-// projectid
-// :
-// "8ebb8431-155a-46a4-883f-abc4f6fe7982"
-// role
-// :
-// "observator"
-// user
-// :
-// null
-// userid
-// :
-// "c894ab8a-7e91-41c9-8102-5eef8d8e99a0"
-// [[Prototype]]
-// :
-// Object
-// length
-// :
-// 4
-// [[Prototype]]
-// :
-// Array(0)
-// priority
-// :
-// ""
-// startDate
-// :
-// null
-// state
-// :
-// null
-// title
-// :
-// "KIZARI"
-// [[Prototype]]
-// :
-// Object
-// length
-// :
-// 1
-// [[Prototype]]
-// :
-// Array(0)
 
 const notyf = new Notyf({ position: { x: "center", y: "top" } });
 
@@ -164,7 +24,10 @@ const ArchiveProject = ({
 }) => {
   const [loadingArchive, setLoadingArchive] = useState<boolean>(false);
   const [decodedToken, setDecodedToken] = useState<IDecodedToken>();
-  const [project, setProject] = useState<any>();
+  const [project, setProject] = useState<Array<IProjectData>>();
+  const [projectToArchive, setProjectToArchive] =
+    useState<Array<IProjectData>>();
+  const [projectNoAccess, setprojectNoAccess] = useState<Array<IProjectData>>();
 
   useEffect(() => {
     const token = localStorage.getItem("_au_pr");
@@ -189,14 +52,26 @@ const ArchiveProject = ({
 
   useEffect(() => {
     if (project && decodedToken) {
-      console.log(project);
+      const filtered = project.filter((pr) =>
+        pr?.listUsers?.every(
+          (pu) => pu.userid !== decodedToken.jti || pu.role === "director"
+        )
+      );
+      const noAccess = project.filter((pr) =>
+        pr?.listUsers?.every(
+          (pu) => pu.userid !== decodedToken.jti || pu.role !== "director"
+        )
+      );
+      setprojectNoAccess(noAccess);
+      setProjectToArchive(filtered);
     }
   }, [project, decodedToken]);
 
   const confirmArchiveProject = () => {
     setLoadingArchive(true);
     try {
-      archiveProject(projectsToDetele);
+      const prtoArchive = projectToArchive?.map((pr) => pr.id);
+      archiveProject(prtoArchive ?? []);
       var message =
         projectsToDetele.length === 1
           ? "Le projet a été archivé"
@@ -217,15 +92,34 @@ const ArchiveProject = ({
       modalOpen={showModalDelete}
       setModalOpen={setShowModalDelete}
       header={`${
-        projectsToDetele.length === 1
-          ? "Voulez vous vraiment archiver ce projet ?"
-          : `Voulez vous vraiment archiver ces ${projectsToDetele.length} projets ?`
+        projectToArchive?.length === 0
+          ? ""
+          : projectNoAccess && projectNoAccess?.length > 0
+          ? projectToArchive?.length === 1
+            ? "Voulez vous archiver le projet auxquel vous avez accès ?"
+            : `Voulez vous archiver les ${projectToArchive?.length} projets auxquels vous avez accès ?`
+          : projectToArchive?.length === 1
+          ? "Voulez vous vraiment archiver le projet ?"
+          : `Voulez vous vraiment archiver ces ${projectToArchive?.length} projets ?`
       }`}
       heightSize="40vh"
       widthSize="medium"
     >
       <ModalBody>
-        <></>
+        <div>
+          {projectNoAccess && projectNoAccess?.length > 0 ? (
+            <div>
+              Vous n'avez pas les droits requis pour archiver :
+              <ul>
+                {projectNoAccess?.map((pr) => (
+                  <li>{pr.title}</li>
+                ))}
+              </ul>
+            </div>
+          ) : (
+            ""
+          )}
+        </div>
       </ModalBody>
       <ModalFooter>
         <button
@@ -239,8 +133,13 @@ const ArchiveProject = ({
         </button>
         <button
           type="button"
-          className="border text-xs p-2 rounded-md bg-green-700 text-white font-semibold"
+          className={`border text-xs p-2 rounded-md  font-semibold ${
+            projectToArchive && projectToArchive?.length === 0
+              ? "bg-zinc-700 cursor-not-allowed text-white"
+              : "bg-green-700 text-white"
+          }`}
           onClick={confirmArchiveProject}
+          disabled={projectToArchive && projectToArchive?.length === 0}
         >
           {loadingArchive ? (
             <span>
