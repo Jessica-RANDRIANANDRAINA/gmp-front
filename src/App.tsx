@@ -15,6 +15,7 @@ import PhaseAdvancement from "./Pages/Project/ManageProject/TaskManager/PhaseAdv
 import DetailsAndHistoricProject from "./Pages/Project/ManageProject/DetailsAndHistoric/Index";
 import DetailsProject from "./Pages/Project/ManageProject/DetailsAndHistoric/DetailsProject";
 import HistoricProject from "./Pages/Project/ManageProject/DetailsAndHistoric/HistoricProject";
+import UpdateAdvancement from "./Pages/Project/ManageProject/UpdateProject/UpdateAdvancement";
 import "./App.css";
 
 const App = () => {
@@ -67,6 +68,16 @@ const App = () => {
             </>
           }
         />
+        <Route
+          path="/gmp/project/advancement/:projectId/update"
+          element={
+            <>
+              <PageTitle title="G.M.P" />
+              <UpdateAdvancement />
+            </>
+          }
+        />
+        
         <Route
           path="/gmp/project/details/:projectId"
           element={

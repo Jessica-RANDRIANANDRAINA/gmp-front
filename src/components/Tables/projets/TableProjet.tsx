@@ -15,6 +15,7 @@ const TableProjet = ({
   setGoToDetails,
   setGoToHistoric,
   setProjectsSelected,
+  setGoToAdvancement,
 }: {
   data: Array<any>;
   setProjectToModif: Function;
@@ -24,6 +25,7 @@ const TableProjet = ({
   setShowModalDelete: React.Dispatch<React.SetStateAction<boolean>>;
   setGoToDetails: React.Dispatch<React.SetStateAction<boolean>>;
   setGoToHistoric: React.Dispatch<React.SetStateAction<boolean>>;
+  setGoToAdvancement: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const [entriesPerPage, setEntriesPerPage] = useState(5);
   const [actualPage, setActualPage] = useState(1);
@@ -302,7 +304,13 @@ const TableProjet = ({
               projectSelected.length > 1
                 ? ["Archiver"]
                 : // : ["Modifier", "Supprimer", "Gérer", "Détails", "Historique"]
-                  ["Modifier", "Archiver", "Détails", "Historique"]
+                  [
+                    "Modifier",
+                    "Avancement",
+                    "Archiver",
+                    "Détails",
+                    "Historique",
+                  ]
             }
             className="mb-2  "
             placeholder="Actions"
@@ -318,6 +326,9 @@ const TableProjet = ({
               } else if (e.includes("Historique")) {
                 setProjectsSelected(projectSelected);
                 setGoToHistoric(true);
+              } else if (e.includes("Avancement")) {
+                setProjectsSelected(projectSelected);
+                setGoToAdvancement(true);
               }
             }}
           />

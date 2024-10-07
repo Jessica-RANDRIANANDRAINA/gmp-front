@@ -92,6 +92,22 @@ export const updateProject = async (
     throw new Error(`Error at update project services: ${error}`);
   }
 };
+// update advancement
+export const updateAdvancementProject = async (
+  projectId: string,
+  advancement: number
+) => {
+  try {
+    const response = await axios.put(
+      `${endPoint}/api/Project/update-advancement/${projectId}`,
+      { advancement }
+    );
+    console.log(typeof advancement);
+    return response.data;
+  } catch (error) {
+    throw new Error(`Error at update project advancement services: ${error}`);
+  }
+};
 
 // archive project(s)
 export const archiveProject = async (ids: Array<string>) => {
