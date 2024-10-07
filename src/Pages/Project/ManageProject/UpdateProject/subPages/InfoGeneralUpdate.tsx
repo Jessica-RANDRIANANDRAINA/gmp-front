@@ -58,7 +58,7 @@ const InfoGeneralUpdate = ({
           help="Le titre du projet est obligatoire"
           placeholder="Titre du projet"
           value={projectData?.title?.slice(0, 1000)}
-          maxLength={80}
+          maxLength={1000}
           required={true}
           onChange={(e) => {
             setProjectData({
