@@ -384,11 +384,11 @@ const TableProjet = ({
                       id="Layer_1"
                       viewBox="0 0 425 425"
                     >
-                      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                      <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
                       <g
                         id="SVGRepo_tracerCarrier"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       ></g>
                       <g id="SVGRepo_iconCarrier">
                         {" "}
@@ -447,11 +447,11 @@ const TableProjet = ({
                       id="Layer_1"
                       viewBox="0 0 425 425"
                     >
-                      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                      <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
                       <g
                         id="SVGRepo_tracerCarrier"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       ></g>
                       <g id="SVGRepo_iconCarrier">
                         {" "}
@@ -512,11 +512,11 @@ const TableProjet = ({
                       id="Layer_1"
                       viewBox="0 0 425 425"
                     >
-                      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                      <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
                       <g
                         id="SVGRepo_tracerCarrier"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       ></g>
                       <g id="SVGRepo_iconCarrier">
                         {" "}
@@ -587,11 +587,11 @@ const TableProjet = ({
                       id="Layer_1"
                       viewBox="0 0 425 425"
                     >
-                      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                      <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
                       <g
                         id="SVGRepo_tracerCarrier"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       ></g>
                       <g id="SVGRepo_iconCarrier">
                         {" "}
@@ -650,11 +650,11 @@ const TableProjet = ({
                       id="Layer_1"
                       viewBox="0 0 425 425"
                     >
-                      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                      <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
                       <g
                         id="SVGRepo_tracerCarrier"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       ></g>
                       <g id="SVGRepo_iconCarrier">
                         {" "}
@@ -715,11 +715,11 @@ const TableProjet = ({
                       id="Layer_1"
                       viewBox="0 0 425 425"
                     >
-                      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                      <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
                       <g
                         id="SVGRepo_tracerCarrier"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       ></g>
                       <g id="SVGRepo_iconCarrier">
                         {" "}
@@ -754,7 +754,7 @@ const TableProjet = ({
             </tr>
           </thead>
           {/* ===== TABLE HEAD END ===== */}
-          {/* ===== TABLE BODY END ===== */}
+          {/* ===== TABLE BODY START ===== */}
           <tbody>
             {filteredData
               ?.filter((_project, index) => indexInPaginationRange(index))
@@ -820,10 +820,10 @@ const TableProjet = ({
                     </td>
                     <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
                       <p
-                        className={` dark:text-white font-semibold rounded-md  text-center py-1 px-2 text-xs  w-fit
+                        className={`  font-semibold rounded-md  text-center py-1 px-2 text-xs  w-fit
                           ${
                             project?.priority === "Moyenne"
-                              ? "bg-orange3  text-orange dark:text-amber-100 dark:bg-orange2"
+                              ? "bg-orange3  text-orange dark:text-amber-100 dark:bg-orange2 "
                               : project?.priority === "Faible"
                               ? "bg-cyan-100 border border-cyan-100 text-cyan-700 dark:text-cyan-700 "
                               : project?.priority === "Elevée"
@@ -837,7 +837,7 @@ const TableProjet = ({
                     </td>
                     <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
                       <p
-                        className={` dark:text-white font-semibold rounded-md whitespace-nowrap text-center py-1 px-2 text-xs  w-fit
+                        className={` font-semibold rounded-md whitespace-nowrap text-center py-1 px-2 text-xs  w-fit
                           ${
                             project?.criticality === "Urgente"
                               ? "bg-orange3  text-orange dark:text-amber-100 dark:bg-orange2"
