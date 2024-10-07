@@ -159,7 +159,7 @@ const TeamProjectUpdate = ({
             {/* ===== PROJECT OBSERVATOR END ===== */}
           </div>
         </div>
-        <div className="flex justify-end gap-3">
+        <div className="md:flex md:justify-end md:gap-3 grid">
           <button
             onClick={() => setPageCreate(3)}
             className="md:w-fit max-h-10 gap-2 w-full cursor-pointer mt-2 py-2 px-5  text-center font-semibold text-zinc-700 dark:text-whiten hover:bg-zinc-50 lg:px-8 xl:px-5 border border-zinc-300 rounded-lg  dark:bg-transparent dark:hover:bg-boxdark2"
@@ -174,7 +174,7 @@ const TeamProjectUpdate = ({
                 notyf.error("Veuiller choisir au moins une personne");
               }
             }}
-            className="md:w-fit max-h-10 gap-2 w-full cursor-pointer mt-2 py-2 px-5  text-center font-semibold text-white hover:bg-opacity-90 lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-darkgreen dark:bg-darkgreen dark:hover:bg-opacity-90"
+            className="md:w-fit md:max-h-10  gap-2 w-full cursor-pointer mt-2 py-2 px-5  text-center font-semibold text-white hover:bg-opacity-90 lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-darkgreen dark:bg-darkgreen dark:hover:bg-opacity-90"
           >
             {isCreateLoading && (
               <span>
