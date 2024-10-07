@@ -326,7 +326,7 @@ const TableProjet = ({
       {/* ===== BULK END ===== */}
       {/* =====TABLE START===== */}
       <div className="max-w-full mb-4 overflow-x-auto ">
-        <table className="w-full text-sm table-auto">
+        <table className="w-full text-sm hidden md:table table-auto">
           {/* ===== TABLE HEAD START ===== */}
           <thead className="pt-5  rounded-t-xl bg-primaryGreen dark:bg-darkgreen">
             <tr className="border border-stone-300 border-opacity-[0.1] border-r-0 border-l-0 text-white text-left">
@@ -876,6 +876,84 @@ const TableProjet = ({
           </tbody>
           {/* ===== TABLE BODY END ===== */}
         </table>
+
+        {/* Mobile view */}
+        <div className="block md:hidden">
+          {filteredData
+            ?.filter((_project, index) => indexInPaginationRange(index))
+            .map((project) => {
+              const dateStart = formatDate(project?.startDate);
+              const dateEnd = formatDate(project?.endDate);
+
+              return (
+                <div
+                  key={project?.id}
+                  className="bg-white *:grid *:grid-cols-2 dark:bg-boxdark shadow-lg rounded-lg mb-4 p-4 border border-zinc-200 dark:border-black"
+                >
+                  <div className="mb-2">
+                    <span className="text-emerald-500 font-semibold">
+                      Titre :{" "}
+                    </span>
+                    <span className="text-gray-800">
+                      {project?.title.length > 30
+                        ? `${project?.title?.slice(0, 30)}...`
+                        : project?.title}
+                    </span>
+                  </div>
+                  <div className="mb-2">
+                    <span className="text-emerald-500 font-semibold">
+                      Priorité :{" "}
+                    </span>
+                    <span className="text-gray-800">{project?.priority}</span>
+                  </div>
+                  <div className="mb-2">
+                    <span className="text-emerald-500 font-semibold">
+                      Criticité :{" "}
+                    </span>
+                    <span className="text-gray-800">
+                      {project?.criticality}
+                    </span>
+                  </div>
+                  <div className="mb-2">
+                    <span className="text-emerald-500 font-semibold">
+                      CDP :{" "}
+                    </span>
+                    <span className="text-gray-800">
+                      <ListUsers data={project?.listUsers} type="director" />
+                    </span>
+                  </div>
+                  <div className="mb-2">
+                    <span className="text-emerald-500 font-semibold">
+                      Equipe :{" "}
+                    </span>
+                    <span className="text-gray-800">
+                      <ListUsers data={project?.listUsers} type="all" />
+                    </span>
+                  </div>
+                  <div className="mb-2">
+                    <span className="text-emerald-500 font-semibold">
+                      Date début :{" "}
+                    </span>
+                    <span className="text-gray-800">{dateStart}</span>
+                  </div>
+                  <div className="mb-2">
+                    <span className="text-emerald-500 font-semibold">
+                      Date fin :{" "}
+                    </span>
+                    <span className="text-gray-800">{dateEnd}</span>
+                  </div>
+                  <div className="mb-2">
+                    <span className="text-emerald-500 font-semibold">
+                      Avancement :{" "}
+                    </span>
+                    <span className="text-gray-800">
+                      {project?.completionPercentage}%
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
+        </div>
       </div>
       {/* =====PAGINATE START===== */}
       <div className="flex flex-col flex-wrap md:flex-row justify-end px-4 items-center">
