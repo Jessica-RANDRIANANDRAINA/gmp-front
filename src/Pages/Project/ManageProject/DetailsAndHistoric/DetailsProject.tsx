@@ -99,7 +99,7 @@ const DetailsProject = () => {
               </div>
               {/* ----- team start ----- */}
               <div>
-                <ListUsers data={projectData?.listUsers ?? []} type="all"/>
+                <ListUsers data={projectData?.listUsers ?? []} type="all" />
               </div>
               {/* ----- team start ----- */}
 
@@ -161,16 +161,27 @@ const DetailsProject = () => {
                     {/* {projectData?.description} */}
                     {isExpanded
                       ? `${projectData?.description}`
-                      : `${projectData?.description?.substring(0, 200)}...`}
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setIsExpanded(!isExpanded);
-                      }}
-                      className="ml-2 text-blue-400 text-xs  font-semibold hover:underline mt-2"
+                      : `${projectData?.description?.substring(0, 200)}`}
+                    <span
+                      className={`${
+                        projectData?.description &&
+                        projectData?.description.length > 200
+                          ? ""
+                          : "hidden"
+                      }`}
                     >
-                      {isExpanded ? "Afficher moins" : "Afficher plus"}
-                    </button>
+                      {" "}
+                      ...
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setIsExpanded(!isExpanded);
+                        }}
+                        className={`ml-2 text-blue-400 text-xs  font-semibold hover:underline mt-2 `}
+                      >
+                        {isExpanded ? "Afficher moins" : "Afficher plus"}
+                      </button>
+                    </span>
                   </p>
                 </div>
               </div>
