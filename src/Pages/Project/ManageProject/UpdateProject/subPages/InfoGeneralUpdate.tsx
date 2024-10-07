@@ -50,7 +50,7 @@ const InfoGeneralUpdate = ({
         }
       }}
     >
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid md:grid-cols-2 gap-4">
         <CustomInput
           label="Titre"
           type="text"
@@ -68,7 +68,7 @@ const InfoGeneralUpdate = ({
           }}
         />
         <CustomSelect
-          label="Avancement du projet"
+          label="Avancement"
           placeholder="0"
           data={["0%", "25%", "50%", "75%", "100%"]}
           value={`${projectData?.completionPercentage}%`}
