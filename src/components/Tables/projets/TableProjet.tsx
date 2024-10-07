@@ -814,7 +814,9 @@ const TableProjet = ({
                           setIdProjectForDetails(project.id);
                         }}
                       >
-                        {project?.title}
+                        {project?.title.length > 30
+                          ? `${project?.title?.slice(0, 30)}...`
+                          : project?.title}
                       </p>
                     </td>
                     <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
