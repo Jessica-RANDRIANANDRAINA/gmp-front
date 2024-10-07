@@ -109,10 +109,50 @@ const ArchiveProject = ({
         <div>
           {projectNoAccess && projectNoAccess?.length > 0 ? (
             <div>
-              Vous n'avez pas les droits requis pour archiver :
+              <p className="flex items-center">
+                <svg
+                  width="25"
+                  height="25"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  className="stroke-orange"
+                >
+                  <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                  <g
+                    id="SVGRepo_tracerCarrier"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  ></g>
+                  <g id="SVGRepo_iconCarrier">
+                    {" "}
+                    <path
+                      fillRule="evenodd"
+                      clipRule="evenodd"
+                      d="M19.6586 15.493L13.8426 6.04498C13.4589 5.39724 12.762 5 12.0091 5C11.2563 5 10.5593 5.39724 10.1756 6.04498L4.35861 15.493C3.91876 16.1817 3.88094 17.0531 4.25947 17.7773C4.63801 18.5016 5.37505 18.968 6.19161 19H17.8256C18.6422 18.968 19.3792 18.5016 19.7577 17.7773C20.1363 17.0531 20.0985 16.1817 19.6586 15.493Z"
+                      className="stroke-orange"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    ></path>{" "}
+                    <path
+                      d="M12.0086 13V8"
+                      className="stroke-orange"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                    ></path>{" "}
+                    <path
+                      d="M12.0086 16V15"
+                      className="stroke-orange"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                    ></path>{" "}
+                  </g>
+                </svg>
+                <span className="text-orange">Vous n'avez pas les droits requis pour archiver :</span>
+              </p>
               <ul>
                 {projectNoAccess?.map((pr) => (
-                  <li>{pr.title}</li>
+                  <li key={pr?.id}>{pr.title}</li>
                 ))}
               </ul>
             </div>
@@ -124,7 +164,7 @@ const ArchiveProject = ({
       <ModalFooter>
         <button
           type="button"
-          className="border text-xs p-2 rounded-md  font-semibold bg-transparent border-transparent hover:bg-zinc-100"
+          className="border text-xs p-2 rounded-md  font-semibold bg-transparent border-transparent hover:bg-zinc-100 dark:hover:bg-boxdark2"
           onClick={() => {
             setShowModalDelete(false);
           }}
