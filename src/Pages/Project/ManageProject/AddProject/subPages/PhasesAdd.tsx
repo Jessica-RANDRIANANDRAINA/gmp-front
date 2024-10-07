@@ -292,7 +292,8 @@ const PhasesAdd = ({
                           )?.endDate
                         : projectData?.startDate
                     }
-                    max={projectData?.endDate ? projectData?.endDate : ""}
+                    // max={projectData?.endDate ? projectData?.endDate : ""}
+                    max={""}
                     onChange={(e) => {
                       handlePhaseDataChange("startDate", e.target.value, index);
                     }}
@@ -302,7 +303,8 @@ const PhasesAdd = ({
                     type="date"
                     rounded="medium"
                     value={phase?.endDate}
-                    min={phaseAndLivrableList?.[index]?.startDate}
+                    // min={phaseAndLivrableList?.[index]?.startDate }
+                    min={phase?.startDate ? phase.startDate : phaseAndLivrableList?.[index]?.startDate}
                     onChange={(e) => {
                       handlePhaseDataChange("endDate", e.target.value, index);
                     }}
