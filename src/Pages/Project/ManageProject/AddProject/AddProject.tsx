@@ -6,6 +6,7 @@ import {
   IBudget,
   IProjectData,
 } from "../../../../types/Project";
+import Breadcrumb from "../../../../components/BreadCrumbs/BreadCrumb";
 import { getAllDepartments } from "../../../../services/User";
 import { createProject } from "../../../../services/Project/ProjectServices";
 import { decodeToken } from "../../../../services/Function/TokenService";
@@ -20,7 +21,7 @@ import {
 
 const AddProject = () => {
   const navigate = useNavigate();
-  const [isLoaded, setIsLoaded] = useState(false);
+  // const [isLoaded, setIsLoaded] = useState(false);
   const [projectData, setProjectData] = useState<IProjectData>({
     id: "",
     title: "",
@@ -54,9 +55,9 @@ const AddProject = () => {
   const [isCreateLoading, setIsCreateLoading] = useState(false);
   const [createProjectState, setCreateProjectState] = useState(false);
 
-  useEffect(() => {
-    setIsLoaded(true);
-  }, []);
+  // useEffect(() => {
+  //   setIsLoaded(true);
+  // }, []);
 
   // GET ALL DEPARTEMENTS
   useEffect(() => {
@@ -143,20 +144,11 @@ const AddProject = () => {
       <div className="text-sm mx-2 p-4 md:mx-10">
         {/* ===== LINK RETURN START ===== */}
         <div className={`w-full mb-2 flex  items-center `}>
-          <button
-            onClick={() => {
-              navigate("/gmp/project/list");
-            }}
-            className={`md:w-fit gap-2  w-full cursor-pointer mt-2 py-2 px-5  text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-darkgreen dark:bg-darkgreen dark:hover:bg-opacity-90 md:ease-out md:duration-300 md:transform   ${
-              isLoaded ? "md:translate-x-0 " : "md:translate-x-[60vw]"
-            }`}
-          >
-            Retour
-          </button>
+          <Breadcrumb pageName="Ajout projet" />
         </div>
         {/* ===== LINK RETURN END ===== */}
         {/* ===== BLOC ADD PROJECT START ===== */}
-        <div className=" relative bg-white  place-items-center  overflow-y-scroll overflow-x-clip hide-scrollbar p-4 shadow-3  rounded-md dark:border-strokedark dark:bg-boxdark min-h-fit md:min-h-fit md:h-[72vh] lg:h-[75vh]">
+        <div className=" relative bg-white  place-items-center  overflow-y-scroll overflow-x-clip hide-scrollbar p-4 shadow-1  rounded-md border border-zinc-200 dark:border-strokedark dark:bg-boxdark min-h-fit md:min-h-fit md:h-[72vh] lg:h-[75vh]">
           {/* ===== ADVANCEMENT STEP MENUE START ===== */}
           <div className="absolute my-2 ml-2 top-0 left-0 space-y-3 md:block hidden">
             <div

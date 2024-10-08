@@ -2,6 +2,7 @@ import ProjectLayout from "../../../../layout/ProjectLayout";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { CustomSelect } from "../../../../components/UIElements";
+import Breadcrumb from "../../../../components/BreadCrumbs/BreadCrumb";
 import { getProjectById } from "../../../../services/Project/ProjectServices";
 import { updateAdvancementProject } from "../../../../services/Project/ProjectServices";
 import { BeatLoader } from "react-spinners";
@@ -14,7 +15,7 @@ const UpdateAdvancement = () => {
   const { projectId } = useParams();
   const [advancement, setAdvancement] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const fetchData = async () => {
     if (projectId) {
@@ -33,7 +34,7 @@ const UpdateAdvancement = () => {
       try {
         await updateAdvancementProject(projectId, advancement);
         notyf.success("Modification réussi");
-        navigate('/gmp/project/list')
+        navigate("/gmp/project/list");
       } catch (error) {
         notyf.error("Une erreur est survenue lors de la modification");
         console.error("Error while update advancement: ", error);
@@ -45,6 +46,7 @@ const UpdateAdvancement = () => {
   return (
     <ProjectLayout>
       <div className="mx-2 p-4 md:mx-10">
+        <Breadcrumb pageName="Avancement" />
         <div className="bg-white min-h-[80vh] pt-2 shadow-1 rounded-lg border border-zinc-200 dark:border-strokedark dark:bg-boxdark">
           <div className="flex  justify-center items-center ">
             <div className="w-full p-8  flex justify-center items-center ">

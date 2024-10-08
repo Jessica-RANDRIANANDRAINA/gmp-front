@@ -1,13 +1,21 @@
 import ProjectLayout from "../../../../layout/ProjectLayout";
-import { Outlet, NavLink, useParams } from "react-router-dom";
+import Breadcrumb from "../../../../components/BreadCrumbs/BreadCrumb";
+import { Outlet, NavLink, useParams, useLocation } from "react-router-dom";
 
 const DetailsAndHistoricProject = () => {
   const { projectId } = useParams();
+  const location = useLocation();
 
   return (
     <ProjectLayout>
-      <div>
-        <div className=" pt-7  px-9">
+      <div className="">
+        <div className=" mx-2 pt-4 md:mx-10">
+          <Breadcrumb
+            pageName={`${
+              location.pathname.includes("historic") ? "Historique" : "Détails"
+            }`}
+          />
+
           <div className="flex *:p-3 text-sm">
             <NavLink
               to={`/gmp/project/details/${projectId}/details`}

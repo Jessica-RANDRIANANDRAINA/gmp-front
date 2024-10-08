@@ -7,6 +7,7 @@ import {
   IProjectData,
   IHistoricProject,
 } from "../../../../types/Project";
+import Breadcrumb from "../../../../components/BreadCrumbs/BreadCrumb";
 import { getAllDepartments } from "../../../../services/User";
 import {
   updateProject,
@@ -27,7 +28,7 @@ const UpdateProject = () => {
   const { projectId } = useParams();
   const [updateProjectState, setUpdateProjectState] = useState(false);
   const [projectDataToModif, setProjectDataToModif] = useState<IProjectData>();
-  const [isLoaded, setIsLoaded] = useState(false);
+  // const [isLoaded, setIsLoaded] = useState(false);
   const [allDataIsLoaded, setAllDataIsLoaded] = useState(false);
   const [projectData, setProjectData] = useState<IProjectData>({
     id: "",
@@ -158,9 +159,9 @@ const UpdateProject = () => {
     }
   }, [projectDataToModif]);
 
-  useEffect(() => {
-    setIsLoaded(true);
-  }, []);
+  // useEffect(() => {
+  //   setIsLoaded(true);
+  // }, []);
 
   // GET ALL DEPARTEMENTS
   useEffect(() => {
@@ -261,16 +262,7 @@ const UpdateProject = () => {
       <div className="text-sm mx-2 p-4 md:mx-10">
         {/* ===== LINK RETURN START ===== */}
         <div className={`w-full  mb-2 flex  items-center `}>
-          <button
-            onClick={() => {
-              navigate("/gmp/project/list");
-            }}
-            className={`md:w-fit gap-2  w-full cursor-pointer mt-2 py-2 px-5  text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-darkgreen dark:bg-darkgreen dark:hover:bg-opacity-90 md:ease-out md:duration-300 md:transform   ${
-              isLoaded ? "md:translate-x-0 " : "md:translate-x-[60vw]"
-            }`}
-          >
-            Retour
-          </button>
+          <Breadcrumb pageName="Modification projet" />
         </div>
         {/* ===== LINK RETURN END ===== */}
         {/* ===== BLOC UPDATE PROJECT START ===== */}
@@ -447,14 +439,14 @@ const UpdateProject = () => {
               >
                 <span
                   className={`absolute transition-transform duration-500 ease-in-out transform ${
-                    userTeam.length > 0 ? "scale-0" : "scale-100"
+                    userTeam.length > 0 && pageCreate === 4 ? "scale-0" : "scale-100"
                   }`}
                 >
                   4
                 </span>
                 <svg
                   className={`transition-transform duration-500 ease-in-out transform stroke-current ${
-                    userTeam.length > 0 ? "scale-100" : "scale-0"
+                    userTeam.length > 0 && pageCreate === 4 ? "scale-100" : "scale-0"
                   }`}
                   width="64px"
                   height="64px"
