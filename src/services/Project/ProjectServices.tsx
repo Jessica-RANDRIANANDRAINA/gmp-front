@@ -100,9 +100,8 @@ export const updateAdvancementProject = async (
   try {
     const response = await axios.put(
       `${endPoint}/api/Project/update-advancement/${projectId}`,
-      { advancement }
+      {advancement}
     );
-    console.log(typeof advancement);
     return response.data;
   } catch (error) {
     throw new Error(`Error at update project advancement services: ${error}`);

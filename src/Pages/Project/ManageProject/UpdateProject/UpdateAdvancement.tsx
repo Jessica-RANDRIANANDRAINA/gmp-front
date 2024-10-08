@@ -4,10 +4,16 @@ import { useParams } from "react-router-dom";
 import { CustomSelect } from "../../../../components/UIElements";
 import { getProjectById } from "../../../../services/Project/ProjectServices";
 import { updateAdvancementProject } from "../../../../services/Project/ProjectServices";
+import { BeatLoader } from "react-spinners";
+import { Notyf } from "notyf";
+import "notyf/notyf.min.css";
+
+const notyf = new Notyf({ position: { x: "center", y: "top" } });
 
 const UpdateAdvancement = () => {
   const { projectId } = useParams();
   const [advancement, setAdvancement] = useState<number>(0);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const fetchData = async () => {
     if (projectId) {
@@ -21,9 +27,17 @@ const UpdateAdvancement = () => {
   }, []);
 
   const handleChangeAdvancement = async () => {
+    setLoading(true);
     if (projectId) {
-      await updateAdvancementProject(projectId, advancement);
-      console.log("test fini");
+      try {
+        await updateAdvancementProject(projectId, advancement);
+        notyf.success("Modification réussi");
+      } catch (error) {
+        notyf.error("Une erreur est survenue lors de la modification");
+        console.error("Error while update advancement: ", error);
+      } finally {
+        setLoading(false);
+      }
     }
   };
   return (
@@ -68,8 +82,8 @@ const UpdateAdvancement = () => {
               </svg>
             </div>
           </div>
-          <div className="md:flex md:justify-center md:items-end gap-2">
-            <div className="">
+          <div className=" md:flex md:justify-center md:items-end gap-2">
+            <div className="flex justify-center">
               <CustomSelect
                 className="w-72"
                 label="Avancement"
@@ -83,12 +97,15 @@ const UpdateAdvancement = () => {
                 }}
               />
             </div>
-            <div className="">
+            <div className="px-7 md:pd-0">
               <button
                 onClick={handleChangeAdvancement}
                 type="button"
                 className={`max-h-10 md:w-fit gap-2 w-full  mt-2 py-2 px-5  text-center font-medium text-white  lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-darkgreen dark:bg-darkgreen `}
               >
+                {loading ? (
+                  <BeatLoader size={5} className="mr-1" color={"#fff"} />
+                ) : null}
                 Sauvegarder
               </button>
             </div>
