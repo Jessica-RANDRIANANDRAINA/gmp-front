@@ -911,6 +911,41 @@ const TableProjet = ({
                   key={project?.id}
                   className="bg-white *:grid *:grid-cols-2 dark:bg-boxdark shadow-lg rounded-lg mb-4 p-4 border border-zinc-200 dark:border-black"
                 >
+                  {/* <div className="">
+                    <button
+                      className="relative  cursor-pointer border w-5 h-5"
+                      onClick={() => {
+                        setProjectSelected((prev) => {
+                          if (prev?.includes(project.id)) {
+                            return prev.filter((id) => id !== project.id);
+                          } else {
+                            return [...prev, project.id];
+                          }
+                        });
+                      }}
+                    >
+                      <svg
+                        width="18"
+                        height="17"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        className={`${
+                          projectSelected.includes(project.id)
+                            ? "visible"
+                            : "invisible"
+                        }`}
+                      >
+                        <path
+                          d="M4 12.6111L8.92308 17.5L20 6.5"
+                          className="stroke-black-2 dark:stroke-whiten"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </button>
+                  </div> */}
                   <div className="mb-2">
                     <span className="text-emerald-500 font-semibold">
                       Titre :{" "}
