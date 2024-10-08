@@ -766,124 +766,132 @@ const TableProjet = ({
           {/* ===== TABLE HEAD END ===== */}
           {/* ===== TABLE BODY START ===== */}
           <tbody>
-            {filteredData
-              ?.filter((_project, index) => indexInPaginationRange(index))
-              .map((project) => {
-                const dateStart = formatDate(project?.startDate);
-                const dateEnd = formatDate(project?.endDate);
+            {!filteredData ? (
+              <tr>
+                <td colSpan={9} className="py-9 text-center uppercase ">CHARGEMENT DES données ...</td>
+              </tr>
+            ) : (
+              filteredData
+                ?.filter((_project, index) => indexInPaginationRange(index))
+                .map((project) => {
+                  const dateStart = formatDate(project?.startDate);
+                  const dateEnd = formatDate(project?.endDate);
 
-                // const userDetails = project.listUsers?.filter(
-                //   (user: { userid: string | undefined }) => {
-                //     return user?.userid === userConnected?.jti;
-                //   }
-                // );
+                  // const userDetails = project.listUsers?.filter(
+                  //   (user: { userid: string | undefined }) => {
+                  //     return user?.userid === userConnected?.jti;
+                  //   }
+                  // );
 
-                return (
-                  <tr
-                    key={project?.id}
-                    className="hover:bg-whiten dark:hover:bg-boxdark2"
-                  >
-                    <td className="pl-2">
-                      <button
-                        className="cursor-pointer border w-5 h-5"
-                        onClick={() => {
-                          setProjectSelected((prev) => {
-                            if (prev?.includes(project.id)) {
-                              return prev.filter((id) => id !== project.id);
-                            } else {
-                              return [...prev, project.id];
-                            }
-                          });
-                        }}
-                      >
-                        <svg
-                          width="18"
-                          height="17"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                          className={`${
-                            projectSelected.includes(project.id)
-                              ? "visible"
-                              : "invisible"
-                          }`}
+                  return (
+                    <tr
+                      key={project?.id}
+                      className="hover:bg-whiten dark:hover:bg-boxdark2"
+                    >
+                      <td className="pl-2">
+                        <button
+                          className="cursor-pointer border w-5 h-5"
+                          onClick={() => {
+                            setProjectSelected((prev) => {
+                              if (prev?.includes(project.id)) {
+                                return prev.filter((id) => id !== project.id);
+                              } else {
+                                return [...prev, project.id];
+                              }
+                            });
+                          }}
                         >
-                          <path
-                            d="M4 12.6111L8.92308 17.5L20 6.5"
-                            className="stroke-black-2 dark:stroke-whiten"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                      </button>
-                    </td>
-                    <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                      <p
-                        className="text-black dark:text-white font-bold cursor-pointer"
-                        onClick={() => {
-                          setIdProjectForDetails(project.id);
-                        }}
-                      >
-                        {project?.title.length > 30
-                          ? `${project?.title?.slice(0, 30)}...`
-                          : project?.title}
-                      </p>
-                    </td>
-                    <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                      <p
-                        className={`  font-semibold rounded-md  text-center py-1 px-2 text-xs  w-fit
-                          ${
-                            project?.priority === "Moyenne"
-                              ? "bg-orange3  text-orange dark:text-amber-100 dark:bg-orange2 "
-                              : project?.priority === "Faible"
-                              ? "bg-cyan-100 border border-cyan-100 text-cyan-700 dark:text-cyan-700 "
-                              : project?.priority === "Elevée"
-                              ? "bg-red-200 text-red-600 dark:text-red-600"
-                              : ""
-                          }
-                          `}
-                      >
-                        {project?.priority}
-                      </p>
-                    </td>
-                    <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                      <p
-                        className={` font-semibold rounded-md whitespace-nowrap text-center py-1 px-2 text-xs  w-fit
-                          ${
-                            project?.criticality === "Urgente"
-                              ? "bg-orange3  text-orange dark:text-amber-100 dark:bg-orange2"
-                              : project?.criticality === "Moins urgente"
-                              ? "bg-cyan-100 border border-cyan-100 text-cyan-700 dark:text-cyan-700 "
-                              : project?.criticality === "Très urgente"
-                              ? "bg-red-200 text-red-600 dark:text-red-600"
-                              : ""
-                          }
-                          `}
-                      >
-                        {project?.criticality}
-                      </p>
-                    </td>
-                    <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                      <ListUsers data={project?.listUsers} type="director" />
-                    </td>
-                    <td className="border-b  gap-1 border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                      <ListUsers data={project?.listUsers} type="all" />
-                    </td>
-                    <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                      <p className="text-black dark:text-white">{dateStart}</p>
-                    </td>
-                    <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                      <p className="text-black dark:text-white">{dateEnd}</p>
-                    </td>
-                    <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                      <p className="text-black dark:text-white">
-                        {project?.completionPercentage}%
-                      </p>
-                    </td>
-                  </tr>
-                );
-              })}
+                          <svg
+                            width="18"
+                            height="17"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                            className={`${
+                              projectSelected.includes(project.id)
+                                ? "visible"
+                                : "invisible"
+                            }`}
+                          >
+                            <path
+                              d="M4 12.6111L8.92308 17.5L20 6.5"
+                              className="stroke-black-2 dark:stroke-whiten"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
+                        </button>
+                      </td>
+                      <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                        <p
+                          className="text-black dark:text-white font-bold cursor-pointer"
+                          onClick={() => {
+                            setIdProjectForDetails(project.id);
+                          }}
+                        >
+                          {project?.title.length > 30
+                            ? `${project?.title?.slice(0, 30)}...`
+                            : project?.title}
+                        </p>
+                      </td>
+                      <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                        <p
+                          className={`  font-semibold rounded-md  text-center py-1 px-2 text-xs  w-fit
+                            ${
+                              project?.priority === "Moyenne"
+                                ? "bg-orange3  text-orange dark:text-amber-100 dark:bg-orange2 "
+                                : project?.priority === "Faible"
+                                ? "bg-cyan-100 border border-cyan-100 text-cyan-700 dark:text-cyan-700 "
+                                : project?.priority === "Elevée"
+                                ? "bg-red-200 text-red-600 dark:text-red-600"
+                                : ""
+                            }
+                            `}
+                        >
+                          {project?.priority}
+                        </p>
+                      </td>
+                      <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                        <p
+                          className={` font-semibold rounded-md whitespace-nowrap text-center py-1 px-2 text-xs  w-fit
+                            ${
+                              project?.criticality === "Urgente"
+                                ? "bg-orange3  text-orange dark:text-amber-100 dark:bg-orange2"
+                                : project?.criticality === "Moins urgente"
+                                ? "bg-cyan-100 border border-cyan-100 text-cyan-700 dark:text-cyan-700 "
+                                : project?.criticality === "Très urgente"
+                                ? "bg-red-200 text-red-600 dark:text-red-600"
+                                : ""
+                            }
+                            `}
+                        >
+                          {project?.criticality}
+                        </p>
+                      </td>
+                      <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                        <ListUsers data={project?.listUsers} type="director" />
+                      </td>
+                      <td className="border-b  gap-1 border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                        <ListUsers data={project?.listUsers} type="all" />
+                      </td>
+                      <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                        <p className="text-black dark:text-white">
+                          {dateStart}
+                        </p>
+                      </td>
+                      <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                        <p className="text-black dark:text-white">{dateEnd}</p>
+                      </td>
+                      <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                        <p className="text-black dark:text-white">
+                          {project?.completionPercentage}%
+                        </p>
+                      </td>
+                    </tr>
+                  );
+                })
+            )}
           </tbody>
           {/* ===== TABLE BODY END ===== */}
         </table>
