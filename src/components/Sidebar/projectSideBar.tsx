@@ -414,7 +414,7 @@ const ProjectSideBar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                                   fill=""
                                 />
                               </svg>
-                              Home
+                              Accueil
                             </NavLink>
                           </li>
                           <li>
