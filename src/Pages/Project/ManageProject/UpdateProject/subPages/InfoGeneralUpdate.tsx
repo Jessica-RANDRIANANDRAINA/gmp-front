@@ -50,7 +50,6 @@ const InfoGeneralUpdate = ({
         }
       }}
     >
-      <div className="grid md:grid-cols-2 gap-4">
         <CustomInput
           label="Titre"
           type="text"
@@ -67,6 +66,7 @@ const InfoGeneralUpdate = ({
             });
           }}
         />
+      {/* <div className="grid md:grid-cols-2 gap-4">
         <CustomSelect
           label="Avancement"
           placeholder="0"
@@ -79,7 +79,7 @@ const InfoGeneralUpdate = ({
             });
           }}
         />
-      </div>
+      </div> */}
       <CustomInput
         label="Description"
         type="textarea"

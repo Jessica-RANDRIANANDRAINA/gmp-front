@@ -32,7 +32,6 @@ const UpdateProject = () => {
   const [projectData, setProjectData] = useState<IProjectData>({
     id: "",
     title: "",
-    completionPercentage: 0,
     description: "",
     priority: "Moyenne",
     criticality: "Moins urgente",
@@ -92,7 +91,6 @@ const UpdateProject = () => {
       setProjectData({
         id: projectDataToModif?.id,
         title: projectDataToModif?.title,
-        completionPercentage: projectDataToModif?.completionPercentage,
         description: projectDataToModif?.description,
         priority: projectDataToModif?.priority,
         criticality: projectDataToModif?.criticality,

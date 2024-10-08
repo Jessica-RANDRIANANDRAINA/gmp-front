@@ -7,7 +7,6 @@ export interface IProjectData {
   beneficiary: string;
   initiator: string;
   isEndDateImmuable?: boolean;
-  completionPercentage?: number;
   startDate?: string;
   endDate?: string;
   listBudgets: IBudget[];
