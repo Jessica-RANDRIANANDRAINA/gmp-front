@@ -1,6 +1,6 @@
 import ProjectLayout from "../../../../layout/ProjectLayout";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { CustomSelect } from "../../../../components/UIElements";
 import { getProjectById } from "../../../../services/Project/ProjectServices";
 import { updateAdvancementProject } from "../../../../services/Project/ProjectServices";
@@ -14,6 +14,7 @@ const UpdateAdvancement = () => {
   const { projectId } = useParams();
   const [advancement, setAdvancement] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
+  const navigate = useNavigate()
 
   const fetchData = async () => {
     if (projectId) {
@@ -32,6 +33,7 @@ const UpdateAdvancement = () => {
       try {
         await updateAdvancementProject(projectId, advancement);
         notyf.success("Modification réussi");
+        navigate('/gmp/project/list')
       } catch (error) {
         notyf.error("Une erreur est survenue lors de la modification");
         console.error("Error while update advancement: ", error);
