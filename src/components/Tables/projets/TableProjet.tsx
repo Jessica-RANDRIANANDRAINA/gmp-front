@@ -768,7 +768,9 @@ const TableProjet = ({
           <tbody>
             {!filteredData ? (
               <tr>
-                <td colSpan={9} className="py-9 text-center uppercase ">CHARGEMENT DES données ...</td>
+                <td colSpan={9} className="py-9 text-center uppercase ">
+                  CHARGEMENT DES données ...
+                </td>
               </tr>
             ) : (
               filteredData
@@ -914,9 +916,16 @@ const TableProjet = ({
                       Titre :{" "}
                     </span>
                     <span className="text-gray-800">
-                      {project?.title.length > 30
-                        ? `${project?.title?.slice(0, 30)}...`
-                        : project?.title}
+                      <p
+                        className="text-black dark:text-white font-bold cursor-pointer"
+                        onClick={() => {
+                          setIdProjectForDetails(project.id);
+                        }}
+                      >
+                        {project?.title.length > 30
+                          ? `${project?.title?.slice(0, 30)}...`
+                          : project?.title}
+                      </p>
                     </span>
                   </div>
                   <div className="mb-2">
