@@ -911,7 +911,7 @@ const TableProjet = ({
                   key={project?.id}
                   className="bg-white *:grid *:grid-cols-2 dark:bg-boxdark shadow-lg rounded-lg mb-4 p-4 border border-zinc-200 dark:border-black"
                 >
-                  {/* <div className="">
+                  <div className="">
                     <button
                       className="relative  cursor-pointer border w-5 h-5"
                       onClick={() => {
@@ -945,7 +945,7 @@ const TableProjet = ({
                         />
                       </svg>
                     </button>
-                  </div> */}
+                  </div>
                   <div className="mb-2">
                     <span className="text-emerald-500 font-semibold">
                       Titre :{" "}
