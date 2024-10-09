@@ -88,8 +88,8 @@ const PhasesUpdate = ({
     index: number
   ) => {
     setPhaseAndLivrableList((prevList) =>
-      prevList.map((phase, idx) =>
-        idx === index
+      prevList.map((phase) =>
+        phase.rank === index
           ? {
               ...phase,
               [label === "phase"
@@ -149,6 +149,7 @@ const PhasesUpdate = ({
               Utiliser les valeurs par défaut
             </button>
             {phaseAndLivrableList
+              ?.slice()
               ?.filter((phase) => phase?.rank !== undefined)
               ?.sort((a, b) => (a.rank ?? 0) - (b.rank ?? 0))
               ?.map((phase, index) => {
@@ -182,7 +183,7 @@ const PhasesUpdate = ({
                             handlePhaseDataChange(
                               "phase",
                               e.target.value,
-                              index
+                              phase.rank ?? 0
                             );
                         }}
                         required
@@ -198,7 +199,7 @@ const PhasesUpdate = ({
                             handlePhaseDataChange(
                               "livrable",
                               e.target.value,
-                              index
+                              phase.rank ?? 0
                             );
                         }}
                         required
@@ -223,7 +224,7 @@ const PhasesUpdate = ({
                           handlePhaseDataChange(
                             "depandantOf",
                             phaseAssociated?.[0]?.id,
-                            index
+                            phase.rank ?? 0
                           );
                         }}
                       />
@@ -240,7 +241,7 @@ const PhasesUpdate = ({
                             handlePhaseDataChange(
                               "startDate",
                               e.target.value,
-                              index
+                              phase.rank ?? 0
                             );
                         }}
                       />
@@ -261,7 +262,7 @@ const PhasesUpdate = ({
                             handlePhaseDataChange(
                               "endDate",
                               e.target.value,
-                              index
+                              phase.rank ?? 0
                             );
                         }}
                       />
