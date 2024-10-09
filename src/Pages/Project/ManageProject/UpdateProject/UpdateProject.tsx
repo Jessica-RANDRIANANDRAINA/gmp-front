@@ -5,7 +5,6 @@ import {
   IPhase,
   IBudget,
   IProjectData,
-  IHistoricProject,
 } from "../../../../types/Project";
 import Breadcrumb from "../../../../components/BreadCrumbs/BreadCrumb";
 import { getAllDepartments } from "../../../../services/User";
@@ -41,11 +40,11 @@ const UpdateProject = () => {
     startDate: undefined,
     endDate: undefined,
     isEndDateImmuable: false,
+    endDateChangeReason :'',
     listBudgets: [],
     listRessources: [],
     listPhases: [],
     listUsers: [],
-    listHistoricProjects: [],
     idBudget: "",
     codeBuget: "",
     directionSourceBudget: "",
@@ -57,15 +56,6 @@ const UpdateProject = () => {
     Array<IPhase>
   >([]);
   const [directionOwner, setDirectionOwner] = useState<string[]>([]);
-  const [hitoricProjectDate, setHistoricProjectDate] =
-    useState<IHistoricProject>({
-      id: "",
-      initiator: "",
-      elementChanged: "",
-      from: "",
-      to: "",
-      reason: "",
-    });
   const [pageCreate, setPageCreate] = useState(1);
   const [departments, setDepartments] = useState<string[]>([]);
   const [userTeam, setUserTeam] = useState<
@@ -96,6 +86,7 @@ const UpdateProject = () => {
         priority: projectDataToModif?.priority,
         criticality: projectDataToModif?.criticality,
         beneficiary: "",
+        endDateChangeReason: projectDataToModif?.endDateChangeReason,
         initiator: projectDataToModif?.initiator,
         startDate: projectDataToModif?.startDate,
         endDate: projectDataToModif?.endDate,
@@ -104,7 +95,6 @@ const UpdateProject = () => {
         listRessources: [],
         listPhases: [],
         listUsers: [],
-        listHistoricProjects: [],
         idBudget: projectDataToModif?.listBudgets?.[0]?.id,
         codeBuget: projectDataToModif?.listBudgets?.[0]?.code,
         directionSourceBudget: projectDataToModif?.listBudgets?.[0]?.direction,
@@ -207,22 +197,6 @@ const UpdateProject = () => {
       budgetData = [];
     }
 
-    var historic: IHistoricProject[] = [];
-    if (hitoricProjectDate?.reason !== "") {
-      historic = [
-        {
-          id: uuid4(),
-          initiator: userConnected?.jti,
-          elementChanged: "endDate",
-          from: projectDataToModif?.endDate ?? "",
-          to: projectData.endDate,
-          reason: hitoricProjectDate?.reason,
-        },
-      ];
-    } else {
-      historic = [];
-    }
-
     // if there is team members, map them and store in userProject
     const userProject = userTeam?.map((team) => ({
       userid: team.id,
@@ -240,7 +214,6 @@ const UpdateProject = () => {
       listRessources: ressourceList,
       listPhases: phaseAndLivrableList,
       listUsers: userProject,
-      listHistoricProjects: historic,
     };
     // console.log(data);
 
@@ -494,8 +467,6 @@ const UpdateProject = () => {
                 setProjectData={setProjectData}
                 departments={departments}
                 setDirectionOwner={setDirectionOwner}
-                setHistoricProjectDate={setHistoricProjectDate}
-                hitoricProjectDate={hitoricProjectDate}
                 projectDataToModif={projectDataToModif}
               />
 

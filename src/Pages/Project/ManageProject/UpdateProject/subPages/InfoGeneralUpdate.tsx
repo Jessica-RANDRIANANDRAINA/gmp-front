@@ -3,7 +3,7 @@ import {
   CustomSelect,
   MultiSelect,
 } from "../../../../../components/UIElements";
-import { IProjectData, IHistoricProject } from "../../../../../types/Project";
+import { IProjectData } from "../../../../../types/Project";
 
 const InfoGeneralUpdate = ({
   pageCreate,
@@ -12,8 +12,6 @@ const InfoGeneralUpdate = ({
   setProjectData,
   departments,
   setDirectionOwner,
-  setHistoricProjectDate,
-  hitoricProjectDate,
   projectDataToModif,
 }: {
   pageCreate: number;
@@ -22,10 +20,6 @@ const InfoGeneralUpdate = ({
   projectData: IProjectData;
   departments: string[];
   setDirectionOwner: Function;
-  setHistoricProjectDate: React.Dispatch<
-    React.SetStateAction<IHistoricProject>
-  >;
-  hitoricProjectDate: IHistoricProject;
   projectDataToModif: any;
 }) => {
   // Function to compare if data is previous
@@ -193,8 +187,8 @@ const InfoGeneralUpdate = ({
                 label="Motif de la modification"
                 type="textarea"
                 rounded="medium"
-                value={hitoricProjectDate?.reason?.slice(0, 1000)}
-                maxLength={1000}
+                value={projectData?.endDateChangeReason?.slice(0, 3000)}
+                maxLength={3000}
                 required={
                   !(
                     projectData?.endDate?.split("T")[0] ===
@@ -203,9 +197,9 @@ const InfoGeneralUpdate = ({
                   )
                 }
                 onChange={(e) => {
-                  setHistoricProjectDate({
-                    ...hitoricProjectDate,
-                    reason: e.target.value.slice(0, 1000),
+                  setProjectData({
+                    ...projectData,
+                    endDateChangeReason: e.target.value.slice(0, 1000),
                   });
                 }}
               />
