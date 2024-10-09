@@ -143,7 +143,7 @@ const PhaseAdvancement = () => {
                               {...provided.draggableProps}
                               {...provided.dragHandleProps}
                               className={`p-4 mb-1 text-xs rounded-md shadow-2 ${
-                                snapshot.isDragging ? "bg-green-50" : "bg-white"
+                                snapshot.isDragging ? "bg-green-50 dark:bg-emerald-100" : "bg-white dark:bg-boxdark"
                               }`}
                               style={{
                                 ...provided.draggableProps.style,
@@ -160,7 +160,7 @@ const PhaseAdvancement = () => {
                 </Droppable>
                 {columnId === "column-1" && (
                   <div
-                    className="border ml-4 p-1 cursor-pointer border-slate-300 hover:bg-slate-100 flex justify-center text-xs"
+                    className="border ml-4 p-1 cursor-pointer border-slate-300 hover:bg-slate-100 dark:hover:bg-boxdark2 flex justify-center text-xs"
                     onClick={() => {
                       setModalOpen(true);
                     }}
@@ -192,18 +192,21 @@ const PhaseAdvancement = () => {
                 </div>
               </div>
               <div>
+                <CustomInput type="text" label="Titre" />
+              </div>
+              <div>
                 <CustomInput type="textarea" label="Description" />
               </div>
             </>
           </ModalBody>
           <ModalFooter>
             <button
-              className="border text-xs p-2 rounded-md  font-semibold bg-transparent border-transparent hover:bg-zinc-100 "
+              className="border text-xs p-2 rounded-md  font-semibold bg-transparent border-transparent hover:bg-zinc-100 dark:hover:bg-boxdark2 "
               type="button"
             >
               Annuler
             </button>
-            <button className="border text-xs p-2 rounded-md bg-green-700 text-white font-semibold">
+            <button className="border dark:border-boxdark text-xs p-2 rounded-md bg-green-700 hover:opacity-85 text-white font-semibold">
               Créer
             </button>
           </ModalFooter>

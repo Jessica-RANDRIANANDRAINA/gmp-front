@@ -19,6 +19,7 @@ const ManageProjects = () => {
   const [showModalDelete, setShowModalDelete] = useState(false);
   const [goToDetails, setGoToDetails] = useState(false);
   const [goToHistoric, setGoToHistoric] = useState(false);
+  const [goToTask, setGoToTask] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -36,11 +37,13 @@ const ManageProjects = () => {
         navigate(`/gmp/project/details/${projectsSelected?.[0]}/historic`);
       }
       if (goToAdvancement) {
-        console.log("first");
         navigate(`/gmp/project/advancement/${projectsSelected?.[0]}/update`);
+      } 
+      if (goToTask) {
+        navigate(`/gmp/project/task/${projectsSelected?.[0]}`)
       }
     }
-  }, [goToDetails, goToHistoric, goToAdvancement]);
+  }, [goToDetails, goToHistoric, goToAdvancement, goToTask]);
 
   useEffect(() => {
     if (projectToModif.length > 0) {
@@ -102,6 +105,7 @@ const ManageProjects = () => {
             setGoToHistoric={setGoToHistoric}
             setProjectsSelected={setProjectsSelected}
             setGoToAdvancement={setGoToAdvancement}
+            setGoToTask={setGoToTask}
           />
           {/* ===== TABLE PROJECT LIST END =====*/}
           {/* ===== MODAL DELETE START ===== */}

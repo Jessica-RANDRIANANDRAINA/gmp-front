@@ -1,17 +1,12 @@
 import { PuffLoader } from "react-spinners";
 import { CutomInputUserSearch } from "../../../../../components/UIElements";
+import { Iteam } from "../../../../../types/Project";
 import { getInitials } from "../../../../../services/Function/UserFunctionService";
 import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
 
 const notyf = new Notyf();
 
-interface Iteam {
-  id: string | undefined;
-  name: string;
-  email: string;
-  role: string;
-}
 
 const TeamProjectUpdate = ({
   pageCreate,

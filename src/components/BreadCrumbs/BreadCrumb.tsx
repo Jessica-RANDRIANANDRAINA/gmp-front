@@ -11,7 +11,7 @@ const Breadcrumb = ({ pageName }: BreadcrumbProps) => {
         <ol className="flex items-center gap-2">
           <li>
             <Link className="font-medium" to="/gmp/project/list">
-              Projet
+              Projets
             </Link>
           </li>
           <svg

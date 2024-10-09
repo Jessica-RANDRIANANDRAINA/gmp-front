@@ -77,3 +77,10 @@ export interface IUserProject {
   projectid: string;
   role: string;
 }
+
+export interface Iteam {
+  id: string | undefined;
+  name: string;
+  email: string;
+  role: string;
+}

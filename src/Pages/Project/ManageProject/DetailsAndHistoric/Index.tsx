@@ -12,7 +12,7 @@ const DetailsAndHistoricProject = () => {
         <div className=" mx-4 pt-4 md:mx-10">
           <Breadcrumb
             pageName={`${
-              location.pathname.includes("historic") ? "Historique" : "Détails"
+              location.pathname.includes("historic") ? "Historique" : "Détail"
             }`}
           />
 
@@ -25,7 +25,7 @@ const DetailsAndHistoricProject = () => {
                   : "hover:text-green-700 text-slate-600 "
               }
             >
-              Détails
+              Détail
             </NavLink>
             <NavLink
               to={`/gmp/project/details/${projectId}/historic`}
