@@ -63,9 +63,9 @@ const LoginProject = () => {
           <div className="flex flex-col">
             <input
               type="text"
-              placeholder="Mail"
+              placeholder="Matricule@ravinala-airports.aero"
               required
-              className={`w-[320px] h-[40px] mt-5 bg-transparent border-b-2 text-white text-lg pl-1 focus:outline-none   ${
+              className={`w-[320px] h-[40px] mt-5 bg-transparent border-b-2 text-white text-sm pl-1 focus:outline-none   ${
                 loginError.mail === ""
                   ? "focus:border-primaryGreen"
                   : "border-red-500"
@@ -96,7 +96,7 @@ const LoginProject = () => {
               type="password"
               placeholder="Mot de passe"
               required
-              className={`w-[320px] h-[40px] mt-5 bg-transparent border-b-2  text-white text-lg pl-1 focus:outline-none ${
+              className={`w-[320px] h-[40px] mt-5 bg-transparent border-b-2  text-white text-sm pl-1 focus:outline-none ${
                 loginError.password === ""
                   ? "focus:border-primaryGreen"
                   : "border-red-500"
