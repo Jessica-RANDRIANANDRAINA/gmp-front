@@ -3,7 +3,7 @@ import { assignHabilitations } from "../../services/User";
 import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
 
-const notyf = new Notyf();
+const notyf = new Notyf({ position: { x: "center", y: "top" } });
 
 const ConfirmDeleteHabilitationuser = ({
   setUserDelete,

@@ -5,7 +5,7 @@ import { getInitials } from "../../../../../services/Function/UserFunctionServic
 import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
 
-const notyf = new Notyf();
+const notyf = new Notyf({ position: { x: "center", y: "top" } });
 
 
 const TeamProjectUpdate = ({
@@ -166,7 +166,7 @@ const TeamProjectUpdate = ({
               if (userTeam.length > 0) {
                 setUpdateProjectState(true);
               } else {
-                notyf.error("Veuiller choisir au moins une personne");
+                notyf.error("Un projet doit avoir au moins une personne assignée.");
               }
             }}
             className="md:w-fit md:max-h-10  gap-2 w-full cursor-pointer mt-2 py-2 px-5  text-center font-semibold text-white hover:bg-opacity-90 lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-darkgreen dark:bg-darkgreen dark:hover:bg-opacity-90"

@@ -3,7 +3,7 @@ import { HabilitationDataProps } from "../../types/Habilitation";
 import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
 
-const notyf = new Notyf();
+const notyf = new Notyf({ position: { x: "center", y: "top" } });
 
 const endPoint = import.meta.env.VITE_API_ENDPOINT;
 

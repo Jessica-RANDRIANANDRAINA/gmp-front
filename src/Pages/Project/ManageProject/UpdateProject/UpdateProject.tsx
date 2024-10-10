@@ -21,6 +21,10 @@ import {
 } from "./subPages";
 import ProjectLayout from "../../../../layout/ProjectLayout";
 import { v4 as uuid4 } from "uuid";
+import { Notyf } from "notyf";
+import "notyf/notyf.min.css";
+
+const notyf = new Notyf({ position: { x: "center", y: "top" } });
 
 const UpdateProject = () => {
   const navigate = useNavigate();
@@ -220,8 +224,10 @@ const UpdateProject = () => {
     try {
       // update project service
       await updateProject(data?.id, data);
+      notyf.success(`Projet modifié avec succès !`)
       navigate("/gmp/project/list");
     } catch (error) {
+      notyf.success(`Une erreur s'est produite, veuillez réessayer plus tard`)
       console.log(`Error at create project: ${error}`);
     } finally {
       // stop loading
