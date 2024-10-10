@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { Modal, ModalBody, ModalFooter } from "../Modal";
 import { BeatLoader } from "react-spinners";
 import { CutomInputUserSearch } from "../../UIElements";
-import { IProjectData, Iteam, IUserProject } from "../../../types/Project";;
+import { Iteam, IUserProject } from "../../../types/Project";
 import { getProjectById } from "../../../services/Project";
 import { getInitials } from "../../../services/Function/UserFunctionService";
 
@@ -16,7 +16,7 @@ const UpdateTeamMember = ({
 }) => {
   const { projectId } = useParams();
   const [loading, setLoading] = useState<boolean>(false);
-  const [projectData, setProjectData] = useState<IProjectData>();
+  // const [projectData, setProjectData] = useState<IProjectData>();
   const [userTeam, setUserTeam] = useState<Array<Iteam>>([]);
 
   const fetchProjectData = async () => {
@@ -32,7 +32,7 @@ const UpdateTeamMember = ({
         })
       );
       setUserTeam(userArray);
-      setProjectData(project);
+      // setProjectData(project);
     }
   };
   useEffect(() => {
@@ -43,6 +43,11 @@ const UpdateTeamMember = ({
   const handleRemoveTeamList = (id: string | undefined) => {
     let filteredList = userTeam.filter((team) => team.id !== id);
     setUserTeam(filteredList);
+  };
+
+  const handleConfirmChange = () => {
+    setLoading(true);
+    setLoading(false);
   };
   return (
     <Modal
@@ -115,7 +120,7 @@ const UpdateTeamMember = ({
                         key={team.id}
                         className="relative group -ml-2 first:ml-0 hover:z-50"
                         onClick={() => {
-                            handleRemoveTeamList(team.id);
+                          handleRemoveTeamList(team.id);
                         }}
                       >
                         <p className=" cursor-pointer text-slate-50 border relative bg-secondaryGreen p-1 w-7 h-7 flex justify-center items-center text-xs rounded-full dark:text-white">
@@ -183,7 +188,7 @@ const UpdateTeamMember = ({
         <button
           type="button"
           className={`border text-xs p-2 rounded-md  font-semibold `}
-          //   onClick={confirmArchiveProject}
+          onClick={handleConfirmChange}
           //   disabled={projectToArchive && projectToArchive?.length === 0}
         >
           {loading ? (
