@@ -92,7 +92,7 @@ const InfoGeneralUpdate = ({
         <CustomSelect
           label="Criticité"
           placeholder="Criticité"
-          data={["Moins urgente", "Urgente", "Très urgente"]}
+          data={["Urgente", "Normale"]}
           value={projectData.criticality}
           onValueChange={(e) => {
             setProjectData({

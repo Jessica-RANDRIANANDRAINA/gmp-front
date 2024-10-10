@@ -869,11 +869,7 @@ const TableProjet = ({
                             ${
                               project?.criticality === "Urgente"
                                 ? "bg-orange3  text-orange dark:text-amber-100 dark:bg-orange2"
-                                : project?.criticality === "Moins urgente"
-                                ? "bg-cyan-100 border border-cyan-100 text-cyan-700 dark:text-cyan-700 "
-                                : project?.criticality === "Très urgente"
-                                ? "bg-red-200 text-red-600 dark:text-red-600"
-                                : ""
+                                : "bg-cyan-100 border border-cyan-100 text-cyan-700 dark:text-cyan-700 "
                             }
                             `}
                         >
