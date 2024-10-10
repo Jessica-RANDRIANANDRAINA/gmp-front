@@ -7,7 +7,7 @@ import { getAllLevelProjectByUserId } from "../../../services/Project";
 import { decodeToken } from "../../../services/Function/TokenService";
 
 const ManageProjects = () => {
-  const [projectData, setProjectData] = useState([]);
+  const [projectData, setProjectData] = useState(null);
   const [projectToModif, setProjectToModif] = useState([]);
   const [projectsToDetele, setProjectsToDelete] = useState<Array<string>>([]);
   const [projectsSelected, setProjectsSelected] = useState<Array<string>>([]);

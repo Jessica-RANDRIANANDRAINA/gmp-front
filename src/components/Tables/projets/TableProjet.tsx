@@ -20,7 +20,7 @@ const TableProjet = ({
   setGoToAdvancement,
   setGoToTask,
 }: {
-  data: Array<any>;
+  data: Array<any> | null;
   setProjectToModif: Function;
   setIdProjectForDetails: Function;
   setProjectsToDelete: React.Dispatch<React.SetStateAction<Array<string>>>;
@@ -56,10 +56,18 @@ const TableProjet = ({
     console.log(hab);
   };
   useEffect(() => {
+    if (data) {
+      console.log("////////////////");
+
+      console.log(data);
+      console.log("////////////////");
+    }
+  }, [data]);
+  useEffect(() => {
     getHab();
   }, []);
 
-  const sortedData = data.slice().sort((a: IProjectData, b: IProjectData) => {
+  const sortedData = data?.slice().sort((a: IProjectData, b: IProjectData) => {
     // sort by title
     if (dataSorted.title === 1) {
       return a.title.localeCompare(b.title);
@@ -166,17 +174,21 @@ const TableProjet = ({
 
   // GET THE NUMBER OF PAGES EACH TIME A ENTRIES PER PAGE OR THE FILTEREDDATA CHANGE
   useEffect(() => {
-    setPageNumbers(getPageNumber(filteredData.length));
-  }, [entriesPerPage, filteredData.length]);
+    if (filteredData) {
+      setPageNumbers(getPageNumber(filteredData.length));
+    }
+  }, [entriesPerPage, filteredData?.length]);
 
   const handleSelectAllProject = () => {
-    if (projectSelected.length < data.length) {
-      setProjectSelected([]);
-      data.map((p) => setProjectSelected((prev) => [...prev, p.id]));
-      setIsAllSelected(true);
-    } else {
-      setProjectSelected([]);
-      setIsAllSelected(false);
+    if (data) {
+      if (projectSelected.length < data.length) {
+        setProjectSelected([]);
+        data.map((p) => setProjectSelected((prev) => [...prev, p.id]));
+        setIsAllSelected(true);
+      } else {
+        setProjectSelected([]);
+        setIsAllSelected(false);
+      }
     }
   };
 
@@ -369,7 +381,7 @@ const TableProjet = ({
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
                     className={`${
-                      projectSelected.length === filteredData.length
+                      projectSelected.length === filteredData?.length
                         ? "visible"
                         : "invisible"
                     }`}
@@ -782,11 +794,19 @@ const TableProjet = ({
           {/* ===== TABLE HEAD END ===== */}
           {/* ===== TABLE BODY START ===== */}
           <tbody>
-            {!filteredData ? (
+            {!data ? (
               <tr>
-                <td colSpan={9} className="py-9 content-center border">
+                <td colSpan={9} className="py-9 content-center">
                   <div className="flex justify-center items-center">
                     <SyncLoader size={18} color={"teal"} />
+                  </div>
+                </td>
+              </tr>
+            ) : data?.length === 0 ? (
+              <tr className="hover:bg-whiten dark:hover:bg-boxdark2">
+                <td colSpan={9} className="py-9 content-center ">
+                  <div className="flex justify-center items-center">
+                    Pas de projet
                   </div>
                 </td>
               </tr>
