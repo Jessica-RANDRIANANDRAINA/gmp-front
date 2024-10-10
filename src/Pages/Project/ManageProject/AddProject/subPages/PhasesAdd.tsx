@@ -222,7 +222,7 @@ const PhasesAdd = ({
                 <div className="grid md:grid-cols-2 gap-4 border-b-2 pb-2 mb-4">
                   <CustomInput
                     label="Phase"
-                    className="font-bold"
+                    className="font-bold *:text-emerald-500 dark:*:text-emerald-500"
                     type="text"
                     rounded="medium"
                     placeholder="Ex: conception"
@@ -304,7 +304,11 @@ const PhasesAdd = ({
                     rounded="medium"
                     value={phase?.endDate}
                     // min={phaseAndLivrableList?.[index]?.startDate }
-                    min={phase?.startDate ? phase.startDate : phaseAndLivrableList?.[index]?.startDate}
+                    min={
+                      phase?.startDate
+                        ? phase.startDate
+                        : phaseAndLivrableList?.[index]?.startDate
+                    }
                     onChange={(e) => {
                       handlePhaseDataChange("endDate", e.target.value, index);
                     }}

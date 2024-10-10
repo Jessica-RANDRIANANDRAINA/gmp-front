@@ -174,7 +174,7 @@ const PhasesUpdate = ({
                       <CustomInput
                         label="Phase"
                         type="text"
-                        className="font-bold"
+                        className="font-bold *:text-emerald-500 dark:*:text-emerald-500"
                         rounded="medium"
                         placeholder="Ex: conception"
                         value={phase?.phase1}
