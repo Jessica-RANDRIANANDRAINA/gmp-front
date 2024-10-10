@@ -100,6 +100,7 @@ const HistoricProject = () => {
                         {historic?.oldValue === ""
                           ? "vide"
                           : historic?.oldValue}
+                        {historic?.column === "Avancement" ? "%" : ""}
                       </span>
                     </td>
                     <td className="py-3 px-6 text-left">
@@ -107,6 +108,7 @@ const HistoricProject = () => {
                         {historic?.newValue.includes("00.0000000")
                           ? historic?.newValue?.split("T")?.[0]
                           : historic?.newValue}
+                        {historic?.column === "Avancement" ? "%" : ""}
                       </span>
                     </td>
                     <td className="py-3 px-6 text-left">
