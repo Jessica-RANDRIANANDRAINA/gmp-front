@@ -89,20 +89,16 @@ const DetailsProject = () => {
                     </span>
                     <div
                       className={`text-sm flex justify-center items-center gap-1 ${
-                        projectData?.criticality === "Moins urgente"
+                        projectData?.criticality === "Normale"
                           ? "text-cyan-500"
-                          : projectData?.criticality === "Urgente"
-                          ? "text-orange"
-                          : "text-rose-600"
+                          : "text-orange"
                       }`}
                     >
                       <span
                         className={`w-2 flex h-2 border rounded-full ${
-                          projectData?.criticality === "Moins urgente"
+                          projectData?.criticality === "Normale"
                             ? "bg-cyan-500"
-                            : projectData?.criticality === "Urgente"
-                            ? "bg-orange"
-                            : "bg-rose-600"
+                            : "bg-orange"
                         }`}
                       ></span>
                       {projectData?.criticality}

@@ -47,7 +47,7 @@ const UpdateAdvancement = () => {
     if (projectId) {
       try {
         await updateAdvancementProject(projectId, advancement, decodedToken?.name);
-        notyf.success("Modification réussi");
+        notyf.success("Modification réussie");
         navigate("/gmp/project/list");
       } catch (error) {
         notyf.error("Une erreur est survenue lors de la modification");

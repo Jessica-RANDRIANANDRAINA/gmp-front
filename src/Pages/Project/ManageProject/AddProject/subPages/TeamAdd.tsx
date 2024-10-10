@@ -4,7 +4,7 @@ import { getInitials } from "../../../../../services/Function/UserFunctionServic
 import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
 
-const notyf = new Notyf();
+const notyf = new Notyf({ position: { x: "center", y: "top" } });
 interface Iteam {
   id: string | undefined;
   name: string;
@@ -41,7 +41,7 @@ const TeamAdd = ({
     >
       <div className="space-y-4 grid md:max-h-125 md:min-h-150 ">
         <div>
-          <span className="font-semibold tracking-wide underline">EQUIPES</span>
+          <span className="font-semibold tracking-wide underline">EQUIPE</span>
           <div className="space-y-2 ">
             {/* ===== PROJECT DIRECTOR START ===== */}
             <div>
@@ -85,7 +85,7 @@ const TeamAdd = ({
             {/* ===== PROJECT DIRECTOR END ===== */}
             {/* ===== PROJECT TEAM START ===== */}
             <div>
-              <div>Membres</div>
+              <div>Membre</div>
               <div className="hide-scrollbar ">
                 <CutomInputUserSearch
                   placeholder="Recherche"
@@ -171,7 +171,9 @@ const TeamAdd = ({
               if (userTeam.length > 0) {
                 setCreateProjectState(true);
               } else {
-                notyf.error("Veuiller choisir au moins une personne");
+                notyf.error(
+                  "Un projet doit avoir au moins une personne assignée."
+                );
               }
             }}
             className="md:w-fit max-h-10 gap-2 w-full cursor-pointer mt-2 py-2 px-5  text-center font-semibold text-white hover:bg-opacity-90 lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-darkgreen dark:bg-darkgreen dark:hover:bg-opacity-90"

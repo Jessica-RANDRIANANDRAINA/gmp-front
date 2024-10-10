@@ -36,7 +36,7 @@ const TeamProjectUpdate = ({
     >
       <div className="space-y-4 grid md:max-h-125 md:min-h-150 ">
         <div>
-          <span className="font-semibold tracking-wide underline">EQUIPES</span>
+          <span className="font-semibold tracking-wide underline">EQUIPE</span>
           <div className="space-y-2">
             {/* ===== PROJECT DIRECTOR START ===== */}
             <div>
@@ -80,7 +80,7 @@ const TeamProjectUpdate = ({
             {/* ===== PROJECT DIRECTOR END ===== */}
             {/* ===== PROJECT TEAM START ===== */}
             <div>
-              <div>Membres</div>
+              <div>Membre</div>
               <div className="hide-scrollbar">
                 <CutomInputUserSearch
                   placeholder="Recherche"

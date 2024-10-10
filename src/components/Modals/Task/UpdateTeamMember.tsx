@@ -96,7 +96,7 @@ const UpdateTeamMember = ({
           {/* ===== PROJECT DIRECTOR END ===== */}
           {/* ===== PROJECT TEAM START ===== */}
           <div>
-            <div>Membres</div>
+            <div>Membre</div>
             <div className="hide-scrollbar">
               <CutomInputUserSearch
                 placeholder="Recherche"
