@@ -5,6 +5,7 @@ import { formatDate } from "../../../services/Function/DateServices";
 import Pagination from "../Pagination";
 import ListUsers from "../../UIElements/ListUsers";
 import { IProjectData } from "../../../types/Project";
+import { SyncLoader } from "react-spinners";
 
 const TableProjet = ({
   data,
@@ -774,8 +775,10 @@ const TableProjet = ({
           <tbody>
             {!filteredData ? (
               <tr>
-                <td colSpan={9} className="py-9 text-center uppercase ">
-                  CHARGEMENT DES données ...
+                <td colSpan={9} className="py-9 content-center border">
+                  <div className="flex justify-center items-center">
+                    <SyncLoader size={18} color={"teal"} />
+                  </div>
                 </td>
               </tr>
             ) : (
