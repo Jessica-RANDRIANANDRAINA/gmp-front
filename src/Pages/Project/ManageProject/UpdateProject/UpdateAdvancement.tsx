@@ -7,6 +7,8 @@ import {
   getProjectById,
   updateAdvancementProject,
 } from "../../../../services/Project";
+import { IDecodedToken } from "../../../../types/user";
+import { decodeToken } from "../../../../services/Function/TokenService";
 import { BeatLoader } from "react-spinners";
 import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
@@ -17,6 +19,7 @@ const UpdateAdvancement = () => {
   const { projectId } = useParams();
   const [advancement, setAdvancement] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
+  const [decodedToken, setDecodedToken] = useState<IDecodedToken>();
   const navigate = useNavigate();
 
   const fetchData = async () => {
@@ -28,13 +31,22 @@ const UpdateAdvancement = () => {
 
   useEffect(() => {
     fetchData();
+    const token = localStorage.getItem("_au_pr")
+    if (token) {
+      try {
+        const decoded = decodeToken("pr");
+        setDecodedToken(decoded);
+      } catch (error) {
+        console.error(`Invalid token ${error}`);
+      }
+    }
   }, []);
 
   const handleChangeAdvancement = async () => {
     setLoading(true);
     if (projectId) {
       try {
-        await updateAdvancementProject(projectId, advancement);
+        await updateAdvancementProject(projectId, advancement, decodedToken?.name);
         notyf.success("Modification réussi");
         navigate("/gmp/project/list");
       } catch (error) {

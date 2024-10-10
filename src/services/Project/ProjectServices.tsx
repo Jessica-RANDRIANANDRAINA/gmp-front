@@ -95,12 +95,13 @@ export const updateProject = async (
 // update advancement
 export const updateAdvancementProject = async (
   projectId: string,
-  advancement: number
+  advancement: number,
+  name: string | undefined
 ) => {
   try {
     const response = await axios.put(
       `${endPoint}/api/Project/update-advancement/${projectId}`,
-      {advancement}
+      { advancement, changementInitiator: name }
     );
     return response.data;
   } catch (error) {

@@ -60,20 +60,7 @@ const InfoGeneralUpdate = ({
             });
           }}
         />
-      {/* <div className="grid md:grid-cols-2 gap-4">
-        <CustomSelect
-          label="Avancement"
-          placeholder="0"
-          data={["0%", "25%", "50%", "75%", "100%"]}
-          value={`${projectData?.completionPercentage}%`}
-          onValueChange={(e) => {
-            setProjectData({
-              ...projectData,
-              completionPercentage: parseInt(e.split("%")?.[0]),
-            });
-          }}
-        />
-      </div> */}
+      
       <CustomInput
         label="Description"
         type="textarea"
