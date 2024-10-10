@@ -3,8 +3,10 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { CustomSelect } from "../../../../components/UIElements";
 import Breadcrumb from "../../../../components/BreadCrumbs/BreadCrumb";
-import { getProjectById } from "../../../../services/Project/ProjectServices";
-import { updateAdvancementProject } from "../../../../services/Project/ProjectServices";
+import {
+  getProjectById,
+  updateAdvancementProject,
+} from "../../../../services/Project";
 import { BeatLoader } from "react-spinners";
 import { Notyf } from "notyf";
 import "notyf/notyf.min.css";

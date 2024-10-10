@@ -8,7 +8,7 @@ import {
 } from "../../../../types/Project";
 import Breadcrumb from "../../../../components/BreadCrumbs/BreadCrumb";
 import { getAllDepartments } from "../../../../services/User";
-import { createProject } from "../../../../services/Project/ProjectServices";
+import { createProject } from "../../../../services/Project";
 import { decodeToken } from "../../../../services/Function/TokenService";
 import ProjectLayout from "../../../../layout/ProjectLayout";
 import { v4 as uuid4 } from "uuid";

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { IProjectData } from "../../../../types/Project";
-import { getProjectById } from "../../../../services/Project/ProjectServices";
+import { getProjectById } from "../../../../services/Project";
 import ListUsers from "../../../../components/UIElements/ListUsers";
 
 const DetailsProject = () => {

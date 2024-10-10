@@ -3,7 +3,7 @@ import { useParams, NavLink, Outlet, useNavigate } from "react-router-dom";
 import ProjectLayout from "../../../../layout/ProjectLayout";
 import Breadcrumb from "../../../../components/BreadCrumbs/BreadCrumb";
 import { IProjectData } from "../../../../types/Project";
-import { getProjectById } from "../../../../services/Project/ProjectServices";
+import { getProjectById } from "../../../../services/Project";
 import ListUsers from "../../../../components/UIElements/ListUsers";
 import UpdateTeamMember from "../../../../components/Modals/Task/UpdateTeamMember";
 

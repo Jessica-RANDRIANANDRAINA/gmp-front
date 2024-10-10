@@ -3,8 +3,8 @@ import { useParams } from "react-router-dom";
 import { Modal, ModalBody, ModalFooter } from "../Modal";
 import { BeatLoader } from "react-spinners";
 import { CutomInputUserSearch } from "../../UIElements";
-import { IProjectData, Iteam, IUserProject } from "../../../types/Project";
-import { getProjectById } from "../../../services/Project/ProjectServices";
+import { IProjectData, Iteam, IUserProject } from "../../../types/Project";;
+import { getProjectById } from "../../../services/Project";
 import { getInitials } from "../../../services/Function/UserFunctionService";
 
 const UpdateTeamMember = ({

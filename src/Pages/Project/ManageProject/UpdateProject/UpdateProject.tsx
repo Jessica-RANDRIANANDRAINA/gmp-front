@@ -11,7 +11,7 @@ import { getAllDepartments } from "../../../../services/User";
 import {
   updateProject,
   getProjectById,
-} from "../../../../services/Project/ProjectServices";
+} from "../../../../services/Project";
 import { decodeToken } from "../../../../services/Function/TokenService";
 import {
   InfoGeneralUpdate,

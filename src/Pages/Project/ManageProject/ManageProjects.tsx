@@ -3,10 +3,7 @@ import { useNavigate } from "react-router-dom";
 import ProjectLayout from "../../../layout/ProjectLayout";
 import { TableProjet } from "../../../components/Tables/projets";
 import ArchiveProject from "../../../components/Modals/Project/ArchiveProject";
-import {
-  // getProjectByUserId,
-  getAllLevelProjectByUserId,
-} from "../../../services/Project/ProjectServices";
+import { getAllLevelProjectByUserId } from "../../../services/Project";
 import { decodeToken } from "../../../services/Function/TokenService";
 
 const ManageProjects = () => {
@@ -38,9 +35,9 @@ const ManageProjects = () => {
       }
       if (goToAdvancement) {
         navigate(`/gmp/project/advancement/${projectsSelected?.[0]}/update`);
-      } 
+      }
       if (goToTask) {
-        navigate(`/gmp/project/task/${projectsSelected?.[0]}`)
+        navigate(`/gmp/project/task/${projectsSelected?.[0]}`);
       }
     }
   }, [goToDetails, goToHistoric, goToAdvancement, goToTask]);

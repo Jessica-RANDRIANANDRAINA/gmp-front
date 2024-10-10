@@ -3,7 +3,7 @@ import { Modal, ModalBody, ModalFooter } from "../Modal";
 import {
   archiveProject,
   getProjectByIDs,
-} from "../../../services/Project/ProjectServices";
+} from "../../../services/Project";
 import { IDecodedToken } from "../../../types/user";
 import { IProjectData } from "../../../types/Project";
 import { BeatLoader } from "react-spinners";
