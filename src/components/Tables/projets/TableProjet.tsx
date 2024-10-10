@@ -4,6 +4,7 @@ import { formatDate } from "../../../services/Function/DateServices";
 // import { decodeToken } from "../../../services/Function/TokenService";
 import Pagination from "../Pagination";
 import ListUsers from "../../UIElements/ListUsers";
+import { getAllMyHabilitation } from "../../../services/Function/UserFunctionService";
 import { IProjectData } from "../../../types/Project";
 import { SyncLoader } from "react-spinners";
 
@@ -49,6 +50,14 @@ const TableProjet = ({
   const [isAllSelected, setIsAllSelected] = useState(false);
   const [projectSelected, setProjectSelected] = useState<string[]>([]);
   // const userConnected = decodeToken("pr");
+
+  const getHab = async () => {
+    const hab = await getAllMyHabilitation();
+    console.log(hab);
+  };
+  useEffect(() => {
+    getHab();
+  }, []);
 
   const sortedData = data.slice().sort((a: IProjectData, b: IProjectData) => {
     // sort by title

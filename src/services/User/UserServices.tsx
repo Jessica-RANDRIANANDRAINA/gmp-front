@@ -51,3 +51,15 @@ export const getAllDepartments = async () => {
     throw new Error(`Error at fetching department list`);
   }
 };
+
+// get user habiliation
+export const getUserHabilitations = async (userId: string) => {
+  try {
+    const response = await axios.get(
+      `${endPoint}/api/User/habilitation/${userId}`
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(`Error at fetching user habilitation list`);
+  }
+};

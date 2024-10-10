@@ -3,6 +3,7 @@ import {
   getAllDepartments,
   assignHabilitations,
   actualiseUserData,
+  getUserHabilitations,
 } from "./UserServices";
 import {
   createHabilitation,
@@ -24,4 +25,5 @@ export {
   getHabilitationById,
   updateHabilitation,
   actualiseUserData,
+  getUserHabilitations,
 };
