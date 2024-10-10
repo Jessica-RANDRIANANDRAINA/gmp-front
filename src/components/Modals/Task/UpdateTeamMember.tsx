@@ -22,7 +22,6 @@ const UpdateTeamMember = ({
   const fetchProjectData = async () => {
     if (projectId) {
       const project = await getProjectById(projectId);
-      console.log(project);
       const userArray = project?.listUsers?.map(
         (userProject: IUserProject) => ({
           id: userProject?.user?.id,

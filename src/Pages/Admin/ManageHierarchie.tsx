@@ -9,7 +9,7 @@ import { getAllUsers } from "../../services/User";
 import { UserInterface } from "../../types/user";
 
 const ManageHierarchie = () => {
-  const [departChoosen] = useState("");
+  // const [departChoosen] = useState("");
   const [userData, setUserData] = useState([]);
   const [isModifyHierarchyOpen, setIsModifyHierarchyOpen] = useState(false);
   const [userToModify, setUserToModify] = useState<UserInterface | null>(null);
@@ -22,9 +22,9 @@ const ManageHierarchie = () => {
     fetchUser();
   }, []);
 
-  useEffect(() => {
-    console.log(departChoosen);
-  }, [departChoosen]);
+  // useEffect(() => {
+  //   console.log(departChoosen);
+  // }, [departChoosen]);
 
   return (
     <ProjectLayout>

@@ -110,7 +110,6 @@ const UpdateAdvancement = () => {
                 //   value={`${projectData?.completionPercentage}%`}
                 value={`${advancement}%`}
                 onValueChange={(e) => {
-                  console.log(e);
                   setAdvancement(parseInt(e.split("%")?.[0]));
                 }}
               />

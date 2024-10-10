@@ -6,6 +6,7 @@ import Pagination from "../Pagination";
 import ListUsers from "../../UIElements/ListUsers";
 import { getAllMyHabilitation } from "../../../services/Function/UserFunctionService";
 import { IProjectData } from "../../../types/Project";
+import { IMyHabilitation } from "../../../types/Habilitation";
 import { SyncLoader } from "react-spinners";
 
 const TableProjet = ({
@@ -49,20 +50,14 @@ const TableProjet = ({
 
   const [isAllSelected, setIsAllSelected] = useState(false);
   const [projectSelected, setProjectSelected] = useState<string[]>([]);
+  const [myHabilitation, setMyHabilitation] = useState<IMyHabilitation>();
   // const userConnected = decodeToken("pr");
 
   const getHab = async () => {
     const hab = await getAllMyHabilitation();
-    console.log(hab);
+    setMyHabilitation(hab);
   };
-  useEffect(() => {
-    if (data) {
-      console.log("////////////////");
 
-      console.log(data);
-      console.log("////////////////");
-    }
-  }, [data]);
   useEffect(() => {
     getHab();
   }, []);
@@ -326,7 +321,12 @@ const TableProjet = ({
           <CustomSelect
             data={
               projectSelected.length > 1
-                ? ["Archiver"]
+                ? ["Archiver"].filter((action) => {
+                  if (myHabilitation?.project.delete ==false && action === "Archiver"){
+                    return false
+                  } 
+                  return true
+                })
                 : // : ["Modifier", "Supprimer", "Gérer", "Détails", "Historique"]
                   [
                     "Modifier",
@@ -335,7 +335,21 @@ const TableProjet = ({
                     "Détail",
                     "Historique",
                     "Archiver",
-                  ]
+                  ].filter((action) => {
+                    if (
+                      myHabilitation?.project.delete === false &&
+                      action === "Archiver"
+                    ) {
+                      return false;
+                    }
+                    if (
+                      myHabilitation?.project.update === false &&
+                      action === "Modifier"
+                    ) {
+                      return false;
+                    }
+                    return true;
+                  })
             }
             className="mb-2  "
             placeholder="Actions"

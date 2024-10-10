@@ -70,7 +70,6 @@ const TableAccess = ({
 
   const handleBulkAction = (e: string) => {
     if (e === "Supprimer") {
-      // console.log("1");
       console.log(accessSelected);
       setIsDeleteAccess(true);
       setAccessSelectedId(accessSelected);

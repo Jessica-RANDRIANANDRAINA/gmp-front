@@ -33,7 +33,6 @@ const ManageAccess = () => {
   // fetch all habilitations
   const fetchHabilitation = async () => {
     const habilitation = await getAllHabilitation();
-    console.log(habilitation);
     setHabilitationData(habilitation);
   };
   useEffect(() => {

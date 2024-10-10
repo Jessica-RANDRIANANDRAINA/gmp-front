@@ -53,9 +53,6 @@ const UpdateAccessModal = ({
 
   useEffect(() => {
     if (habilitationToModifData) {
-      console.log(
-        habilitationToModifData?.habilitationAdmins?.[0]?.createHabilitation
-      );
       setAccessLabel(habilitationToModifData?.label);
       setAdminAccess({
         ...adminAccess,

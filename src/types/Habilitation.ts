@@ -29,3 +29,19 @@ export interface HabilitationAdminInterface {
   deleteHabilitation: number;
   restoreHierarchy: number;
 }
+
+export interface IMyHabilitation {
+  admin: {
+    createHabilitation: boolean;
+    deleteHabilitation: boolean;
+    modifyHierarchy: boolean;
+    restoreHierarchy: boolean;
+    updateHabilitation: boolean;
+  };
+  project: {
+    assign: boolean;
+    create: boolean;
+    delete: boolean;
+    update: boolean;
+  };
+}
