@@ -18,10 +18,12 @@ const ManageAccess = () => {
   const [accessSelectedId, setAccessSelectedId] = useState([]);
   const [isAddFinished, setIsAddFinished] = useState<boolean>(false);
   const [isDeleteFinished, setIsDeleteFinished] = useState<boolean>(false);
+  const [isUpdateFinished, setIsUpdateFinished] = useState<boolean>(false);
 
   const fetchHabilitationById = async () => {
     if (accessSelectedId.length > 0) {
       const habilitation = await getHabilitationById(accessSelectedId?.[0]);
+      console.log(habilitation)
       setHabilitationToModifData(habilitation);
     }
   };
@@ -41,7 +43,8 @@ const ManageAccess = () => {
     fetchHabilitation();
     setIsAddFinished(false);
     setIsDeleteFinished(false);
-  }, [isAddFinished, isDeleteFinished]);
+    setIsUpdateFinished(false);
+  }, [isAddFinished, isDeleteFinished, isUpdateFinished]);
 
   useEffect(() => {
     handleChange();
@@ -102,6 +105,7 @@ const ManageAccess = () => {
             setHabilitationToModifData={setHabilitationToModifData}
             habilitationToModifData={habilitationToModifData}
             habilitationId={accessSelectedId?.[0]}
+            setIsUpdateFinished={setIsUpdateFinished}
           />
         )}
         {/* ===== MODAL UPDATE ACCESS END ===== */}

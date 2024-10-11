@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { CustomInput, Checkbox } from "../../UIElements";
 // import { v4 as uuid4 } from "uuid";
 import { updateHabilitation } from "../../../services/User";
@@ -9,11 +9,13 @@ const UpdateAccessModal = ({
   habilitationToModifData,
   setHabilitationToModifData,
   habilitationId,
+  setIsUpdateFinished,
 }: {
   habilitationToModifData: any;
   setIsModalOpen: Function;
   setHabilitationToModifData: Function;
   habilitationId: string;
+  setIsUpdateFinished: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   // const [access, setAccess] = useState<string[]>([]);
   const trigger = useRef<any>(null);
@@ -22,6 +24,7 @@ const UpdateAccessModal = ({
   const [accessLabel, setAccessLabel] = useState(
     habilitationToModifData?.label ?? ""
   );
+
   const [adminAccess, setAdminAccess] = useState({
     id: "",
     modifyHierarchy: 0,
@@ -52,6 +55,11 @@ const UpdateAccessModal = ({
   });
 
   useEffect(() => {
+    console.log("7848484")
+    console.log(habilitationId);
+  }, [habilitationId]);
+
+  useEffect(() => {
     if (habilitationToModifData) {
       setAccessLabel(habilitationToModifData?.label);
       setAdminAccess({
@@ -61,7 +69,7 @@ const UpdateAccessModal = ({
     }
   }, [habilitationToModifData]);
 
-  const handleModif = (e: any) => {
+  const handleModif = async (e: any) => {
     e.preventDefault();
     setIsLoading(true);
     setLabelError("");
@@ -83,7 +91,8 @@ const UpdateAccessModal = ({
     };
 
     try {
-      updateHabilitation(habilitationData, habilitationId);
+      await updateHabilitation(habilitationData, habilitationId);
+      setIsUpdateFinished(true);
     } catch (error) {
       console.error(`error at impl create habilitation: ${error}`);
     } finally {
