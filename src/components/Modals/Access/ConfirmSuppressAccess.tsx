@@ -1,4 +1,4 @@
-import { FormEvent, useRef } from "react";
+import React,{ FormEvent, useRef } from "react";
 import { deleteHabilitation } from "../../../services/User";
 import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
@@ -8,9 +8,11 @@ const notyf = new Notyf({ position: { x: "center", y: "top" } });
 const ConfirmSuppressAccess = ({
   setIsDeleteAccess,
   accessSelectedId,
+  setIsDeleteFinished
 }: {
   setIsDeleteAccess: Function;
   accessSelectedId: string[];
+  setIsDeleteFinished: React.Dispatch<React.SetStateAction<boolean>>
 }) => {
   const trigger = useRef<any>(null);
 
@@ -20,6 +22,7 @@ const ConfirmSuppressAccess = ({
       deleteHabilitation(accessSelectedId).then(() => {
         notyf.success("Accès supprimer avec succès");
         setIsDeleteAccess(false);
+        setIsDeleteFinished(true)
       });
     } catch (error) {
       console.log(`Unable to delete habilitations: ${error}`);
@@ -65,7 +68,7 @@ const ConfirmSuppressAccess = ({
           <div>
             <button
               type="submit"
-              className="w-full cursor-pointer mt-2 py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 border border-redButton bg-redButton rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen dark:hover:bg-opacity-90"
+              className="w-full cursor-pointer mt-5 py-2 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 border border-redButton bg-redButton rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen dark:hover:bg-opacity-90"
             >
               Supprimer
             </button>

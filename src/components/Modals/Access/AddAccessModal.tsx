@@ -1,10 +1,20 @@
-import { useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { CustomInput, Checkbox } from "../../UIElements";
 import { v4 as uuid4 } from "uuid";
 import { createHabilitation } from "../../../services/User";
 import { BeatLoader } from "react-spinners";
+import { Notyf } from "notyf";
+import "notyf/notyf.min.css";
 
-const AddAccessModal = ({ setAccessAdd }: { setAccessAdd: Function }) => {
+const notyf = new Notyf({ position: { x: "center", y: "top" } });
+
+const AddAccessModal = ({
+  setAccessAdd,
+  setIsAddFinished,
+}: {
+  setAccessAdd: Function;
+  setIsAddFinished: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   // const [access, setAccess] = useState<string[]>([]);
   const trigger = useRef<any>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -65,8 +75,11 @@ const AddAccessModal = ({ setAccessAdd }: { setAccessAdd: Function }) => {
 
     try {
       createHabilitation(habilitationData);
+      setIsAddFinished(true)
+      notyf.success("Accès créé avec succès !")
     } catch (error) {
-      console.error(`error at impl create habilitation: ${error}`);
+      notyf.error("Erreur lors de la création de l'accès. Veuillez reessayer plus tard.")
+      console.error(`Error at impl create habilitation: ${error}`);
     } finally {
       setIsLoading(false);
       setAccessAdd(false);

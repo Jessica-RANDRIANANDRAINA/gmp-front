@@ -16,6 +16,8 @@ const ManageAccess = () => {
   const [habilitationToModifData, setHabilitationToModifData] = useState([]);
   const [isDeleteAccess, setIsDeleteAccess] = useState(false);
   const [accessSelectedId, setAccessSelectedId] = useState([]);
+  const [isAddFinished, setIsAddFinished] = useState<boolean>(false);
+  const [isDeleteFinished, setIsDeleteFinished] = useState<boolean>(false);
 
   const fetchHabilitationById = async () => {
     if (accessSelectedId.length > 0) {
@@ -37,7 +39,9 @@ const ManageAccess = () => {
   };
   useEffect(() => {
     fetchHabilitation();
-  }, []);
+    setIsAddFinished(false);
+    setIsDeleteFinished(false);
+  }, [isAddFinished, isDeleteFinished]);
 
   useEffect(() => {
     handleChange();
@@ -87,6 +91,7 @@ const ManageAccess = () => {
           <AddAccessModal
             // accessAdd={isAddModalAccessVisible}
             setAccessAdd={setIsModalAccessVisible}
+            setIsAddFinished={setIsAddFinished}
           />
         )}
         {/* ===== MODAL ADD ACCESS END ===== */}
@@ -103,6 +108,7 @@ const ManageAccess = () => {
         {/* ===== MODAL CONFIRM DELETE ACCESS START ===== */}
         {isDeleteAccess && (
           <ConfirmSuppressAccess
+            setIsDeleteFinished={setIsDeleteFinished}
             setIsDeleteAccess={setIsDeleteAccess}
             accessSelectedId={accessSelectedId}
           />

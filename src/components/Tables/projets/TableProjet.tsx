@@ -62,6 +62,10 @@ const TableProjet = ({
     getHab();
   }, []);
 
+  useEffect(() => {
+    setProjectSelected([]);
+  }, [data]);
+
   const sortedData = data?.slice().sort((a: IProjectData, b: IProjectData) => {
     // sort by title
     if (dataSorted.title === 1) {

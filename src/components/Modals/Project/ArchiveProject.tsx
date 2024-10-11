@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Modal, ModalBody, ModalFooter } from "../Modal";
-import {
-  archiveProject,
-  getProjectByIDs,
-} from "../../../services/Project";
+import { archiveProject, getProjectByIDs } from "../../../services/Project";
 import { IDecodedToken } from "../../../types/user";
 import { IProjectData } from "../../../types/Project";
 import { BeatLoader } from "react-spinners";
@@ -17,9 +14,11 @@ const ArchiveProject = ({
   showModalDelete,
   setShowModalDelete,
   projectsToDetele,
+  setIsArchiveFinished,
 }: {
   showModalDelete: boolean;
   setShowModalDelete: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsArchiveFinished: React.Dispatch<React.SetStateAction<boolean>>;
   projectsToDetele: Array<string>;
 }) => {
   const [loadingArchive, setLoadingArchive] = useState<boolean>(false);
@@ -67,11 +66,12 @@ const ArchiveProject = ({
     }
   }, [project, decodedToken]);
 
-  const confirmArchiveProject = () => {
+  const confirmArchiveProject = async () => {
     setLoadingArchive(true);
     try {
       const prtoArchive = projectToArchive?.map((pr) => pr.id);
-      archiveProject(prtoArchive ?? []);
+      await archiveProject(prtoArchive ?? []);
+      setIsArchiveFinished(true);
       var message =
         projectsToDetele.length === 1
           ? "Le projet a été archivé"
@@ -148,7 +148,9 @@ const ArchiveProject = ({
                     ></path>{" "}
                   </g>
                 </svg>
-                <span className="text-orange">Vous n'avez pas les droits requis pour archiver :</span>
+                <span className="text-orange">
+                  Vous n'avez pas les droits requis pour archiver :
+                </span>
               </p>
               <ul>
                 {projectNoAccess?.map((pr) => (

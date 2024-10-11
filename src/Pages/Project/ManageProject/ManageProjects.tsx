@@ -17,6 +17,7 @@ const ManageProjects = () => {
   const [goToDetails, setGoToDetails] = useState(false);
   const [goToHistoric, setGoToHistoric] = useState(false);
   const [goToTask, setGoToTask] = useState(false);
+  const [isArchiveFinished, setIsArchiveFinished] = useState<boolean>(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -59,7 +60,8 @@ const ManageProjects = () => {
 
   useEffect(() => {
     fetchProject();
-  }, [showModalDelete]);
+    setIsArchiveFinished(false);
+  }, [showModalDelete, isArchiveFinished]);
 
   return (
     <ProjectLayout>
@@ -108,6 +110,7 @@ const ManageProjects = () => {
           {/* ===== MODAL DELETE START ===== */}
           {showModalDelete && (
             <ArchiveProject
+              setIsArchiveFinished={setIsArchiveFinished}
               showModalDelete={showModalDelete}
               setShowModalDelete={setShowModalDelete}
               projectsToDetele={projectsToDetele}
