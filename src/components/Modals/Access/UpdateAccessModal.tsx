@@ -36,12 +36,20 @@ const UpdateAccessModal = ({
     updateHabilitation: 0,
     deleteHabilitation: 0,
     restoreHierarchy: 0,
+    actualizeUserData: 0,
+    assignAccess: 0,
   });
   const [projectAccess, setProjectAccess] = useState({
     id: "",
+    watchMyProject: 0,
+    watchMySubordinatesProject: 0,
     create: 0,
     update: 0,
+    updateMySubordinatesProject: 0,
+    manage: 0,
+    manageMySubordinatesProject: 0,
     delete: 0,
+    deleteMySubordinatesProject: 0,
     assign: 0,
   });
   const [transverseAccess, setTransverseAccess] = useState({
@@ -58,6 +66,10 @@ const UpdateAccessModal = ({
   });
 
   useEffect(() => {
+    console.log(habilitationToModifData);
+  }, [habilitationToModifData]);
+
+  useEffect(() => {
     if (habilitationToModifData) {
       setAccessLabel(habilitationToModifData?.label);
       setAdminAccess({
@@ -72,13 +84,32 @@ const UpdateAccessModal = ({
           habilitationToModifData?.habilitationAdmins?.[0]?.deleteHabilitation,
         restoreHierarchy:
           habilitationToModifData?.habilitationAdmins?.[0]?.restoreHierarchy,
+        actualizeUserData:
+          habilitationToModifData?.habilitationAdmins?.[0]?.actualizeUserData,
+        assignAccess:
+          habilitationToModifData?.habilitationAdmins?.[0]?.assignAccess,
       });
       setProjectAccess({
         ...projectAccess,
         assign: habilitationToModifData?.habilitationProjects?.[0]?.assign,
         create: habilitationToModifData?.habilitationProjects?.[0]?.create,
-        delete: habilitationToModifData?.habilitationProjects?.[0]?.delete,
         update: habilitationToModifData?.habilitationProjects?.[0]?.update,
+        updateMySubordinatesProject:
+          habilitationToModifData?.habilitationProjects?.[0]
+            ?.updateMySubordinatesProject,
+        delete: habilitationToModifData?.habilitationProjects?.[0]?.delete,
+        deleteMySubordinatesProject:
+          habilitationToModifData?.habilitationProjects?.[0]
+            ?.deleteMySubordinatesProject,
+        watchMyProject:
+          habilitationToModifData?.habilitationProjects?.[0]?.watchMyProject,
+        watchMySubordinatesProject:
+          habilitationToModifData?.habilitationProjects?.[0]
+            ?.watchMySubordinatesProject,
+        manage: habilitationToModifData?.habilitationProjects?.[0]?.manage,
+        manageMySubordinatesProject:
+          habilitationToModifData?.habilitationProjects?.[0]
+            ?.manageMySubordinatesProject,
       });
       setTransverseAccess({
         ...transverseAccess,
@@ -120,7 +151,7 @@ const UpdateAccessModal = ({
 
     try {
       await updateHabilitation(habilitationData, habilitationId);
-      notyf.success("Modification réuissie")
+      notyf.success("Modification réuissie");
       setIsUpdateFinished(true);
     } catch (error) {
       console.error(`error at impl create habilitation: ${error}`);
@@ -278,6 +309,30 @@ const UpdateAccessModal = ({
                       : handleCheckBoxChange("admin", "restoreHierarchy", 0)
                   }
                 />
+                <Checkbox
+                  label="Actualiser les valeurs des utilisateurs"
+                  active={
+                    habilitationToModifData?.habilitationAdmins?.[0]
+                      ?.actualizeUserData
+                  }
+                  onStateCheckChange={(isChecked) =>
+                    isChecked
+                      ? handleCheckBoxChange("admin", "actualizeUserData", 1)
+                      : handleCheckBoxChange("admin", "actualizeUserData", 0)
+                  }
+                />
+                <Checkbox
+                  label="Assigner des accès aux utilisateurs"
+                  active={
+                    habilitationToModifData?.habilitationAdmins?.[0]
+                      ?.assignAccess
+                  }
+                  onStateCheckChange={(isChecked) =>
+                    isChecked
+                      ? handleCheckBoxChange("admin", "assignAccess", 1)
+                      : handleCheckBoxChange("admin", "assignAccess", 0)
+                  }
+                />
               </div>
             </div>
             <div className="mb-4 pb-2 border-b-2 border-b-slate-400">
@@ -285,6 +340,37 @@ const UpdateAccessModal = ({
                 Accès Projet
               </label>
               <div className="pl-3 space-y-1">
+                <Checkbox
+                  active={
+                    habilitationToModifData?.habilitationProjects?.[0]
+                      ?.watchMyProject 
+                  }
+                  label="Voir mes projets"
+                  onStateCheckChange={(isChecked) =>
+                    isChecked
+                      ? handleCheckBoxChange("project", "watchMyProject", 1)
+                      : handleCheckBoxChange("project", "watchMyProject", 0)
+                  }
+                />
+                <Checkbox
+                  active={
+                    habilitationToModifData?.habilitationProjects?.[0]?.watchMySubordinatesProject
+                  }
+                  label="Voir les projets de mes subordonné(e)s"
+                  onStateCheckChange={(isChecked) =>
+                    isChecked
+                      ? handleCheckBoxChange(
+                          "project",
+                          "watchMySubordinatesProject",
+                          1
+                        )
+                      : handleCheckBoxChange(
+                          "project",
+                          "watchMySubordinatesProject",
+                          0
+                        )
+                  }
+                />
                 <Checkbox
                   active={
                     habilitationToModifData?.habilitationProjects?.[0]?.create
@@ -300,7 +386,7 @@ const UpdateAccessModal = ({
                   active={
                     habilitationToModifData?.habilitationProjects?.[0]?.update
                   }
-                  label="Modifier un projet"
+                  label="Modifier mes projets"
                   onStateCheckChange={(isChecked) =>
                     isChecked
                       ? handleCheckBoxChange("project", "update", 1)
@@ -309,13 +395,81 @@ const UpdateAccessModal = ({
                 />
                 <Checkbox
                   active={
+                    habilitationToModifData?.habilitationProjects?.[0]?.updateMySubordinatesProject
+                  }
+                  label="Modifier les projets de mes subordonné(e)s"
+                  onStateCheckChange={(isChecked) =>
+                    isChecked
+                      ? handleCheckBoxChange(
+                          "project",
+                          "updateMySubordinatesProject",
+                          1
+                        )
+                      : handleCheckBoxChange(
+                          "project",
+                          "updateMySubordinatesProject",
+                          0
+                        )
+                  }
+                />
+                <Checkbox
+                  active={
+                    habilitationToModifData?.habilitationProjects?.[0]?.manage
+                  }
+                  label="Gérer mes projets"
+                  onStateCheckChange={(isChecked) =>
+                    isChecked
+                      ? handleCheckBoxChange("project", "manage", 1)
+                      : handleCheckBoxChange("project", "manage", 0)
+                  }
+                />
+                <Checkbox
+                  active={
+                    habilitationToModifData?.habilitationProjects?.[0]?.manageMySubordinatesProject
+                  }
+                  label="Gérer les projets de mes subordonné(e)s"
+                  onStateCheckChange={(isChecked) =>
+                    isChecked
+                      ? handleCheckBoxChange(
+                          "project",
+                          "manageMySubordinatesProject",
+                          1
+                        )
+                      : handleCheckBoxChange(
+                          "project",
+                          "manageMySubordinatesProject",
+                          0
+                        )
+                  }
+                />
+                <Checkbox
+                  active={
                     habilitationToModifData?.habilitationProjects?.[0]?.delete
                   }
-                  label="Supprimer un projet"
+                  label="Archiver mes projets"
                   onStateCheckChange={(isChecked) =>
                     isChecked
                       ? handleCheckBoxChange("project", "delete", 1)
                       : handleCheckBoxChange("project", "delete", 0)
+                  }
+                />
+                <Checkbox
+                  active={
+                    habilitationToModifData?.habilitationProjects?.[0]?.deleteMySubordinatesProject
+                  }
+                  label="Archiver les projets de mes subordonné(e)s"
+                  onStateCheckChange={(isChecked) =>
+                    isChecked
+                      ? handleCheckBoxChange(
+                          "project",
+                          "deleteMySubordinatesProject",
+                          1
+                        )
+                      : handleCheckBoxChange(
+                          "project",
+                          "deleteMySubordinatesProject",
+                          0
+                        )
                   }
                 />
                 <Checkbox

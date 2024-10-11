@@ -375,6 +375,14 @@ const TableAccess = ({
                         message.push("Restaurer la hiérarchie");
                         count++;
                       }
+                      if (admin.actualizeUserData === 1) {
+                        message.push("Actualiser les valeurs utilisaterus");
+                        count++;
+                      }
+                      if (admin.assignAccess === 1) {
+                        message.push("Assigner des accès aux utilisateurs");
+                        count++;
+                      }
                       return count > 1 ? (
                         <details key={key}>
                           <summary>{message?.[0]}, </summary>
@@ -398,16 +406,50 @@ const TableAccess = ({
                     {access?.habilitationProjects?.map((project, key) => {
                       const message = [];
                       let count = 0;
+                      if (project.watchMyProject === 1) {
+                        message.push("Voir la lite de mes projets");
+                        count++;
+                      }
+                      if (project.watchMySubordinatesProject === 1) {
+                        message.push(
+                          "Voir la lite de mes projets et celle de mes subordonné(e)s"
+                        );
+                        count++;
+                      }
                       if (project.create === 1) {
                         message.push("Créer un projet");
                         count++;
                       }
                       if (project.update === 1) {
-                        message.push("Modifier les détails d'un projet");
+                        message.push("Modifier les détails de mes projets");
+                        count++;
+                      }
+                      if (project.updateMySubordinatesProject === 1) {
+                        message.push(
+                          "Modifier les détails des projets et celle de mes subordonnées"
+                        );
+                        count++;
+                      }
+                      if (project.manage === 1) {
+                        message.push(
+                          "Gérer les avancements des phases de mes projets"
+                        );
+                        count++;
+                      }
+                      if (project.manageMySubordinatesProject === 1) {
+                        message.push(
+                          "Gérer les avancements des phases des projets et celle de mes subordonnées"
+                        );
                         count++;
                       }
                       if (project.delete === 1) {
-                        message.push("Supprimer un projet");
+                        message.push("Archiver mes projets");
+                        count++;
+                      }
+                      if (project.deleteMySubordinatesProject === 1) {
+                        message.push(
+                          "Archiver les projets de mes subordonné(e)s"
+                        );
                         count++;
                       }
                       if (project.assign === 1) {

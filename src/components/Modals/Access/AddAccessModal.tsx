@@ -27,13 +27,21 @@ const AddAccessModal = ({
     updateHabilitation: 0,
     deleteHabilitation: 0,
     restoreHierarchy: 0,
+    actualizeUserData: 0,
+    assignAccess: 0,
   });
   const [projectAccess, setProjectAccess] = useState({
     id: "",
+    assign: 0,
     create: 0,
     update: 0,
+    updateMySubordinatesProject: 0,
     delete: 0,
-    assign: 0,
+    deleteMySubordinatesProject: 0,
+    watchMyProject: 0,
+    watchMySubordinatesProject: 0,
+    manage: 0,
+    manageMySubordinatesProject: 0,
   });
   const [transverseAccess, setTransverseAccess] = useState({
     id: "",
@@ -75,10 +83,12 @@ const AddAccessModal = ({
 
     try {
       createHabilitation(habilitationData);
-      setIsAddFinished(true)
-      notyf.success("Accès créé avec succès !")
+      setIsAddFinished(true);
+      notyf.success("Accès créé avec succès !");
     } catch (error) {
-      notyf.error("Erreur lors de la création de l'accès. Veuillez reessayer plus tard.")
+      notyf.error(
+        "Erreur lors de la création de l'accès. Veuillez reessayer plus tard."
+      );
       console.error(`Error at impl create habilitation: ${error}`);
     } finally {
       setIsLoading(false);
@@ -206,6 +216,22 @@ const AddAccessModal = ({
                       : handleCheckBoxChange("admin", "restoreHierarchy", 0)
                   }
                 />
+                <Checkbox
+                  label="Actualiser les valeurs des utilisateurs"
+                  onStateCheckChange={(isChecked) =>
+                    isChecked
+                      ? handleCheckBoxChange("admin", "actualizeUserData", 1)
+                      : handleCheckBoxChange("admin", "actualizeUserData", 0)
+                  }
+                />
+                <Checkbox
+                  label="Assigner des accès aux utilisateurs"
+                  onStateCheckChange={(isChecked) =>
+                    isChecked
+                      ? handleCheckBoxChange("admin", "assignAccess", 1)
+                      : handleCheckBoxChange("admin", "assignAccess", 0)
+                  }
+                />
               </div>
             </div>
             <div className="mb-4 pb-2 border-b-2 border-b-slate-400">
@@ -213,6 +239,30 @@ const AddAccessModal = ({
                 Accès Projet
               </label>
               <div className="pl-3 space-y-1">
+                <Checkbox
+                  label="Voir mes projets"
+                  onStateCheckChange={(isChecked) =>
+                    isChecked
+                      ? handleCheckBoxChange("project", "watchMyProject", 1)
+                      : handleCheckBoxChange("project", "watchMyProject", 0)
+                  }
+                />
+                <Checkbox
+                  label="Voir les projets de mes subordonné(e)s"
+                  onStateCheckChange={(isChecked) =>
+                    isChecked
+                      ? handleCheckBoxChange(
+                          "project",
+                          "watchMySubordinatesProject",
+                          1
+                        )
+                      : handleCheckBoxChange(
+                          "project",
+                          "watchMySubordinatesProject",
+                          0
+                        )
+                  }
+                />
                 <Checkbox
                   label="Créer un nouveau projet"
                   onStateCheckChange={(isChecked) =>
@@ -222,7 +272,7 @@ const AddAccessModal = ({
                   }
                 />
                 <Checkbox
-                  label="Modifier un projet"
+                  label="Modifier mes projets"
                   onStateCheckChange={(isChecked) =>
                     isChecked
                       ? handleCheckBoxChange("project", "update", 1)
@@ -230,11 +280,67 @@ const AddAccessModal = ({
                   }
                 />
                 <Checkbox
-                  label="Supprimer un projet"
+                  label="Modifier les projets de mes subordonné(e)s"
+                  onStateCheckChange={(isChecked) =>
+                    isChecked
+                      ? handleCheckBoxChange(
+                          "project",
+                          "updateMySubordinatesProject",
+                          1
+                        )
+                      : handleCheckBoxChange(
+                          "project",
+                          "updateMySubordinatesProject",
+                          0
+                        )
+                  }
+                />
+                <Checkbox
+                  label="Gérer mes projets"
+                  onStateCheckChange={(isChecked) =>
+                    isChecked
+                      ? handleCheckBoxChange("project", "manage", 1)
+                      : handleCheckBoxChange("project", "manage", 0)
+                  }
+                />
+                <Checkbox
+                  label="Gérer les projets de mes subordonné(e)s"
+                  onStateCheckChange={(isChecked) =>
+                    isChecked
+                      ? handleCheckBoxChange(
+                          "project",
+                          "manageMySubordinatesProject",
+                          1
+                        )
+                      : handleCheckBoxChange(
+                          "project",
+                          "manageMySubordinatesProject",
+                          0
+                        )
+                  }
+                />
+                <Checkbox
+                  label="Archiver mes projets"
                   onStateCheckChange={(isChecked) =>
                     isChecked
                       ? handleCheckBoxChange("project", "delete", 1)
                       : handleCheckBoxChange("project", "delete", 0)
+                  }
+                />
+                <Checkbox
+                  label="Archiver les projets de mes subordonné(e)s"
+                  onStateCheckChange={(isChecked) =>
+                    isChecked
+                      ? handleCheckBoxChange(
+                          "project",
+                          "deleteMySubordinatesProject",
+                          1
+                        )
+                      : handleCheckBoxChange(
+                          "project",
+                          "deleteMySubordinatesProject",
+                          0
+                        )
                   }
                 />
                 <Checkbox

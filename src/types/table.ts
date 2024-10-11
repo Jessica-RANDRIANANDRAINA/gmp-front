@@ -8,22 +8,30 @@ export interface TableAccessProps {
       updateHabilitation: number;
       modifyHierarchy: number;
       restoreHierarchy: number;
+      actualizeUserData: number;
+      assignAccess: number;
     }[];
     habilitationProjects: {
-      create: number,
-      update: number,
-      delete: number,
-      assign: number,
+      assign: number;
+      create: number;
+      update: number;
+      updateMySubordinatesProject: number;
+      delete: number;
+      deleteMySubordinatesProject: number;
+      watchMyProject: number;
+      watchMySubordinatesProject: number;
+      manage: number;
+      manageMySubordinatesProject: number;
     }[];
     habilitationTransverses: {
-      create: number,
-      update: number,
-      delete: number,
+      create: number;
+      update: number;
+      delete: number;
     }[];
     habilitationIntercontracts: {
-      create: number,
-      update: number,
-      delete: number,
+      create: number;
+      update: number;
+      delete: number;
     }[];
   }>;
 }
