@@ -248,7 +248,9 @@ const TableProjet = ({
       {/* =====PAGINATE AND TITLE START===== */}
       <div
         className={`pb-4 items-center flex justify-between px-3 transition-opacity ${
-          isAllSelected ? "opacity-0" : "opacity-100"
+          isAllSelected || projectSelected.length > 0
+            ? "opacity-0"
+            : "opacity-100"
         }`}
       >
         <button
@@ -274,7 +276,7 @@ const TableProjet = ({
             />
           </svg>
         </button>
-        <div className="text-xl  text-title font-medium dark:text-whiten">
+        <div className="text-xl text-center text-title font-semibold dark:text-whiten">
           Liste de tous les projets
         </div>
         <button
@@ -315,18 +317,21 @@ const TableProjet = ({
           {" "}
           {projectSelected.length === 1
             ? "1 élément séléctionné"
-            : `${projectSelected.length} éléments séléctionné`}{" "}
+            : `${projectSelected.length} éléments séléctionnés`}{" "}
         </div>
         <div>
           <CustomSelect
             data={
               projectSelected.length > 1
                 ? ["Archiver"].filter((action) => {
-                  if (myHabilitation?.project.delete ==false && action === "Archiver"){
-                    return false
-                  } 
-                  return true
-                })
+                    if (
+                      myHabilitation?.project.delete == false &&
+                      action === "Archiver"
+                    ) {
+                      return false;
+                    }
+                    return true;
+                  })
                 : // : ["Modifier", "Supprimer", "Gérer", "Détails", "Historique"]
                   [
                     "Modifier",

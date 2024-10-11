@@ -234,7 +234,7 @@ const TableUser = ({
       {/* =====PAGINATE AND TITLE START===== */}
       <div
         className={`pb-4 flex justify-between px-3 transition-opacity ${
-          isAllSelected ? "opacity-0" : "opacity-100"
+          isAllSelected || userSelected.length > 0 ? "opacity-0" : "opacity-100"
         }`}
       >
         <button
@@ -260,8 +260,8 @@ const TableUser = ({
             />
           </svg>
         </button>
-        <div className="text-xl text-title font-medium dark:text-whiten">
-          Listes de tous les utilisateurs
+        <div className="text-xl text-center text-title font-semibold dark:text-whiten">
+          Liste de tous les utilisateurs
         </div>
         <button
           disabled={actualPage === pageNumbers}
@@ -297,7 +297,11 @@ const TableUser = ({
             : "scale-y-0 opacity-0"
         }`}
       >
-        <div> {userSelected.length} éléments séléctionné </div>
+        <div>
+          {userSelected.length === 1
+            ? "1 élément séléctionné"
+            : `${userSelected.length} éléments séléctionnés`}{" "}
+        </div>
         <div>
           <CustomSelect
             data={["Modifier habilitation(s)", "Supprimer habilitation(s)"]}

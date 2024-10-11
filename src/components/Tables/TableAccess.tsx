@@ -132,7 +132,9 @@ const TableAccess = ({
       {/* =====PAGINATE AND TITLE START===== */}
       <div
         className={`pb-4 flex justify-between px-3 transition-opacity ${
-          isAllSelected ? "opacity-0" : "opacity-100"
+          isAllSelected || accessSelected.length > 0
+            ? "opacity-0"
+            : "opacity-100"
         }`}
       >
         <button
@@ -158,8 +160,8 @@ const TableAccess = ({
             />
           </svg>
         </button>
-        <div className="text-xl text-title font-medium dark:text-whiten">
-          Listes de tous les accès
+        <div className="text-xl text-title text-center font-semibold dark:text-whiten">
+          Liste de tous les accès
         </div>
         <button
           disabled={actualPage === pageNumbers}
@@ -195,7 +197,11 @@ const TableAccess = ({
             : "scale-y-0 opacity-0"
         }`}
       >
-        <div> {accessSelected.length} éléments séléctionné </div>
+        <div>
+          {accessSelected.length === 1
+            ? "1 élément séléctionné"
+            : `${accessSelected.length} éléments séléctionnés`}{" "}
+        </div>
         <div>
           <CustomSelect
             data={["Modifier", "Supprimer"]}
@@ -326,6 +332,7 @@ const TableAccess = ({
                       >
                         <path
                           d="M4 12.6111L8.92308 17.5L20 6.5"
+                          className="stroke-black-2 dark:stroke-whiten"
                           stroke="#000"
                           strokeWidth="2"
                           strokeLinecap="round"
