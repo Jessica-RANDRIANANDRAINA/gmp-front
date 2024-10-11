@@ -46,7 +46,7 @@ const CustomInput = ({
         <textarea
           rows={rows}
           cols={cols}
-          className={`w-full border border-stroke bg-transparent py-3 pl-6 pr-10 text-black dark:text-gray outline-none focus:border-primaryGreen focus-visible:shadow-none dark:border-neutral-500 dark:focus:border-primaryGreen  ${round[rounded]}`}
+          className={`w-full border border-stroke bg-transparent py-3 pl-6 pr-10 text-black dark:text-gray outline-none focus:border-primaryGreen focus-visible:shadow-none dark:border-formStrokedark dark:focus:border-primaryGreen  ${round[rounded]}`}
           placeholder={placeholder}
           autoFocus={!!error}
           onChange={onChange}
@@ -58,11 +58,13 @@ const CustomInput = ({
           onChange={onChange}
           ref={inputRef}
           type={type}
-          className={` w-full border md:h-10 md:text-xs  bg-transparent  py-3 pl-6 pr-10 text-black dark:text-gray  outline-none focus:border-primaryGreen focus-visible:shadow-none dark:border-neutral-500 dark:focus:border-primaryGreen  ${round[rounded]
-            }  ${error
+          className={` w-full border md:h-10 md:text-xs  bg-transparent  py-3 pl-6 pr-10 text-black dark:text-gray  outline-none focus:border-primaryGreen focus-visible:shadow-none dark:border dark:border-formStrokedark dark:focus:border-primaryGreen  ${
+            round[rounded]
+          }  ${
+            error
               ? "border-red-500 focus:border-red-500 focus:shadow-switcher focus:shadow-red-500 dark:border-red-500 dark:focus:border-red-500 dark:focus:shadow-switcher dark:focus:shadow-red-500"
-              : "border-stroke dark:border-neutral-500"
-            }`}
+              : "border-stroke dark:border-formStrokedark"
+          }`}
           placeholder={placeholder}
           autoFocus={!!error}
           value={value}

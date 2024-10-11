@@ -13,6 +13,7 @@ export default {
     },
     extend: {
       colors: {
+        formStrokedark: "#3d4d60",
         primaryGreen: "#00AE5D",
         secondaryGreen: "#006171",
         tertiaryGreen: "#005260",
@@ -29,7 +30,7 @@ export default {
         orange2: "#f7b318",
         orange3: "#ffd2004a",
         "black-2": "#010101",
-        darkbody:"#2D452F",
+        darkbody: "#2D452F",
         bodydark: "#AEB7C0",
         bodydark1: "#DEE4EE",
         bodydark2: "#8A99AF",
@@ -42,7 +43,7 @@ export default {
         whiter: "#F5F7FD",
         boxlight: "#006171",
         boxdark: "#1f2937",
-        boxdark2:'#314054',
+        boxdark2: "#314054",
         "boxdark-2": "#1A222C",
         strokedark: "#2E3A47",
         "meta-1": "#DC3545",
