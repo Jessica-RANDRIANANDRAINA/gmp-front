@@ -7,15 +7,18 @@ import {
   getAllHabilitationLabels,
 } from "../../services/User";
 import Pagination from "./Pagination";
+import { IMyHabilitation } from "../../types/Habilitation";
 
 const TableUser = ({
   data,
   onModification,
   setOnModification,
+  myHabilitation,
 }: {
   data: Array<any>;
   onModification: boolean;
   setOnModification: Function;
+  myHabilitation: IMyHabilitation | undefined;
 }) => {
   const [entriesPerPage, setEntriesPerPage] = useState(5);
   const [actualPage, setActualPage] = useState(1);
@@ -49,6 +52,10 @@ const TableUser = ({
       return b.name.localeCompare(a.name);
     }
   });
+
+  useEffect(() => {
+    console.log(myHabilitation);
+  }, [myHabilitation]);
 
   // FILTER DATA BY NAME, MAIL, DEPARTMENT
   const filteredDataName = sortedDatabyName.filter((item) => {
@@ -302,7 +309,11 @@ const TableUser = ({
             ? "1 élément séléctionné"
             : `${userSelected.length} éléments séléctionnés`}{" "}
         </div>
-        <div>
+        <div
+          className={`${
+            myHabilitation?.admin?.assignAccess ? "opacity-100" : "opacity-0"
+          }`}
+        >
           <CustomSelect
             data={["Modifier habilitation(s)", "Supprimer habilitation(s)"]}
             className="mb-2  "

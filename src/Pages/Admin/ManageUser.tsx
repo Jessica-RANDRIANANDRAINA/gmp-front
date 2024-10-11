@@ -87,6 +87,7 @@ const ManageUser = () => {
           {/* ACTUALIZE END */}
         </>
         <TableUser
+          myHabilitation={myHabilitation}
           data={userData}
           setOnModification={setOnModification}
           onModification={onModification}
