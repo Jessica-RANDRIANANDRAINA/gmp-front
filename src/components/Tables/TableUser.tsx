@@ -291,7 +291,7 @@ const TableUser = ({
       {/* =====PAGINATE AND TITLE END===== */}
       {/* ===== BULK START ===== */}
       <div
-        className={` mt-[-60px] border-primaryGreen border dark:border-white  bg-white z-40 dark:bg-boxdark relative px-2 flex items-center justify-between transition-transform duration-200 ease-in-out transform ${
+        className={` mt-[-60px] border-primaryGreen border dark:border-formStrokedark  bg-white z-40 dark:bg-boxdark relative px-2 flex items-center justify-between transition-transform duration-200 ease-in-out transform ${
           userSelected.length > 0
             ? "scale-y-100 opacity-100"
             : "scale-y-0 opacity-0"

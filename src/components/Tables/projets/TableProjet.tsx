@@ -305,7 +305,7 @@ const TableProjet = ({
       {/* =====PAGINATE AND TITLE END===== */}
       {/* ===== BULK START ===== */}
       <div
-        className={` mt-[-60px] border-primaryGreen border dark:border-black-2  bg-white dark:bg-boxdark z-40 relative px-2 flex items-center justify-between transition-transform duration-200 ease-in-out transform ${
+        className={` mt-[-60px] border-primaryGreen border dark:border-formStrokedark  bg-white dark:bg-boxdark z-40 relative px-2 flex items-center justify-between transition-transform duration-200 ease-in-out transform ${
           projectSelected.length > 0
             ? "scale-y-100 opacity-100"
             : "scale-y-0 opacity-0"

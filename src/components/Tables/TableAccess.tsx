@@ -189,7 +189,7 @@ const TableAccess = ({
       {/* =====PAGINATE AND TITLE END===== */}
       {/* ===== BULK ACTION START ===== */}
       <div
-        className={` mt-[-60px] border-primaryGreen border  bg-white z-40 relative px-2 flex items-center justify-between transition-transform duration-200 ease-in-out transform ${
+        className={`mt-[-60px] border-primaryGreen border dark:border-formStrokedark  bg-white dark:bg-boxdark z-40 relative px-2 flex items-center justify-between transition-transform duration-200 ease-in-out transform ${
           accessSelected.length > 0
             ? "scale-y-100 opacity-100"
             : "scale-y-0 opacity-0"
@@ -297,7 +297,7 @@ const TableAccess = ({
               .map((access) => (
                 <tr
                   key={access?.id}
-                  className="hover:bg-whiten dark:hover:bg-whitenGreen"
+                  className="hover:bg-whiten dark:hover:bg-boxdark2"
                 >
                   <td className="pl-2 ">
                     <button
