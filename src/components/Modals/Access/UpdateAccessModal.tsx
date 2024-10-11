@@ -3,6 +3,10 @@ import { CustomInput, Checkbox } from "../../UIElements";
 // import { v4 as uuid4 } from "uuid";
 import { updateHabilitation } from "../../../services/User";
 import { BeatLoader } from "react-spinners";
+import { Notyf } from "notyf";
+import "notyf/notyf.min.css";
+
+const notyf = new Notyf({ position: { x: "center", y: "top" } });
 
 const UpdateAccessModal = ({
   setIsModalOpen,
@@ -46,7 +50,6 @@ const UpdateAccessModal = ({
     update: 0,
     delete: 0,
   });
-
   const [interContractAccess, setInterContractAccess] = useState({
     id: "",
     create: 0,
@@ -55,16 +58,42 @@ const UpdateAccessModal = ({
   });
 
   useEffect(() => {
-    console.log("7848484")
-    console.log(habilitationId);
-  }, [habilitationId]);
-
-  useEffect(() => {
     if (habilitationToModifData) {
       setAccessLabel(habilitationToModifData?.label);
       setAdminAccess({
         ...adminAccess,
-        createHabilitation: 1,
+        modifyHierarchy:
+          habilitationToModifData?.habilitationAdmins?.[0]?.modifyHierarchy,
+        createHabilitation:
+          habilitationToModifData?.habilitationAdmins?.[0]?.createHabilitation,
+        updateHabilitation:
+          habilitationToModifData?.habilitationAdmins?.[0]?.updateHabilitation,
+        deleteHabilitation:
+          habilitationToModifData?.habilitationAdmins?.[0]?.deleteHabilitation,
+        restoreHierarchy:
+          habilitationToModifData?.habilitationAdmins?.[0]?.restoreHierarchy,
+      });
+      setProjectAccess({
+        ...projectAccess,
+        assign: habilitationToModifData?.habilitationProjects?.[0]?.assign,
+        create: habilitationToModifData?.habilitationProjects?.[0]?.create,
+        delete: habilitationToModifData?.habilitationProjects?.[0]?.delete,
+        update: habilitationToModifData?.habilitationProjects?.[0]?.update,
+      });
+      setTransverseAccess({
+        ...transverseAccess,
+        create: habilitationToModifData?.habilitationTransverses?.[0]?.create,
+        delete: habilitationToModifData?.habilitationTransverses?.[0]?.delete,
+        update: habilitationToModifData?.habilitationTransverses?.[0]?.update,
+      });
+      setInterContractAccess({
+        ...interContractAccess,
+        create:
+          habilitationToModifData?.habilitationIntercontracts?.[0]?.create,
+        delete:
+          habilitationToModifData?.habilitationIntercontracts?.[0]?.delete,
+        update:
+          habilitationToModifData?.habilitationIntercontracts?.[0]?.update,
       });
     }
   }, [habilitationToModifData]);
@@ -76,12 +105,10 @@ const UpdateAccessModal = ({
     // const id = uuid4();
     if (accessLabel.trim() === "") {
       setLabelError("Veuiller remplir ce champ");
+      setIsLoading(false);
       return;
     }
-    // const adminId = uuid4();
-    // const projectId = uuid4();
-    // const transverseId = uuid4();
-    // const intercontractId = uuid4();
+
     const habilitationData = {
       label: accessLabel.trim(),
       habilitationAdmins: [{ ...adminAccess }],
@@ -89,9 +116,11 @@ const UpdateAccessModal = ({
       habilitationTransverses: [{ ...transverseAccess }],
       habilitationIntercontracts: [{ ...interContractAccess }],
     };
+    console.log(habilitationData);
 
     try {
       await updateHabilitation(habilitationData, habilitationId);
+      notyf.success("Modification réuissie")
       setIsUpdateFinished(true);
     } catch (error) {
       console.error(`error at impl create habilitation: ${error}`);
@@ -108,6 +137,7 @@ const UpdateAccessModal = ({
     key: string,
     value: number
   ) => {
+    // const value = isChe
     switch (category) {
       case "admin":
         setAdminAccess((prev) => ({ ...prev, [key]: value }));
@@ -390,7 +420,7 @@ const UpdateAccessModal = ({
 
             <button
               type="submit"
-              className="w-full cursor-pointer py-2 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen dark:hover:bg-opacity-90"
+              className="w-full cursor-pointer py-2 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-darkgreen dark:bg-darkgreen dark:hover:bg-opacity-90"
             >
               {isLoading ? (
                 <BeatLoader size={8} className="mr-2" color={"#fff"} />

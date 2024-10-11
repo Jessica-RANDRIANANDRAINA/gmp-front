@@ -35,7 +35,7 @@ const ConfirmDeleteHabilitationuser = ({
         {/* =====HEADER START===== */}
         <header className={"flex justify-between w-full  h-12"}>
           <div className={"font-bold"}>
-            Supprimer les accès de{" "}
+            Supprimer les accès{" "}
             {userSelected.length > 1
               ? `des ${userSelected.length} utilisateurs`
               : ``}
@@ -75,7 +75,7 @@ const ConfirmDeleteHabilitationuser = ({
         <div>
           <button
             onClick={handleDelete}
-            className="w-full cursor-pointer mt-2 py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 border border-redButton bg-redButton rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen dark:hover:bg-opacity-90"
+            className="w-full cursor-pointer mt-4 py-2 px-10 text-sm text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 border border-redButton bg-redButton rounded-lg dark:border-secondaryGreen dark:bg-secondaryGreen dark:hover:bg-opacity-90"
           >
             Supprimer
           </button>

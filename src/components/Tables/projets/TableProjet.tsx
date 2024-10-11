@@ -336,8 +336,7 @@ const TableProjet = ({
                     }
                     return true;
                   })
-                : // : ["Modifier", "Supprimer", "Gérer", "Détails", "Historique"]
-                  [
+                : [
                     "Modifier",
                     "Avancement",
                     "Gérer",

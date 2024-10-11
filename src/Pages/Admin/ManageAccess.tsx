@@ -23,7 +23,6 @@ const ManageAccess = () => {
   const fetchHabilitationById = async () => {
     if (accessSelectedId.length > 0) {
       const habilitation = await getHabilitationById(accessSelectedId?.[0]);
-      console.log(habilitation)
       setHabilitationToModifData(habilitation);
     }
   };

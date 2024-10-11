@@ -105,7 +105,7 @@ const TableAccess = ({
           <div className="flex items-end pb-3 mx-2">
             <button
               onClick={handleDeleteFilter}
-              className="flex justify-center gap-1 h-fit"
+              className="flex justify-center text-sm gap-1 h-fit"
             >
               Effacer les filtres
               <svg
@@ -204,7 +204,11 @@ const TableAccess = ({
         </div>
         <div>
           <CustomSelect
-            data={["Modifier", "Supprimer"]}
+            data={
+              accessSelected.length > 1
+                ? ["Supprimer"]
+                : ["Modifier", "Supprimer"]
+            }
             className="mb-2"
             placeholder="Actions"
             onValueChange={(e) => {
