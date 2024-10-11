@@ -1,0 +1,226 @@
+[
+  {
+    "id": "615a0e05-2686-49e6-868f-0d0dea829773",
+    "label": "no access",
+    "habilitationAdmins": [
+      {
+        "id": "7722769c-7063-4e60-8f6a-b4bb14addcf7",
+        "modifyHierarchy": 0,
+        "createHabilitation": 0,
+        "updateHabilitation": 0,
+        "deleteHabilitation": 0,
+        "restoreHierarchy": 0,
+        "actualizeUserData": null,
+        "assignAccess": null,
+        "habilitationid": "615a0e05-2686-49e6-868f-0d0dea829773",
+        "habilitation": null
+      }
+    ],
+    "habilitationIntercontracts": [
+      {
+        "id": "c1724c61-3d5a-4581-819f-7cfd99ebd3b2",
+        "create": 0,
+        "update": 0,
+        "delete": 0,
+        "habilitationid": "615a0e05-2686-49e6-868f-0d0dea829773",
+        "habilitation": null
+      }
+    ],
+    "habilitationProjects": [
+      {
+        "id": "6d08840b-149a-46c5-99dc-0882bf7476da",
+        "create": 0,
+        "update": 0,
+        "delete": 0,
+        "assign": 0,
+        "watchMyProject": null,
+        "watchMySubordinatesProject": null,
+        "updateMySubordinatesProject": null,
+        "deleteMySubordinatesProject": null,
+        "manageMySubordinatesProject": null,
+        "manage": null,
+        "habilitationid": "615a0e05-2686-49e6-868f-0d0dea829773",
+        "habilitation": null
+      }
+    ],
+    "habilitationTransverses": [
+      {
+        "id": "702c9eef-9ff2-414a-ac5e-a897ac84e8b6",
+        "create": 0,
+        "update": 0,
+        "delete": 0,
+        "habilitationid": "615a0e05-2686-49e6-868f-0d0dea829773",
+        "habilitation": null
+      }
+    ],
+    "users": []
+  },
+  {
+    "id": "6dac6539-2a04-4fb4-8fdd-de4f9e889fb2",
+    "label": "Admin",
+    "habilitationAdmins": [
+      {
+        "id": "f7e3d37e-1f19-4bf2-ae65-14f1bb0d3471",
+        "modifyHierarchy": 0,
+        "createHabilitation": 1,
+        "updateHabilitation": 1,
+        "deleteHabilitation": 1,
+        "restoreHierarchy": 0,
+        "actualizeUserData": null,
+        "assignAccess": null,
+        "habilitationid": "6dac6539-2a04-4fb4-8fdd-de4f9e889fb2",
+        "habilitation": null
+      }
+    ],
+    "habilitationIntercontracts": [
+      {
+        "id": "e7b36f91-a616-43fe-b936-32bb72c89d9b",
+        "create": 0,
+        "update": 0,
+        "delete": 0,
+        "habilitationid": "6dac6539-2a04-4fb4-8fdd-de4f9e889fb2",
+        "habilitation": null
+      }
+    ],
+    "habilitationProjects": [
+      {
+        "id": "4929abc8-24d0-4d30-8a56-98c3b5d429f9",
+        "create": 0,
+        "update": 0,
+        "delete": 0,
+        "assign": 0,
+        "watchMyProject": 0,
+        "watchMySubordinatesProject": 0,
+        "updateMySubordinatesProject": null,
+        "deleteMySubordinatesProject": null,
+        "manageMySubordinatesProject": null,
+        "manage": null,
+        "habilitationid": "6dac6539-2a04-4fb4-8fdd-de4f9e889fb2",
+        "habilitation": null
+      }
+    ],
+    "habilitationTransverses": [
+      {
+        "id": "51651df7-dd95-4701-8400-3d781fd8e88a",
+        "create": 0,
+        "update": 0,
+        "delete": 0,
+        "habilitationid": "6dac6539-2a04-4fb4-8fdd-de4f9e889fb2",
+        "habilitation": null
+      }
+    ],
+    "users": []
+  },
+  {
+    "id": "a7878a78-951e-4c6b-9262-6f0e448d917e",
+    "label": "Superadmin",
+    "habilitationAdmins": [
+      {
+        "id": "3c1c11fa-ab21-4da3-bc13-31730234c392",
+        "modifyHierarchy": 1,
+        "createHabilitation": 1,
+        "updateHabilitation": 1,
+        "deleteHabilitation": 1,
+        "restoreHierarchy": 1,
+        "actualizeUserData": 1,
+        "assignAccess": 1,
+        "habilitationid": "a7878a78-951e-4c6b-9262-6f0e448d917e",
+        "habilitation": null
+      }
+    ],
+    "habilitationIntercontracts": [
+      {
+        "id": "0726b74d-e5ba-4a9e-8b94-dcb64ccb03aa",
+        "create": 0,
+        "update": 0,
+        "delete": 0,
+        "habilitationid": "a7878a78-951e-4c6b-9262-6f0e448d917e",
+        "habilitation": null
+      }
+    ],
+    "habilitationProjects": [
+      {
+        "id": "fec68f92-8fb0-414e-ac6b-4c649fdc409d",
+        "create": 0,
+        "update": 0,
+        "delete": 0,
+        "assign": 0,
+        "watchMyProject": null,
+        "watchMySubordinatesProject": null,
+        "updateMySubordinatesProject": null,
+        "deleteMySubordinatesProject": null,
+        "manageMySubordinatesProject": null,
+        "manage": null,
+        "habilitationid": "a7878a78-951e-4c6b-9262-6f0e448d917e",
+        "habilitation": null
+      }
+    ],
+    "habilitationTransverses": [
+      {
+        "id": "364cbc9d-f6bd-4b8a-a9cd-754cb7ae5d75",
+        "create": 0,
+        "update": 0,
+        "delete": 0,
+        "habilitationid": "a7878a78-951e-4c6b-9262-6f0e448d917e",
+        "habilitation": null
+      }
+    ],
+    "users": []
+  },
+  {
+    "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+    "label": "utilisateur",
+    "habilitationAdmins": [
+      {
+        "id": "0c450c78-5e95-4ce2-9610-5ad5c96a441d",
+        "modifyHierarchy": 0,
+        "createHabilitation": 0,
+        "updateHabilitation": 0,
+        "deleteHabilitation": 0,
+        "restoreHierarchy": 0,
+        "actualizeUserData": null,
+        "assignAccess": null,
+        "habilitationid": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "habilitation": null
+      }
+    ],
+    "habilitationIntercontracts": [
+      {
+        "id": "f6dc7817-2531-4e9f-b3db-4064c0247939",
+        "create": 1,
+        "update": 1,
+        "delete": 1,
+        "habilitationid": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "habilitation": null
+      }
+    ],
+    "habilitationProjects": [
+      {
+        "id": "7f1634b4-2385-4ce2-a9f8-fddeac774e27",
+        "create": 1,
+        "update": 1,
+        "delete": 1,
+        "assign": 1,
+        "watchMyProject": 0,
+        "watchMySubordinatesProject": null,
+        "updateMySubordinatesProject": null,
+        "deleteMySubordinatesProject": null,
+        "manageMySubordinatesProject": null,
+        "manage": null,
+        "habilitationid": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "habilitation": null
+      }
+    ],
+    "habilitationTransverses": [
+      {
+        "id": "efdaf560-6cce-49f5-8c71-90d2d81902de",
+        "create": 1,
+        "update": 1,
+        "delete": 1,
+        "habilitationid": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "habilitation": null
+      }
+    ],
+    "users": []
+  }
+]

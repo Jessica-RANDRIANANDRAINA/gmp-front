@@ -1,0 +1,114 @@
+[
+  {
+    "id": "d1976ede-253b-4f61-a4ce-705d162ef727",
+    "title": "GMP",
+    "description": "",
+    "createdAt": "2024-10-11T08:28:46.62",
+    "modifiedAt": null,
+    "startDate": "2024-07-01T00:00:00",
+    "endDate": "2024-11-01T00:00:00",
+    "originalEndDate": "2024-11-01T00:00:00",
+    "ahead": null,
+    "delay": null,
+    "completionPercentage": 25,
+    "priority": "Moyenne",
+    "criticality": "Normale",
+    "dailyEffort": null,
+    "isEndDateImmuable": 0,
+    "initiator": "Johanne RAZAFIMAHEFA (DSI)",
+    "beneficiary": "DSI",
+    "state": "Open",
+    "endDateChangeReason": null,
+    "budgets": [],
+    "phases": [
+      {
+        "id": "1646b712-6d5f-47fc-8a69-90c715933189",
+        "rank": 1,
+        "status": null,
+        "phase1": "Réalisation",
+        "expectedDeliverable": "Signature de mise en production",
+        "deliverable": null,
+        "dependantOf": null,
+        "completionPercentage": 0,
+        "startDate": null,
+        "endDate": null,
+        "projectid": "d1976ede-253b-4f61-a4ce-705d162ef727",
+        "project": null
+      },
+      {
+        "id": "26dfbe74-7e0f-41f8-afb2-71b0fdf4b240",
+        "rank": 2,
+        "status": null,
+        "phase1": "Mise en production",
+        "expectedDeliverable": "Plan de déploiement",
+        "deliverable": null,
+        "dependantOf": null,
+        "completionPercentage": 0,
+        "startDate": null,
+        "endDate": null,
+        "projectid": "d1976ede-253b-4f61-a4ce-705d162ef727",
+        "project": null
+      },
+      {
+        "id": "dd506a00-0da2-4835-881e-d0ab34ef9d8b",
+        "rank": 3,
+        "status": null,
+        "phase1": "Clôture et maintenance",
+        "expectedDeliverable": "PV de recette",
+        "deliverable": null,
+        "dependantOf": null,
+        "completionPercentage": 0,
+        "startDate": null,
+        "endDate": "2024-11-01T00:00:00",
+        "projectid": "d1976ede-253b-4f61-a4ce-705d162ef727",
+        "project": null
+      },
+      {
+        "id": "f77f6dc9-a4c6-4f17-91cb-f44b0fa9bc7f",
+        "rank": 0,
+        "status": null,
+        "phase1": "Conception",
+        "expectedDeliverable": "Document de cadrage",
+        "deliverable": null,
+        "dependantOf": null,
+        "completionPercentage": 0,
+        "startDate": "2024-07-01T00:00:00",
+        "endDate": null,
+        "projectid": "d1976ede-253b-4f61-a4ce-705d162ef727",
+        "project": null
+      }
+    ],
+    "ressources": [],
+    "tasks": [],
+    "userProjects": [
+      {
+        "userid": "4a71606b-673d-4ea9-bddc-3121a1313539",
+        "projectid": "d1976ede-253b-4f61-a4ce-705d162ef727",
+        "role": "director",
+        "project": null,
+        "user": null
+      },
+      {
+        "userid": "9a9dcfed-d5a8-45c9-8be9-0acacf29ae56",
+        "projectid": "d1976ede-253b-4f61-a4ce-705d162ef727",
+        "role": "member",
+        "project": null,
+        "user": null
+      },
+      {
+        "userid": "ba5d519e-3b23-4201-a6a6-1d3760f6b214",
+        "projectid": "d1976ede-253b-4f61-a4ce-705d162ef727",
+        "role": "member",
+        "project": null,
+        "user": null
+      },
+      {
+        "userid": "c894ab8a-7e91-41c9-8102-5eef8d8e99a0",
+        "projectid": "d1976ede-253b-4f61-a4ce-705d162ef727",
+        "role": "observator",
+        "project": null,
+        "user": null
+      }
+    ]
+  }
+]

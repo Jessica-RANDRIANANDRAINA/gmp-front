@@ -1,0 +1,4401 @@
+[
+  {
+    "id": "498d0893-9691-45f0-a47e-560ba2f37c9d",
+    "name": "A. Tahina RAHARISON (DAF)",
+    "email": "tahina.raharison@ravinala-airports.aero",
+    "department": "DAF",
+    "poste": "Chef superviseur parking",
+    "superiorId": "20fff662-51ee-4fc4-99ae-dc7a9c361cbd",
+    "superiorName": "Fanjanirina RAFANILONIAINA (DAF)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "ea32c516-ef2f-49de-b7d8-79c293db68a3",
+    "name": "Abel ANDRIATIANA (DOP)",
+    "email": "abel.andriatiana@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Superviseur Maintenance AOCC",
+    "superiorId": "3a60fbce-8356-4415-bbad-82e9280fe08a",
+    "superiorName": "Andrianina Luc RAKOTOMANDIMBY (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "2f6cf505-d9d4-4ea9-a6e6-91384914016d",
+    "name": "Aina Mahaitia Elia Michel TRION (DSI)",
+    "email": "michel.trion@ravinala-airports.aero",
+    "department": "DSI",
+    "poste": "Technicien AOS & IT",
+    "superiorId": "ecead56b-8c32-4a01-bafd-4a05e135949f",
+    "superiorName": "Nathalie Doriane RALAIARIMALALA (DSI)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "f8bfa608-24db-48e1-9150-7deccba83b6c",
+    "name": "Aina Sandy RATELOSON (DAF)",
+    "email": "sandy.rateloson@ravinala-airports.aero",
+    "department": "DAF",
+    "poste": "Assistant Facturation et Statistiques",
+    "superiorId": "7a1865b2-fae2-41f0-b045-1db2c4d80727",
+    "superiorName": "Herimboahary Dinarisoa ANDRIANTOLOTIANA RAVONIRINA (DAF)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "0fe1af5f-a07a-4627-88ad-a6db0d1f0c11",
+    "name": "Ainimpanana MANDIMBIHARISETRA (DOP)",
+    "email": "ainimpanana.mandimbiharisetra@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Agent de piste",
+    "superiorId": "5137249d-9e50-48f2-b598-19d2ba48e41f",
+    "superiorName": "Nirina Marius RAZAFIMAHATRATRA (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "22f9444a-d9c7-47b8-af5e-e7e7ce893627",
+    "name": "Alain RAHARINAIVO (DCM)",
+    "email": "alain.raharinaivo@ravinala-airports.aero",
+    "department": "DCM",
+    "poste": "Contrôleur fret",
+    "superiorId": "7e56abd1-af10-4ce0-be7f-33e8c9bfaceb",
+    "superiorName": "Herimalala Naly ANDRIAMIHAJA (DCM)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "c76ff84b-fd61-41e9-9e30-31917a0e5392",
+    "name": "Alexandrine Fabricia RATEFIARIMALALA (DAF)",
+    "email": "Fabricia.RATEFIARIMALALA@ravinala-airports.aero",
+    "department": "DAF",
+    "poste": "Assistante Comptable fournisseur",
+    "superiorId": "071e2782-cdec-4119-bdb0-177e399fbb50",
+    "superiorName": "Cathia Vololomanana RAHARIMANANTSOA (DAF)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "3146d5ce-0db2-4f3c-9d53-628a34d541a9",
+    "name": "Andriamanamisata RAZAFINDRALAMBO (DSI)",
+    "email": "misa.razafindralambo@ravinala-airports.aero",
+    "department": "DSI",
+    "poste": "Responsable Production IT",
+    "superiorId": "83dc05fd-0e42-43f5-b0e0-1567df7647b1",
+    "superiorName": "Vonjimampianina RAKOTOARISOA (DSI)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "9898f06c-ba49-407c-82af-7b6403d645ed",
+    "name": "Andriamialisoa Elisa RAHARISON (DOP)",
+    "email": "elisa.raharison@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Agent d’accueil",
+    "superiorId": "4c8cfbd5-435e-423b-bdf8-78d95000899e",
+    "superiorName": "Mamitiana RABARIJAONA (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "9c2ac066-01de-49a4-86a1-0d1153cb14e8",
+    "name": "Andrianantenaina RAMAROLAHY (DAF)",
+    "email": "naina.ramarolahy@ravinala-airports.aero",
+    "department": "DAF",
+    "poste": "Chef de Département Facturation et Comptabilité",
+    "superiorId": "11715a63-e237-46b3-b568-ffa6fc087000",
+    "superiorName": "Romain PIERRU (DAF)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "9ad39ce2-97a7-4a0b-911b-02edb2ee2b23",
+    "name": "Andrianina Annicka RAKOTOZAFY (DOP)",
+    "email": "annicka.rakotozafy@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Agent d’accueil",
+    "superiorId": "f904830e-8cf9-41ae-8520-66ec41ce7b31",
+    "superiorName": "RAZALINE (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "3a60fbce-8356-4415-bbad-82e9280fe08a",
+    "name": "Andrianina Luc RAKOTOMANDIMBY (DOP)",
+    "email": "luc.rakotomandimby@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Chef de Département Méthode",
+    "superiorId": "814543aa-3dff-4ab9-a822-15fac34e3ba1",
+    "superiorName": "Caroline PETIT (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "25460faa-35ba-4e2c-b689-b916b981e5c8",
+    "name": "Andrianina Mihajarivony RAMAROSON (DJA)",
+    "email": "andrianina.ramaroson@ravinala-airports.aero",
+    "department": "DJA",
+    "poste": "Assistant Juridique et Assurances",
+    "superiorId": "8877fae2-664d-4870-a5db-657f02c451c8",
+    "superiorName": "Tahiana RAKOTONDRASOA (DJA)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "4ac9a820-406d-4e06-b674-07157fd675b8",
+    "name": "Andriantsilavina RAKOTOMALALA (DOP)",
+    "email": "andriantsilavina.rakotomalala@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Responsable Courants Faibles",
+    "superiorId": "3a60fbce-8356-4415-bbad-82e9280fe08a",
+    "superiorName": "Andrianina Luc RAKOTOMANDIMBY (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "ffc8ccc9-4a59-4341-8177-ece440fe1b8e",
+    "name": "Andriantsoa Rianando RANDRIANANDRAINA (DOP)",
+    "email": "rianando.randrianandraina@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Superviseur Maintenance AOCC",
+    "superiorId": "3a60fbce-8356-4415-bbad-82e9280fe08a",
+    "superiorName": "Andrianina Luc RAKOTOMANDIMBY (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "a650643d-a634-4f4a-ad58-675bfbb61d56",
+    "name": "Andry Henintsoa RAKOTOARIMANANA (DSI)",
+    "email": "andry.rakotoarimanana@ravinala-airports.aero",
+    "department": "DSI",
+    "poste": "Administrateur Systèmes",
+    "superiorId": "83dc05fd-0e42-43f5-b0e0-1567df7647b1",
+    "superiorName": "Vonjimampianina RAKOTOARISOA (DSI)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "00b58219-2f52-470d-b48f-383c8fd9ba23",
+    "name": "Andry Lova Tiana RAJERISON RASAONA (DT)",
+    "email": "andry.rajerison@ravinala-airports.aero",
+    "department": "DT",
+    "poste": "Chef de Département Maintenance Multi-technique",
+    "superiorId": "1a0f5dab-9ad7-4a30-b73c-842f54ba6a9a",
+    "superiorName": "Rova RAHERIJAONA (DT)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "2c016fb8-d59d-469b-9ae6-355246f0a736",
+    "name": "Antsa RANDRIAMANANTSOA (DQRSE)",
+    "email": "antsa.randriamanantsoa@ravinala-airports.aero",
+    "department": "DQRSE",
+    "poste": "Stagiaire SST",
+    "superiorId": "8334829e-08b6-4a3e-adc6-e2b6ccaf19a0",
+    "superiorName": "Nina RATSARASATA (DQRSE)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "51bcece1-2e1d-485d-aeb5-ca7f02584f6f",
+    "name": "Arilala RASOLOFO (DCM)",
+    "email": "arilala.rasolofo@ravinala-airports.aero",
+    "department": "DCM",
+    "poste": "Stagiaire DCM / Fret",
+    "superiorId": "",
+    "superiorName": "",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "361162cc-9d51-4879-944e-72e9b502199d",
+    "name": "Armand ANDOLALA (DT)",
+    "email": "armand.andolala@ravinala-airports.aero",
+    "department": "DEM",
+    "poste": "Electricien",
+    "superiorId": "98e1d5e0-961d-4e91-8f80-abf595ba01f2",
+    "superiorName": "Naly Nantenaina RAMANOELINA (DT)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "00f05689-d83c-4466-af7d-544e700574c1",
+    "name": "Bodomalala RAFIDIARISOA (DJA)",
+    "email": "bodo.rafidiarisoa@ravinala-airports.aero",
+    "department": "DJA",
+    "poste": "Juriste Junior",
+    "superiorId": "409cd9a0-3b88-4852-b991-ad62edd52866",
+    "superiorName": "Josie RABESON (DJA)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "4bbe3a90-2f91-40b9-bdb2-6efc48195f3a",
+    "name": "Bruner Lee Rudy Tiavinaherimanitra (DRH)",
+    "email": "rudy.tiavinaherimanitra@ravinala-airports.aero",
+    "department": "DRH",
+    "poste": "Stagiaire RH",
+    "superiorId": "002b1f12-e8c5-4a30-81ca-e8532855de71",
+    "superiorName": "Dealilalaina Sedera RASOLOMANANA (DRH)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "814543aa-3dff-4ab9-a822-15fac34e3ba1",
+    "name": "Caroline PETIT (DOP)",
+    "email": "caroline.petit@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Directrice des Opérations",
+    "superiorId": "ec738732-6e94-4288-be4a-c098408d199d",
+    "superiorName": "Daniel LEFEBVRE (DGE)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "071e2782-cdec-4119-bdb0-177e399fbb50",
+    "name": "Cathia Vololomanana RAHARIMANANTSOA (DAF)",
+    "email": "cathia.raharimanantsoa@ravinala-airports.aero",
+    "department": "DAF",
+    "poste": "Comptable Fournisseurs",
+    "superiorId": "9c2ac066-01de-49a4-86a1-0d1153cb14e8",
+    "superiorName": "Andrianantenaina RAMAROLAHY (DAF)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "95e7be5c-5e0d-4e39-9daf-84acf0395c39",
+    "name": "Christian RAJAONARIVONY (DCM)",
+    "email": "christian.rajaonarivony@ravinala-airports.aero",
+    "department": "DCM",
+    "poste": "Contrôleur Fret",
+    "superiorId": "7e56abd1-af10-4ce0-be7f-33e8c9bfaceb",
+    "superiorName": "Herimalala Naly ANDRIAMIHAJA (DCM)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "6c26245f-e990-4621-a0a7-0acbf0cea159",
+    "name": "Christophe VELONKASINA (DOP)",
+    "email": "christophe.velonkasina@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Contrôleur de fonctionnement des installations",
+    "superiorId": "0b27a9f1-3add-4181-847a-cc2dc8bcfa29",
+    "superiorName": "Tefy Antonio Patrick RAJAONAH (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "ba5d519e-3b23-4201-a6a6-1d3760f6b214",
+    "name": "Damien ANDRIATSILAVINA (DSI)",
+    "email": "damien.andriantsilavina@ravinala-airports.aero",
+    "department": "DSI",
+    "poste": "Chef de département Transformation Digitale",
+    "superiorId": "c894ab8a-7e91-41c9-8102-5eef8d8e99a0",
+    "superiorName": "Dominique RAKOTOMAMONJY (DSI)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "ec738732-6e94-4288-be4a-c098408d199d",
+    "name": "Daniel LEFEBVRE (DGE)",
+    "email": "daniel.lefebvre@ravinala-airports.aero",
+    "department": "DGE",
+    "poste": "Directeur Général",
+    "superiorId": "",
+    "superiorName": "",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "002b1f12-e8c5-4a30-81ca-e8532855de71",
+    "name": "Dealilalaina Sedera RASOLOMANANA (DRH)",
+    "email": "sedera.rasolomanana@ravinala-airports.aero",
+    "department": "DRH",
+    "poste": "Directrice des Ressources Humaines",
+    "superiorId": "ec738732-6e94-4288-be4a-c098408d199d",
+    "superiorName": "Daniel LEFEBVRE (DGE)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "05ae1fb5-5671-4b93-b1f8-df82ae855300",
+    "name": "Dina Mickaël RAJOHNSON (DAF)",
+    "email": "dina.rajohnson@ravinala-airports.aero",
+    "department": "DAF",
+    "poste": "Responsable Contrôle Financier",
+    "superiorId": "83d28c24-2d52-408c-94fd-c04d9dc4bc5e",
+    "superiorName": "Joël TADZONG (DAF)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "c894ab8a-7e91-41c9-8102-5eef8d8e99a0",
+    "name": "Dominique RAKOTOMAMONJY (DSI)",
+    "email": "dominique.rakotomamonjy@ravinala-airports.aero",
+    "department": "DSI",
+    "poste": "Directeur des Systèmes d'Information",
+    "superiorId": "ec738732-6e94-4288-be4a-c098408d199d",
+    "superiorName": "Daniel LEFEBVRE (DGE)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "b61f90ac-e643-4fb7-aad6-d50b838d5daf",
+    "name": "Earilala F. Harizo RAKOTOARISOA (DCM)",
+    "email": "earilala.rakotoarisoa@ravinala-airports.aero",
+    "department": "DCM",
+    "poste": "Contrôleur fret",
+    "superiorId": "7e56abd1-af10-4ce0-be7f-33e8c9bfaceb",
+    "superiorName": "Herimalala Naly ANDRIAMIHAJA (DCM)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "5e9e5715-8350-48c1-8a59-59f66e882f1e",
+    "name": "Elie jean Roger RAZAFIMAMONJY (DSI)",
+    "email": "roger.razafimamonjy@ravinala-airports.aero",
+    "department": "DSI",
+    "poste": "Technicien AOS & IT",
+    "superiorId": "ecead56b-8c32-4a01-bafd-4a05e135949f",
+    "superiorName": "Nathalie Doriane RALAIARIMALALA (DSI)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "f37fb76f-7f07-434d-8e91-b3e2440f6eba",
+    "name": "Elinirina RAOILIMANANA (DOP)",
+    "email": "elinirina.raoilimanana@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Coordinatrice Terminal AOCC",
+    "superiorId": "6f76bda1-28b9-4666-8c7e-56d176dea46c",
+    "superiorName": "Miary RASAMOELY (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "29cef9c3-efbe-4c6e-9e65-f0c728986b67",
+    "name": "Elsy HARVEL (DCM)",
+    "email": "elsy.harvel@ravinala-airports.aero",
+    "department": "DCM",
+    "poste": "Cheffe de Services Développement des Activités Non Aéronautique",
+    "superiorId": "b2b5434a-736d-4d06-bfd7-16e54a7c7c71",
+    "superiorName": "Zoelisoa RAJOHNSON (DCM)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "8a5b246f-0623-4520-8c71-07252c826880",
+    "name": "Elysé SAY (DOP)",
+    "email": "elyse.say@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Agent de piste",
+    "superiorId": "0b27a9f1-3add-4181-847a-cc2dc8bcfa29",
+    "superiorName": "Tefy Antonio Patrick RAJAONAH (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "7e724db5-a9a3-4be8-a444-88e66de24885",
+    "name": "Enquêteur NOS",
+    "email": "enqueteur.nos@ravinala-airports.aero",
+    "department": "",
+    "poste": "",
+    "superiorId": "",
+    "superiorName": "",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "2e74c3c9-3154-473b-a102-b02b3b48a9bd",
+    "name": "Enquêteur TNR",
+    "email": "enqueteur.tnr@ravinala-airports.aero",
+    "department": "",
+    "poste": "",
+    "superiorId": "",
+    "superiorName": "",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "e1654e34-5e16-407e-9de4-aaaa5342bc40",
+    "name": "Ericka Marius ANDRIANANTONISOLO (DOP)",
+    "email": "marius.andrianantonisolo@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Agent de piste",
+    "superiorId": "5137249d-9e50-48f2-b598-19d2ba48e41f",
+    "superiorName": "Nirina Marius RAZAFIMAHATRATRA (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "4da7e3fb-064a-48fc-8d03-6fd8a8b5990c",
+    "name": "Faliniaina Christian RALISON (DAF)",
+    "email": "christian.ralison@ravinala-airports.aero",
+    "department": "DAF",
+    "poste": "Chef superviseur contrôle fret (finance)",
+    "superiorId": "",
+    "superiorName": "",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "4df8f525-06af-4ba4-829a-5305fe8f5b8c",
+    "name": "Famenontsoa Sandra RAKOTOFIRINGA (DOP)",
+    "email": "sandra.rakotofiringa@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Agent SLOT/COORDO Polyvalent AOCC",
+    "superiorId": "",
+    "superiorName": "",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "f0571296-79bb-456d-a33e-03212345653f",
+    "name": "Fanaja RABENARISON (DSI)",
+    "email": "fanaja.rabenarison@ravinala-airports.aero",
+    "department": "DSI",
+    "poste": "Responsable Data",
+    "superiorId": "ba5d519e-3b23-4201-a6a6-1d3760f6b214",
+    "superiorName": "Damien ANDRIATSILAVINA (DSI)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "4643e977-e66c-4de2-9f0c-de6795aca3a8",
+    "name": "Fandresena Vatosoa Anouëla ANDRIANIAINA (DOP)",
+    "email": "anouela.andrianiaina@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Agent d’accueil",
+    "superiorId": "30f2fa8a-f859-43c4-a06b-e9317c76c367",
+    "superiorName": "Rabemanantsoa Caroline RAMILIJAONA (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "e5ea3665-86a0-45df-8e07-eff95ac02d59",
+    "name": "Fanilomanantsoa RANDRIANARIVELO (DOP)",
+    "email": "fanilo.randrianarivelo@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Superviseur Maintenance AOCC",
+    "superiorId": "3a60fbce-8356-4415-bbad-82e9280fe08a",
+    "superiorName": "Andrianina Luc RAKOTOMANDIMBY (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "a13c9d78-366b-420d-9134-62b467d09313",
+    "name": "Fanirisoa Narindra ANDRIAMAHOLY (DT)",
+    "email": "fanirisoa.andriamaholy@ravinala-airports.aero",
+    "department": "DT",
+    "poste": "Responsable Etudes",
+    "superiorId": "795790a4-02f8-4c36-a80e-eb66eb184097",
+    "superiorName": "Natolotra RAJOELINA (DT)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "64279296-343d-49cb-9825-6829342e938a",
+    "name": "Fanja Lalaina RABIAZAMAHOLY (DOP)",
+    "email": "fanja.rabiazamaholy@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Coordinatrice Terminal AOCC",
+    "superiorId": "6f76bda1-28b9-4666-8c7e-56d176dea46c",
+    "superiorName": "Miary RASAMOELY (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "63df16cb-e831-4a39-8a72-10247aa7b001",
+    "name": "Fanjaniaina RAHAINGOARIMANANA (DT)",
+    "email": "fanjaniaina.rahaingoarimanana@ravinala-airports.aero",
+    "department": "DT",
+    "poste": "Stagiaire DT",
+    "superiorId": "",
+    "superiorName": "",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "20fff662-51ee-4fc4-99ae-dc7a9c361cbd",
+    "name": "Fanjanirina RAFANILONIAINA (DAF)",
+    "email": "fanja.rafaniloniaina@ravinala-airports.aero",
+    "department": "DAF",
+    "poste": "Responsable des Recettes au Comptant",
+    "superiorId": "9c2ac066-01de-49a4-86a1-0d1153cb14e8",
+    "superiorName": "Andrianantenaina RAMAROLAHY (DAF)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "19e4f426-4aa2-428c-9466-f76a537aa1a8",
+    "name": "Fanomezana Mampionona RAKOTOMAMONJY (DCM)",
+    "email": "fanomezana.rakotomamonjy@ravinala-airports.aero",
+    "department": "DCM",
+    "poste": "Chargée des activités immobilières",
+    "superiorId": "2b6877d3-09d9-42cb-9f06-ecd63048bff5",
+    "superiorName": "Nomenjanahary Oeliarisoa ANDRIAMASOANDRO (DCM)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "78d49c75-a8d3-40a4-9219-fe206d74ac47",
+    "name": "Faranirina Aromanda RAKOTOVAO (DAF)",
+    "email": "aromanda.rakotovao@ravinala-airports.aero",
+    "department": "DAF",
+    "poste": "Acheteuse",
+    "superiorId": "68c559ab-6caf-4807-ba94-765716f6d5ec",
+    "superiorName": "Fetra RAZANAMPARANY (DAF)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "19e797c0-8d6f-4196-ba6e-421e346f4497",
+    "name": "Felana RAKOTONDRAMANANA (DQRSE)",
+    "email": "felana.rakotondramanana@ravinala-airports.aero",
+    "department": "DQRSE",
+    "poste": "Contrôleuse Qualité",
+    "superiorId": "c0f8b79f-e6ca-4e14-8bf6-ad007e459e98",
+    "superiorName": "Fenitra ANDRIAMPARANY (DQRSE)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "0cb6e51a-302f-4d79-8a9c-0fbcd0ea62da",
+    "name": "Felana RATSIMBAZAFY (DQRSE)",
+    "email": "felana.ratsimbazafy@ravinala-airports.aero",
+    "department": "DQRSE",
+    "poste": "Directrice Qualité et RSE",
+    "superiorId": "ec738732-6e94-4288-be4a-c098408d199d",
+    "superiorName": "Daniel LEFEBVRE (DGE)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "c0f8b79f-e6ca-4e14-8bf6-ad007e459e98",
+    "name": "Fenitra ANDRIAMPARANY (DQRSE)",
+    "email": "Fenitra.ANDRIAMPARANY@ravinala-airports.aero",
+    "department": "DQRSE",
+    "poste": "Cheffe de Département Qualité et Gestion des risques",
+    "superiorId": "0cb6e51a-302f-4d79-8a9c-0fbcd0ea62da",
+    "superiorName": "Felana RATSIMBAZAFY (DQRSE)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "68c559ab-6caf-4807-ba94-765716f6d5ec",
+    "name": "Fetra RAZANAMPARANY (DAF)",
+    "email": "fetra.razanamparany@ravinala-airports.aero",
+    "department": "DAF",
+    "poste": "Chef de Service Achats",
+    "superiorId": "11715a63-e237-46b3-b568-ffa6fc087000",
+    "superiorName": "Romain PIERRU (DAF)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "f9f54d9b-6aef-45d8-9343-a7a8258b9a43",
+    "name": "Fetrarinosy Aurélia NAMELANATOANDRO (DOP)",
+    "email": "aurelia.namelanatoandro@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Agent d’accueil",
+    "superiorId": "30f2fa8a-f859-43c4-a06b-e9317c76c367",
+    "superiorName": "Rabemanantsoa Caroline RAMILIJAONA (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "a629fcd9-a216-46a0-a179-76d8172eaec7",
+    "name": "Fifaliana Mbaraky NOMENIAVO (DAF)",
+    "email": "fifaliana.nomeniavo@ravinala-airports.aero",
+    "department": "DAF",
+    "poste": "Stagiaire DAF",
+    "superiorId": "7b2ef755-f135-4ae8-8f4d-b9fdbe2e32ad",
+    "superiorName": "Rado RAFANOMEZANTSOA (DAF)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "6290aafd-c4b8-47c4-9d7a-fad2ef46db31",
+    "name": "François Manantsoa RANDRIANIRINA (DRH)",
+    "email": "manantsoa.randrianirina@ravinala-airports.aero",
+    "department": "DRH",
+    "poste": "Responsable Paie",
+    "superiorId": "76c25f37-2089-4e81-8329-1b63d880b71a",
+    "superiorName": "Herinomenjanaharilala Sedera RASOLOFONDRAMANAMBE (DRH)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "4a1c6b67-79fc-4ada-bec2-e9bf4daf2309",
+    "name": "François ZARATOMBO (DOP)",
+    "email": "francois.zaratombo@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Agent de piste",
+    "superiorId": "0b27a9f1-3add-4181-847a-cc2dc8bcfa29",
+    "superiorName": "Tefy Antonio Patrick RAJAONAH (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "12a2ed31-0caf-4a56-a229-336d281565a5",
+    "name": "Gaël Mamy NIRIARISON (DCM)",
+    "email": "gael.niriarison@ravinala-airports.aero",
+    "department": "DCM",
+    "poste": "Chargé de Projets Marketing et Commercial",
+    "superiorId": "29cef9c3-efbe-4c6e-9e65-f0c728986b67",
+    "superiorName": "Elsy HARVEL (DCM)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "06549ecf-3dbd-448d-a90d-55ac12005e72",
+    "name": "Gilbert RAHERISOA (DAF)",
+    "email": "gilbert.raherisoa@ravinala-airports.aero",
+    "department": "DAF",
+    "poste": "Caissier Parking",
+    "superiorId": "20fff662-51ee-4fc4-99ae-dc7a9c361cbd",
+    "superiorName": "Fanjanirina RAFANILONIAINA (DAF)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "4187d53c-aba6-4422-a42e-e81f5d8ef05f",
+    "name": "Ginot Franck ANDRIAMORASATA (DT)",
+    "email": "ginot.andriamorasata@ravinala-airports.aero",
+    "department": "DT",
+    "poste": "Agent Polyvalent Maintenance",
+    "superiorId": "00b58219-2f52-470d-b48f-383c8fd9ba23",
+    "superiorName": "Andry Lova Tiana RAJERISON RASAONA (DT)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "71175805-a3a0-467d-800e-0317beaa9a33",
+    "name": "Haingotiana RALAIARIMANANA (DOP)",
+    "email": "haingo.ralaiarimanana@ravinala-airports.aero",
+    "department": "DGE",
+    "poste": "Attachée de Direction",
+    "superiorId": "ec738732-6e94-4288-be4a-c098408d199d",
+    "superiorName": "Daniel LEFEBVRE (DGE)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "25b7722b-bf80-4b97-a7f1-673bebf4fe42",
+    "name": "Haja Minohery RASAMISON (DSI)",
+    "email": "haja.rasamison@ravinala-airports.aero",
+    "department": "DSI",
+    "poste": "Technicien AOS & IT",
+    "superiorId": "ecead56b-8c32-4a01-bafd-4a05e135949f",
+    "superiorName": "Nathalie Doriane RALAIARIMALALA (DSI)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "31c4dcc3-be87-4b45-a64d-ebdaa179a37b",
+    "name": "Haja RANDRIAMIARANTSOA (DAF)",
+    "email": "haja.randriamiarantsoa@ravinala-airports.aero",
+    "department": "DAF",
+    "poste": "Comptable Trésorerie Senior",
+    "superiorId": "83d28c24-2d52-408c-94fd-c04d9dc4bc5e",
+    "superiorName": "Joël TADZONG (DAF)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "246713b5-1b64-407d-90f9-5f74dd04009b",
+    "name": "Hajatiana RABEHANTA (DSI)",
+    "email": "haja.rabehanta@ravinala-airports.aero",
+    "department": "DSI",
+    "poste": "Administrateur Réseaux",
+    "superiorId": "83dc05fd-0e42-43f5-b0e0-1567df7647b1",
+    "superiorName": "Vonjimampianina RAKOTOARISOA (DSI)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "b528a814-3f62-475a-a626-0f245c943762",
+    "name": "Hanitra Nadia ANDRIAMASINORO (DCM)",
+    "email": "nadia.andriamasinoro@ravinala-airports.aero",
+    "department": "DCM",
+    "poste": "Cheffe de Département Marketing",
+    "superiorId": "b2b5434a-736d-4d06-bfd7-16e54a7c7c71",
+    "superiorName": "Zoelisoa RAJOHNSON (DCM)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "13bded98-f0af-42e2-a488-789d04840ea5",
+    "name": "Hanitriniaina R. BAKOMALALA (DAF)",
+    "email": "hanitriniaina.bakomalala@ravinala-airports.aero",
+    "department": "DAF",
+    "poste": "Assistante Comptable",
+    "superiorId": "071e2782-cdec-4119-bdb0-177e399fbb50",
+    "superiorName": "Cathia Vololomanana RAHARIMANANTSOA (DAF)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "0a480c73-10e3-4da8-a656-a5d7f420ea27",
+    "name": "Hans Lalaina ANDRIAMASY (DAF)",
+    "email": "hans.andriamasy@ravinala-airports.aero",
+    "department": "DAF",
+    "poste": "Caissier Parking",
+    "superiorId": "20fff662-51ee-4fc4-99ae-dc7a9c361cbd",
+    "superiorName": "Fanjanirina RAFANILONIAINA (DAF)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "b3d50470-ae3d-4a1a-8048-90946b199535",
+    "name": "Hariliva Mampionina Roger RANDRIAMANAMPISOA (DOP)",
+    "email": "hariliva.randriamanampisoa@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Agent de piste",
+    "superiorId": "0b27a9f1-3add-4181-847a-cc2dc8bcfa29",
+    "superiorName": "Tefy Antonio Patrick RAJAONAH (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "cc73c8fd-88f4-40c4-baec-52c658876525",
+    "name": "Hariniaina Michael RAZAFIMAHATRATRA (DT)",
+    "email": "michael.razafimahatratra@ravinala-airports.aero",
+    "department": "DT",
+    "poste": "Electricien",
+    "superiorId": "98e1d5e0-961d-4e91-8f80-abf595ba01f2",
+    "superiorName": "Naly Nantenaina RAMANOELINA (DT)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "c3b4ef9e-aefb-4217-ac1b-473ad59d66c5",
+    "name": "Harisoa RAZANAMPARANY (DGE)",
+    "email": "harisoa.razanamparany@ravinala-airports.aero",
+    "department": "DGE",
+    "poste": "Responsable Communication Opérationnelle",
+    "superiorId": "528ab1c6-721e-4c57-bbb6-abe275754263",
+    "superiorName": "Sandrine RAHANTAMALALA (DGE)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "9b208e5e-d93f-4076-a3b7-bed3ed7d7310",
+    "name": "Harisolo Francia ANDRIAMILANTO (DOP)",
+    "email": "francia.andriamilanto@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Assistante de Direction",
+    "superiorId": "3a60fbce-8356-4415-bbad-82e9280fe08a",
+    "superiorName": "Andrianina Luc RAKOTOMANDIMBY (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "6cbbbc4d-5248-443e-a81f-2e86ac3a90f2",
+    "name": "Henintsoa Fitiavana ANDRIANARIMANANA (DSI)",
+    "email": "henintsoa.andrianarimanana@ravinala-airports.aero",
+    "department": "DSI",
+    "poste": "Technicien AOS & IT",
+    "superiorId": "ecead56b-8c32-4a01-bafd-4a05e135949f",
+    "superiorName": "Nathalie Doriane RALAIARIMALALA (DSI)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "79faa5f8-b205-46b7-842d-4974ce7a0e75",
+    "name": "Henintsoa Hariniaina RAZAFINDRAMANITRA (DOP)",
+    "email": "henintsoa.razafindramanitra@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Superviseur Maintenance AOCC",
+    "superiorId": "3a60fbce-8356-4415-bbad-82e9280fe08a",
+    "superiorName": "Andrianina Luc RAKOTOMANDIMBY (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "2ea90eff-79d1-4dfe-b85b-4cd387416fd0",
+    "name": "Henri RANDRIAMAMORY (DAF)",
+    "email": "henri.randriamamory@ravinala-airports.aero",
+    "department": "DAF",
+    "poste": "Assistant Achat",
+    "superiorId": "68c559ab-6caf-4807-ba94-765716f6d5ec",
+    "superiorName": "Fetra RAZANAMPARANY (DAF)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "20f45e6c-8183-4c8e-b47c-340e7d6138c0",
+    "name": "Herijaona RAMANANDRAITSIORY (DOP)",
+    "email": "herijaona.ramanandraitsiory@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Chef de Section Aires et Voiries",
+    "superiorId": "4c8cfbd5-435e-423b-bdf8-78d95000899e",
+    "superiorName": "Mamitiana RABARIJAONA (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "2638f1cc-9a49-4aaf-bcff-4c2179c8b517",
+    "name": "Herilala Zo Faniry RAZAFINDRABE (DJA)",
+    "email": "faniry.razafindrabe@ravinala-airports.aero",
+    "department": "DJA",
+    "poste": "Juriste Junior",
+    "superiorId": "409cd9a0-3b88-4852-b991-ad62edd52866",
+    "superiorName": "Josie RABESON (DJA)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "7e56abd1-af10-4ce0-be7f-33e8c9bfaceb",
+    "name": "Herimalala Naly ANDRIAMIHAJA (DCM)",
+    "email": "naly.andriamihaja@ravinala-airports.aero",
+    "department": "DCM",
+    "poste": "Chef Superviseur Contrôle fret",
+    "superiorId": "b528a814-3f62-475a-a626-0f245c943762",
+    "superiorName": "Hanitra Nadia ANDRIAMASINORO (DCM)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "7a1865b2-fae2-41f0-b045-1db2c4d80727",
+    "name": "Herimboahary Dinarisoa ANDRIANTOLOTIANA RAVONIRINA (DAF)",
+    "email": "dina.andriantolotiana@ravinala-airports.aero",
+    "department": "DAF",
+    "poste": "Chef de Service Facturation et Statistiques",
+    "superiorId": "9c2ac066-01de-49a4-86a1-0d1153cb14e8",
+    "superiorName": "Andrianantenaina RAMAROLAHY (DAF)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "70cbfcf5-8eec-4400-9fc8-c853eb7c4c5f",
+    "name": "Heriniaina Kaliana RANAIVOARIJAONA (DOP)",
+    "email": "kaliana.ranaivoarijaona@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Agent d'accueil",
+    "superiorId": "f904830e-8cf9-41ae-8520-66ec41ce7b31",
+    "superiorName": "RAZALINE (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "76c25f37-2089-4e81-8329-1b63d880b71a",
+    "name": "Herinomenjanaharilala Sedera RASOLOFONDRAMANAMBE (DRH)",
+    "email": "hery.rasolofondramanambe@ravinala-airports.aero",
+    "department": "DRH",
+    "poste": "Chef de Département Développement RH et Rémunération",
+    "superiorId": "002b1f12-e8c5-4a30-81ca-e8532855de71",
+    "superiorName": "Dealilalaina Sedera RASOLOMANANA (DRH)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "4ac9142f-4992-41f5-b524-72cd4cf1b367",
+    "name": "Herisoa Josianne RANDRIAMANANTENA (DOP)",
+    "email": "josiane.randriamanantena@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Agent d’accueil",
+    "superiorId": "a751c8ff-f95b-431e-b7a6-6002628b379b",
+    "superiorName": "Maminiaina RAZAKAMANANTSOA (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "fe2c0567-d7ae-4db2-8b2c-27ee4f203e5b",
+    "name": "Hervé Nirina ANDRIANASOLO (DOP)",
+    "email": "herve.andrianasolo@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Conducteur de Passerelle",
+    "superiorId": "30f2fa8a-f859-43c4-a06b-e9317c76c367",
+    "superiorName": "Rabemanantsoa Caroline RAMILIJAONA (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "deabea11-e58c-4398-9a6b-48375f16e527",
+    "name": "Hina Soaniaina RAJAONARIVONY (DOP)",
+    "email": "hina.rajaonarivony@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Agent d’accueil",
+    "superiorId": "30f2fa8a-f859-43c4-a06b-e9317c76c367",
+    "superiorName": "Rabemanantsoa Caroline RAMILIJAONA (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "9a9dcfed-d5a8-45c9-8be9-0acacf29ae56",
+    "name": "Hoby RABEARISON (DSI)",
+    "email": "hoby.rabearison@ravinala-airports.aero",
+    "department": "DSI",
+    "poste": "Chef de Projet SI",
+    "superiorId": "ba5d519e-3b23-4201-a6a6-1d3760f6b214",
+    "superiorName": "Damien ANDRIATSILAVINA (DSI)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "387e70b3-c4de-4fc0-b6ab-ce7e6564e833",
+    "name": "Honoré Jules ANDRIANJANAHARY (DOP)",
+    "email": "honore.andrianjanahary@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Chef de Section Aires et Voiries",
+    "superiorId": "a751c8ff-f95b-431e-b7a6-6002628b379b",
+    "superiorName": "Maminiaina RAZAKAMANANTSOA (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "471fa3cf-7275-4e38-ad3d-e4a756b21aff",
+    "name": "Ianjanirina RABETOKOTANY  (DOP)",
+    "email": "ianjanirina.rabetokotany@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Chargée en Système de Gestion de la Sécurité",
+    "superiorId": "44e428dd-85bf-45a2-8af8-929e2487b4bc",
+    "superiorName": "Sambatra RAKOTOARISOA (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "4ddd81c5-24d2-4fea-8860-1a32de88bb76",
+    "name": "Iharimbinintsoa RAJAONARIVONY (DAF)",
+    "email": "iharimbinintsoa.rajaonarivony@ravinala-airports.aero",
+    "department": "DAF",
+    "poste": "Caissier parking",
+    "superiorId": "20fff662-51ee-4fc4-99ae-dc7a9c361cbd",
+    "superiorName": "Fanjanirina RAFANILONIAINA (DAF)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "a0da4c56-c9d4-468b-af02-774480b1937e",
+    "name": "Ismael ALEXANDRE (DOP)",
+    "email": "ismael.alexandre@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Stagiaire",
+    "superiorId": "6f76bda1-28b9-4666-8c7e-56d176dea46c",
+    "superiorName": "Miary RASAMOELY (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "11331b72-bc63-42fc-912f-db31cd758508",
+    "name": "Jean Aimé RAVOAVITAHINA (DT)",
+    "email": "jeanaime.ravoavitahina@ravinala-airports.aero",
+    "department": "DT",
+    "poste": "Electricien",
+    "superiorId": "98e1d5e0-961d-4e91-8f80-abf595ba01f2",
+    "superiorName": "Naly Nantenaina RAMANOELINA (DT)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "0c24a141-048f-4e62-b208-54d625830547",
+    "name": "Jean Dieudonné RANDRIANIRINAMIFIDIMANANTSOA (DOP)",
+    "email": "jeandieudonne.randrianirinamifidimanantsoa@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Conseiller de la Direction Générale-Relations Institutionnelles,",
+    "superiorId": "ec738732-6e94-4288-be4a-c098408d199d",
+    "superiorName": "Daniel LEFEBVRE (DGE)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "653575d0-9498-4752-9b6c-5bf956217413",
+    "name": "Jean Marie Haja RAKOTOMALALA (DOP)",
+    "email": "haja.rakotomalala@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Agent d’accueil",
+    "superiorId": "f904830e-8cf9-41ae-8520-66ec41ce7b31",
+    "superiorName": "RAZALINE (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "502bad9e-bf96-424b-a751-26de5264833d",
+    "name": "Jessica Santatriniaina ROSS (DOP)",
+    "email": "jessica.ross@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Agente Slot AOCC",
+    "superiorId": "30f2fa8a-f859-43c4-a06b-e9317c76c367",
+    "superiorName": "Rabemanantsoa Caroline RAMILIJAONA (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "4e0ee182-373c-4f26-8bb3-8c2e1452b718",
+    "name": "Joël SOLOHERINJATOVO (DQRSE)",
+    "email": "joel.soloherinjatovo@ravinala-airports.aero",
+    "department": "DQRSE",
+    "poste": "Correspondant Qualité et RSE",
+    "superiorId": "0cb6e51a-302f-4d79-8a9c-0fbcd0ea62da",
+    "superiorName": "Felana RATSIMBAZAFY (DQRSE)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "83d28c24-2d52-408c-94fd-c04d9dc4bc5e",
+    "name": "Joël TADZONG (DAF)",
+    "email": "joel.tadzong@ravinala-airports.aero",
+    "department": "DAF",
+    "poste": "Chef de Département Ingénierie et Contrôle Financier",
+    "superiorId": "11715a63-e237-46b3-b568-ffa6fc087000",
+    "superiorName": "Romain PIERRU (DAF)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "6b9efa34-aa61-4dfe-8691-ef5f74557989",
+    "name": "Johan RAFANOMEZANTSOA (DSI)",
+    "email": "johan.rafanomezantsoa@ravinala-airports.aero",
+    "department": "DSI",
+    "poste": "Stagiaire DSI",
+    "superiorId": "",
+    "superiorName": "",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "2e85cd75-153a-427f-98cd-3aca60cd8ea4",
+    "name": "Johanna Marie RAVOLOLONIRINA (DOP)",
+    "email": "johanna.ravololonirina@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Assistante Administrative et Financière",
+    "superiorId": "0b27a9f1-3add-4181-847a-cc2dc8bcfa29",
+    "superiorName": "Tefy Antonio Patrick RAJAONAH (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "4a71606b-673d-4ea9-bddc-3121a1313539",
+    "name": "Johanne RAZAFIMAHEFA (DSI)",
+    "email": "johanne.razafimahefa@ravinala-airports.aero",
+    "department": "DSI",
+    "poste": "Stagiaire DSI",
+    "superiorId": "ba5d519e-3b23-4201-a6a6-1d3760f6b214",
+    "superiorName": "Damien ANDRIATSILAVINA (DSI)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "6dac6539-2a04-4fb4-8fdd-de4f9e889fb2",
+        "label": "Admin",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      },
+      {
+        "id": "a7878a78-951e-4c6b-9262-6f0e448d917e",
+        "label": "Superadmin",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      },
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "2e9e4b86-dcc7-4220-a672-1068ca110335",
+    "name": "Johary Gabriel RAZAFINDRATSIMBA (DOP)",
+    "email": "johary.razafindratsimba@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Agent d’accueil",
+    "superiorId": "f904830e-8cf9-41ae-8520-66ec41ce7b31",
+    "superiorName": "RAZALINE (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "95e9f3d0-341f-468c-85bb-896c12cd7543",
+    "name": "Johary Zo ANDRIANOMENY (DOP)",
+    "email": "zo.andrianomeny@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Assistante aux Usagers",
+    "superiorId": "10adbe3c-0dc6-4ec9-8313-82d459cfd03c",
+    "superiorName": "Noro Herimanitra R. ANDRIANALIVOLA (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "caf1525e-bb2a-4ceb-8cda-d55159660a92",
+    "name": "Jonathan RASOARAHONA (DOP)",
+    "email": "jonathan.rasoarahona@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Agent de piste",
+    "superiorId": "5137249d-9e50-48f2-b598-19d2ba48e41f",
+    "superiorName": "Nirina Marius RAZAFIMAHATRATRA (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "409cd9a0-3b88-4852-b991-ad62edd52866",
+    "name": "Josie RABESON (DJA)",
+    "email": "josie.rabeson@ravinala-airports.aero",
+    "department": "DJA",
+    "poste": "Cheffe de Département Juridique et Compliance",
+    "superiorId": "8877fae2-664d-4870-a5db-657f02c451c8",
+    "superiorName": "Tahiana RAKOTONDRASOA (DJA)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "1a953bfb-a35d-40fd-82a8-da79ccee1d12",
+    "name": "Judane Jessy LIELLO (DAF)",
+    "email": "jessy.liello@ravinala-airports.aero",
+    "department": "DAF",
+    "poste": "Stagiaire DAF",
+    "superiorId": "5f0151c4-c2f9-47f0-9fba-3ef1432f9723",
+    "superiorName": "Linda Lai FIDIMANANTSOA (DAF)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "bcda95d7-2766-44a9-8466-a05c2eec0594",
+    "name": "Judi Kaêl RAKOTOARIMANANA (DAF)",
+    "email": "judikael.rakotoarimanana@ravinala-airports.aero",
+    "department": "DAF",
+    "poste": "Superviseur parking",
+    "superiorId": "20fff662-51ee-4fc4-99ae-dc7a9c361cbd",
+    "superiorName": "Fanjanirina RAFANILONIAINA (DAF)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "770712b1-14f4-4afe-bf33-5da0958f4e7c",
+    "name": "Kajasoa RAKOTOMAHANDRY (DT)",
+    "email": "kajasoa.rakotomahandry@ravinala-airports.aero",
+    "department": "DT",
+    "poste": "Chargée de Projet",
+    "superiorId": "795790a4-02f8-4c36-a80e-eb66eb184097",
+    "superiorName": "Natolotra RAJOELINA (DT)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "4167a6e9-83b5-424e-8720-ac6b0843960d",
+    "name": "Kevin RAFANOMEZANTSOA (DOP)",
+    "email": "kevin.rafanomezantsoa@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Agent d'accueil",
+    "superiorId": "6f76bda1-28b9-4666-8c7e-56d176dea46c",
+    "superiorName": "Miary RASAMOELY (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "3d57bc0b-fd63-493d-a558-555755e93f33",
+    "name": "Koloina Fiona RAVELOMANANTSOA (DT)",
+    "email": "Fiona.RAVELOMANANTSOA@ravinala-airports.aero",
+    "department": "DT",
+    "poste": "Assistante Maintenance",
+    "superiorId": "00b58219-2f52-470d-b48f-383c8fd9ba23",
+    "superiorName": "Andry Lova Tiana RAJERISON RASAONA (DT)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "476ed4c5-385c-4661-b972-18c592b10cc6",
+    "name": "Laingo RAHAJATAFITASOA (DOP)",
+    "email": "laingo.rahajatafitasoa@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Agent d’accueil",
+    "superiorId": "a751c8ff-f95b-431e-b7a6-6002628b379b",
+    "superiorName": "Maminiaina RAZAKAMANANTSOA (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "cac77131-b001-4c7f-a9f1-a42b90a030ef",
+    "name": "Lamia Marie DIMBIMAMY (DCM)",
+    "email": "lamia.dimbimamy@ravinala-airports.aero",
+    "department": "DCM",
+    "poste": "Assistante Commerciale et Marketing",
+    "superiorId": "b2b5434a-736d-4d06-bfd7-16e54a7c7c71",
+    "superiorName": "Zoelisoa RAJOHNSON (DCM)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "5f0151c4-c2f9-47f0-9fba-3ef1432f9723",
+    "name": "Linda Lai FIDIMANANTSOA (DAF)",
+    "email": "linda.fidimanantsoa@ravinala-airports.aero",
+    "department": "DAF",
+    "poste": "Contrôleuse Financière Junior",
+    "superiorId": "05ae1fb5-5671-4b93-b1f8-df82ae855300",
+    "superiorName": "Dina Mickaël RAJOHNSON (DAF)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "be0d92c8-880b-4eb1-9898-f65a43d4f5b5",
+    "name": "Lionel ATEIFA (DCM)",
+    "email": "lionel.ateifa@ravinala-airports.aero",
+    "department": "DCM",
+    "poste": "Responsable Commercial et Marketing – Activités Aéronautiques",
+    "superiorId": "eeba0c1b-8bc5-4808-8f0f-c33b3599d82e",
+    "superiorName": "Minosoa Tatamo RAKOTOZAFY (DCM)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "c8f08003-fdc5-4f4c-8a26-7341b6c9eab3",
+    "name": "Litania RASOLONIAINA (DOP)",
+    "email": "litania.rasoloniaina@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Coordinatrice Terminal AOCC",
+    "superiorId": "6f76bda1-28b9-4666-8c7e-56d176dea46c",
+    "superiorName": "Miary RASAMOELY (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "30134b1e-cabe-4f38-ba7a-9ff6713b1933",
+    "name": "Lovaniaina Ismaella ANDRIANTSIMBA",
+    "email": "lovaniaina.andriantsimba@ravinala-airports.aero",
+    "department": "SST",
+    "poste": "Stagiaire SST",
+    "superiorId": "8334829e-08b6-4a3e-adc6-e2b6ccaf19a0",
+    "superiorName": "Nina RATSARASATA (DQRSE)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": []
+  },
+  {
+    "id": "473662c7-5206-4776-9a39-a5d6ba2a4b59",
+    "name": "Lowell BEMANANJARA (DCM)",
+    "email": "lowell.bemananjara@ravinala-airports.aero",
+    "department": "DCM",
+    "poste": "STAGIAIRE DPT NON AERO",
+    "superiorId": "12a2ed31-0caf-4a56-a229-336d281565a5",
+    "superiorName": "Gaël Mamy NIRIARISON (DCM)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "b23aecb2-1059-40bd-b69f-0023586adb5f",
+    "name": "Luc Gabriel RAZAKARIVONY (DOP)",
+    "email": "gabriel.razakarivony@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Agent de piste",
+    "superiorId": "5137249d-9e50-48f2-b598-19d2ba48e41f",
+    "superiorName": "Nirina Marius RAZAFIMAHATRATRA (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "1363b494-0c39-4c20-92b6-0954f78181c9",
+    "name": "Mahandrisoa Béatrice RAKOTOARIVAO (DAF)",
+    "email": "mahandrisoa.rakotoarivao@ravinala-airports.aero",
+    "department": "DAF",
+    "poste": "Comptable Client",
+    "superiorId": "9c2ac066-01de-49a4-86a1-0d1153cb14e8",
+    "superiorName": "Andrianantenaina RAMAROLAHY (DAF)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "844dc900-8612-487c-876e-f4cbcf0edd80",
+    "name": "Mahandry ANDRIANJAFINIRINA (DOP)",
+    "email": "mahandry.andrianjafinirina@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Responsable d’Exploitation",
+    "superiorId": "0b27a9f1-3add-4181-847a-cc2dc8bcfa29",
+    "superiorName": "Tefy Antonio Patrick RAJAONAH (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "c549f3ec-3d15-4664-9152-354912374478",
+    "name": "Mahefa Nantenaina RANARIMISA (DSI)",
+    "email": "Mahefa.RANARIMISA@ravinala-airports.aero",
+    "department": "DSI",
+    "poste": "Technicien AOS & IT",
+    "superiorId": "ecead56b-8c32-4a01-bafd-4a05e135949f",
+    "superiorName": "Nathalie Doriane RALAIARIMALALA (DSI)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "7c9c1aab-8044-49eb-9ff5-30812035a95d",
+    "name": "Mahefa RAHARITIANA (DOP)",
+    "email": "mahefa.raharitiana@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Superviseur Maintenance",
+    "superiorId": "3a60fbce-8356-4415-bbad-82e9280fe08a",
+    "superiorName": "Andrianina Luc RAKOTOMANDIMBY (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "748fa96b-d149-48f3-8a23-5ed43d72d272",
+    "name": "Maholy RANIVO ANDRIAMANANA (DOP)",
+    "email": "maholy.ranivo@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Agent d’accueil",
+    "superiorId": "30f2fa8a-f859-43c4-a06b-e9317c76c367",
+    "superiorName": "Rabemanantsoa Caroline RAMILIJAONA (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "7e60bedc-3e2d-4994-9fe5-8bf625e2683e",
+    "name": "Maickel Sergino RAZAFINDRANAIVO (DOP)",
+    "email": "maickel.razafindranaivo@ravinala-airports.aero",
+    "department": "",
+    "poste": "Stagiaire DOP",
+    "superiorId": "6f76bda1-28b9-4666-8c7e-56d176dea46c",
+    "superiorName": "Miary RASAMOELY (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": []
+  },
+  {
+    "id": "32f764e4-56f0-44fd-8e34-5fb94f294655",
+    "name": "Malalatina Jocelyne RAZANAJATOVO",
+    "email": "malalatina.razanajatovo@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Agent d’accueil",
+    "superiorId": "c80dd00d-654a-4876-ba0f-bc097cb45d7c",
+    "superiorName": "Natacha Hariniaina ANDRIANARISON (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "2ebf3db8-c5e1-41bc-857e-88ca3075d071",
+    "name": "Mamie MARIARISOA (DOP)",
+    "email": "mamie.mariarisoa@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Conducteur de Passerelle",
+    "superiorId": "a751c8ff-f95b-431e-b7a6-6002628b379b",
+    "superiorName": "Maminiaina RAZAKAMANANTSOA (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "7b67ee30-1765-4356-bf6f-1a6cdef18d89",
+    "name": "Maminiaina Elysé RAZAFINDRAKOTO (DOP)",
+    "email": "maminiaina.razafindrakoto@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Agent de piste",
+    "superiorId": "5137249d-9e50-48f2-b598-19d2ba48e41f",
+    "superiorName": "Nirina Marius RAZAFIMAHATRATRA (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "c992ccbe-9996-41aa-89a3-c63471504eda",
+    "name": "Maminiaina Pascal RAMAHANDRISOA (DAF)",
+    "email": "pascal.ramahandrisoa@ravinala-airports.aero",
+    "department": "DAF",
+    "poste": "Agent statistiques et facturation",
+    "superiorId": "7a1865b2-fae2-41f0-b045-1db2c4d80727",
+    "superiorName": "Herimboahary Dinarisoa ANDRIANTOLOTIANA RAVONIRINA (DAF)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "a751c8ff-f95b-431e-b7a6-6002628b379b",
+    "name": "Maminiaina RAZAKAMANANTSOA (DOP)",
+    "email": "maminiaina.razakamanantsoa@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Responsable d'Exploitation de Permanence",
+    "superiorId": "6f76bda1-28b9-4666-8c7e-56d176dea46c",
+    "superiorName": "Miary RASAMOELY (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "4c8cfbd5-435e-423b-bdf8-78d95000899e",
+    "name": "Mamitiana RABARIJAONA (DOP)",
+    "email": "mamitiana.rabarijaona@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Responsable d'Exploitation de Permanence",
+    "superiorId": "6f76bda1-28b9-4666-8c7e-56d176dea46c",
+    "superiorName": "Miary RASAMOELY (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "c5b9b187-191e-4c7d-bc79-3f3c03983471",
+    "name": "Mamy ANDRIANIRINA (DAF)",
+    "email": "mamy.andrianirina@ravinala-airports.aero",
+    "department": "DAF",
+    "poste": "Assistant Achat et Gestion de Stock",
+    "superiorId": "78d49c75-a8d3-40a4-9219-fe206d74ac47",
+    "superiorName": "Faranirina Aromanda RAKOTOVAO (DAF)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "20c46cd1-b68b-4fe2-b3fd-e84502178d6e",
+    "name": "Mamy Harilala F. RAZAFINDRAKOTO (DOP)",
+    "email": "mamy.razafindrakoto@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Agent de piste",
+    "superiorId": "5137249d-9e50-48f2-b598-19d2ba48e41f",
+    "superiorName": "Nirina Marius RAZAFIMAHATRATRA (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "fa4f28e4-6efe-428a-ac80-ad54716e75b5",
+    "name": "Mamy Lala RAKOTOZAFY (DAF)",
+    "email": "mamy.rakotozafy@ravinala-airports.aero",
+    "department": "DAF",
+    "poste": "Assistante de Direction",
+    "superiorId": "11715a63-e237-46b3-b568-ffa6fc087000",
+    "superiorName": "Romain PIERRU (DAF)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "e3c5e45c-a962-44ee-9997-d7f5249c25be",
+    "name": "Mamy RANDRIANANTENAINA (DAF)",
+    "email": "mamy.randrianantenaina@ravinala-airports.aero",
+    "department": "DAF",
+    "poste": "Comptable Clients",
+    "superiorId": "9c2ac066-01de-49a4-86a1-0d1153cb14e8",
+    "superiorName": "Andrianantenaina RAMAROLAHY (DAF)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "ff0ef660-c516-4338-9319-2e1f22d8be26",
+    "name": "Mamy Tiana RAKOTOARINORO (DOP)",
+    "email": "mamy.rakotoarinoro@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Agent d’accueil",
+    "superiorId": "f904830e-8cf9-41ae-8520-66ec41ce7b31",
+    "superiorName": "RAZALINE (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "5d2aa78d-ce0b-44d3-b29a-03615383b9ba",
+    "name": "Mana Ny Riana RAHARISON (DSI)",
+    "email": "mana.raharison@ravinala-airports.aero",
+    "department": "DSI",
+    "poste": "Chargée d'Administration et Qualité IT",
+    "superiorId": "c894ab8a-7e91-41c9-8102-5eef8d8e99a0",
+    "superiorName": "Dominique RAKOTOMAMONJY (DSI)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "e752d0a1-87be-4b22-b72f-427a073ab41a",
+    "name": "Mandimby Harivola RANJALAHY (DOP)",
+    "email": "harivola.ranjalahy@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Electromécanicien",
+    "superiorId": "98e1d5e0-961d-4e91-8f80-abf595ba01f2",
+    "superiorName": "Naly Nantenaina RAMANOELINA (DT)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "506d2403-eeee-46ae-b0f7-b3f18e4c0bde",
+    "name": "Manoa Tiffanie RAKOTONDRAMANANA",
+    "email": "manoa.rakotondramanana@ravinala-airports.aero",
+    "department": "",
+    "poste": "Stagiaire DAF",
+    "superiorId": "20fff662-51ee-4fc4-99ae-dc7a9c361cbd",
+    "superiorName": "Fanjanirina RAFANILONIAINA (DAF)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "906d7b48-5689-4b72-95bc-304f42a66c93",
+    "name": "Martial Guy ESSOMBA (DOP)",
+    "email": "martial.essomba@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Ingénieur Exploitation",
+    "superiorId": "814543aa-3dff-4ab9-a822-15fac34e3ba1",
+    "superiorName": "Caroline PETIT (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "c05905fa-cf87-4c0e-8da2-d859ca5e821c",
+    "name": "Mathieu RAJAOFETRA (DCM)",
+    "email": "mathieu.rajaofetra@ravinala-airports.aero",
+    "department": "DCM",
+    "poste": "Stagiaire du Département Non Aéronautique",
+    "superiorId": "12a2ed31-0caf-4a56-a229-336d281565a5",
+    "superiorName": "Gaël Mamy NIRIARISON (DCM)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "d2139f25-8cb5-4474-b4af-7c57696e7d30",
+    "name": "Mbonitahina RATSIMBAZAFY (DAF)",
+    "email": "tahina.ratsimbazafy@ravinala-airports.aero",
+    "department": "DAF",
+    "poste": "Agent Services Généraux",
+    "superiorId": "68c559ab-6caf-4807-ba94-765716f6d5ec",
+    "superiorName": "Fetra RAZANAMPARANY (DAF)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "6da43ef5-687e-42bf-83a6-3fdc3a91cb44",
+    "name": "Meja RAKOTOMANGA  (DOP)",
+    "email": "meja.rakotomanga@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Agente Slot AOCC",
+    "superiorId": "4c8cfbd5-435e-423b-bdf8-78d95000899e",
+    "superiorName": "Mamitiana RABARIJAONA (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "090979ec-bd46-4b3f-a7ab-394b8c4c0192",
+    "name": "Mialy RAHARIVELO(DAF)",
+    "email": "mialy.raharivelo@ravinala-airports.aero",
+    "department": "DAF",
+    "poste": "Facturière Extra Aéroportuaire",
+    "superiorId": "7a1865b2-fae2-41f0-b045-1db2c4d80727",
+    "superiorName": "Herimboahary Dinarisoa ANDRIANTOLOTIANA RAVONIRINA (DAF)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "6f76bda1-28b9-4666-8c7e-56d176dea46c",
+    "name": "Miary RASAMOELY (DOP)",
+    "email": "miary.rasamoely@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Cheffe de Département Terminal et Landside",
+    "superiorId": "814543aa-3dff-4ab9-a822-15fac34e3ba1",
+    "superiorName": "Caroline PETIT (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "fe889786-fc4d-413c-aa08-b2296cd85249",
+    "name": "Michou RAKOTONDRAMAZAVA (DAF)",
+    "email": "michou.rakotondramazava@ravinala-airports.aero",
+    "department": "DAF",
+    "poste": "Contrôleuse de Crédit et Facturation",
+    "superiorId": "7a1865b2-fae2-41f0-b045-1db2c4d80727",
+    "superiorName": "Herimboahary Dinarisoa ANDRIANTOLOTIANA RAVONIRINA (DAF)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "8a2faba7-12a9-457f-bc74-d5fc0604fabc",
+    "name": "Miha Odette ANNA (DGE)",
+    "email": "miha.anna@ravinala-airports.aero",
+    "department": "DGE",
+    "poste": "Responsable Communication Corporate et Marque Employeur",
+    "superiorId": "528ab1c6-721e-4c57-bbb6-abe275754263",
+    "superiorName": "Sandrine RAHANTAMALALA (DGE)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "f7908fc5-0e01-4145-9537-d09658df1634",
+    "name": "Mihanoka Harena ANDRIATSIFERANIAINA (DOP)",
+    "email": "mihanoka.andriatsiferana@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Agent d'accueil",
+    "superiorId": "f904830e-8cf9-41ae-8520-66ec41ce7b31",
+    "superiorName": "RAZALINE (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "c8afebaa-cb81-4623-9b51-c3a2e3c24aac",
+    "name": "Mikaela RAVELOMANANTSOA (DSI)",
+    "email": "mikaela.ravelomanantsoa@ravinala-airports.aero",
+    "department": "DSI",
+    "poste": "Technicien AOS & IT",
+    "superiorId": "ecead56b-8c32-4a01-bafd-4a05e135949f",
+    "superiorName": "Nathalie Doriane RALAIARIMALALA (DSI)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "18219f8e-b781-46ff-9182-37c9da640c03",
+    "name": "Mikoja Christina RASOAMANANJARA (DRH)",
+    "email": "mikoja.rasoamananjara@ravinala-airports.aero",
+    "department": "DRH",
+    "poste": "Stagiaire RH",
+    "superiorId": "002b1f12-e8c5-4a30-81ca-e8532855de71",
+    "superiorName": "Dealilalaina Sedera RASOLOMANANA (DRH)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "eeba0c1b-8bc5-4808-8f0f-c33b3599d82e",
+    "name": "Minosoa Tatamo RAKOTOZAFY (DCM)",
+    "email": "tatamo.rakotozafy@ravinala-airports.aero",
+    "department": "DCM",
+    "poste": "Cheffe de Département des Activités Aéronautiques",
+    "superiorId": "b2b5434a-736d-4d06-bfd7-16e54a7c7c71",
+    "superiorName": "Zoelisoa RAJOHNSON (DCM)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "199508e0-00c8-48ba-8113-5abe8f024922",
+    "name": "Mirana RASOLOARIZAFY (DCM)",
+    "email": "mirana.rasoloarizafy@ravinala-airports.aero",
+    "department": "DCM",
+    "poste": "Assistante de Projets Aéronautiques",
+    "superiorId": "eeba0c1b-8bc5-4808-8f0f-c33b3599d82e",
+    "superiorName": "Minosoa Tatamo RAKOTOZAFY (DCM)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "d20f833d-cd1d-4b84-8fff-f39dad05fc18",
+    "name": "Mirindra RABE (DQRSE)",
+    "email": "mirindra.rabe@ravinala-airports.aero",
+    "department": "DQRSE",
+    "poste": "Assistante Exécutive",
+    "superiorId": "0cb6e51a-302f-4d79-8a9c-0fbcd0ea62da",
+    "superiorName": "Felana RATSIMBAZAFY (DQRSE)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "d3ca3dfb-417d-4b72-8be9-21c27e5eb7d4",
+    "name": "Mitantsoa RATSIATOSIKA (DOP)",
+    "email": "mitantsoa.ratsiatosika@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Agent d’accueil",
+    "superiorId": "a751c8ff-f95b-431e-b7a6-6002628b379b",
+    "superiorName": "Maminiaina RAZAKAMANANTSOA (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "8e8c09f3-9bd4-4a4f-8c4e-20513920a7be",
+    "name": "N. Tahiriniaina MAMPIONONA (DAF)",
+    "email": "tahiriniaina.mampionona@ravinala-airports.aero",
+    "department": "DAF",
+    "poste": "Agent Saisie facturation",
+    "superiorId": "7a1865b2-fae2-41f0-b045-1db2c4d80727",
+    "superiorName": "Herimboahary Dinarisoa ANDRIANTOLOTIANA RAVONIRINA (DAF)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "f4427154-9d99-4871-bbd9-e5f2d6620f3e",
+    "name": "Nadya ANDRIAMANANTENASOA (DAF)",
+    "email": "nadya.andriamanantenasoa@ravinala-airports.aero",
+    "department": "DAF",
+    "poste": "Cassière Parking",
+    "superiorId": "20fff662-51ee-4fc4-99ae-dc7a9c361cbd",
+    "superiorName": "Fanjanirina RAFANILONIAINA (DAF)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "7ab82b0f-f44a-46f7-84ed-dd6e68624e00",
+    "name": "Nadya Mamitiana RAZANAKOLONA (DT)",
+    "email": "nadya.razanakolona@ravinala-airports.aero",
+    "department": "DT",
+    "poste": "Assistante de Direction",
+    "superiorId": "1a0f5dab-9ad7-4a30-b73c-842f54ba6a9a",
+    "superiorName": "Rova RAHERIJAONA (DT)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "98e1d5e0-961d-4e91-8f80-abf595ba01f2",
+    "name": "Naly Nantenaina RAMANOELINA (DT)",
+    "email": "naly.ramanoelina@ravinala-airports.aero",
+    "department": "DT",
+    "poste": "Chef de Service Electricité et Mécanique",
+    "superiorId": "00b58219-2f52-470d-b48f-383c8fd9ba23",
+    "superiorName": "Andry Lova Tiana RAJERISON RASAONA (DT)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "6235ff1c-3960-4b09-9125-a4da5798ace0",
+    "name": "Nandrianina MAMITIANA (DOP)",
+    "email": "nandrianina.mamitiana@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Electromécanicien",
+    "superiorId": "e92c87f7-7a42-41f2-afaf-ac83782dc47f",
+    "superiorName": "Tojotahina ANDRIANASOA (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "786c4b19-47b2-4764-b5fd-d04268fd1d08",
+    "name": "Nantenaina Mielle ANDRIANOMENJANAHARY (DOP)",
+    "email": "nantenaina.andrianomenjanahary@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Agent d’accueil",
+    "superiorId": "a751c8ff-f95b-431e-b7a6-6002628b379b",
+    "superiorName": "Maminiaina RAZAKAMANANTSOA (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "c80dd00d-654a-4876-ba0f-bc097cb45d7c",
+    "name": "Natacha Hariniaina ANDRIANARISON (DOP)",
+    "email": "natacha.andrianarison@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Responsable d'Exploitation de Permanence",
+    "superiorId": "6f76bda1-28b9-4666-8c7e-56d176dea46c",
+    "superiorName": "Miary RASAMOELY (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "ecead56b-8c32-4a01-bafd-4a05e135949f",
+    "name": "Nathalie Doriane RALAIARIMALALA (DSI)",
+    "email": "nathalie.ralaiarimalala@ravinala-airports.aero",
+    "department": "DSI",
+    "poste": "Responsable support AOS/IT",
+    "superiorId": "c894ab8a-7e91-41c9-8102-5eef8d8e99a0",
+    "superiorName": "Dominique RAKOTOMAMONJY (DSI)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "795790a4-02f8-4c36-a80e-eb66eb184097",
+    "name": "Natolotra RAJOELINA (DT)",
+    "email": "natolotra.rajoelina@ravinala-airports.aero",
+    "department": "DT",
+    "poste": "Chef de Département Technique",
+    "superiorId": "1a0f5dab-9ad7-4a30-b73c-842f54ba6a9a",
+    "superiorName": "Rova RAHERIJAONA (DT)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "362ce398-3d41-4883-8912-c876ffd2d2aa",
+    "name": "Niaina Hasina ANDRIANASOLO (DOP)",
+    "email": "niaina.andrianasolo@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Agent de piste",
+    "superiorId": "5137249d-9e50-48f2-b598-19d2ba48e41f",
+    "superiorName": "Nirina Marius RAZAFIMAHATRATRA (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "8334829e-08b6-4a3e-adc6-e2b6ccaf19a0",
+    "name": "Nina RATSARASATA (DQRSE)",
+    "email": "nina.ratsarasata@ravinala-airports.aero",
+    "department": "DQRSE",
+    "poste": "Responsable Santé et Sécurité au Travail",
+    "superiorId": "0cb6e51a-302f-4d79-8a9c-0fbcd0ea62da",
+    "superiorName": "Felana RATSIMBAZAFY (DQRSE)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "98815840-d74c-49d5-a4e9-3c92e4ca51d8",
+    "name": "Nirina Enie RAZAFINDRAKOTO (DRH)",
+    "email": "enie.razafindrakoto@ravinala-airports.aero",
+    "department": "DRH",
+    "poste": "Stagiaire RH",
+    "superiorId": "002b1f12-e8c5-4a30-81ca-e8532855de71",
+    "superiorName": "Dealilalaina Sedera RASOLOMANANA (DRH)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "5137249d-9e50-48f2-b598-19d2ba48e41f",
+    "name": "Nirina Marius RAZAFIMAHATRATRA (DOP)",
+    "email": "marius.razafimahatratra@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Chef de Département Airside",
+    "superiorId": "814543aa-3dff-4ab9-a822-15fac34e3ba1",
+    "superiorName": "Caroline PETIT (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "f27d5a28-bd8f-4277-9b7d-0f09d5d277d9",
+    "name": "Njaka A. RAZAFIMANANTSOA (DT)",
+    "email": "njaka.razafimanantsoa@ravinala-airports.aero",
+    "department": "DT",
+    "poste": "Projeteur-métreur",
+    "superiorId": "00b58219-2f52-470d-b48f-383c8fd9ba23",
+    "superiorName": "Andry Lova Tiana RAJERISON RASAONA (DT)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "0fd55439-5bf4-47bd-984b-a30ac14091ce",
+    "name": "Noêlla Velonjara VAVIHELY (DAF)",
+    "email": "noella.vavihely@ravinala-airports.aero",
+    "department": "DAF",
+    "poste": "Agent caisse",
+    "superiorId": "20fff662-51ee-4fc4-99ae-dc7a9c361cbd",
+    "superiorName": "Fanjanirina RAFANILONIAINA (DAF)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "46cf18b7-479c-43f6-8846-3558b62e63d8",
+    "name": "Nofy HARISOA (DAF)",
+    "email": "nofy.harisoa@ravinala-airports.aero",
+    "department": "DAF",
+    "poste": "Caissière Parking",
+    "superiorId": "20fff662-51ee-4fc4-99ae-dc7a9c361cbd",
+    "superiorName": "Fanjanirina RAFANILONIAINA (DAF)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "534dccca-14c9-4f41-beb9-ec7d88da7f86",
+    "name": "Nomena RAVELOJAON (DQRSE)",
+    "email": "nomena.ravelojaon@ravinala-airports.aero",
+    "department": "DQRSE",
+    "poste": "Responsable RSE",
+    "superiorId": "0cb6e51a-302f-4d79-8a9c-0fbcd0ea62da",
+    "superiorName": "Felana RATSIMBAZAFY (DQRSE)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "2b6877d3-09d9-42cb-9f06-ecd63048bff5",
+    "name": "Nomenjanahary Oeliarisoa ANDRIAMASOANDRO (DCM)",
+    "email": "oeliarisoa.andriamasoandro@ravinala-airports.aero",
+    "department": "DCM",
+    "poste": "Cheffe de Département Immobilier",
+    "superiorId": "b2b5434a-736d-4d06-bfd7-16e54a7c7c71",
+    "superiorName": "Zoelisoa RAJOHNSON (DCM)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "842ecb82-ffcf-46f1-bc71-28b97991ae81",
+    "name": "Nora Christian HENINTSOA (DT)",
+    "email": "nora.henintsoa@ravinala-airports.aero",
+    "department": "DEM",
+    "poste": "Agent polyvalent",
+    "superiorId": "",
+    "superiorName": "",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "10adbe3c-0dc6-4ec9-8313-82d459cfd03c",
+    "name": "Noro Herimanitra R. ANDRIANALIVOLA (DOP)",
+    "email": "noro.andrianalivola@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Responsable des Accès Sécurisés du Terminal Passagers",
+    "superiorId": "814543aa-3dff-4ab9-a822-15fac34e3ba1",
+    "superiorName": "Caroline PETIT (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "56f88579-c852-4c10-b151-7ebd3111d36b",
+    "name": "Noroseheno RAHERINOMENA  (DAF)",
+    "email": "noroseheno.raherinomena@ravinala-airports.aero",
+    "department": "DAF",
+    "poste": "Chargé(e) Trésorerie",
+    "superiorId": "31c4dcc3-be87-4b45-a64d-ebdaa179a37b",
+    "superiorName": "Haja RANDRIAMIARANTSOA (DAF)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "8dd30fad-6cbe-4aa7-bbe3-4a4faaba2a98",
+    "name": "Ny Aina Zo RAZAFINDRAKOTO (DOP)",
+    "email": "nyaina.razafindrakoto@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Technicien CFA",
+    "superiorId": "4ac9a820-406d-4e06-b674-07157fd675b8",
+    "superiorName": "Andriantsilavina RAKOTOMALALA (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "ab5ce4f6-5150-4233-8fe8-57851df37e67",
+    "name": "Ny Vahatra Tolotriniavo RAKOTOMANGA (DOP)",
+    "email": "vahatra.rakotomanga@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Agent d’accueil",
+    "superiorId": "f904830e-8cf9-41ae-8520-66ec41ce7b31",
+    "superiorName": "RAZALINE (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "4d9e6193-aae9-44f4-8bc3-0e1c63419aca",
+    "name": "Paul Ferdinah MAHEFA (DOP)",
+    "email": "paul.mahefa@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Electromécanicien",
+    "superiorId": "e92c87f7-7a42-41f2-afaf-ac83782dc47f",
+    "superiorName": "Tojotahina ANDRIANASOA (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "88f9c415-4757-4cec-8c2f-281081040257",
+    "name": "Pierre RAKOTOMANANA (DOP)",
+    "email": "pierre.rakotomanana@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Agent de piste",
+    "superiorId": "5137249d-9e50-48f2-b598-19d2ba48e41f",
+    "superiorName": "Nirina Marius RAZAFIMAHATRATRA (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "ac5b3655-ecbf-4b1e-8c21-f5625c820dec",
+    "name": "Rabary Jachaziel RAMARIJAONA (DOP)",
+    "email": "jachaziel.ramarijaona@ravinala-airports.aero",
+    "department": "DAF",
+    "poste": "Coordinateur Terminal AOCC",
+    "superiorId": "6f76bda1-28b9-4666-8c7e-56d176dea46c",
+    "superiorName": "Miary RASAMOELY (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "30f2fa8a-f859-43c4-a06b-e9317c76c367",
+    "name": "Rabemanantsoa Caroline RAMILIJAONA (DOP)",
+    "email": "caroline.ramilijaona@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Responsable d'Exploitation de Permanence",
+    "superiorId": "6f76bda1-28b9-4666-8c7e-56d176dea46c",
+    "superiorName": "Miary RASAMOELY (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "4d75896f-9bd9-414b-9420-b6f09182956b",
+    "name": "Rado Andriniaina RAJAONARIVONY (DSI)",
+    "email": "rado.rajaonarivony@ravinala-airports.aero",
+    "department": "DSI",
+    "poste": "Responsable Sécurité des Systèmes d’Information",
+    "superiorId": "c894ab8a-7e91-41c9-8102-5eef8d8e99a0",
+    "superiorName": "Dominique RAKOTOMAMONJY (DSI)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "7b2ef755-f135-4ae8-8f4d-b9fdbe2e32ad",
+    "name": "Rado RAFANOMEZANTSOA (DAF)",
+    "email": "rado.rafanomezantsoa@ravinala-airports.aero",
+    "department": "DAF",
+    "poste": "Chef Comptable",
+    "superiorId": "9c2ac066-01de-49a4-86a1-0d1153cb14e8",
+    "superiorName": "Andrianantenaina RAMAROLAHY (DAF)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "4209d0b2-681a-47b0-81b5-bcb5f20579e1",
+    "name": "Ralph Antony ANDRIAMAMONJY (DOP)",
+    "email": "ralph.andriamamonjy@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Agent d’accueil",
+    "superiorId": "4c8cfbd5-435e-423b-bdf8-78d95000899e",
+    "superiorName": "Mamitiana RABARIJAONA (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "08d33006-34ac-4da9-9910-4463821bd22b",
+    "name": "Rantoanina Toavina RATSIMBA  (DRH)",
+    "email": "toavina.rantoanina@ravinala-airports.aero",
+    "department": "DRH",
+    "poste": "Chef de Service Relations Sociales",
+    "superiorId": "d054c552-5c38-41d2-ae50-13805364fb99",
+    "superiorName": "Tanjona RIVONIRINA (DRH)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "ecbeaa1f-ad76-452a-93f9-0aaa874378b6",
+    "name": "Rasolofoniaina Patrick ANDRIATSALAMA (DAF)",
+    "email": "patrick.andriatsalama@ravinala-airports.aero",
+    "department": "DAF",
+    "poste": "Caissier fret",
+    "superiorId": "",
+    "superiorName": "",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "da53f46a-8c46-4d0d-b61b-e6bdb663a9d6",
+    "name": "Ravakiniaina Esperance RANDRIAMIHARISOA (DOP)",
+    "email": "ravakiniaina.randriamiharisoa@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Agente Slot AOCC",
+    "superiorId": "4c8cfbd5-435e-423b-bdf8-78d95000899e",
+    "superiorName": "Mamitiana RABARIJAONA (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "f904830e-8cf9-41ae-8520-66ec41ce7b31",
+    "name": "RAZALINE (DOP)",
+    "email": "razaline@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Responsable d'Exploitation de Permanence",
+    "superiorId": "6f76bda1-28b9-4666-8c7e-56d176dea46c",
+    "superiorName": "Miary RASAMOELY (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "51b01704-4d96-4a5f-9b73-318335f55e4a",
+    "name": "Razanamalala Muriel LI SUO TSAN  (DRH)",
+    "email": "murielle.razanamalala@ravinala-airports.aero",
+    "department": "DRH",
+    "poste": "Secrétaire",
+    "superiorId": "d054c552-5c38-41d2-ae50-13805364fb99",
+    "superiorName": "Tanjona RIVONIRINA (DRH)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "44936be4-0642-4e5b-96c9-02301b339573",
+    "name": "Rianala RAFALIMANANA (DCM)",
+    "email": "rianala.rafalimanana@ravinala-airports.aero",
+    "department": "DCM",
+    "poste": "Stagiaire Marketing",
+    "superiorId": "b528a814-3f62-475a-a626-0f245c943762",
+    "superiorName": "Hanitra Nadia ANDRIAMASINORO (DCM)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "a1f1d2ad-0eaa-4bea-99dd-4e666902cd73",
+    "name": "Rija Masinisa NARIZAFY (DT)",
+    "email": "rija.narizafy@ravinala-airports.aero",
+    "department": "DT",
+    "poste": "Chef de Service CVC et Plomberie",
+    "superiorId": "00b58219-2f52-470d-b48f-383c8fd9ba23",
+    "superiorName": "Andry Lova Tiana RAJERISON RASAONA (DT)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "43714c68-466d-43e1-ba0a-b5dc6e8ede38",
+    "name": "Rija Masinjaka RAKOTONIRAINY (DT)",
+    "email": "rija.rakotonirainy@ravinala-airports.aero",
+    "department": "DT",
+    "poste": "Responsable Travaux",
+    "superiorId": "795790a4-02f8-4c36-a80e-eb66eb184097",
+    "superiorName": "Natolotra RAJOELINA (DT)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "ee6cb78f-98c3-46c5-b178-e946005f8918",
+    "name": "Rindra Clark RAKOTOZANANY (DT)",
+    "email": "rindra.rakotozanany@ravinala-airports.aero",
+    "department": "DT",
+    "poste": "Chef de Service Bâtiment et Infrastructures",
+    "superiorId": "00b58219-2f52-470d-b48f-383c8fd9ba23",
+    "superiorName": "Andry Lova Tiana RAJERISON RASAONA (DT)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "0692e9fe-e27b-4686-b658-ae81b861bc0f",
+    "name": "Rivo Arilala RAMANANTSOA (DT)",
+    "email": "rivo.ramanantsoa@ravinala-airports.aero",
+    "department": "DT",
+    "poste": "Superviseur Maintenance",
+    "superiorId": "ee6cb78f-98c3-46c5-b178-e946005f8918",
+    "superiorName": "Rindra Clark RAKOTOZANANY (DT)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "26b7fe7c-73f6-4cdf-b949-2f87508fe834",
+    "name": "Robert RATSIRAHONANA (DSI)",
+    "email": "robert.ratsirahonana@ravinala-airports.aero",
+    "department": "DSI",
+    "poste": "Technicien AOS & IT",
+    "superiorId": "ecead56b-8c32-4a01-bafd-4a05e135949f",
+    "superiorName": "Nathalie Doriane RALAIARIMALALA (DSI)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "11715a63-e237-46b3-b568-ffa6fc087000",
+    "name": "Romain PIERRU (DAF)",
+    "email": "romain.pierru@ravinala-airports.aero",
+    "department": "DAF",
+    "poste": "Directeur Administratif et Financier",
+    "superiorId": "ec738732-6e94-4288-be4a-c098408d199d",
+    "superiorName": "Daniel LEFEBVRE (DGE)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "1a0f5dab-9ad7-4a30-b73c-842f54ba6a9a",
+    "name": "Rova RAHERIJAONA (DT)",
+    "email": "rova.raherijaona@ravinala-airports.aero",
+    "department": "DT",
+    "poste": "Directrice Technique",
+    "superiorId": "ec738732-6e94-4288-be4a-c098408d199d",
+    "superiorName": "Daniel LEFEBVRE (DGE)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "21d9053c-3f8d-4f27-97f1-37fb76f9e51d",
+    "name": "Ruth RANDRIANASOLO (DOP)",
+    "email": "ruth.randrianasolo@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Chargée Documentation SGS",
+    "superiorId": "44e428dd-85bf-45a2-8af8-929e2487b4bc",
+    "superiorName": "Sambatra RAKOTOARISOA (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "000465d0-0530-41d9-872f-d6012418ba7e",
+    "name": "Safidy RAKOTONDRAJOA (DSI)",
+    "email": "safidy.rakotondrajoa@ravinala-airports.aero",
+    "department": "DSI",
+    "poste": "Chargé d'Etude et de Developpement Applicatif",
+    "superiorId": "83dc05fd-0e42-43f5-b0e0-1567df7647b1",
+    "superiorName": "Vonjimampianina RAKOTOARISOA (DSI)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "bef2c45e-09c4-43c2-80b0-a9ac0bc87f7b",
+    "name": "Sahalasoa RAHANTAMAHATSANGY (DOP)",
+    "email": "sahalasoa.rahantamahatsangy@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Agent d’accueil",
+    "superiorId": "4c8cfbd5-435e-423b-bdf8-78d95000899e",
+    "superiorName": "Mamitiana RABARIJAONA (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "d263013a-5ed4-48bd-815e-5dcf989e4362",
+    "name": "Sahaza Manoa RABEMANANTSOA (DOP)",
+    "email": "sahaza.rabemanantsoa@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Agent d’accueil",
+    "superiorId": "f904830e-8cf9-41ae-8520-66ec41ce7b31",
+    "superiorName": "RAZALINE (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "b0b429d4-85c0-4cb3-821a-726cd7391870",
+    "name": "Salle de réunion - Mezzanine",
+    "email": "mezzanine.sr1@ravinala-airports.aero",
+    "department": "",
+    "poste": "",
+    "superiorId": "",
+    "superiorName": "",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "44e428dd-85bf-45a2-8af8-929e2487b4bc",
+    "name": "Sambatra RAKOTOARISOA (DOP)",
+    "email": "sambatra.rakotoarisoa@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Responsable Planification et SGS",
+    "superiorId": "814543aa-3dff-4ab9-a822-15fac34e3ba1",
+    "superiorName": "Caroline PETIT (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "528ab1c6-721e-4c57-bbb6-abe275754263",
+    "name": "Sandrine RAHANTAMALALA (DGE)",
+    "email": "sandrine.rahantamalala@ravinala-airports.aero",
+    "department": "DGE",
+    "poste": "Cheffe de Département Communication et Relations Publiques",
+    "superiorId": "ec738732-6e94-4288-be4a-c098408d199d",
+    "superiorName": "Daniel LEFEBVRE (DGE)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "28c063d8-ec3b-43bc-8957-2aa2bdd76105",
+    "name": "Sarah RABENDRINA (COM)",
+    "email": "sarah.rabendrina@ravinala-airports.aero",
+    "department": "COM",
+    "poste": "Stagiaire COM",
+    "superiorId": "c3b4ef9e-aefb-4217-ac1b-473ad59d66c5",
+    "superiorName": "Harisoa RAZANAMPARANY (DGE)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "6b34fc91-cfda-4e71-bf4c-ead99ff2c250",
+    "name": "Sariaka RALAMBOMIHAJA (DQRSE)",
+    "email": "sariaka.ralambomihaja@ravinala-airports.aero",
+    "department": "DQRSE",
+    "poste": "Responsable Environnement",
+    "superiorId": "0cb6e51a-302f-4d79-8a9c-0fbcd0ea62da",
+    "superiorName": "Felana RATSIMBAZAFY (DQRSE)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "782ab1aa-6a09-44d3-be18-ef3475f5f3d5",
+    "name": "Severin Damien Florent RATEFIARISON",
+    "email": "severin.ratefiarison@ravinala-airports.aero",
+    "department": "",
+    "poste": "",
+    "superiorId": "534dccca-14c9-4f41-beb9-ec7d88da7f86",
+    "superiorName": "Nomena RAVELOJAON (DQRSE)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": []
+  },
+  {
+    "id": "88c6eb39-265b-439f-8885-4f571d52884a",
+    "name": "Sitraka David RAMAROJAONA (DOP)",
+    "email": "sitraka.ramarojaona@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Agent de piste",
+    "superiorId": "5137249d-9e50-48f2-b598-19d2ba48e41f",
+    "superiorName": "Nirina Marius RAZAFIMAHATRATRA (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "ef7df325-9632-4654-b6e4-ffa2a528fe32",
+    "name": "Stéphane KANDRY (DOP)",
+    "email": "stephane.kandry@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Agent de piste",
+    "superiorId": "0b27a9f1-3add-4181-847a-cc2dc8bcfa29",
+    "superiorName": "Tefy Antonio Patrick RAJAONAH (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "9e5271e0-1a0e-4ee1-ba58-f4239f9fadd8",
+    "name": "T. Marka RAJAOHARILALA (DOP)",
+    "email": "marka.rajaoharilala@ravinala-airports.aero",
+    "department": "DAF",
+    "poste": "Agent de Caisse",
+    "superiorId": "20fff662-51ee-4fc4-99ae-dc7a9c361cbd",
+    "superiorName": "Fanjanirina RAFANILONIAINA (DAF)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "8877fae2-664d-4870-a5db-657f02c451c8",
+    "name": "Tahiana RAKOTONDRASOA (DJA)",
+    "email": "tahiana.rakotondrasoa@ravinala-airports.aero",
+    "department": "DJA",
+    "poste": "Directeur Juridique et Assurances",
+    "superiorId": "ec738732-6e94-4288-be4a-c098408d199d",
+    "superiorName": "Daniel LEFEBVRE (DGE)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "d054c552-5c38-41d2-ae50-13805364fb99",
+    "name": "Tanjona RIVONIRINA (DRH)",
+    "email": "tanjona.rivonirina@ravinala-airports.aero",
+    "department": "DRH",
+    "poste": "Chef de Département Social et Qualité de Vie au Travail",
+    "superiorId": "002b1f12-e8c5-4a30-81ca-e8532855de71",
+    "superiorName": "Dealilalaina Sedera RASOLOMANANA (DRH)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "766d6ae8-4293-4ec6-a7d8-b69c05b19977",
+    "name": "Tantely Haingosoa BENAMAHARO (DRH)",
+    "email": "tantely.benamaharo@ravinala-airports.aero",
+    "department": "DRH",
+    "poste": "Responsable Administratif RH et Recrutement",
+    "superiorId": "76c25f37-2089-4e81-8329-1b63d880b71a",
+    "superiorName": "Herinomenjanaharilala Sedera RASOLOFONDRAMANAMBE (DRH)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "490cc83a-a8d1-4103-bc70-9d461086c2cd",
+    "name": "Tantely RABEARIVELO (DSI)",
+    "email": "tantely.rabearivelo@ravinala-airports.aero",
+    "department": "DSI",
+    "poste": "Stagiaire DSI",
+    "superiorId": "ecead56b-8c32-4a01-bafd-4a05e135949f",
+    "superiorName": "Nathalie Doriane RALAIARIMALALA (DSI)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "0b27a9f1-3add-4181-847a-cc2dc8bcfa29",
+    "name": "Tefy Antonio Patrick RAJAONAH (DOP)",
+    "email": "Tefy.RAJAONAH@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Commandant d'Aéroport",
+    "superiorId": "814543aa-3dff-4ab9-a822-15fac34e3ba1",
+    "superiorName": "Caroline PETIT (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "c45149aa-84f0-4e03-b26f-de62e9ff54c3",
+    "name": "Tiavina Gael RAKOTOARISON (DSI)",
+    "email": "gael.rakotoarison@ravinala-airports.aero",
+    "department": "DSI",
+    "poste": "Stagiaire DSI",
+    "superiorId": "ba5d519e-3b23-4201-a6a6-1d3760f6b214",
+    "superiorName": "Damien ANDRIATSILAVINA (DSI)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "f2e54fcd-161d-4b93-a435-85ace1376769",
+    "name": "Tiavina Princia FALIA (DRH)",
+    "email": "tiavina.falia@ravinala-airports.aero",
+    "department": "DRH",
+    "poste": "Assistante RH",
+    "superiorId": "002b1f12-e8c5-4a30-81ca-e8532855de71",
+    "superiorName": "Dealilalaina Sedera RASOLOMANANA (DRH)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "6b00dea0-19bf-49ed-93b6-46c9b63b5446",
+    "name": "Toany MEVA SOLO  (DOP)",
+    "email": "toany.meva@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Agent d’accueil",
+    "superiorId": "f904830e-8cf9-41ae-8520-66ec41ce7b31",
+    "superiorName": "RAZALINE (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "294fa2ed-b737-4b45-bfcd-ba8e7f0884db",
+    "name": "Toetra Andoarinelina RASOLOFONIAINA (DOP)",
+    "email": "ando.rasolofoniaina@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Chef de Quart",
+    "superiorId": "0b27a9f1-3add-4181-847a-cc2dc8bcfa29",
+    "superiorName": "Tefy Antonio Patrick RAJAONAH (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "e92c87f7-7a42-41f2-afaf-ac83782dc47f",
+    "name": "Tojotahina ANDRIANASOA (DOP)",
+    "email": "tojo.andrianasoa@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Responsable électromécanique",
+    "superiorId": "3a60fbce-8356-4415-bbad-82e9280fe08a",
+    "superiorName": "Andrianina Luc RAKOTOMANDIMBY (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "b7356b76-d20f-4a44-bde5-e76af477e526",
+    "name": "Toky Hasina Lucas RAMIANDRISOA (DAF)",
+    "email": "toky.ramiandrisoa@ravinala-airports.aero",
+    "department": "DAF",
+    "poste": "Analyste Financier",
+    "superiorId": "83d28c24-2d52-408c-94fd-c04d9dc4bc5e",
+    "superiorName": "Joël TADZONG (DAF)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "7999d6a2-b55c-4a68-b18e-bfa4157dcf0c",
+    "name": "Tommy RAMANONINTSOA (DGE)",
+    "email": "tommy.ramanonintsoa@ravinala-airports.aero",
+    "department": "DGE",
+    "poste": "Stagiaire en communication digitale",
+    "superiorId": "396d028e-8b23-4866-ada3-ede9d7090e5b",
+    "superiorName": "Jason RABENIARY (DGE)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "73f0b252-ee8b-4574-973e-fc486866986c",
+    "name": "Tony Johary RAJAONARIVELO (DOP)",
+    "email": "tony.rajaonarivelo@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Responsable Ressources et Programme",
+    "superiorId": "906d7b48-5689-4b72-95bc-304f42a66c93",
+    "superiorName": "Martial Guy ESSOMBA (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "4cfbcb7f-58b2-497a-8e15-bc6e3fb221ad",
+    "name": "Tovondrainy Herimandimby RAKOTONIRINA (DAF)",
+    "email": "tovo.rakotonirina@ravinala-airports.aero",
+    "department": "DAF",
+    "poste": "Comptable Immobilisation et Taxes",
+    "superiorId": "7a1865b2-fae2-41f0-b045-1db2c4d80727",
+    "superiorName": "Herimboahary Dinarisoa ANDRIANTOLOTIANA RAVONIRINA (DAF)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "0bd319d6-9a18-4d64-8251-d6f5c1722a3b",
+    "name": "Tsiala GANJA Kennedy (DOP)",
+    "email": "tsiala.ganja@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Aide Electromécanicien",
+    "superiorId": "98e1d5e0-961d-4e91-8f80-abf595ba01f2",
+    "superiorName": "Naly Nantenaina RAMANOELINA (DT)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "d8cfd62b-11e5-4643-a486-3ee0886e8e2c",
+    "name": "Tsiory Tiana RASAMOELINA (DOP)",
+    "email": "tsiory.rasamoelina@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Stagiaire Administratif DOP",
+    "superiorId": "",
+    "superiorName": "",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "faa7f1c4-8784-4a89-96b9-7180ca49d96c",
+    "name": "Valery Tonio Henintsoa RAKOTOARIVONY",
+    "email": "tonio.rakotoarivony@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Agent d’accueil",
+    "superiorId": "c80dd00d-654a-4876-ba0f-bc097cb45d7c",
+    "superiorName": "Natacha Hariniaina ANDRIANARISON (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "8def912e-31c7-4f6d-b7cc-ec5076020ad1",
+    "name": "Vaniala RAKOTOARIVONY (DQRSE)",
+    "email": "vaniala.rakotoarivony@ravinala-airports.aero",
+    "department": "DQRSE",
+    "poste": "Contrôleur Interne",
+    "superiorId": "c0f8b79f-e6ca-4e14-8bf6-ad007e459e98",
+    "superiorName": "Fenitra ANDRIAMPARANY (DQRSE)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "fbb54cbc-17ca-4708-827d-33ddc9a8defd",
+    "name": "Vatosoa Maminiaina RAJAOFERA (DRH)",
+    "email": "vatosoa.rajaofera@ravinala-airports.aero",
+    "department": "DRH",
+    "poste": "Responsable Compétence et Performances",
+    "superiorId": "76c25f37-2089-4e81-8329-1b63d880b71a",
+    "superiorName": "Herinomenjanaharilala Sedera RASOLOFONDRAMANAMBE (DRH)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "c8c511f4-0960-47aa-9763-a21a832a493f",
+    "name": "Vero RAKOTONDRAZAKA (DOP)",
+    "email": "vero.rakotondrazaka@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Cheffe de Quart",
+    "superiorId": "0b27a9f1-3add-4181-847a-cc2dc8bcfa29",
+    "superiorName": "Tefy Antonio Patrick RAJAONAH (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "71fa26af-d149-4dd8-9790-1dfe24327889",
+    "name": "Volahasina RAKOTOARIVELO",
+    "email": "volahasina.rakotoarivelo@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Conducteur de Passerelle",
+    "superiorId": "4c8cfbd5-435e-423b-bdf8-78d95000899e",
+    "superiorName": "Mamitiana RABARIJAONA (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "83dc05fd-0e42-43f5-b0e0-1567df7647b1",
+    "name": "Vonjimampianina RAKOTOARISOA (DSI)",
+    "email": "vonji.rakotoarisoa@ravinala-airports.aero",
+    "department": "DSI",
+    "poste": "Chef de Département Infrastructures et Production IT",
+    "superiorId": "c894ab8a-7e91-41c9-8102-5eef8d8e99a0",
+    "superiorName": "Dominique RAKOTOMAMONJY (DSI)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "4898289a-b951-47fd-95c1-ce96020c8bb2",
+    "name": "Yvon Frederson SOLOMAMY (DOP)",
+    "email": "yvon.solomamy@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Conducteur de Passerelle",
+    "superiorId": "f904830e-8cf9-41ae-8520-66ec41ce7b31",
+    "superiorName": "RAZALINE (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "5758f3c9-1eea-46a3-b7c3-46c7c973ddaf",
+    "name": "Zo Ndriantsoa RAMANITRA (DOP)",
+    "email": "zo.ramanitra@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Technicien GMAO",
+    "superiorId": "3a60fbce-8356-4415-bbad-82e9280fe08a",
+    "superiorName": "Andrianina Luc RAKOTOMANDIMBY (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "6b019558-5702-406e-8482-7386a7fab141",
+    "name": "Zo Tokiniaina RANDRIANARIVONY (DOP)",
+    "email": "zo.randrianarivony@ravinala-airports.aero",
+    "department": "DOP",
+    "poste": "Agente Slot AOCC",
+    "superiorId": "4c8cfbd5-435e-423b-bdf8-78d95000899e",
+    "superiorName": "Mamitiana RABARIJAONA (DOP)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  },
+  {
+    "id": "b2b5434a-736d-4d06-bfd7-16e54a7c7c71",
+    "name": "Zoelisoa RAJOHNSON (DCM)",
+    "email": "zoelisoa.rajohnson@ravinala-airports.aero",
+    "department": "DCM",
+    "poste": "Directrice Commerciale et Marketing",
+    "superiorId": "ec738732-6e94-4288-be4a-c098408d199d",
+    "superiorName": "Daniel LEFEBVRE (DGE)",
+    "status": "Actif",
+    "profilePicture": "",
+    "habilitations": [
+      {
+        "id": "d2b78575-c897-4c91-aaae-0fbdd3d4bd25",
+        "label": "utilisateur",
+        "habilitationAdmins": null,
+        "habilitationProjects": null
+      }
+    ]
+  }
+]
