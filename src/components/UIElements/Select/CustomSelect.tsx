@@ -112,7 +112,9 @@ const CustomSelect = ({
           <div
             key={index}
             onClick={() => handleSelect(option)}
-            className="py-2 px-4 cursor-pointer text-sm  dark:text-bodydark hover:bg-gray-3 dark:hover:bg-boxdark2 rounded-md"
+            className={`py-2 px-4 cursor-pointer text-sm  dark:text-bodydark hover:bg-gray-3 dark:hover:bg-boxdark2 rounded-md ${
+              value === option ? "bg-gray-3 dark:bg-boxdark2" :""
+            }`}
             style={{
               height: "40px",
               whiteSpace: "nowrap",
