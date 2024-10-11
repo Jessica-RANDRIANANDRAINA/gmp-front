@@ -109,9 +109,9 @@ const ProjectSideBar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
         <nav className="mt-5 h-full py-4 px-4 lg:mt-9 lg:px-6 flex flex-col ">
           {/* ======ADMIN GROUP START====== */}
           <div className={`${isAdminHabilitate ? "" : "hidden"}`}>
-            <h3 className="mb-4 ml-4 text-sm font-semibold text-whiten">
+            {/* <h3 className="mb-4 ml-4 text-sm font-semibold text-whiten">
               ADMIN
-            </h3>
+            </h3> */}
             <ul>
               <SidebarLinkGroup
                 activeCondition={
@@ -305,9 +305,9 @@ const ProjectSideBar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
           {/* ======ADMIN GROUP END====== */}
           {/* ======PROJECT GROUP START====== */}
           <div className={`${isProjectHabilitate ? "" : "hidden"}`}>
-            <h3 className="mb-4 ml-4 text-sm font-semibold text-whiten">
+            {/* <h3 className="mb-4 ml-4 text-sm font-semibold text-whiten">
               PROJET
-            </h3>
+            </h3> */}
             <ul>
               <SidebarLinkGroup
                 activeCondition={
@@ -450,7 +450,7 @@ const ProjectSideBar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                                   fill=""
                                 />
                               </svg>
-                              Projets
+                              Liste des projets
                             </NavLink>
                           </li>
                           <li>
