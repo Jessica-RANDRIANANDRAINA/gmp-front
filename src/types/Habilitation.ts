@@ -37,11 +37,19 @@ export interface IMyHabilitation {
     modifyHierarchy: boolean;
     restoreHierarchy: boolean;
     updateHabilitation: boolean;
+    actualizeUserData: boolean;
+    assignAccess: boolean;
   };
   project: {
     assign: boolean;
     create: boolean;
     delete: boolean;
     update: boolean;
+    watchMyProject: boolean;
+    watchMySubordinatesProject: boolean;
+    updateMySubordinatesProject: boolean;
+    deleteMySubordinatesProject: boolean;
+    manageMySubordinatesProject: boolean;
+    manage: boolean;
   };
 }

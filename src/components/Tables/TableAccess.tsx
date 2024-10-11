@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { TableAccessProps } from "../../types/table";
 import { CustomSelect, CustomInput } from "../UIElements";
+import { IMyHabilitation } from "../../types/Habilitation";
 // import { deleteHabilitation } from "../../services/User";
 
 const TableAccess = ({
@@ -8,11 +9,13 @@ const TableAccess = ({
   setIsDeleteAccess,
   setAccessSelectedId,
   setIsModalModifAccessVisible,
+  myHabilitation,
 }: {
   data: TableAccessProps["data"];
   setIsDeleteAccess: Function;
   setAccessSelectedId: Function;
   setIsModalModifAccessVisible: Function;
+  myHabilitation: IMyHabilitation | undefined;
 }) => {
   const [entriesPerPage] = useState(5);
   const [actualPage, setActualPage] = useState(1);
@@ -206,8 +209,30 @@ const TableAccess = ({
           <CustomSelect
             data={
               accessSelected.length > 1
-                ? ["Supprimer"]
-                : ["Modifier", "Supprimer"]
+                ? ["Supprimer"].filter((action) => {
+                    if (
+                      !myHabilitation?.admin.deleteHabilitation &&
+                      action === "Supprimer"
+                    ) {
+                      return false;
+                    }
+                    return true;
+                  })
+                : ["Modifier", "Supprimer"].filter((action) => {
+                    if (
+                      !myHabilitation?.admin.deleteHabilitation &&
+                      action == "Supprimer"
+                    ) {
+                      return false;
+                    }
+                    if (
+                      !myHabilitation?.admin.updateHabilitation &&
+                      action === "Modifier"
+                    ) {
+                      return false;
+                    }
+                    return true;
+                  })
             }
             className="mb-2"
             placeholder="Actions"

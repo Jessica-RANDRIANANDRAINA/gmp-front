@@ -36,12 +36,20 @@ const transformHabilitation = (habilitations: any[]) => {
       modifyHierarchy: false,
       restoreHierarchy: false,
       updateHabilitation: false,
+      actualizeUserData: false,
+      assignAccess: false,
     },
     project: {
       assign: false,
       create: false,
       delete: false,
       update: false,
+      watchMyProject: false,
+      watchMySubordinatesProject: false,
+      updateMySubordinatesProject: false,
+      deleteMySubordinatesProject: false,
+      manageMySubordinatesProject: false,
+      manage: false,
     },
   };
   habilitations.forEach(({ habilitationAdmins, habilitationProjects }) => {
@@ -55,14 +63,26 @@ const transformHabilitation = (habilitations: any[]) => {
       habilitation.admin.modifyHierarchy ||= admin.modifyHierarchy === 1;
       habilitation.admin.restoreHierarchy ||= admin.restoreHierarchy === 1;
       habilitation.admin.updateHabilitation ||= admin.updateHabilitation === 1;
+      habilitation.admin.actualizeUserData ||= admin.actualizeUserData === 1;
+      habilitation.admin.assignAccess ||= admin.assignAccess === 1;
     }
 
     // Project habilitations: Same logic as admin
     if (project) {
-      habilitation.project.assign ||= project.assign === 1;
+      habilitation.project.watchMyProject ||= project.watchMyProject === 1;
+      habilitation.project.watchMySubordinatesProject ||=
+        project.watchMySubordinatesProject === 1;
       habilitation.project.create ||= project.create === 1;
-      habilitation.project.delete ||= project.delete === 1;
       habilitation.project.update ||= project.update === 1;
+      habilitation.project.updateMySubordinatesProject ||=
+        project.updateMySubordinatesProject === 1;
+      habilitation.project.delete ||= project.delete === 1;
+      habilitation.project.deleteMySubordinatesProject ||=
+        project.deleteMySubordinatesProject === 1;
+      habilitation.project.manageMySubordinatesProject ||=
+        project.manageMySubordinatesProject === 1;
+      habilitation.project.manage ||= project.manage === 1;
+      habilitation.project.assign ||= project.assign === 1;
     }
   });
   return habilitation;

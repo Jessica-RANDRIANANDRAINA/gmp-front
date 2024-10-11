@@ -7,6 +7,8 @@ import {
   ConfirmSuppressAccess,
 } from "../../components/Modals/Access";
 import { getAllHabilitation, getHabilitationById } from "../../services/User";
+import { getAllMyHabilitation } from "../../services/Function/UserFunctionService";
+import { IMyHabilitation } from "../../types/Habilitation";
 
 const ManageAccess = () => {
   const [isAddModalAccessVisible, setIsModalAccessVisible] = useState(false);
@@ -19,6 +21,16 @@ const ManageAccess = () => {
   const [isAddFinished, setIsAddFinished] = useState<boolean>(false);
   const [isDeleteFinished, setIsDeleteFinished] = useState<boolean>(false);
   const [isUpdateFinished, setIsUpdateFinished] = useState<boolean>(false);
+  const [myHabilitation, setMyHabilitation] = useState<IMyHabilitation>();
+
+  const getHab = async () => {
+    const hab = await getAllMyHabilitation();
+    setMyHabilitation(hab);
+  };
+
+  useEffect(() => {
+    getHab();
+  }, []);
 
   const fetchHabilitationById = async () => {
     if (accessSelectedId.length > 0) {
@@ -57,9 +69,17 @@ const ManageAccess = () => {
     <ProjectLayout>
       <div className="mx-2 p-4 md:mx-10">
         {/* ===== ADD ACCESS START ===== */}
-        <div className="w-full mb-2 flex justify-end items-center">
+        <div
+          className={`w-full mb-2  justify-end items-center ${
+            myHabilitation?.admin?.createHabilitation ? "flex" : "hidden"
+          }`}
+        >
           <button
-            onClick={() => setIsModalAccessVisible(true)}
+            onClick={() => {
+              if (myHabilitation?.admin?.createHabilitation) {
+                setIsModalAccessVisible(true);
+              }
+            }}
             className={`md:w-fit gap-2 flex justify-center w-full cursor-pointer mt-2 py-2 lg:px-3 xl:px-2  text-center font-medium text-sm text-white hover:bg-opacity-90  border border-primaryGreen bg-primaryGreen rounded-lg dark:border-darkgreen dark:bg-darkgreen dark:hover:bg-opacity-90  md:ease-in md:duration-300 md:transform  
               `}
           >
@@ -83,6 +103,7 @@ const ManageAccess = () => {
         </div>
         {/* ===== ADD ACCESS END ===== */}
         <TableAccess
+          myHabilitation={myHabilitation}
           data={habilitationData}
           setIsDeleteAccess={setIsDeleteAccess}
           setAccessSelectedId={setAccessSelectedId}
