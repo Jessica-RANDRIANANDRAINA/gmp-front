@@ -80,7 +80,7 @@ const InfoGeneralUpdate = ({
         <CustomSelect
           label="Priorité"
           placeholder="Priorité"
-          data={["Faible", "Moyenne", "Elevée"]}
+          data={["Elevée", "Moyenne", "Faible"]}
           value={projectData.priority}
           onValueChange={(e) => {
             setProjectData({
