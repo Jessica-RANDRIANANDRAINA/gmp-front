@@ -60,7 +60,7 @@ const LoginProject = () => {
           </span>
         </div>
         <form className="flex flex-col items-center w-full">
-          <div className="flex flex-col">
+          <div className="flex flex-col justify-center items-center">
             <input
               type="text"
               placeholder="Matricule@ravinala-airports.aero"
@@ -84,7 +84,7 @@ const LoginProject = () => {
               }}
             />
             <span
-              className={`mt-1 text-red-500 text-sm ${
+              className={`mt-1 w-[320px]  text-center  text-red-500 text-sm ${
                 loginError.mail === "" ? "hidden" : ""
               }`}
             >
