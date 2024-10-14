@@ -130,3 +130,15 @@ export const archiveProject = async (ids: Array<string>) => {
     throw error;
   }
 };
+
+export const updateTeamProject = async (projectId: string, data: any) => {
+  try {
+    const response = await axios.put(
+      `${endPoint}/api/Project/update/team/${projectId}`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(`Error at update team project: ${error}`);
+  }
+};

@@ -4,15 +4,22 @@ import { Modal, ModalBody, ModalFooter } from "../Modal";
 import { BeatLoader } from "react-spinners";
 import { CutomInputUserSearch } from "../../UIElements";
 import { Iteam, IUserProject } from "../../../types/Project";
-import { getProjectById } from "../../../services/Project";
+import { getProjectById, updateTeamProject } from "../../../services/Project";
 import { getInitials } from "../../../services/Function/UserFunctionService";
+import { decodeToken } from "../../../services/Function/TokenService";
+import { Notyf } from "notyf";
+import "notyf/notyf.min.css";
+
+const notyf = new Notyf({ position: { x: "center", y: "top" } });
 
 const UpdateTeamMember = ({
   showModalTeam,
   setShowModalTeam,
+  setIsModifTeamApplied,
 }: {
   showModalTeam: boolean;
   setShowModalTeam: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsModifTeamApplied: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const { projectId } = useParams();
   const [loading, setLoading] = useState<boolean>(false);
@@ -44,9 +51,33 @@ const UpdateTeamMember = ({
     setUserTeam(filteredList);
   };
 
-  const handleConfirmChange = () => {
+  const handleConfirmChange = async () => {
     setLoading(true);
-    setLoading(false);
+    try {
+      const userProjects = userTeam.map((item) => ({
+        userId: item.id,
+        role: item.role,
+        projectId: projectId,
+      }));
+      const userConnected = decodeToken("pr");
+      const data = {
+        userProjects,
+        initiator: userConnected?.name,
+      };
+      if (projectId) {
+        await updateTeamProject(projectId, data);
+        notyf.success("Modification apportée avec succès");
+        setIsModifTeamApplied(true);
+      }
+    } catch (error) {
+      notyf.error(
+        "Une erreur s'est produite lors de la modification. Veuillez réessayer plus tard."
+      );
+      console.error(`Error at update team membre: ${error}`);
+    } finally {
+      setLoading(false);
+      setShowModalTeam(false);
+    }
   };
   return (
     <Modal
@@ -186,7 +217,7 @@ const UpdateTeamMember = ({
         </button>
         <button
           type="button"
-          className={`border text-xs p-2 rounded-md  font-semibold `}
+          className={`border text-xs p-2 rounded-md text-white  font-semibold border-primaryGreen bg-primaryGreen dark:border-darkgreen dark:bg-darkgreen hover:bg-opacity-90 md:ease-in md:duration-300 md:transform `}
           onClick={handleConfirmChange}
           //   disabled={projectToArchive && projectToArchive?.length === 0}
         >

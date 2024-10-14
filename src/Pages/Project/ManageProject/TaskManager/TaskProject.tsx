@@ -13,6 +13,7 @@ const TaskProject = () => {
   const [projectData, setProjectData] = useState<IProjectData>();
   const [isTitleExpanded, setIsTitleExpanded] = useState<boolean>(false);
   const [showModalTeam, setShowModalTeam] = useState<boolean>(false);
+  const [isModifTeamApplied, setIsModifTeamApplied] = useState<boolean>(false);
 
   const fetchProject = async () => {
     if (projectId) {
@@ -27,7 +28,8 @@ const TaskProject = () => {
 
   useEffect(() => {
     fetchProject();
-  }, []);
+    setIsModifTeamApplied(false);
+  }, [isModifTeamApplied]);
 
   return (
     <ProjectLayout>
@@ -98,7 +100,6 @@ const TaskProject = () => {
             <div className=" flex gap-2 justify-between items-end py-3 text-xs font-semibold px-2">
               <span
                 className="border p-1.5 rounded-md border-slate-300 dark:border-boxdark2 dark:bg-boxdark2 dark:hover:bg-opacity-85 cursor-pointer  hover:bg-whiten   "
-
                 onClick={() => {
                   setShowModalTeam(true);
                 }}
@@ -167,6 +168,7 @@ const TaskProject = () => {
             <UpdateTeamMember
               setShowModalTeam={setShowModalTeam}
               showModalTeam={showModalTeam}
+              setIsModifTeamApplied={setIsModifTeamApplied}
             />
           )}
           {/* ===== UPDATE TEAM MODAL END ===== */}
