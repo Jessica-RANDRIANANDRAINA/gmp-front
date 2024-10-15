@@ -343,7 +343,7 @@ const UpdateAccessModal = ({
                 <Checkbox
                   active={
                     habilitationToModifData?.habilitationProjects?.[0]
-                      ?.watchMyProject 
+                      ?.watchMyProject
                   }
                   label="Voir mes projets"
                   onStateCheckChange={(isChecked) =>
@@ -354,7 +354,8 @@ const UpdateAccessModal = ({
                 />
                 <Checkbox
                   active={
-                    habilitationToModifData?.habilitationProjects?.[0]?.watchMySubordinatesProject
+                    habilitationToModifData?.habilitationProjects?.[0]
+                      ?.watchMySubordinatesProject
                   }
                   label="Voir les projets de mes subordonné(e)s"
                   onStateCheckChange={(isChecked) =>
@@ -395,7 +396,8 @@ const UpdateAccessModal = ({
                 />
                 <Checkbox
                   active={
-                    habilitationToModifData?.habilitationProjects?.[0]?.updateMySubordinatesProject
+                    habilitationToModifData?.habilitationProjects?.[0]
+                      ?.updateMySubordinatesProject
                   }
                   label="Modifier les projets de mes subordonné(e)s"
                   onStateCheckChange={(isChecked) =>
@@ -425,7 +427,8 @@ const UpdateAccessModal = ({
                 />
                 <Checkbox
                   active={
-                    habilitationToModifData?.habilitationProjects?.[0]?.manageMySubordinatesProject
+                    habilitationToModifData?.habilitationProjects?.[0]
+                      ?.manageMySubordinatesProject
                   }
                   label="Gérer les projets de mes subordonné(e)s"
                   onStateCheckChange={(isChecked) =>
@@ -455,7 +458,8 @@ const UpdateAccessModal = ({
                 />
                 <Checkbox
                   active={
-                    habilitationToModifData?.habilitationProjects?.[0]?.deleteMySubordinatesProject
+                    habilitationToModifData?.habilitationProjects?.[0]
+                      ?.deleteMySubordinatesProject
                   }
                   label="Archiver les projets de mes subordonné(e)s"
                   onStateCheckChange={(isChecked) =>
@@ -574,11 +578,9 @@ const UpdateAccessModal = ({
 
             <button
               type="submit"
-              className="w-full cursor-pointer py-2 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-darkgreen dark:bg-darkgreen dark:hover:bg-opacity-90"
+              className="w-full cursor-pointer py-2 flex justify-center items-center text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-darkgreen dark:bg-darkgreen dark:hover:bg-opacity-90"
             >
-              {isLoading ? (
-                <BeatLoader size={8} className="mr-2" color={"#fff"} />
-              ) : null}
+              {isLoading ? <BeatLoader size={8} color={"#fff"} /> : null}
               Enregistrer les modifications
             </button>
           </form>

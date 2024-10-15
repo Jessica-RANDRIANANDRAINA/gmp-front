@@ -56,10 +56,6 @@ const transformHabilitation = (habilitations: any[]) => {
     const admin = habilitationAdmins?.[0];
     const project = habilitationProjects?.[0];
 
-    console.log('--------------')
-    console.log(admin);
-    console.log('--------------')
-
     // Admin habilitations: Only update if current value is false and new value is true (1)
     if (admin) {
       habilitation.admin.createHabilitation ||= admin.createHabilitation === 1;

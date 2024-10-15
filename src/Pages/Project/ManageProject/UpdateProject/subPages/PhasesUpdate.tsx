@@ -23,7 +23,7 @@ const PhasesUpdate = ({
   setPhaseAndLivrableList: React.Dispatch<React.SetStateAction<Array<IPhase>>>;
   projectData: IProjectData;
 }) => {
-  const [phasesNames, setPhasesNames] = useState<Array<string>>(
+  const [phasesNames, setPhasesNames] = useState<Array<string | undefined>>(
     phaseAndLivrableList.map((phase) => phase.phase1)
   );
   useEffect(() => {
@@ -163,7 +163,7 @@ const PhasesUpdate = ({
                           "text-red-500 decoration-red-500 font-bold hover:font-black"
                         }
                         onClick={() => {
-                          handleRemovePhaseList(phase.phase1);
+                          handleRemovePhaseList(phase.phase1 ?? "");
                         }}
                       >
                         Supprimer

@@ -176,11 +176,11 @@ const TeamAdd = ({
                 );
               }
             }}
-            className="md:w-fit max-h-10 gap-2 w-full cursor-pointer mt-2 py-2 px-5  text-center font-semibold text-white hover:bg-opacity-90 lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-darkgreen dark:bg-darkgreen dark:hover:bg-opacity-90"
+            className="md:w-fit flex justify-center items-center max-h-10 gap-2 w-full cursor-pointer mt-2 py-2 px-5  text-center font-semibold text-white hover:bg-opacity-90 lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-darkgreen dark:bg-darkgreen dark:hover:bg-opacity-90"
           >
             {isCreateLoading && (
               <span>
-                <PuffLoader size={20} className="mr-2" />
+                <PuffLoader size={20} className="" />
               </span>
             )}
             Créer le projet

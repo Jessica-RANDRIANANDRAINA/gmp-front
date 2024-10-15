@@ -28,7 +28,7 @@ const PhasesAdd = ({
   const [inputErrors, setInputErrors] = useState<{
     [key: number]: { phase1?: string; expectedDeliverable?: string };
   }>({});
-  const [phasesNames, setPhasesNames] = useState<Array<string>>([]);
+  const [phasesNames, setPhasesNames] = useState<Array<string | undefined>>([]);
 
   // ADD DEFAULT VALUE IN PHASE LIST
   const handleAddDefaultPhaseList = () => {
@@ -212,7 +212,7 @@ const PhasesAdd = ({
                     }
                     type="button"
                     onClick={() => {
-                      handleRemovePhaseList(phase.phase1);
+                      handleRemovePhaseList(phase.phase1 ?? "");
                     }}
                   >
                     Supprimer
