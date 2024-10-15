@@ -51,7 +51,7 @@ export interface InputSelectprops
   extends SelectHTMLAttributes<HTMLSelectElement> {
   label?: string;
   placeholder?: string;
-  data: Array<string>;
+  data: Array<string | undefined>;
   value?: string;
   onValueChange: (selectedValue: string) => void;
   required?: boolean;
