@@ -2,7 +2,7 @@ import React, { useRef, useEffect, ReactNode, useState } from "react";
 
 const ModalBody = ({ children }: { children: ReactNode }) => {
   return (
-    <div className="text-sm flex-grow h-[50%] overflow-y-auto ">
+    <div className="text-sm flex-grow h-[50%]  ">
       <div className="relative">{children}</div>
     </div>
   );

@@ -208,7 +208,7 @@ const UpdateTeamMember = ({
       <ModalFooter>
         <button
           type="button"
-          className="border text-xs p-2 rounded-md  font-semibold bg-transparent border-transparent hover:bg-zinc-100 dark:hover:bg-boxdark2"
+          className="border text-xs p-2 rounded-md  font-semibold bg-transparent border-gray dark:border-formStrokedark hover:bg-zinc-100 dark:hover:bg-boxdark2"
           onClick={() => {
             setShowModalTeam(false);
           }}

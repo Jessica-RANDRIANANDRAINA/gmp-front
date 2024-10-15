@@ -40,12 +40,14 @@ export interface IProjectDto {
 export interface IPhase {
   id?: string;
   rank?: number;
-  phase1: string;
-  expectedDeliverable: string;
+  phase1?: string | undefined;
+  expectedDeliverable?: string;
   startDate?: string;
   endDate?: string;
   dependantOf?: string;
+  initiator?: string;
   status?: string;
+  deliverable?: string;
 }
 export interface IRessource {
   id: string;

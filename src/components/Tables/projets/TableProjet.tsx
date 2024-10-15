@@ -192,7 +192,7 @@ const TableProjet = ({
   };
 
   return (
-    <div className="bg-white min-h-[80vh] pt-2 shadow-1 rounded-lg border border-zinc-200 dark:border-strokedark dark:bg-boxdark">
+    <div className="bg-white  min-h-[80vh] pt-2 shadow-1 rounded-lg border border-zinc-200 dark:border-strokedark dark:bg-boxdark">
       {/* ===== FILTER START ===== */}
       <div className="flex m-5 flex-wrap justify-between items-center">
         <div className="grid md:grid-cols-4 grid-cols-1 gap-3 w-full">

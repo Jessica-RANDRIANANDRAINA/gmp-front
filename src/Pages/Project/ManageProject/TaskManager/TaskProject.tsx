@@ -6,6 +6,7 @@ import { IProjectData } from "../../../../types/Project";
 import { getProjectById } from "../../../../services/Project";
 import ListUsers from "../../../../components/UIElements/ListUsers";
 import UpdateTeamMember from "../../../../components/Modals/Task/UpdateTeamMember";
+import PhaseSettings from "../../../../components/Modals/Task/PhaseSettings";
 
 const TaskProject = () => {
   const { projectId } = useParams();
@@ -13,6 +14,7 @@ const TaskProject = () => {
   const [projectData, setProjectData] = useState<IProjectData>();
   const [isTitleExpanded, setIsTitleExpanded] = useState<boolean>(false);
   const [showModalTeam, setShowModalTeam] = useState<boolean>(false);
+  const [showModalSettings, setShowModalSettings] = useState<boolean>(false);
   const [isModifTeamApplied, setIsModifTeamApplied] = useState<boolean>(false);
 
   const fetchProject = async () => {
@@ -40,10 +42,14 @@ const TaskProject = () => {
           <div className="flex justify-between">
             <div>
               <p>
-                Projet :
-                {isTitleExpanded
-                  ? projectData?.title
-                  : projectData?.title?.substring(0, 40)}
+                Projet :{" "}
+                {isTitleExpanded ? (
+                  <span className="font-semibold">{projectData?.title}</span>
+                ) : (
+                  <span className="font-semibold">
+                    {projectData?.title?.substring(0, 40)}
+                  </span>
+                )}
                 <span
                   className={`${
                     projectData?.title && projectData?.title?.length > 20
@@ -138,7 +144,12 @@ const TaskProject = () => {
                   </g>
                 </svg>
               </span>
-              <span className="border p-1.5 rounded-md border-slate-300 dark:border-boxdark2 dark:bg-boxdark2 dark:hover:bg-opacity-85 cursor-pointer  hover:bg-whiten  ">
+              <span
+                className="border p-1.5 rounded-md border-slate-300 dark:border-boxdark2 dark:bg-boxdark2 dark:hover:bg-opacity-85 cursor-pointer  hover:bg-whiten  "
+                onClick={() => {
+                  setShowModalSettings(true);
+                }}
+              >
                 <svg
                   width="20"
                   height="20"
@@ -172,6 +183,14 @@ const TaskProject = () => {
             />
           )}
           {/* ===== UPDATE TEAM MODAL END ===== */}
+          {/* PHASE SETTINGS START */}
+          {showModalSettings && (
+            <PhaseSettings
+              showModalSettings={showModalSettings}
+              setShowModalSettings={setShowModalSettings}
+            />
+          )}
+          {/* PHASE SETTINGS END */}
         </div>
         <div className="">
           <Outlet />
