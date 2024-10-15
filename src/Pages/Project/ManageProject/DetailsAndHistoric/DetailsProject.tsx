@@ -350,8 +350,49 @@ const DetailsProject = () => {
                               </span>
                             </td>
                             <td className="text-left ">
-                              <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold  bg-green-100 text-green-500">
-                                A faire
+                              <span
+                                className={`inline-flex space-x-1 items-center px-3 py-1 rounded-full text-xs font-semibold   ${
+                                  phases?.status === "Terminé"
+                                    ? "bg-blue-50 text-teal-800"
+                                    : phases?.status === "En cours"
+                                    ? "bg-yellow-100 text-orange "
+                                    : "bg-green-100 text-green-500"
+                                }`}
+                              >
+                                <span
+                                  className={`${
+                                    phases?.status === "Terminé" ? "" : "hidden"
+                                  }`}
+                                >
+                                  <svg
+                                    width="15"
+                                    height="15"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <g
+                                      id="SVGRepo_bgCarrier"
+                                      strokeWidth="0"
+                                    ></g>
+                                    <g
+                                      id="SVGRepo_tracerCarrier"
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                    ></g>
+                                    <g id="SVGRepo_iconCarrier">
+                                      {" "}
+                                      <path
+                                        d="M4 12.6111L8.92308 17.5L20 6.5"
+                                        stroke="#000000"
+                                        strokeWidth="2"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                      ></path>{" "}
+                                    </g>
+                                  </svg>
+                                </span>
+                                <span>{phases?.status ?? "A faire"}</span>
                               </span>
                             </td>
                           </tr>
@@ -406,15 +447,47 @@ const DetailsProject = () => {
                               Status :{" "}
                             </span>
                             <span
-                              className={`inline-flex w-fit whitespace-nowrap items-center px-3 py-1 rounded-full text-xs font-semibold 
+                              className={`inline-flex space-x-1 w-fit whitespace-nowrap items-center px-3 py-1 rounded-full text-xs font-semibold 
                         ${
-                          phases?.status === "A faire"
+                          phases?.status === "Terminé"
                             ? "bg-green-100 text-green-500"
-                            : "bg-yellow-100 text-yellow-600"
+                            : phases?.status === "En cours"
+                            ? "bg-yellow-100 text-yellow-600"
+                            : "bg-teal-100 text-teal-600"
                         }
                         `}
                             >
-                              {/* {phases.type} */}A faire
+                              <span
+                                className={`${
+                                  phases?.status === "Terminé" ? "" : "hidden"
+                                }`}
+                              >
+                                <svg
+                                  width="15"
+                                  height="15"
+                                  viewBox="0 0 24 24"
+                                  fill="none"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                                  <g
+                                    id="SVGRepo_tracerCarrier"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                  ></g>
+                                  <g id="SVGRepo_iconCarrier">
+                                    {" "}
+                                    <path
+                                      d="M4 12.6111L8.92308 17.5L20 6.5"
+                                      stroke="#000000"
+                                      strokeWidth="2"
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                    ></path>{" "}
+                                  </g>
+                                </svg>
+                              </span>
+                              <span>{phases.status ?? "A faire"}</span>
                             </span>
                           </div>
                         </div>
