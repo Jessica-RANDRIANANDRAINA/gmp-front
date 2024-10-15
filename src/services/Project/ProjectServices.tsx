@@ -62,6 +62,17 @@ export const getProjectByIDs = async (projectid: Array<string>) => {
   }
 };
 
+export const getPhaseById = async (phaseId: string) => {
+  try {
+    const response = await axios.get(
+      `${endPoint}/api/Project/phase/${phaseId}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error(`Error at get phase by id :${error}`);
+  }
+};
+
 // ===== POST =======
 // create a new project
 export const createProject = async (projectData: IProjectDto) => {
@@ -140,5 +151,17 @@ export const updateTeamProject = async (projectId: string, data: any) => {
     return response.data;
   } catch (error) {
     throw new Error(`Error at update team project: ${error}`);
+  }
+};
+
+export const updatePhaseSettings = async (phaseId: string, data: any) => {
+  try {
+    const response = await axios.put(
+      `${endPoint}/api/Project/phase/${phaseId}`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(`Error at update phase settings services: ${error}`);
   }
 };

@@ -10,6 +10,8 @@ import {
   archiveProject,
   updateAdvancementProject,
   updateTeamProject,
+  getPhaseById,
+  updatePhaseSettings,
 } from "./ProjectServices";
 
 export {
@@ -24,4 +26,6 @@ export {
   updateAdvancementProject,
   getHistoricByProjectId,
   updateTeamProject,
+  getPhaseById,
+  updatePhaseSettings,
 };
