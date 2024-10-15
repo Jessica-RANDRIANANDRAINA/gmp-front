@@ -103,7 +103,7 @@ const PhaseSettings = ({
               rounded="medium"
               className="w-full"
               help="Quand la phase est terminée veuillez mettre ici le lien vers le livrable attendu"
-              value={phaseData?.deliverable}
+              value={phaseData?.deliverable ?? ""}
               onChange={(e) => {
                 const userConnected = decodeToken("pr");
                 setPhaseData({

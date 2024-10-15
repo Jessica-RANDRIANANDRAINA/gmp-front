@@ -1,11 +1,6 @@
 import { useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import {
-  Modal,
-  ModalBody,
-  ModalFooter,
-} from "../../../../components/Modals/Modal";
-import { CustomInput } from "../../../../components/UIElements";
+import AddTaskPhase from "../../../../components/Modals/Task/AddTaskPhase";
 
 // Initial data
 const initialData = {
@@ -51,7 +46,11 @@ const PhaseAdvancement = () => {
   const [data, setData] = useState<any>(initialData);
   const [modalOpen, setModalOpen] = useState(false);
 
-  const handleOnDragEnd = (result: { destination: any; source: any; draggableId: any; }) => {
+  const handleOnDragEnd = (result: {
+    destination: any;
+    source: any;
+    draggableId: any;
+  }) => {
     const { destination, source, draggableId } = result;
 
     if (!destination) return;
@@ -119,7 +118,9 @@ const PhaseAdvancement = () => {
         <div style={{ display: "flex" }}>
           {data.columnOrder.map((columnId: string) => {
             const column = data.columns[columnId];
-            const tasks = column.taskIds.map((taskId: string | number) => data.tasks[taskId]);
+            const tasks = column.taskIds.map(
+              (taskId: string | number) => data.tasks[taskId]
+            );
 
             return (
               <div className="w-full">
@@ -143,7 +144,9 @@ const PhaseAdvancement = () => {
                               {...provided.draggableProps}
                               {...provided.dragHandleProps}
                               className={`p-4 mb-1 text-xs rounded-md shadow-2 ${
-                                snapshot.isDragging ? "bg-green-50 dark:bg-emerald-100" : "bg-white dark:bg-boxdark"
+                                snapshot.isDragging
+                                  ? "bg-green-50 dark:bg-emerald-100"
+                                  : "bg-white dark:bg-boxdark"
                               }`}
                               style={{
                                 ...provided.draggableProps.style,
@@ -174,43 +177,7 @@ const PhaseAdvancement = () => {
         </div>
       </DragDropContext>
       {modalOpen && (
-        <Modal
-          modalOpen={modalOpen}
-          setModalOpen={setModalOpen}
-          header="Ajouter une tache"
-          heightSize="80vh"
-          widthSize="medium"
-        >
-          <ModalBody>
-            <>
-              <div className="space-y-2">
-                <div className="font-semibold text-xs">Assigné à:</div>
-                <div>
-                  <span className="w-5 h-5 p-3 border flex rounded-full justify-center items-center cursor-pointer bg-zinc-200 hover:bg-zinc-300 border-zinc-200">
-                    +
-                  </span>
-                </div>
-              </div>
-              <div>
-                <CustomInput type="text" label="Titre" />
-              </div>
-              <div>
-                <CustomInput type="textarea" label="Description" />
-              </div>
-            </>
-          </ModalBody>
-          <ModalFooter>
-            <button
-              className="border text-xs p-2 rounded-md  font-semibold bg-transparent border-transparent hover:bg-zinc-100 dark:hover:bg-boxdark2 "
-              type="button"
-            >
-              Annuler
-            </button>
-            <button className="border dark:border-boxdark text-xs p-2 rounded-md bg-green-700 hover:opacity-85 text-white font-semibold">
-              Créer
-            </button>
-          </ModalFooter>
-        </Modal>
+        <AddTaskPhase modalOpen={modalOpen} setModalOpen={setModalOpen} />
       )}
     </div>
   );

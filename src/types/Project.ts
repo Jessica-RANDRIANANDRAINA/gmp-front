@@ -48,6 +48,12 @@ export interface IPhase {
   initiator?: string;
   status?: string;
   deliverable?: string;
+  userProject?: {
+    name: string;
+    projectid: string;
+    role: string;
+    userid: string;
+  }[];
 }
 export interface IRessource {
   id: string;
