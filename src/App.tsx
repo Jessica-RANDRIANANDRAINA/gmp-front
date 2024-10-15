@@ -60,7 +60,7 @@ const App = () => {
           }
         />
         <Route
-          path="/gmp/project/home"
+          path="/gmp/home"
           element={
             <>
               <PageTitle title="G.M.P" />

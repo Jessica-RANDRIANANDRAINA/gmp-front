@@ -22,7 +22,7 @@ const LoginProject = () => {
   useEffect(() => {
     const projectStorage = localStorage.getItem("_au_pr");
     if (projectStorage) {
-      navigate("/gmp/project/home");
+      navigate("/gmp/home");
     }
   }, []);
 
@@ -32,7 +32,7 @@ const LoginProject = () => {
     try {
       const loginAnswer = await loginUser(user);
       if (loginAnswer.type === "success") {
-        navigate("/gmp/project/home");
+        navigate("/gmp/home");
       } else if (loginAnswer.type === "unknown_user") {
         setLoginError({ ...loginError, mail: loginAnswer.message });
       } else if (loginAnswer.type === "incorrect_pass") {
