@@ -121,9 +121,8 @@ const TableProjet = ({
 
     // sort by criticality
     const criticalityOrder: { [key: string]: number } = {
-      "Moins urgente": 1,
+      Normale: 1,
       Urgente: 2,
-      "Très urgente": 3,
     };
     if (dataSorted.criticality === 1) {
       const criticalityA = criticalityOrder[a.criticality] ?? 0;
