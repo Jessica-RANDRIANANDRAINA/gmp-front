@@ -5,6 +5,13 @@ import { CustomInput } from "../../UIElements";
 import ListUsers from "../../UIElements/ListUsers";
 import { getPhaseById } from "../../../services/Project";
 import { IPhase, IUserProject } from "../../../types/Project";
+import { createTaskPhase } from "../../../services/Project";
+import { v4 as uuid4 } from "uuid";
+import { BeatLoader } from "react-spinners";
+import { Notyf } from "notyf";
+import "notyf/notyf.min.css";
+
+const notyf = new Notyf({ position: { x: "center", y: "top" } });
 
 const AddTaskPhase = ({
   modalOpen,
@@ -13,10 +20,15 @@ const AddTaskPhase = ({
   modalOpen: boolean;
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const { phaseId } = useParams();
+  const { phaseId, projectId } = useParams();
   const [phaseData, setPhaseData] = useState<IPhase>();
   const [isDropdownUserOpen, setDropDownUserOpen] = useState<boolean>(false);
   const [assignedPerson, setAssignedPerson] = useState<Array<IUserProject>>([]);
+  const [taskData, setTaskData] = useState({
+    title: "",
+    description: "",
+  });
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const fetchDataPhase = async () => {
     try {
@@ -51,6 +63,42 @@ const AddTaskPhase = ({
       };
       setAssignedPerson((prev) => [...prev, formatUser]);
     }
+  };
+
+  const handleCreateTask = async () => {
+    setIsLoading(true);
+    try {
+      const id = uuid4();
+      const formatuser = assignedPerson.map((u) => ({
+        userid: u.userid,
+        taskid: id,
+        user: {
+          name: u?.user?.name,
+        },
+      }));
+      const dataToSend = {
+        id,
+        title: taskData?.title,
+        description: taskData?.description,
+        phaseid: phaseId,
+        projectid: projectId,
+        listUsers: formatuser,
+      };
+      await createTaskPhase(dataToSend);
+      notyf.success("Création de la tache réussi.");
+      handleCloseModal();
+    } catch (error) {
+      notyf.error(
+        "Une erreur s'est produite lors de la création de la tache, veuillez réessayer plus tard."
+      );
+      console.error(`Error at create task phase: ${error}`);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
   };
 
   return (
@@ -111,10 +159,30 @@ const AddTaskPhase = ({
             </div>
           </div>
           <div>
-            <CustomInput type="text" label="Titre" className="text-sm" />
+            <CustomInput
+              type="text"
+              label="Titre"
+              className="text-sm"
+              onChange={(e) => {
+                setTaskData({
+                  ...taskData,
+                  title: e.target.value,
+                });
+              }}
+            />
           </div>
           <div>
-            <CustomInput type="textarea" label="Description"  className="text-sm"/>
+            <CustomInput
+              type="textarea"
+              label="Description"
+              className="text-sm"
+              onChange={(e) => {
+                setTaskData({
+                  ...taskData,
+                  description: e.target.value,
+                });
+              }}
+            />
           </div>
         </>
       </ModalBody>
@@ -122,10 +190,18 @@ const AddTaskPhase = ({
         <button
           className="border text-xs p-2 rounded-md  font-semibold bg-transparent border-transparent hover:bg-zinc-100 dark:hover:bg-boxdark2 "
           type="button"
+          onClick={handleCloseModal}
         >
           Annuler
         </button>
-        <button className="border dark:border-boxdark text-xs p-2 rounded-md bg-green-700 hover:opacity-85 text-white font-semibold">
+        <button
+          type="button"
+          onClick={handleCreateTask}
+          className="border flex justify-center items-center dark:border-boxdark text-xs p-2 rounded-md bg-green-700 hover:opacity-85 text-white font-semibold"
+        >
+          {isLoading ? (
+            <BeatLoader size={5} className="mr-2" color={"#fff"} />
+          ) : null}
           Créer
         </button>
       </ModalFooter>

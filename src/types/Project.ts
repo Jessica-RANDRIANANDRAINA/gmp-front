@@ -83,3 +83,16 @@ export interface Iteam {
   email: string;
   role: string;
 }
+
+export interface ITask {
+  id: string | undefined
+  title: string 
+  description?: string
+  listUsers?: Array<ListuserTask>
+}
+
+interface ListuserTask {
+  userid: string
+  taskid: string
+  user?: any
+}

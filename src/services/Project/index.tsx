@@ -14,6 +14,8 @@ import {
   updatePhaseSettings,
 } from "./ProjectServices";
 
+import { createTaskPhase } from "./TaskServices";
+
 export {
   getAllProject,
   getProjectByUserId,
@@ -28,4 +30,5 @@ export {
   updateTeamProject,
   getPhaseById,
   updatePhaseSettings,
+  createTaskPhase,
 };
