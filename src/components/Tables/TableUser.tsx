@@ -171,7 +171,7 @@ const TableUser = ({
     <div className="bg-white min-h-[80vh] pt-2 shadow-1 rounded-lg border border-zinc-200 dark:border-strokedark dark:bg-boxdark">
       {/* ==== FILTER START ===== */}
       <div className="flex m-5 flex-wrap justify-between items-center">
-        <div className="grid md:grid-cols-5 grid-cols-1 gap-3 w-full">
+        <div className="grid md:grid-cols-4 grid-cols-1 gap-3 w-full">
           <CustomInput
             type="text"
             value={search.nameOrMail}
@@ -209,39 +209,41 @@ const TableUser = ({
               });
             }}
           />
-          <div className="flex items-end pb-3 mx-2">
-            <button
-              onClick={handleDeleteFilter}
-              className="flex justify-center text-sm gap-1 h-fit"
-            >
-              Effacer les filtres
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                stroke="#00AE5D"
+          <div className="flex items-end gap-2  mx-3">
+            <div className="pb-3">
+              <button
+                onClick={handleDeleteFilter}
+                className="flex justify-center text-sm gap-1 h-fit"
               >
-                <path
-                  d="M21 12C21 16.9706 16.9706 21 12 21C9.69494 21 7.59227 20.1334 6 18.7083L3 16M3 12C3 7.02944 7.02944 3 12 3C14.3051 3 16.4077 3.86656 18 5.29168L21 8M3 21V16M3 16H8M21 3V8M21 8H16"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </button>
-          </div>
-          <div className="flex items-end">
-            <button
-              type="button"
-              onClick={() => {
-                setIsSearchButtonClicked(true);
-              }}
-              className="  cursor-pointer mt-2 py-2 lg:px-3 xl:px-2  text-center font-medium text-sm text-white hover:bg-opacity-90  border border-primaryGreen bg-primaryGreen rounded-lg dark:border-darkgreen dark:bg-darkgreen dark:hover:bg-opacity-90  md:ease-in md:duration-300 md:transform  "
-            >
-              Rechercher
-            </button>
+                Effacer les filtres
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  stroke="#00AE5D"
+                >
+                  <path
+                    d="M21 12C21 16.9706 16.9706 21 12 21C9.69494 21 7.59227 20.1334 6 18.7083L3 16M3 12C3 7.02944 7.02944 3 12 3C14.3051 3 16.4077 3.86656 18 5.29168L21 8M3 21V16M3 16H8M21 3V8M21 8H16"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </button>
+            </div>
+            <div className="">
+              <button
+                type="button"
+                onClick={() => {
+                  setIsSearchButtonClicked(true);
+                }}
+                className=" px-2 cursor-pointer mt-2 py-2 lg:px-3 xl:px-2  text-center font-medium text-sm text-white hover:bg-opacity-90  border border-primaryGreen bg-primaryGreen rounded-lg dark:border-darkgreen dark:bg-darkgreen dark:hover:bg-opacity-90  md:ease-in md:duration-300 md:transform  "
+              >
+                Rechercher
+              </button>
+            </div>
           </div>
         </div>
       </div>
