@@ -33,12 +33,46 @@ export const actualiseUserData = async () => {
 /* ======= GET ======= */
 
 // GET ALL USERS
-export const getAllUsers = async () => {
+export const getAllUsers = async (
+  nameOrMail?: string,
+  department?: string,
+  habilitation?: string
+) => {
   try {
-    const response = await axios.get(`${endPoint}/api/User/all`);
+    const params: any = {};
+    if (nameOrMail) params.nameOrMail = nameOrMail;
+    if (department) params.department = department;
+    if (habilitation) params.habilitation = habilitation;
+
+    const queryString = new URLSearchParams(params).toString();
+    const response = await axios.get(`${endPoint}/api/User/all?${queryString}`);
     return response.data;
   } catch (error) {
     throw new Error(`Error at fetching users`);
+  }
+};
+
+export const getAllUserPaginated = async (
+  pageNumber: number,
+  pageSize: number,
+  nameOrMail?: string,
+  department?: string,
+  habilitation?: string
+) => {
+  try {
+    const params: any = {
+      pageNumber,
+      pageSize,
+    };
+    if (nameOrMail) params.nameOrMail = nameOrMail;
+    if (department) params.department = department;
+    if (habilitation) params.habilitation = habilitation;
+    const response = await axios.get(`${endPoint}/api/User/all-paginate`, {
+      params,
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error(`Error at getAllUserPaginated services: ${error}`);
   }
 };
 

@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import ProjectLayout from "../../layout/ProjectLayout";
 import { TableUser } from "../../components/Tables";
-import { getAllUsers, actualiseUserData } from "../../services/User";
+import {
+  getAllUsers,
+  actualiseUserData,
+  getAllUserPaginated,
+} from "../../services/User";
 import { getAllMyHabilitation } from "../../services/Function/UserFunctionService";
 import { IMyHabilitation } from "../../types/Habilitation";
 import { PulseLoader } from "react-spinners";
@@ -15,11 +19,40 @@ const ManageUser = () => {
   const [onModification, setOnModification] = useState(false);
   const [loadingActualise, setLoadingActualise] = useState(false);
   const [myHabilitation, setMyHabilitation] = useState<IMyHabilitation>();
+  const [page, setPage] = useState({
+    pageNumber: 1,
+    pageSize: 5,
+  });
+  const [totalCount, setTotalCount] = useState<number>(0);
+  const [search, setSearch] = useState({
+    nameOrMail: "",
+    department: "",
+    habilitation: "",
+  });
+  const [isSearchButtonClicked, setIsSearchButtonClicked] = useState(false);
 
   const getHab = async () => {
     const hab = await getAllMyHabilitation();
+    console.log(hab);
     setMyHabilitation(hab);
   };
+
+  const fetchUserPaginate = async () => {
+    const users = await getAllUserPaginated(
+      page?.pageNumber,
+      page?.pageSize,
+      search?.nameOrMail,
+      search?.department,
+      search?.habilitation
+    );
+    setUserData(users?.users);
+    setTotalCount(users?.totalCount);
+  };
+
+  useEffect(() => {
+    fetchUserPaginate();
+    setIsSearchButtonClicked(false);
+  }, [page, isSearchButtonClicked]);
 
   useEffect(() => {
     getHab();
@@ -31,16 +64,13 @@ const ManageUser = () => {
   };
 
   useEffect(() => {
-    fetchUser();
-  }, []);
-  useEffect(() => {
     setTimeout(() => {
       handleModif();
     }, 300);
   }, [onModification]);
 
   const handleModif = () => {
-    fetchUser();
+    fetchUserPaginate();
   };
 
   const handleActualise = async () => {
@@ -87,10 +117,15 @@ const ManageUser = () => {
           {/* ACTUALIZE END */}
         </>
         <TableUser
+          setIsSearchButtonClicked={setIsSearchButtonClicked}
+          search={search}
+          setSearch={setSearch}
+          setPage={setPage}
           myHabilitation={myHabilitation}
           data={userData}
           setOnModification={setOnModification}
           onModification={onModification}
+          totalCount={totalCount}
         />
       </div>
     </ProjectLayout>

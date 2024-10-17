@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import UserModifModal from "../Modals/UserModifModal";
 import ConfirmDeleteHabilitationuser from "../Modals/ConfirmDeleteHabilitationuser";
 import { CustomInput, CustomSelect } from "../UIElements";
@@ -8,34 +8,55 @@ import {
 } from "../../services/User";
 import Pagination from "./Pagination";
 import { IMyHabilitation } from "../../types/Habilitation";
+import { SyncLoader } from "react-spinners";
 
 const TableUser = ({
   data,
   onModification,
   setOnModification,
   myHabilitation,
+  totalCount,
+  search,
+  setPage,
+  setSearch,
+  setIsSearchButtonClicked,
 }: {
   data: Array<any>;
   onModification: boolean;
   setOnModification: Function;
   myHabilitation: IMyHabilitation | undefined;
+  totalCount: number;
+  search: {
+    nameOrMail: string;
+    department: string;
+    habilitation: string;
+  };
+  setPage: React.Dispatch<
+    React.SetStateAction<{
+      pageNumber: number;
+      pageSize: number;
+    }>
+  >;
+  setSearch: React.Dispatch<
+    React.SetStateAction<{
+      nameOrMail: string;
+      department: string;
+      habilitation: string;
+    }>
+  >;
+  setIsSearchButtonClicked: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const [entriesPerPage, setEntriesPerPage] = useState(5);
   const [actualPage, setActualPage] = useState(1);
   const [pageNumbers, setPageNumbers] = useState(1);
-  const [search, setSearch] = useState({
-    nameAndMail: "",
-    department: "",
-    access: "",
-  });
   const [userModif, setUserModif] = useState(false);
   const [userDelete, setUserDelete] = useState(false);
   const [departments, setDepartments] = useState<string[]>([]);
   const [habilitation, setHabilitations] = useState<string[]>([]);
   const [dataSorted, setDataSorted] = useState({
-    name: true,
-    email: true,
-    department: true,
+    name: 0,
+    email: 0,
+    department: 0,
   });
 
   const [isAllSelected, setIsAllSelected] = useState(false);
@@ -44,72 +65,47 @@ const TableUser = ({
     name: "",
     email: "",
   });
-  // sort the data by name z-a
-  const sortedDatabyName = data.sort((a, b) => {
-    if (dataSorted.name) {
-      return a.name.localeCompare(b.name);
-    } else {
-      return b.name.localeCompare(a.name);
-    }
-  });
-
-  useEffect(() => {
-    console.log(myHabilitation);
-  }, [myHabilitation]);
-
-  // FILTER DATA BY NAME, MAIL, DEPARTMENT
-  const filteredDataName = sortedDatabyName.filter((item) => {
-    const lowerCaseSearchName = search.nameAndMail.toLowerCase();
-    var lowerCaseDepartment = search.department.toLowerCase();
-
-    if (lowerCaseDepartment !== "") {
-      lowerCaseDepartment === "vide"
-        ? (lowerCaseDepartment = "")
-        : (lowerCaseDepartment = lowerCaseDepartment);
-      return (
-        (item.name.toLowerCase().includes(lowerCaseSearchName) ||
-          item.email.toLowerCase().includes(lowerCaseSearchName)) &&
-        item.department.toLowerCase() === lowerCaseDepartment
-      );
-    } else {
-      return (
-        item.name.toLowerCase().includes(lowerCaseSearchName) ||
-        item.email.toLowerCase().includes(lowerCaseSearchName)
-      );
-    }
-  });
-
-  // FILTER DATA BY ACCESS
-  const filteredData = filteredDataName.filter((item) => {
-    var lowerCaseAccess = search.access;
-
-    const hasMatchingAccess =
-      item?.habilitations?.some(
-        (hab: { label: string }) => hab.label === lowerCaseAccess
-      ) || false;
-
-    if (lowerCaseAccess === "") {
-      return item;
-    } else {
-      return hasMatchingAccess;
-    }
-  });
-
   // TO GET THE NUMBER OF PAGE DEPENDING OF THE ENTRIES PER PAGE
   const getPageNumber = (dataLength: number) => {
     return Math.ceil(dataLength / entriesPerPage);
   };
 
-  const indexInPaginationRange = (index: number) => {
-    let end = actualPage * entriesPerPage;
-    let start = end - entriesPerPage;
-    return index >= start && index < end;
-  };
-
-  // GET THE NUMBER OF PAGES EACH TIME A ENTRIES PER PAGE OR THE FILTEREDDATA CHANGE
   useEffect(() => {
-    setPageNumbers(getPageNumber(filteredData.length));
-  }, [entriesPerPage, filteredData.length]);
+    setPageNumbers(getPageNumber(totalCount));
+  }, [totalCount, entriesPerPage]);
+
+  // sort the data by name z-a
+  const sortedData = data?.slice()?.sort((a, b) => {
+    // sort by name
+    if (dataSorted.name === 1) {
+      return a.name.localeCompare(b.name);
+    } else if (dataSorted.name === 2) {
+      return b.name.localeCompare(a.name);
+    }
+
+    // sort by mail
+    if (dataSorted.email === 1) {
+      return a.email.localeCompare(b.email);
+    } else if (dataSorted.email === 2) {
+      return b.email.localeCompare(a.email);
+    }
+
+    // sort by department
+    if (dataSorted.department === 1) {
+      return a.department.localeCompare(b.department);
+    } else if (dataSorted.email === 2) {
+      return b.department.localeCompare(a.department);
+    }
+
+    return 0;
+  });
+
+  useEffect(() => {
+    setPage((prev) => ({
+      ...prev,
+      pageNumber: actualPage,
+    }));
+  }, [actualPage]);
 
   // ALWAYS IN THE FIRST PAGE WHEN SEARCH, DESELECT ALL
   useEffect(() => {
@@ -133,7 +129,7 @@ const TableUser = ({
   // IF SELECT ONE USER STORE HIS NAME AND EMAIL
   useEffect(() => {
     if (userSelected?.length === 1) {
-      const user = filteredData?.filter((u) => {
+      const user = data?.filter((u) => {
         return u.id === userSelected?.[0];
       });
       setUserSelectedForModif({
@@ -149,20 +145,21 @@ const TableUser = ({
 
   // DELETE FILTER
   const handleDeleteFilter = () => {
-    setSearch({
-      ...search,
-      nameAndMail: "",
+    setSearch((prev) => ({
+      ...prev,
+      nameOrMail: "",
       department: "",
-      access: "",
-    });
+      habilitation: "",
+    }));
+    setIsSearchButtonClicked(true);
   };
 
   // SELECT ALL USER
   const handleSelectAllUser = () => {
     // IF THERE IS ALREADY USER SELECTED SO SELECT ALL USER ELSE DESELECT ALL
-    if (userSelected.length < filteredData.length) {
+    if (userSelected.length < data.length) {
       setUserSelected([]);
-      filteredData.map((u) => setUserSelected((prev) => [...prev, u.id]));
+      data.map((u) => setUserSelected((prev) => [...prev, u.id]));
       setIsAllSelected(true);
     } else {
       setUserSelected([]);
@@ -174,17 +171,17 @@ const TableUser = ({
     <div className="bg-white min-h-[80vh] pt-2 shadow-1 rounded-lg border border-zinc-200 dark:border-strokedark dark:bg-boxdark">
       {/* ==== FILTER START ===== */}
       <div className="flex m-5 flex-wrap justify-between items-center">
-        <div className="grid md:grid-cols-4 grid-cols-1 gap-3 w-full">
+        <div className="grid md:grid-cols-5 grid-cols-1 gap-3 w-full">
           <CustomInput
             type="text"
-            value={search.nameAndMail}
+            value={search.nameOrMail}
             label="Recherche"
             placeholder="Nom ou mail"
             rounded="medium"
             onChange={(e) => {
               setSearch({
                 ...search,
-                nameAndMail: e.target.value,
+                nameOrMail: e.target.value,
               });
             }}
           />
@@ -204,11 +201,11 @@ const TableUser = ({
             label="Accès"
             placeholder="Accès"
             data={habilitation}
-            value={search.access}
+            value={search.habilitation}
             onValueChange={(e) => {
               setSearch({
                 ...search,
-                access: e,
+                habilitation: e,
               });
             }}
           />
@@ -233,6 +230,17 @@ const TableUser = ({
                   strokeLinejoin="round"
                 />
               </svg>
+            </button>
+          </div>
+          <div className="flex items-end">
+            <button
+              type="button"
+              onClick={() => {
+                setIsSearchButtonClicked(true);
+              }}
+              className="  cursor-pointer mt-2 py-2 lg:px-3 xl:px-2  text-center font-medium text-sm text-white hover:bg-opacity-90  border border-primaryGreen bg-primaryGreen rounded-lg dark:border-darkgreen dark:bg-darkgreen dark:hover:bg-opacity-90  md:ease-in md:duration-300 md:transform  "
+            >
+              Rechercher
             </button>
           </div>
         </div>
@@ -346,7 +354,7 @@ const TableUser = ({
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
                     className={`${
-                      userSelected.length === filteredData.length
+                      userSelected.length === data.length
                         ? "visible"
                         : "invisible"
                     }`}
@@ -362,101 +370,183 @@ const TableUser = ({
                 </button>
               </th>
               <th className="py-4 px-4 font-bold text-white dark:text-white xl:pl-11">
-                <div className="flex items-center">
-                  <button
-                    onClick={() => {
-                      setDataSorted({
-                        ...dataSorted,
-                        name: !dataSorted.name,
-                        email: false,
-                        department: false,
-                      });
-                    }}
-                    className={`${
-                      dataSorted.name ? "" : "rotate-180"
-                    } transform transition-transform duration-200`}
-                  >
-                    <svg
-                      className="fill-current"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M5.29289 8.29289C5.68342 7.90237 6.31658 7.90237 6.70711 8.29289L12 13.5858L17.2929 8.29289C17.6834 7.90237 18.3166 7.90237 18.7071 8.29289C19.0976 8.68342 19.0976 9.31658 18.7071 9.70711L12.7071 15.7071C12.3166 16.0976 11.6834 16.0976 11.2929 15.7071L5.29289 9.70711C4.90237 9.31658 4.90237 8.68342 5.29289 8.29289Z"
-                        fill=""
-                      />
-                    </svg>
-                  </button>
+                <div className="flex items-center gap-1">
                   <span>Nom</span>
-                </div>
-              </th>
-              <th className="py-4 px-4 font-bold text-white dark:text-white xl:pl-11">
-                <div className="flex items-center">
                   <button
+                    className={`
+                     transform transition-transform duration-200`}
                     onClick={() => {
                       setDataSorted({
                         ...dataSorted,
-                        email: !dataSorted.email,
-                        name: false,
-                        department: false,
+                        department: 0,
+                        email: 0,
+                        name: dataSorted.name < 2 ? dataSorted.name + 1 : 0,
                       });
                     }}
-                    className={`${
-                      dataSorted.email ? "" : "rotate-180"
-                    } transform transition-transform duration-200`}
                   >
                     <svg
-                      className="fill-current"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
+                      className="fill-white"
+                      height="15"
+                      width="15"
+                      version="1.1"
+                      id="Layer_1"
+                      viewBox="0 0 425 425"
                     >
-                      <path
-                        fillRule="evenodd"
-                        clipRule="evenodd"
-                        d="M5.29289 8.29289C5.68342 7.90237 6.31658 7.90237 6.70711 8.29289L12 13.5858L17.2929 8.29289C17.6834 7.90237 18.3166 7.90237 18.7071 8.29289C19.0976 8.68342 19.0976 9.31658 18.7071 9.70711L12.7071 15.7071C12.3166 16.0976 11.6834 16.0976 11.2929 15.7071L5.29289 9.70711C4.90237 9.31658 4.90237 8.68342 5.29289 8.29289Z"
-                        fill=""
-                      />
+                      <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                      <g
+                        id="SVGRepo_tracerCarrier"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      ></g>
+                      <g id="SVGRepo_iconCarrier">
+                        {" "}
+                        <g>
+                          {" "}
+                          <polygon
+                            className={`${
+                              dataSorted.name === 0
+                                ? "fill-white"
+                                : dataSorted.name === 1
+                                ? "fill-black"
+                                : "fill-primaryGreen dark:fill-darkgreen"
+                            }`}
+                            points="212.5,0 19.371,192.5 405.629,192.5 "
+                          ></polygon>{" "}
+                          <polygon
+                            className={`${
+                              dataSorted.name === 0
+                                ? "fill-white"
+                                : dataSorted.name === 1
+                                ? "fill-primaryGreen dark:fill-darkgreen"
+                                : "fill-black"
+                            }`}
+                            points="212.5,425 405.629,232.5 19.371,232.5 "
+                          ></polygon>{" "}
+                        </g>{" "}
+                      </g>
                     </svg>
                   </button>
+                </div>
+              </th>
+              <th className="py-4 px-4 font-bold text-white dark:text-white xl:pl-11">
+                <div className="flex items-center gap-1">
                   <span>Email</span>
+                  <button
+                    className={`
+                     transform transition-transform duration-200`}
+                    onClick={() => {
+                      setDataSorted({
+                        ...dataSorted,
+                        department: 0,
+                        name: 0,
+                        email: dataSorted.email < 2 ? dataSorted.email + 1 : 0,
+                      });
+                    }}
+                  >
+                    <svg
+                      className="fill-white"
+                      height="15"
+                      width="15"
+                      version="1.1"
+                      id="Layer_1"
+                      viewBox="0 0 425 425"
+                    >
+                      <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                      <g
+                        id="SVGRepo_tracerCarrier"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      ></g>
+                      <g id="SVGRepo_iconCarrier">
+                        {" "}
+                        <g>
+                          {" "}
+                          <polygon
+                            className={`${
+                              dataSorted.email === 0
+                                ? "fill-white"
+                                : dataSorted.email === 1
+                                ? "fill-black"
+                                : "fill-primaryGreen dark:fill-darkgreen"
+                            }`}
+                            points="212.5,0 19.371,192.5 405.629,192.5 "
+                          ></polygon>{" "}
+                          <polygon
+                            className={`${
+                              dataSorted.email === 0
+                                ? "fill-white"
+                                : dataSorted.email === 1
+                                ? "fill-primaryGreen dark:fill-darkgreen"
+                                : "fill-black"
+                            }`}
+                            points="212.5,425 405.629,232.5 19.371,232.5 "
+                          ></polygon>{" "}
+                        </g>{" "}
+                      </g>
+                    </svg>
+                  </button>
                 </div>
               </th>
               <th className="py-4 px-4 font-bold text-white dark:text-white xl:pl-11">
                 <div className="flex items-center">
+                  <span>Département</span>
                   <button
+                    className={`
+                     transform transition-transform duration-200`}
                     onClick={() => {
                       setDataSorted({
                         ...dataSorted,
-                        department: !dataSorted.department,
+                        email: 0,
+                        name: 0,
+                        department:
+                          dataSorted.department < 2
+                            ? dataSorted.department + 1
+                            : 0,
                       });
                     }}
-                    className={`${
-                      dataSorted.department ? "" : "rotate-180"
-                    } transform transition-transform duration-200`}
                   >
                     <svg
-                      className="fill-current"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
+                      className="fill-white"
+                      height="15"
+                      width="15"
+                      version="1.1"
+                      id="Layer_1"
+                      viewBox="0 0 425 425"
                     >
-                      <path
-                        fillRule="evenodd"
-                        clipRule="evenodd"
-                        d="M5.29289 8.29289C5.68342 7.90237 6.31658 7.90237 6.70711 8.29289L12 13.5858L17.2929 8.29289C17.6834 7.90237 18.3166 7.90237 18.7071 8.29289C19.0976 8.68342 19.0976 9.31658 18.7071 9.70711L12.7071 15.7071C12.3166 16.0976 11.6834 16.0976 11.2929 15.7071L5.29289 9.70711C4.90237 9.31658 4.90237 8.68342 5.29289 8.29289Z"
-                        fill=""
-                      />
+                      <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                      <g
+                        id="SVGRepo_tracerCarrier"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      ></g>
+                      <g id="SVGRepo_iconCarrier">
+                        {" "}
+                        <g>
+                          {" "}
+                          <polygon
+                            className={`${
+                              dataSorted.department === 0
+                                ? "fill-white"
+                                : dataSorted.department === 1
+                                ? "fill-black"
+                                : "fill-primaryGreen dark:fill-darkgreen"
+                            }`}
+                            points="212.5,0 19.371,192.5 405.629,192.5 "
+                          ></polygon>{" "}
+                          <polygon
+                            className={`${
+                              dataSorted.department === 0
+                                ? "fill-white"
+                                : dataSorted.department === 1
+                                ? "fill-primaryGreen dark:fill-darkgreen"
+                                : "fill-black"
+                            }`}
+                            points="212.5,425 405.629,232.5 19.371,232.5 "
+                          ></polygon>{" "}
+                        </g>{" "}
+                      </g>
                     </svg>
                   </button>
-                  <span>Département</span>
                 </div>
               </th>
               <th className="py-4 px-4 font-bold text-white dark:text-white xl:pl-11">
@@ -470,96 +560,132 @@ const TableUser = ({
             </tr>
           </thead>
           <tbody>
-            {filteredData
-              ?.filter((_user, index) => indexInPaginationRange(index))
-              .map((user) => (
-                <tr
-                  key={user?.id}
-                  className="hover:bg-whiten dark:hover:bg-boxdark2"
-                >
-                  <td className="pl-2">
-                    <button
-                      className="cursor-pointer border w-5 h-5"
-                      onClick={() => {
-                        setUserSelected((prev) => {
-                          if (prev?.includes(user.id)) {
-                            return prev.filter((id) => id !== user.id);
-                          } else {
-                            return [...prev, user.id];
-                          }
-                        });
-                      }}
-                    >
-                      <svg
-                        width="18"
-                        height="17"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                        className={`${
-                          userSelected.includes(user.id)
-                            ? "visible"
-                            : "invisible"
-                        }`}
+            {!data ? (
+              <tr>
+                <td colSpan={9} className="py-9 content-center">
+                  <div className="flex justify-center items-center">
+                    <SyncLoader size={18} color={"teal"} />
+                  </div>
+                </td>
+              </tr>
+            ) : data?.length === 0 ? (
+              <tr className="hover:bg-whiten dark:hover:bg-boxdark2">
+                <td colSpan={9} className="py-9 content-center ">
+                  <div className="flex justify-center items-center">
+                    Pas de d'utilisateur
+                  </div>
+                </td>
+              </tr>
+            ) : (
+              sortedData
+                // ?.filter((_user, index) => indexInPaginationRange(index))
+                .map((user) => (
+                  <tr
+                    key={user?.id}
+                    className="hover:bg-whiten dark:hover:bg-boxdark2"
+                  >
+                    <td className="pl-2">
+                      <button
+                        className="cursor-pointer border w-5 h-5"
+                        onClick={() => {
+                          setUserSelected((prev) => {
+                            if (prev?.includes(user.id)) {
+                              return prev.filter((id) => id !== user.id);
+                            } else {
+                              return [...prev, user.id];
+                            }
+                          });
+                        }}
                       >
-                        <path
-                          d="M4 12.6111L8.92308 17.5L20 6.5"
-                          className="stroke-black-2 dark:stroke-whiten"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    </button>
-                  </td>
-                  <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                    <p className="text-black dark:text-white">
-                      {user?.name?.split("(")?.[0]}
-                    </p>
-                  </td>
-                  <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                    <p className="text-black dark:text-white">{user?.email}</p>
-                  </td>
-                  <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                    <p className="text-black dark:text-white">
-                      {user?.department}
-                    </p>
-                  </td>
-                  <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                    <p className="text-black dark:text-white">
-                      {user?.superiorName?.split("(")?.[0]}
-                    </p>
-                  </td>
-                  <td className="border-b border-[#eee] space-x-1 py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                    {user?.habilitations?.map(
-                      (hab: { id: string; label: string }) => (
-                        <span
-                          key={hab.id}
-                          className="text-white border  border-orange bg-orange py-1 px-2 rounded-2xl dark:text-white whitespace-nowrap"
+                        <svg
+                          width="18"
+                          height="17"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                          className={`${
+                            userSelected.includes(user.id)
+                              ? "visible"
+                              : "invisible"
+                          }`}
                         >
-                          {hab?.label}
-                        </span>
-                      )
-                    )}
-                  </td>
-                </tr>
-              ))}
+                          <path
+                            d="M4 12.6111L8.92308 17.5L20 6.5"
+                            className="stroke-black-2 dark:stroke-whiten"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </button>
+                    </td>
+                    <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                      <p className="text-black dark:text-white">
+                        {user?.name?.split("(")?.[0]}
+                      </p>
+                    </td>
+                    <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                      <p className="text-black dark:text-white">
+                        {user?.email}
+                      </p>
+                    </td>
+                    <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                      <p className="text-black dark:text-white">
+                        {user?.department}
+                      </p>
+                    </td>
+                    <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                      <p className="text-black dark:text-white">
+                        {user?.superiorName?.split("(")?.[0]}
+                      </p>
+                    </td>
+                    <td className="border-b border-[#eee] space-x-1 py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                      {user?.habilitations?.map(
+                        (hab: { id: string; label: string }) => (
+                          <span
+                            key={hab.id}
+                            className="text-white border  border-orange bg-orange py-1 px-2 rounded-2xl dark:text-white whitespace-nowrap"
+                          >
+                            {hab?.label}
+                          </span>
+                        )
+                      )}
+                    </td>
+                  </tr>
+                ))
+            )}
           </tbody>
         </table>
       </div>
       {/* ===== PAGINATE BEGIN ===== */}
-      <div className="flex flex-col flex-wrap md:flex-row justify-end px-4 items-center">
-        <div>
-          <CustomSelect
-            label="Par page : "
-            data={["5", "10", "15", "20"]}
-            placeholder="5"
-            className="flex"
-            value={entriesPerPage.toString()}
-            onValueChange={(selectedValue) => {
-              setEntriesPerPage(parseInt(selectedValue, 10));
-            }}
-          />
+
+      <div className="flex  flex-col flex-wrap md:flex-row justify-end px-4 items-center">
+        <div className="flex justify-center items-center gap-2 ">
+          <div className=" justify-center items-center ">
+            <label className="mb-2.5   font-poppins font-semibold leading-relaxed  text-sm text-black dark:text-white ">
+              <span>Par page : </span>
+            </label>
+          </div>
+          <div>
+            <input
+              type="number"
+              min={1}
+              className="w-18 rounded-md  border h-8 md:h-8 flex justify-center items-center text-center md:text-xs  bg-transparent   text-black dark:text-gray  outline-none focus:border-primaryGreen focus-visible:shadow-none dark:border dark:border-formStrokedark dark:focus:border-primaryGreen"
+              value={`${entriesPerPage.toString()}`}
+              onChange={(e) => {
+                const value = parseInt(e.target.value, 10);
+                if (!isNaN(value) && value > 0) {
+                  setEntriesPerPage(value);
+                  setPage((prev) => ({
+                    ...prev,
+                    pageSize: value,
+                  }));
+                } else {
+                  setEntriesPerPage(1);
+                }
+              }}
+            />
+          </div>
         </div>
         <Pagination
           actualPage={actualPage}
