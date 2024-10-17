@@ -572,7 +572,7 @@ const TableUser = ({
               <tr className="hover:bg-whiten dark:hover:bg-boxdark2">
                 <td colSpan={9} className="py-9 content-center ">
                   <div className="flex justify-center items-center">
-                    Pas de d'utilisateur
+                    Pas d'utilisateur
                   </div>
                 </td>
               </tr>
