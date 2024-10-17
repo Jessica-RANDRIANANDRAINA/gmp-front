@@ -941,9 +941,17 @@ const TableProjet = ({
                         <p className="text-black dark:text-white">{dateEnd}</p>
                       </td>
                       <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                        <p className="text-black dark:text-white">
-                          {project?.completionPercentage}%
-                        </p>
+                        <div className="w-full bg-zinc-100 rounded-full dark:bg-strokedark h-6 relative">
+                          <div
+                            className="bg-primaryGreen h-6 rounded-full"
+                            style={{
+                              width: `${project?.completionPercentage}%`,
+                            }}
+                          ></div>
+                          <span className="absolute inset-0 flex justify-center items-center text-black dark:text-white text-xs font-semibold">
+                            {project?.completionPercentage}%
+                          </span>
+                        </div>
                       </td>
                     </tr>
                   );
@@ -1064,9 +1072,17 @@ const TableProjet = ({
                     <span className="text-emerald-500 font-semibold">
                       Avancement :{" "}
                     </span>
-                    <span className="text-gray-800">
-                      {project?.completionPercentage}%
-                    </span>
+                    <div className="w-full bg-zinc-100 rounded-full dark:bg-strokedark h-6 relative">
+                      <div
+                        className="bg-primaryGreen h-6 rounded-full"
+                        style={{
+                          width: `${project?.completionPercentage}%`,
+                        }}
+                      ></div>
+                      <span className="absolute inset-0 flex justify-center items-center text-black dark:text-white text-xs font-semibold">
+                        {project?.completionPercentage}%
+                      </span>
+                    </div>
                   </div>
                 </div>
               );
