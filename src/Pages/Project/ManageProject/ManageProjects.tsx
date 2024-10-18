@@ -18,6 +18,17 @@ const ManageProjects = () => {
   const [goToHistoric, setGoToHistoric] = useState(false);
   const [goToTask, setGoToTask] = useState(false);
   const [isArchiveFinished, setIsArchiveFinished] = useState<boolean>(false);
+  const [isSearchButtonClicked, setIsSearchButtonClicked] =
+    useState<boolean>(false);
+  const [totalProjectCount, setTotalProjectCount] = useState<number>(0);
+  const [page, setPage] = useState({
+    pageNumber: 1,
+    pageSize: 5,
+  });
+  const [search, setSearch] = useState({
+    title: "",
+    member: "",
+  });
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -54,14 +65,22 @@ const ManageProjects = () => {
     const decode = decodeToken("pr");
 
     // const project = await getProjectByUserId(decode?.jti);
-    const project = await getAllLevelProjectByUserId(decode?.jti);
-    setProjectData(project);
+    const project = await getAllLevelProjectByUserId(
+      decode?.jti,
+      page?.pageNumber,
+      page?.pageSize,
+      search?.title,
+      search?.member
+    );
+    setProjectData(project?.project);
+    setTotalProjectCount(project?.totalCount);
   };
 
   useEffect(() => {
     fetchProject();
     setIsArchiveFinished(false);
-  }, [showModalDelete, isArchiveFinished]);
+    setIsSearchButtonClicked(false);
+  }, [showModalDelete, isArchiveFinished, page, isSearchButtonClicked]);
 
   return (
     <ProjectLayout>
@@ -105,6 +124,11 @@ const ManageProjects = () => {
             setProjectsSelected={setProjectsSelected}
             setGoToAdvancement={setGoToAdvancement}
             setGoToTask={setGoToTask}
+            setPage={setPage}
+            totalProjectCount={totalProjectCount}
+            setIsSearchButtonClicked={setIsSearchButtonClicked}
+            setSearch={setSearch}
+            search={search}
           />
           {/* ===== TABLE PROJECT LIST END =====*/}
           {/* ===== MODAL DELETE START ===== */}

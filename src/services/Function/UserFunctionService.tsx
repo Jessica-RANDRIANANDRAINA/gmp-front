@@ -16,7 +16,9 @@ export const getAllMyHabilitation = async () => {
       const decoded = decodeToken("pr");
 
       if (decoded?.jti) {
+        
         const habilitation = await getUserHabilitations(decoded?.jti);
+
 
         const transformed = transformHabilitation(habilitation.habilitations);
 

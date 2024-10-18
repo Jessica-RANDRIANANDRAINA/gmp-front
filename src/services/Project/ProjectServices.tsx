@@ -25,11 +25,23 @@ export const getProjectByUserId = async (userid: string | undefined) => {
 
 // get project by user id (project related to the user and all his subordinates)
 export const getAllLevelProjectByUserId = async (
-  userid: string | undefined
+  userid: string | undefined,
+  pageNumber?: number,
+  pageSize?: number,
+  title?: string,
+  member?: string
 ) => {
   try {
+    const params: any = {
+      pageNumber,
+      pageSize,
+    };
+    if (title) params.title = title;
+    if (member) params.member = member;
+
     const response = await axios.get(
-      `${endPoint}/api/Project/user/${userid}/all-level`
+      `${endPoint}/api/Project/user/${userid}/all-level`,
+      { params }
     );
     return response.data;
   } catch (error) {

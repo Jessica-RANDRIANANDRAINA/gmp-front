@@ -8,22 +8,33 @@ import { getAllMyHabilitation } from "../../../services/Function/UserFunctionSer
 import { IProjectData } from "../../../types/Project";
 import { IMyHabilitation } from "../../../types/Habilitation";
 import { SyncLoader } from "react-spinners";
+import PerPageInput from "../../UIElements/Input/PerPageInput";
 
 const TableProjet = ({
   data,
   setProjectToModif,
-  setProjectsToDelete,
   setIdProjectForDetails,
+  totalProjectCount,
+  search,
+  setSearch,
+  setProjectsToDelete,
   setShowModalDelete,
   setGoToDetails,
   setGoToHistoric,
   setProjectsSelected,
   setGoToAdvancement,
   setGoToTask,
+  setPage,
+  setIsSearchButtonClicked,
 }: {
   data: Array<any> | null;
+  totalProjectCount: number;
   setProjectToModif: Function;
   setIdProjectForDetails: Function;
+  search: {
+    title: string;
+    member: string;
+  };
   setProjectsToDelete: React.Dispatch<React.SetStateAction<Array<string>>>;
   setProjectsSelected: React.Dispatch<React.SetStateAction<Array<string>>>;
   setShowModalDelete: React.Dispatch<React.SetStateAction<boolean>>;
@@ -31,14 +42,23 @@ const TableProjet = ({
   setGoToHistoric: React.Dispatch<React.SetStateAction<boolean>>;
   setGoToAdvancement: React.Dispatch<React.SetStateAction<boolean>>;
   setGoToTask: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsSearchButtonClicked: React.Dispatch<React.SetStateAction<boolean>>;
+  setPage: React.Dispatch<
+    React.SetStateAction<{
+      pageNumber: number;
+      pageSize: number;
+    }>
+  >;
+  setSearch: React.Dispatch<
+    React.SetStateAction<{
+      title: string;
+      member: string;
+    }>
+  >;
 }) => {
   const [entriesPerPage, setEntriesPerPage] = useState(5);
   const [actualPage, setActualPage] = useState(1);
   const [pageNumbers, setPageNumbers] = useState(1);
-  const [search, setSearch] = useState({
-    title: "",
-    member: "",
-  });
   const [dataSorted, setDataSorted] = useState({
     title: 0,
     startDate: 0,
@@ -61,10 +81,6 @@ const TableProjet = ({
   useEffect(() => {
     getHab();
   }, []);
-
-  useEffect(() => {
-    setProjectSelected([]);
-  }, [data]);
 
   const sortedData = data?.slice().sort((a: IProjectData, b: IProjectData) => {
     // sort by title
@@ -137,19 +153,6 @@ const TableProjet = ({
     return 0;
   });
 
-  // filter data by title and member for the title search
-  const filteredData = sortedData?.filter((item: IProjectData) => {
-    const lowerCaseSearchTitle = search.title.toLowerCase();
-    const lowerCaseSearchName = search.member.toLowerCase();
-
-    return (
-      item?.title.toLowerCase().includes(lowerCaseSearchTitle) &&
-      item?.listUsers?.some((listUser) =>
-        listUser?.user?.name?.toLowerCase().includes(lowerCaseSearchName)
-      )
-    );
-  });
-
   // DELETE FILTER
   const handleDeleteFilter = () => {
     setSearch({
@@ -157,6 +160,7 @@ const TableProjet = ({
       title: "",
       member: "",
     });
+    setIsSearchButtonClicked(true);
   };
 
   // TO GET THE NUMBER OF PAGE DEPENDING OF THE ENTRIES PER PAGE
@@ -172,10 +176,21 @@ const TableProjet = ({
 
   // GET THE NUMBER OF PAGES EACH TIME A ENTRIES PER PAGE OR THE FILTEREDDATA CHANGE
   useEffect(() => {
-    if (filteredData) {
-      setPageNumbers(getPageNumber(filteredData.length));
-    }
-  }, [entriesPerPage, filteredData?.length]);
+    setPageNumbers(getPageNumber(totalProjectCount));
+  }, [entriesPerPage, totalProjectCount]);
+
+  useEffect(() => {
+    setActualPage(1);
+    setProjectSelected([]);
+    setIsAllSelected(false);
+  }, [search]);
+
+  useEffect(() => {
+    setPage((prev) => ({
+      ...prev,
+      pageNumber: actualPage,
+    }));
+  }, [actualPage]);
 
   const handleSelectAllProject = () => {
     if (data) {
@@ -222,28 +237,41 @@ const TableProjet = ({
             }}
           />
 
-          <div className="flex items-end pb-3 mx-2">
-            <button
-              onClick={handleDeleteFilter}
-              className="flex justify-center gap-1 h-fit text-sm font-medium"
-            >
-              Effacer les filtres
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                stroke="#00AE5D"
+          <div className="flex items-end gap-2 mx-3">
+            <div className="pb-3">
+              <button
+                onClick={handleDeleteFilter}
+                className="flex justify-center gap-1 h-fit text-sm font-medium"
               >
-                <path
-                  d="M21 12C21 16.9706 16.9706 21 12 21C9.69494 21 7.59227 20.1334 6 18.7083L3 16M3 12C3 7.02944 7.02944 3 12 3C14.3051 3 16.4077 3.86656 18 5.29168L21 8M3 21V16M3 16H8M21 3V8M21 8H16"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </button>
+                Effacer les filtres
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  stroke="#00AE5D"
+                >
+                  <path
+                    d="M21 12C21 16.9706 16.9706 21 12 21C9.69494 21 7.59227 20.1334 6 18.7083L3 16M3 12C3 7.02944 7.02944 3 12 3C14.3051 3 16.4077 3.86656 18 5.29168L21 8M3 21V16M3 16H8M21 3V8M21 8H16"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </button>
+            </div>
+            <div>
+              <button
+                type="button"
+                onClick={() => {
+                  setIsSearchButtonClicked(true);
+                }}
+                className=" px-2 cursor-pointer mt-2 py-2 lg:px-3 xl:px-2  text-center font-medium text-sm text-white hover:bg-opacity-90  border border-primaryGreen bg-primaryGreen rounded-lg dark:border-darkgreen dark:bg-darkgreen dark:hover:bg-opacity-90  md:ease-in md:duration-300 md:transform  "
+              >
+                Rechercher
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -402,7 +430,7 @@ const TableProjet = ({
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
                     className={`${
-                      projectSelected.length === filteredData?.length
+                      projectSelected.length === data?.length
                         ? "visible"
                         : "invisible"
                     }`}
@@ -832,17 +860,11 @@ const TableProjet = ({
                 </td>
               </tr>
             ) : (
-              filteredData
-                ?.filter((_project, index) => indexInPaginationRange(index))
-                .map((project) => {
+              sortedData
+                // ?.filter((_project, index) => indexInPaginationRange(index))
+                ?.map((project) => {
                   const dateStart = formatDate(project?.startDate);
                   const dateEnd = formatDate(project?.endDate);
-
-                  // const userDetails = project.listUsers?.filter(
-                  //   (user: { userid: string | undefined }) => {
-                  //     return user?.userid === userConnected?.jti;
-                  //   }
-                  // );
 
                   return (
                     <tr
@@ -963,7 +985,7 @@ const TableProjet = ({
 
         {/* Mobile view */}
         <div className="block md:hidden">
-          {filteredData
+          {sortedData
             ?.filter((_project, index) => indexInPaginationRange(index))
             .map((project) => {
               const dateStart = formatDate(project?.startDate);
@@ -1091,18 +1113,11 @@ const TableProjet = ({
       </div>
       {/* =====PAGINATE START===== */}
       <div className="flex flex-col flex-wrap md:flex-row justify-end px-4 items-center">
-        <div>
-          <CustomSelect
-            label="Par page : "
-            data={["5", "10", "15", "20"]}
-            placeholder="5"
-            className="flex"
-            value={entriesPerPage.toString()}
-            onValueChange={(selectedValue) => {
-              setEntriesPerPage(parseInt(selectedValue, 10));
-            }}
-          />
-        </div>
+        <PerPageInput
+          entriesPerPage={entriesPerPage}
+          setEntriesPerPage={setEntriesPerPage}
+          setPage={setPage}
+        />
         <Pagination
           actualPage={actualPage}
           setActualPage={setActualPage}

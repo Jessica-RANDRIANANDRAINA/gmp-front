@@ -219,7 +219,6 @@ const UpdateProject = () => {
       listPhases: phaseAndLivrableList,
       listUsers: userProject,
     };
-    // console.log(data);
 
     try {
       // update project service
