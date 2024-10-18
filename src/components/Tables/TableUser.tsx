@@ -490,7 +490,7 @@ const TableUser = ({
                 </div>
               </th>
               <th className="py-4 px-4 font-bold text-white dark:text-white xl:pl-11">
-                <div className="flex items-center">
+                <div className="flex items-center gap-1">
                   <span>Département</span>
                   <button
                     className={`

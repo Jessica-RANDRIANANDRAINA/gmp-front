@@ -33,7 +33,6 @@ const ManageUser = () => {
 
   const getHab = async () => {
     const hab = await getAllMyHabilitation();
-    console.log(hab);
     setMyHabilitation(hab);
   };
 

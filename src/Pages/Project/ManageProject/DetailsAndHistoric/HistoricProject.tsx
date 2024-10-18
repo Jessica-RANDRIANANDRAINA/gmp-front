@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getHistoricByProjectId } from "../../../../services/Project";
 import { IAudit } from "../../../../types/Audit";
+import { formatDate } from "../../../../services/Function/DateServices";
 import { SyncLoader } from "react-spinners";
 
 const HistoricProject = () => {
@@ -50,10 +51,7 @@ const HistoricProject = () => {
             </thead>
             <tbody className="text-gray-600 text-xs font-light">
               {historicData?.map((historic) => {
-                const modifiedAdDate = historic?.modifiedAt?.split("T")?.[0];
-                const modifiedAdTimeSecond =
-                  historic?.modifiedAt?.split("T")?.[1];
-                const modifiedAdTime = modifiedAdTimeSecond?.split(".")?.[0];
+                const modifiedAd = formatDate(historic?.modifiedAt, true);
 
                 return (
                   <tr
@@ -85,9 +83,7 @@ const HistoricProject = () => {
                       </span>
                     </td>
                     <td className="py-3 px-6 text-left">
-                      <span className="text-gray-700">
-                        {modifiedAdDate} {modifiedAdTime}
-                      </span>
+                      <span className="text-gray-700">{modifiedAd}</span>
                     </td>
                     <td className="py-3 px-6 text-left">
                       <span className="text-gray-700">{historic?.table}</span>
@@ -123,10 +119,7 @@ const HistoricProject = () => {
           {/* Mobile view */}
           <div className="block md:hidden">
             {historicData?.map((historic) => {
-              const modifiedAdDate = historic?.modifiedAt?.split("T")?.[0];
-              const modifiedAdTimeSecond =
-                historic?.modifiedAt?.split("T")?.[1];
-              const modifiedAdTime = modifiedAdTimeSecond?.split(".")?.[0];
+              const modifiedAt = formatDate(historic?.modifiedAt, true);
               return (
                 <div
                   key={historic?.id}
@@ -164,9 +157,7 @@ const HistoricProject = () => {
                     <span className="text-emerald-500 font-semibold">
                       Modifié le :{" "}
                     </span>
-                    <span className="text-gray-800">
-                      {modifiedAdDate} {modifiedAdTime}
-                    </span>
+                    <span className="text-gray-800">{modifiedAt}</span>
                   </div>
                   <div>
                     <span className="text-emerald-500 font-semibold">
