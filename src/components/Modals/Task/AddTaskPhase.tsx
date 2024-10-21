@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Modal, ModalBody, ModalFooter } from "../Modal";
-import { CustomInput } from "../../UIElements";
+import { CustomInput, CustomSelect } from "../../UIElements";
 import ListUsers from "../../UIElements/ListUsers";
 import { getPhaseById } from "../../../services/Project";
-import { IPhase, IUserProject } from "../../../types/Project";
+import { IPhase, IUserProject, ITaskAdd } from "../../../types/Project";
 import { createTaskPhase } from "../../../services/Project";
 import { v4 as uuid4 } from "uuid";
 import { BeatLoader } from "react-spinners";
@@ -24,10 +24,14 @@ const AddTaskPhase = ({
   const [phaseData, setPhaseData] = useState<IPhase>();
   const [isDropdownUserOpen, setDropDownUserOpen] = useState<boolean>(false);
   const [assignedPerson, setAssignedPerson] = useState<Array<IUserProject>>([]);
-  const [taskData, setTaskData] = useState({
+  const [taskData, setTaskData] = useState<ITaskAdd>({
     title: "",
     description: "",
-  });
+    priority: "Moyen",
+    startDate : undefined,
+    dueDate: undefined,
+  })
+    
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const fetchDataPhase = async () => {
@@ -82,6 +86,9 @@ const AddTaskPhase = ({
         description: taskData?.description,
         phaseid: phaseId,
         projectid: projectId,
+        priority: taskData?.priority,
+        startDate: taskData?.startDate,
+        dueDate: taskData?.dueDate,
         listUsers: formatuser,
       };
       await createTaskPhase(dataToSend);
@@ -162,6 +169,7 @@ const AddTaskPhase = ({
             <CustomInput
               type="text"
               label="Titre"
+              rounded="medium"
               className="text-sm"
               onChange={(e) => {
                 setTaskData({
@@ -172,9 +180,56 @@ const AddTaskPhase = ({
             />
           </div>
           <div>
+            <CustomSelect
+              label="Priorité"
+              placeholder=""
+              data={["Urgent", "Important", "Moyen", "Bas"]}
+              value={taskData.priority}
+              onValueChange={(e) => {
+                setTaskData({
+                  ...taskData,
+                  priority: e,
+                });
+              }}
+            />
+          </div>
+          <div className="grid md:grid-cols-2 gap-2">
+            <CustomInput
+              type="date"
+              label="Date de début"
+              rounded="medium"
+              className="text-sm"
+              value={taskData?.startDate}
+              onChange={(e) => {
+                setTaskData({
+                  ...taskData,
+                  startDate: e.target.value,
+                });
+              }}
+            />
+            <CustomInput
+              type="date"
+              label="Date d'échéance"
+              className="text-sm"
+              rounded="medium"
+              value={taskData.dueDate}
+              min={taskData?.startDate}
+              onChange={(e) => {
+                setTaskData({
+                  ...taskData,
+                  dueDate: e.target.value,
+                });
+              }}
+            />
+          </div>
+
+          <div>
             <CustomInput
               type="textarea"
               label="Description"
+              placeholder="Tapez une description ou ajoutez des notes ici"
+              rows={8}
+              rounded="medium"
               className="text-sm"
               onChange={(e) => {
                 setTaskData({

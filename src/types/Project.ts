@@ -85,14 +85,22 @@ export interface Iteam {
 }
 
 export interface ITask {
-  id: string | undefined
-  title: string 
-  description?: string
-  listUsers?: Array<ListuserTask>
+  id: string | undefined;
+  title: string;
+  description?: string;
+  listUsers?: Array<ListuserTask>;
 }
 
 interface ListuserTask {
-  userid: string
-  taskid: string
-  user?: any
+  userid: string;
+  taskid: string;
+  user?: any;
+}
+
+export interface ITaskAdd {
+  title: string;
+  description: string;
+  priority: string;
+  startDate?: string;
+  dueDate?: string;
 }
