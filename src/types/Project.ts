@@ -76,6 +76,12 @@ export interface IUserProject {
   projectid: string;
   role: string;
 }
+export interface IUserTask {
+  name?: string;
+  email?: string;
+  userid: string;
+  taskid: string;
+}
 
 export interface Iteam {
   id: string | undefined;
@@ -98,6 +104,7 @@ interface ListuserTask {
 }
 
 export interface ITaskAdd {
+  id?: string;
   title: string;
   description: string;
   priority: string;

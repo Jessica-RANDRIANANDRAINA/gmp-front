@@ -14,7 +14,11 @@ import {
   updatePhaseSettings,
 } from "./ProjectServices";
 
-import { createTaskPhase } from "./TaskServices";
+import {
+  createTaskPhase,
+  getTaskByProjectAndPhaseID,
+  updateTaskProject,
+} from "./TaskServices";
 
 export {
   getAllProject,
@@ -31,4 +35,6 @@ export {
   getPhaseById,
   updatePhaseSettings,
   createTaskPhase,
+  getTaskByProjectAndPhaseID,
+  updateTaskProject,
 };

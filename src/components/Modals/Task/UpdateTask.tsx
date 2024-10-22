@@ -1,58 +1,93 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
 import { Modal, ModalBody, ModalFooter } from "../Modal";
 import { CustomInput, CustomSelect } from "../../UIElements";
-import ListUsers from "../../UIElements/ListUsers";
-import { getPhaseById } from "../../../services/Project";
-import { IPhase, IUserProject, ITaskAdd } from "../../../types/Project";
-import { createTaskPhase } from "../../../services/Project";
-import { v4 as uuid4 } from "uuid";
+import { IPhase, ITaskAdd, IUserTask } from "../../../types/Project";
 import { BeatLoader } from "react-spinners";
+import { getInitials } from "../../../services/Function/UserFunctionService";
+import { updateTaskProject } from "../../../services/Project";
 import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
 
 const notyf = new Notyf({ position: { x: "center", y: "top" } });
 
-const AddTaskPhase = ({
-  modalOpen,
-  setModalOpen,
-  setIsAddTaskFinished,
+const UpdateTask = ({
+  modalUpdateOpen,
+  task,
+  phaseData,
+  setModalUpdateOpen,
+  setIsRefreshTaskNeeded,
 }: {
-  modalOpen: boolean;
-  setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsAddTaskFinished: React.Dispatch<React.SetStateAction<boolean>>;
+  modalUpdateOpen: boolean;
+  task: any;
+  phaseData: IPhase | null;
+  setModalUpdateOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsRefreshTaskNeeded: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const { phaseId, projectId } = useParams();
-  const [phaseData, setPhaseData] = useState<IPhase>();
-  const [isDropdownUserOpen, setDropDownUserOpen] = useState<boolean>(false);
-  const [assignedPerson, setAssignedPerson] = useState<Array<IUserProject>>([]);
   const [taskData, setTaskData] = useState<ITaskAdd>({
+    id: "",
     title: "",
     description: "",
     priority: "Moyen",
     startDate: undefined,
     dueDate: undefined,
   });
-
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [assignedPerson, setAssignedPerson] = useState<Array<IUserTask>>([]);
+  const [isDropdownUserOpen, setDropDownUserOpen] = useState<boolean>(false);
 
-  const fetchDataPhase = async () => {
+  useEffect(() => {
+    if (task?.content) {
+      setTaskData({
+        id: task?.content.id,
+        title: task?.content?.title || "",
+        description: task?.content?.description || "",
+        priority: task?.content?.priority || "Moyen",
+        startDate: task?.content?.startDate || undefined,
+        dueDate: task?.content?.dueDate || undefined,
+      });
+
+      setAssignedPerson(task.content.userTasks);
+    }
+  }, [task]);
+
+  const handleCloseModal = () => {
+    setModalUpdateOpen(false);
+  };
+
+  const handleUpdateTask = async () => {
+    setIsLoading(true);
     try {
-      if (phaseId) {
-        const data = await getPhaseById(phaseId);
-        setPhaseData(data);
-      }
+      const formatUser = assignedPerson?.map((u) => ({
+        userid: u.userid,
+        taskid: u.taskid,
+        user: {
+          name: u.name,
+        },
+      }));
+      const dataToSend = {
+        priority: taskData?.priority,
+        startDate: taskData?.startDate,
+        dueDate: taskData?.dueDate,
+        description: taskData?.description,
+        listUsers: formatUser,
+      };
+      const taskId = task.content.id;
+      await updateTaskProject(taskId, dataToSend);
+      setIsRefreshTaskNeeded(true);
+      notyf.success("Modification de la tache réussi");
+      handleCloseModal();
     } catch (error) {
-      console.error("error at fetch data phase: ", error);
+      notyf.error(
+        "Une erreur s'est produite lors de la modification, veuillez réessayer plus tard"
+      );
+      console.error(`Error at update task:${error}`);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  useEffect(() => {
-    fetchDataPhase();
-  }, []);
-
   const handleAddUser = (user: {
-    userid: string | undefined;
+    userid: string;
     projectid: any;
     role: any;
     name: any;
@@ -60,73 +95,52 @@ const AddTaskPhase = ({
     if (!assignedPerson.some((u) => u.userid === user.userid)) {
       const formatUser = {
         userid: user.userid,
-        projectid: user.projectid,
-        role: user.role,
-        user: {
-          name: user.name,
-        },
+        taskid: task.content.id,
+        projectid: "",
+        name: user.name,
       };
       setAssignedPerson((prev) => [...prev, formatUser]);
     }
   };
 
-  const handleCreateTask = async () => {
-    setIsLoading(true);
-    try {
-      const id = uuid4();
-      const formatuser = assignedPerson.map((u) => ({
-        userid: u.userid,
-        taskid: id,
-        user: {
-          name: u?.user?.name,
-        },
-      }));
-      const dataToSend = {
-        id,
-        title: taskData?.title,
-        description: taskData?.description,
-        phaseid: phaseId,
-        projectid: projectId,
-        priority: taskData?.priority,
-        startDate: taskData?.startDate,
-        dueDate: taskData?.dueDate,
-        listUsers: formatuser,
-      };
-      await createTaskPhase(dataToSend);
-      notyf.success("Création de la tache réussi.");
-
-      setIsAddTaskFinished(true);
-      handleCloseModal();
-    } catch (error) {
-      notyf.error(
-        "Une erreur s'est produite lors de la création de la tache, veuillez réessayer plus tard."
-      );
-      console.error(`Error at create task phase: ${error}`);
-    } finally {
-      setIsLoading(false);
-    }
+  const handleRemoveUser = (userid: string) => {
+    let filteredList = assignedPerson.filter((user) => user.userid !== userid);
+    setAssignedPerson(filteredList);
   };
-
-  const handleCloseModal = () => {
-    setModalOpen(false);
-  };
-
   return (
     <Modal
-      modalOpen={modalOpen}
-      setModalOpen={setModalOpen}
-      header="Ajouter une tache"
+      modalOpen={modalUpdateOpen}
+      setModalOpen={setModalUpdateOpen}
+      header={`${task?.content?.title}`}
       heightSize="80vh"
       widthSize="medium"
     >
       <ModalBody>
-        <>
+        <div className="space-y-5">
           <div className="space-y-2">
             <div className="font-semibold text-xs">Assigné à:</div>
             <div className="grid grid-cols-3 place-content-center place-items-stretch">
-              <div className="flex  items-center">
-                <div>
-                  <ListUsers data={assignedPerson} type="show" />
+              <div className="flex   items-center gap-2">
+                <div className="flex flex-wrap gap-3">
+                  {assignedPerson?.map((user) => {
+                    const initials = getInitials(user?.name ? user?.name : "");
+                    return (
+                      <div
+                        key={user?.userid}
+                        className="relative group -ml-2 first:ml-0 hover:z-99 cursor-pointer "
+                        onClick={() => {
+                          handleRemoveUser(user?.userid);
+                        }}
+                      >
+                        <p className="text-slate-50 border relative bg-secondaryGreen p-1 w-7 h-7 flex justify-center items-center text-xs rounded-full dark:text-white dark:border-transparent">
+                          {initials}
+                        </p>
+                        <div className="absolute whitespace-nowrap text-xs hidden group-hover:block bg-white text-black p-2 border border-whiten shadow-5 rounded-md z-999 top-[-35px] ">
+                          <p>{user?.name}</p>
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
                 <span
                   onClick={() => {
@@ -169,20 +183,6 @@ const AddTaskPhase = ({
             </div>
           </div>
           <div>
-            <CustomInput
-              type="text"
-              label="Titre"
-              rounded="medium"
-              className="text-sm"
-              onChange={(e) => {
-                setTaskData({
-                  ...taskData,
-                  title: e.target.value,
-                });
-              }}
-            />
-          </div>
-          <div>
             <CustomSelect
               label="Priorité"
               placeholder=""
@@ -202,12 +202,26 @@ const AddTaskPhase = ({
               label="Date de début"
               rounded="medium"
               className="text-sm"
-              value={taskData?.startDate}
+              value={
+                taskData?.startDate ? taskData?.startDate?.split("T")?.[0] : ""
+              }
               onChange={(e) => {
-                setTaskData({
-                  ...taskData,
-                  startDate: e.target.value,
-                });
+                const newStartDate = e.target.value;
+                if (
+                  taskData?.dueDate &&
+                  new Date(newStartDate) > new Date(taskData.dueDate)
+                ) {
+                  setTaskData({
+                    ...taskData,
+                    startDate: newStartDate,
+                    dueDate: newStartDate,
+                  });
+                } else {
+                  setTaskData({
+                    ...taskData,
+                    startDate: newStartDate,
+                  });
+                }
               }}
             />
             <CustomInput
@@ -215,13 +229,31 @@ const AddTaskPhase = ({
               label="Date d'échéance"
               className="text-sm"
               rounded="medium"
-              value={taskData.dueDate}
-              min={taskData?.startDate}
+              value={
+                taskData?.dueDate ? taskData?.dueDate?.split("T")?.[0] : ""
+              }
+              min={
+                taskData?.startDate
+                  ? taskData?.startDate?.split("T")[0]
+                  : taskData?.startDate
+              }
               onChange={(e) => {
-                setTaskData({
-                  ...taskData,
-                  dueDate: e.target.value,
-                });
+                const newDueDate = e.target.value;
+                if (
+                  taskData?.startDate &&
+                  new Date(newDueDate) < new Date(taskData.startDate)
+                ) {
+                  setTaskData({
+                    ...taskData,
+                    dueDate: newDueDate,
+                    startDate: newDueDate,
+                  });
+                } else {
+                  setTaskData({
+                    ...taskData,
+                    dueDate: newDueDate,
+                  });
+                }
               }}
             />
           </div>
@@ -234,6 +266,7 @@ const AddTaskPhase = ({
               rows={8}
               rounded="medium"
               className="text-sm"
+              value={taskData?.description}
               onChange={(e) => {
                 setTaskData({
                   ...taskData,
@@ -242,7 +275,7 @@ const AddTaskPhase = ({
               }}
             />
           </div>
-        </>
+        </div>
       </ModalBody>
       <ModalFooter>
         <button
@@ -254,17 +287,17 @@ const AddTaskPhase = ({
         </button>
         <button
           type="button"
-          onClick={handleCreateTask}
+          onClick={handleUpdateTask}
           className="border flex justify-center items-center dark:border-boxdark text-xs p-2 rounded-md bg-green-700 hover:opacity-85 text-white font-semibold"
         >
           {isLoading ? (
             <BeatLoader size={5} className="mr-2" color={"#fff"} />
           ) : null}
-          Créer
+          Sauvegarder
         </button>
       </ModalFooter>
     </Modal>
   );
 };
 
-export default AddTaskPhase;
+export default UpdateTask;

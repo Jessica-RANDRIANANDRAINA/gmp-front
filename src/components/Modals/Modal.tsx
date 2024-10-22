@@ -42,6 +42,20 @@ const Modal = ({
   const trigger = useRef<any>(null);
   const [showModal, setShowModal] = useState(false);
   const [closingModal, setClosingModal] = useState(false);
+  const [isTitleExpanded, setIsTitleExpanded] = useState<boolean>(false);
+  const charLimit = 40;
+
+  const toogleExpand = () => {
+    setIsTitleExpanded(!isTitleExpanded);
+  };
+
+  const getDisplayText = () => {
+    if (isTitleExpanded || header.length <= charLimit) {
+      return header; 
+    } else {
+      return `${header.slice(0, charLimit)}...`;
+    }
+  };
 
   const closeModal = () => {
     setClosingModal(true);
@@ -85,8 +99,15 @@ const Modal = ({
         } flex flex-col`}
       >
         {/* ===== HEADER START ====== */}
-        <header className="flex justify-between w-full h-12">
-          <div className="font-semibold text-sm sticky">{header}</div>
+        <header className="flex justify-between w-full h-12 overflow-hidden">
+          <div
+            className={`font-semibold text-sm sticky whitespace-nowrap  cursor-pointer hide-scrollbar ${
+              isTitleExpanded ? "overflow-x-auto" : "overflow-hidden"
+            }`}
+            onClick={toogleExpand}
+          >
+            {getDisplayText()}
+          </div>
           <div className={"cursor-pointer"} onClick={closeModal}>
             <svg
               xmlns="http://www.w3.org/2000/svg"

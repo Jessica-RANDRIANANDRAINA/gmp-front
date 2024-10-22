@@ -1,50 +1,105 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import AddTaskPhase from "../../../../components/Modals/Task/AddTaskPhase";
+import UpdateTask from "../../../../components/Modals/Task/UpdateTask";
+import {
+  getTaskByProjectAndPhaseID,
+  getPhaseById,
+} from "../../../../services/Project";
+import { IPhase } from "../../../../types/Project";
 
-// Initial data
-const initialData = {
-  columns: {
-    "column-1": {
-      id: "column-1",
-      title: "Backlog",
-      taskIds: ["task-1", "task-2", "task-3"],
-    },
-    "column-2": {
-      id: "column-2",
-      title: "En cours",
-      taskIds: ["task-4", "task-5"],
-    },
-    "column-3": {
-      id: "column-3",
-      title: "Traité",
-      taskIds: ["task-6"],
-    },
-    "column-4": {
-      id: "column-4",
-      title: "En pause",
-      taskIds: [],
-    },
-    "column-5": {
-      id: "column-5",
-      title: "Abandonné",
-      taskIds: [],
-    },
-  },
-  tasks: {
-    "task-1": { id: "task-1", content: "Task 1" },
-    "task-2": { id: "task-2", content: "Task 2" },
-    "task-3": { id: "task-3", content: "Task 3" },
-    "task-4": { id: "task-4", content: "Task 4" },
-    "task-5": { id: "task-5", content: "Task 5" },
-    "task-6": { id: "task-6", content: "Task 6" },
-  },
-  columnOrder: ["column-1", "column-2", "column-3", "column-4", "column-5"],
+// function to organize task in column by status
+const organizeTaskByStatus = (tasks: any[]) => {
+  const columns: {
+    [key: string]: { id: string; title: string; taskIds: string[] };
+  } = {
+    "column-1": { id: "column-1", title: "Backlog", taskIds: [] },
+    "column-2": { id: "column-2", title: "En cours", taskIds: [] },
+    "column-3": { id: "column-3", title: "Traité", taskIds: [] },
+    "column-4": { id: "column-4", title: "En pause", taskIds: [] },
+    "column-5": { id: "column-5", title: "Abandonné", taskIds: [] },
+  };
+
+  const taskMap = tasks.reduce((acc, task) => {
+    acc[task.id] = {
+      id: task.id,
+      content: {
+        title: task.title,
+        id: task.id,
+        description: task.description,
+        priority: task.priority,
+        startDate: task.startDate,
+        dueDate: task.dueDate,
+        userTasks: task.userTasks,
+      },
+    };
+    const columnKey = Object.keys(columns).find(
+      (key) => columns[key].title === task.status
+    );
+    if (columnKey) {
+      columns[columnKey].taskIds.push(task.id);
+    }
+    return acc;
+  }, {} as { [key: string]: { id: string; content: { title: string; id: string } } });
+  return { taskMap, columns };
 };
 
 const PhaseAdvancement = () => {
-  const [data, setData] = useState<any>(initialData);
-  const [modalOpen, setModalOpen] = useState(false);
+  const { projectId, phaseId } = useParams();
+  const [data, setData] = useState<any>({
+    tasks: {},
+    columns: {},
+    columnOrder: [],
+  });
+  const [taskData, setTaskData] = useState<any>();
+  // const [isAddTaskFinished, setIsAddTaskFinished] = useState<boolean>(false);
+  const [isRefreshTaskNeeded, setIsRefreshTaskNeeded] =
+    useState<boolean>(false);
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [modalUpdateOpen, setModalUpdateOpen] = useState<boolean>(false);
+  const [phaseData, setPhaseData] = useState<IPhase>();
+
+  const fetchDataPhase = async () => {
+    try {
+      if (phaseId) {
+        const data = await getPhaseById(phaseId);
+        setPhaseData(data);
+      }
+    } catch (error) {
+      console.error("error at fetch data phase: ", error);
+    }
+  };
+
+  const fetchData = async () => {
+    try {
+      if (projectId && phaseId) {
+        const response = await getTaskByProjectAndPhaseID(projectId, phaseId);
+        // const tasks = await response.json();
+        const { taskMap, columns } = organizeTaskByStatus(response);
+
+        setData({
+          tasks: taskMap,
+          columns,
+          columnOrder: [
+            "column-1",
+            "column-2",
+            "column-3",
+            "column-4",
+            "column-5",
+          ],
+        });
+      }
+    } catch (error) {
+      console.error(`Error at fetch task data: ${error}`);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+    fetchDataPhase();
+    setIsRefreshTaskNeeded(false);
+  }, [phaseId, isRefreshTaskNeeded]);
 
   const handleOnDragEnd = (result: {
     destination: any;
@@ -143,7 +198,7 @@ const PhaseAdvancement = () => {
                               ref={provided.innerRef}
                               {...provided.draggableProps}
                               {...provided.dragHandleProps}
-                              className={`p-4 mb-1 text-xs rounded-md shadow-2 ${
+                              className={`p-4 mb-1 relative text-xs rounded-md shadow-2  ${
                                 snapshot.isDragging
                                   ? "bg-green-50 dark:bg-emerald-100"
                                   : "bg-white dark:bg-boxdark"
@@ -151,8 +206,46 @@ const PhaseAdvancement = () => {
                               style={{
                                 ...provided.draggableProps.style,
                               }}
+                              onClick={() => {
+                                setTaskData(task);
+                                setModalUpdateOpen(true);
+                              }}
                             >
-                              {task.content}
+                              <div
+                                className="absolute top-2 right-1 hover:bg-zinc-100 dark:hover:bg-boxdark2 px-1 h-4 cursor-pointer"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                }}
+                              >
+                                <svg
+                                  width="15"
+                                  height="15"
+                                  viewBox="0 0 24 24"
+                                  fill="none"
+                                >
+                                  <g id="SVGRepo_bgCarrier"></g>
+                                  <g
+                                    id="SVGRepo_tracerCarrier"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                  ></g>
+                                  <g id="SVGRepo_iconCarrier">
+                                    <path
+                                      d="M12 13.75C12.9665 13.75 13.75 12.9665 13.75 12C13.75 11.0335 12.9665 10.25 12 10.25C11.0335 10.25 10.25 11.0335 10.25 12C10.25 12.9665 11.0335 13.75 12 13.75Z"
+                                      className="fill-black dark:fill-white"
+                                    ></path>{" "}
+                                    <path
+                                      d="M19 13.75C19.9665 13.75 20.75 12.9665 20.75 12C20.75 11.0335 19.9665 10.25 19 10.25C18.0335 10.25 17.25 11.0335 17.25 12C17.25 12.9665 18.0335 13.75 19 13.75Z"
+                                      className="fill-black dark:fill-white"
+                                    ></path>{" "}
+                                    <path
+                                      d="M5 13.75C5.9665 13.75 6.75 12.9665 6.75 12C6.75 11.0335 5.9665 10.25 5 10.25C4.0335 10.25 3.25 11.0335 3.25 12C3.25 12.9665 4.0335 13.75 5 13.75Z"
+                                      className="fill-black dark:fill-white"
+                                    ></path>{" "}
+                                  </g>
+                                </svg>
+                              </div>
+                              {task.content.title}
                             </div>
                           )}
                         </Draggable>
@@ -177,7 +270,20 @@ const PhaseAdvancement = () => {
         </div>
       </DragDropContext>
       {modalOpen && (
-        <AddTaskPhase modalOpen={modalOpen} setModalOpen={setModalOpen} />
+        <AddTaskPhase
+          modalOpen={modalOpen}
+          setModalOpen={setModalOpen}
+          setIsAddTaskFinished={setIsRefreshTaskNeeded}
+        />
+      )}
+      {modalUpdateOpen && (
+        <UpdateTask
+          modalUpdateOpen={modalUpdateOpen}
+          setModalUpdateOpen={setModalUpdateOpen}
+          task={taskData}
+          phaseData={phaseData ? phaseData : null}
+          setIsRefreshTaskNeeded={setIsRefreshTaskNeeded}
+        />
       )}
     </div>
   );
