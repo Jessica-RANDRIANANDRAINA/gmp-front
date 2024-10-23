@@ -140,7 +140,7 @@ const UpdateTeamMember = ({
                 setUserSelected={setUserTeam}
                 role="member"
               />
-              <div className="flex gap-4 mt-2 flex-wrap">
+              <div className="flex gap-1 mt-2 flex-wrap">
                 {userTeam
                   ?.filter((team) => team.role === "member")
                   ?.map((team) => {
@@ -148,7 +148,7 @@ const UpdateTeamMember = ({
                     return (
                       <div
                         key={team.id}
-                        className="relative group -ml-2 first:ml-0 hover:z-50"
+                        className="relative group first:ml-0 hover:z-50"
                         onClick={() => {
                           handleRemoveTeamList(team.id);
                         }}
@@ -177,7 +177,7 @@ const UpdateTeamMember = ({
                 setUserSelected={setUserTeam}
                 role="observator"
               />
-              <div className="flex gap-4 mt-2 flex-wrap">
+              <div className="flex gap-1 mt-2 flex-wrap">
                 {userTeam
                   ?.filter((team) => team.role === "observator")
                   ?.map((team) => {
@@ -185,7 +185,7 @@ const UpdateTeamMember = ({
                     return (
                       <div
                         key={team.id}
-                        className="relative group -ml-2 first:ml-0 hover:z-50"
+                        className="relative group  first:ml-0 hover:z-50"
                         onClick={() => {
                           handleRemoveTeamList(team.id);
                         }}

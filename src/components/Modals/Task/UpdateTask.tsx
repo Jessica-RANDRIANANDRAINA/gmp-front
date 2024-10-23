@@ -131,40 +131,44 @@ const UpdateTask = ({
         <div className="space-y-5">
           <div className="space-y-2">
             <div className="font-semibold text-xs">Assigné à:</div>
-            <div className="grid grid-cols-3 place-content-center place-items-stretch">
-              <div className="flex   items-center gap-2">
-                <div className="flex flex-wrap gap-3">
-                  {assignedPerson?.map((user) => {
-                    const initials = getInitials(user?.name ? user?.name : "");
-                    return (
-                      <div
-                        key={user?.userid}
-                        className="relative group -ml-2 first:ml-0 hover:z-99 cursor-pointer "
-                        onClick={() => {
-                          handleRemoveUser(user?.userid);
-                        }}
-                      >
-                        <p className="text-slate-50 border relative bg-secondaryGreen p-1 w-7 h-7 flex justify-center items-center text-xs rounded-full dark:text-white dark:border-transparent">
-                          {initials}
-                        </p>
-                        <div className="absolute whitespace-nowrap text-xs hidden group-hover:block bg-white text-black p-2 border border-whiten shadow-5 rounded-md z-999 top-[-35px] ">
-                          <p>{user?.name}</p>
+            <div className="">
+              <div className="flex items-center gap-2">
+                <div className="space-y-2 w-full  ">
+                  <div className="flex flex-wrap w-full gap-1">
+                    {assignedPerson?.map((user) => {
+                      const initials = getInitials(
+                        user?.name ? user?.name : ""
+                      );
+                      return (
+                        <div
+                          key={user?.userid}
+                          className="relative group  first:ml-0 hover:z-99 cursor-pointer "
+                          onClick={() => {
+                            handleRemoveUser(user?.userid);
+                          }}
+                        >
+                          <p className="text-slate-50 border relative bg-secondaryGreen p-1 w-7 h-7 flex justify-center items-center text-xs rounded-full dark:text-white dark:border-transparent">
+                            {initials}
+                          </p>
+                          <div className="absolute  whitespace-nowrap text-xs hidden group-hover:block bg-white text-black p-2 border border-whiten shadow-5 rounded-md z-999999 top-[-35px] ">
+                            <p>{user?.name}</p>
+                          </div>
                         </div>
-                      </div>
-                    );
-                  })}
+                      );
+                    })}
+                  </div>
+                  <div
+                    ref={userPopUp}
+                    onClick={() => {
+                      setDropDownUserOpen(!isDropdownUserOpen);
+                    }}
+                    className="w-5 h-5 p-3 border flex rounded-full justify-center items-center cursor-pointer bg-zinc-200 dark:bg-boxdark  hover:bg-zinc-300 border-zinc-200 dark:hover:bg-boxdark2 dark:border-formStrokedark"
+                  >
+                    +
+                  </div>
                 </div>
-                <span
-                  ref={userPopUp}
-                  onClick={() => {
-                    setDropDownUserOpen(!isDropdownUserOpen);
-                  }}
-                  className="w-5 h-5 p-3 border flex rounded-full justify-center items-center cursor-pointer bg-zinc-200 dark:bg-boxdark  hover:bg-zinc-300 border-zinc-200 dark:hover:bg-boxdark2 dark:border-formStrokedark"
-                >
-                  +
-                </span>
                 <div
-                  className={`absolute top-14  left-0 border dark:border-formStrokedark border-zinc-300 bg-white dark:bg-boxdark2 shadow-lg rounded-md z-50 transition-transform duration-300 ease-in-out ${
+                  className={`absolute top-14 max-h-100 overflow-auto left-0 border dark:border-formStrokedark border-zinc-300 bg-white dark:bg-boxdark2 shadow-lg rounded-md z-50 transition-transform duration-300 ease-in-out ${
                     isDropdownUserOpen ? "scale-100" : "scale-0"
                   }`}
                   style={{ transformOrigin: "top left " }} // Définit l'origine de la transformation
