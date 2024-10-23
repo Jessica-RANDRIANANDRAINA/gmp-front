@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { HubConnectionBuilder, HubConnection } from "@microsoft/signalr";
 import AddTaskPhase from "../../../../components/Modals/Task/AddTaskPhase";
 import UpdateTask from "../../../../components/Modals/Task/UpdateTask";
 import {
@@ -59,6 +60,7 @@ const PhaseAdvancement = () => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [modalUpdateOpen, setModalUpdateOpen] = useState<boolean>(false);
   const [phaseData, setPhaseData] = useState<IPhase>();
+  const [connection, setConnection] = useState<HubConnection | null>(null);
 
   const fetchDataPhase = async () => {
     try {
@@ -99,6 +101,33 @@ const PhaseAdvancement = () => {
     fetchData();
     fetchDataPhase();
     setIsRefreshTaskNeeded(false);
+
+    const connect = async () => {
+      const newConnection = new HubConnectionBuilder()
+        .withUrl(`https://10.0.104.126:7170/taskHub`)
+        .withAutomaticReconnect()
+        .build();
+
+      newConnection.on("ReceiveMessage", (user: string, message: string) => {
+        console.log(`Message reçue 5/5 de ${user}: ${message}`);
+      });
+
+      try {
+        await newConnection.start();
+        setConnection(newConnection);
+        console.log("CONNECTED TO SIGNALR HUB");
+      } catch (error) {
+        console.error("Erreur de connection au hub", error);
+      }
+    };
+
+    connect();
+
+    return () => {
+      if (connection) {
+        connection.stop();
+      }
+    };
   }, [phaseId, isRefreshTaskNeeded]);
 
   const handleOnDragEnd = (result: {
