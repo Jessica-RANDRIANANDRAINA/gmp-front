@@ -104,7 +104,7 @@ const PhaseAdvancement = () => {
 
     const connect = async () => {
       const newConnection = new HubConnectionBuilder()
-        .withUrl(`https://10.0.104.126:7170/taskHub`)
+        .withUrl(`${import.meta.env.VITE_API_ENDPOINT}/taskHub`)
         .withAutomaticReconnect()
         .build();
 
@@ -130,7 +130,7 @@ const PhaseAdvancement = () => {
     };
   }, [phaseId, isRefreshTaskNeeded]);
 
-  const handleOnDragEnd = (result: {
+  const handleOnDragEnd = async (result: {
     destination: any;
     source: any;
     draggableId: any;
@@ -193,6 +193,20 @@ const PhaseAdvancement = () => {
           [newEnd.id]: newEnd,
         },
       });
+      if (connection) {
+        try {
+          await connection.invoke(
+            "TaskMoved",
+            draggableId,
+            startColumn.title,
+            endColumn.title
+            // source.droppableId,
+            // destination.droppableId
+          );
+        } catch (error) {
+          console.error(`Error at calling task moved: ${error}`);
+        }
+      }
     }
   };
 
