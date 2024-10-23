@@ -116,7 +116,7 @@ const PhaseSettings = ({
               type="text"
               placeholder="ex:https://lien-vers-le-livrable"
               rounded="medium"
-              className="w-full"
+              className={`w-full ${ableToEnd ? "": "hidden"}`}
               help="Quand la phase est terminée veuillez mettre ici le lien vers le livrable attendu"
               value={phaseData?.deliverable ?? ""}
               onChange={(e) => {
