@@ -25,11 +25,22 @@ const PhaseSettings = ({
     status: "A faire",
     deliverable: "",
   });
+  const [ableToEnd, setAbleToEnd] = useState<boolean>(false);
 
   const fetchDataPhase = async () => {
     try {
       if (phaseId) {
         const data = await getPhaseById(phaseId);
+        const statusArray = ["Backlog", "En cours", "En pause"];
+
+        const hasIncompleteTask = data?.tasks?.some(
+          (task: { status: string }) => statusArray.includes(task.status)
+        );
+        if (hasIncompleteTask) {
+          setAbleToEnd(false);
+        } else {
+          setAbleToEnd(true);
+        }
         setPhaseData(data);
         setDataToModif({
           ...dataToModif,
@@ -81,7 +92,11 @@ const PhaseSettings = ({
             <CustomSelect
               label="Status"
               placeholder=""
-              data={["A faire", "En cours", "Terminé"]}
+              data={
+                ableToEnd
+                  ? ["A faire", "En cours", "Terminé"]
+                  : ["A faire", "En cours"]
+              }
               value={phaseData?.status ?? "A faire"}
               onValueChange={(e) => {
                 const userConnected = decodeToken("pr");
@@ -111,10 +126,6 @@ const PhaseSettings = ({
                   deliverable: e.target.value,
                   initiator: userConnected?.name,
                 });
-                // setDataToModif({
-                //   ...dataToModif,
-                //   deliverable: e.target.value,
-                // });
               }}
             />
           </div>
