@@ -131,10 +131,7 @@ const PhaseAdvancement = () => {
         .withAutomaticReconnect()
         .build();
 
-      newConnection.on("ReceiveMessage", (user: string, message: string) => {
-        console.log(`Message reçue 5/5 de ${user}: ${message}`);
-      });
-
+   
       try {
         await newConnection.start();
         setConnection(newConnection);
@@ -279,7 +276,7 @@ const PhaseAdvancement = () => {
             );
 
             return (
-              <div className="w-full">
+              <div className="w-full" key={column.id}>
                 <Droppable key={column.id} droppableId={column.id}>
                   {(provided) => (
                     <div
