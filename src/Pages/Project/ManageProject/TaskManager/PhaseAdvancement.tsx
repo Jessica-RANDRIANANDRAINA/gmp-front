@@ -235,8 +235,6 @@ const PhaseAdvancement = () => {
             draggableId,
             startColumn.title,
             endColumn.title
-            // source.droppableId,
-            // destination.droppableId
           );
         } catch (error) {
           console.error(`Error at calling task moved: ${error}`);

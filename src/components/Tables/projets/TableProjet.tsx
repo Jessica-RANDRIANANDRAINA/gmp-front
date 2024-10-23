@@ -952,7 +952,7 @@ const TableProjet = ({
                         <ListUsers data={project?.listUsers} type="director" />
                       </td>
                       <td className="border-b  gap-1 border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                        <ListUsers data={project?.listUsers} type="all" />
+                        <ListUsers data={project?.listUsers} type="no-director" />
                       </td>
                       <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
                         <p className="text-black dark:text-white">
@@ -1075,7 +1075,7 @@ const TableProjet = ({
                       Equipe :{" "}
                     </span>
                     <span className="text-gray-800">
-                      <ListUsers data={project?.listUsers} type="all" />
+                      <ListUsers data={project?.listUsers} type="no-director" />
                     </span>
                   </div>
                   <div className="mb-2">
