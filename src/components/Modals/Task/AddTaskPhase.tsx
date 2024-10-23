@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { Modal, ModalBody, ModalFooter } from "../Modal";
 import { CustomInput, CustomSelect } from "../../UIElements";
@@ -23,6 +23,7 @@ const AddTaskPhase = ({
   setIsAddTaskFinished: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const { phaseId, projectId } = useParams();
+  const userPopUp = useRef<any>(null);
   const [phaseData, setPhaseData] = useState<IPhase>();
   const [isDropdownUserOpen, setDropDownUserOpen] = useState<boolean>(false);
   const [assignedPerson, setAssignedPerson] = useState<Array<IUserProject>>([]);
@@ -33,8 +34,18 @@ const AddTaskPhase = ({
     startDate: undefined,
     dueDate: undefined,
   });
-
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  // close user pop up if click outside
+  useEffect(() => {
+    const clickHandler = ({ target }: MouseEvent) => {
+      if (!userPopUp.current) return;
+      if (!userPopUp || userPopUp.current.contains(target)) return;
+      setDropDownUserOpen(false);
+    };
+    document.addEventListener("click", clickHandler);
+    return () => document.removeEventListener("click", clickHandler);
+  });
 
   const fetchDataPhase = async () => {
     try {
@@ -129,6 +140,7 @@ const AddTaskPhase = ({
                   <ListUsers data={assignedPerson} type="show" />
                 </div>
                 <span
+                  ref={userPopUp}
                   onClick={() => {
                     setDropDownUserOpen(!isDropdownUserOpen);
                   }}

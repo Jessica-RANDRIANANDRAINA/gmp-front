@@ -42,3 +42,16 @@ export const updateTaskProject = async (taskId: string, taskData: any) => {
     throw new Error(`Error at update task project: ${error}`);
   }
 };
+
+// ===== DELETE ===== //
+// delete a task
+export const deletetaskProject = async (taskId: string) => {
+  try {
+    const response = await axios.delete(
+      `${endPoint}/api/task/delete/${taskId}`
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(`Error at delete task project: ${error}`);
+  }
+};

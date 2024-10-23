@@ -18,6 +18,7 @@ import {
   createTaskPhase,
   getTaskByProjectAndPhaseID,
   updateTaskProject,
+  deletetaskProject,
 } from "./TaskServices";
 
 export {
@@ -37,4 +38,5 @@ export {
   createTaskPhase,
   getTaskByProjectAndPhaseID,
   updateTaskProject,
+  deletetaskProject,
 };

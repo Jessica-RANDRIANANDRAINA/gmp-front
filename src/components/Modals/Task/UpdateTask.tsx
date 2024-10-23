@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Modal, ModalBody, ModalFooter } from "../Modal";
 import { CustomInput, CustomSelect } from "../../UIElements";
 import { IPhase, ITaskAdd, IUserTask } from "../../../types/Project";
@@ -31,9 +31,21 @@ const UpdateTask = ({
     startDate: undefined,
     dueDate: undefined,
   });
+  const userPopUp = useRef<any>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [assignedPerson, setAssignedPerson] = useState<Array<IUserTask>>([]);
   const [isDropdownUserOpen, setDropDownUserOpen] = useState<boolean>(false);
+
+  // close user pop up if click outside
+  useEffect(() => {
+    const clickHandler = ({ target }: MouseEvent) => {
+      if (!userPopUp.current) return;
+      if (userPopUp.current.contains(target)) return;
+      setDropDownUserOpen(false);
+    };
+    document.addEventListener("click", clickHandler);
+    return () => document.removeEventListener("click", clickHandler);
+  });
 
   useEffect(() => {
     if (task?.content) {
@@ -143,6 +155,7 @@ const UpdateTask = ({
                   })}
                 </div>
                 <span
+                  ref={userPopUp}
                   onClick={() => {
                     setDropDownUserOpen(!isDropdownUserOpen);
                   }}

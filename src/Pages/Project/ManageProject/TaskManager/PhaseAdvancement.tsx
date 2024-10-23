@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { HubConnectionBuilder, HubConnection } from "@microsoft/signalr";
@@ -7,8 +7,13 @@ import UpdateTask from "../../../../components/Modals/Task/UpdateTask";
 import {
   getTaskByProjectAndPhaseID,
   getPhaseById,
+  deletetaskProject,
 } from "../../../../services/Project";
 import { IPhase } from "../../../../types/Project";
+import { Notyf } from "notyf";
+import "notyf/notyf.min.css";
+
+const notyf = new Notyf({ position: { x: "center", y: "top" } });
 
 // function to organize task in column by status
 const organizeTaskByStatus = (tasks: any[]) => {
@@ -61,7 +66,22 @@ const PhaseAdvancement = () => {
   const [modalUpdateOpen, setModalUpdateOpen] = useState<boolean>(false);
   const [phaseData, setPhaseData] = useState<IPhase>();
   const [connection, setConnection] = useState<HubConnection | null>(null);
+  const [activeTaskId, setActiveTaskId] = useState<string | null>(null);
 
+  const deletePopUp = useRef<any>(null);
+
+  // close delete pop up if click outside
+  useEffect(() => {
+    const clickHandler = ({ target }: MouseEvent) => {
+      if (!deletePopUp.current) return;
+      if (!deletePopUp || deletePopUp.current.contains(target)) return;
+      setActiveTaskId("")
+    };
+    document.addEventListener("click", clickHandler)
+    return()=> document.removeEventListener("click", clickHandler)
+  });
+
+  // fetch data phase to get user asociated with the project
   const fetchDataPhase = async () => {
     try {
       if (phaseId) {
@@ -73,6 +93,7 @@ const PhaseAdvancement = () => {
     }
   };
 
+  // fetch data of the phase to get all task associated to the task
   const fetchData = async () => {
     try {
       if (projectId && phaseId) {
@@ -129,6 +150,20 @@ const PhaseAdvancement = () => {
       }
     };
   }, [phaseId, isRefreshTaskNeeded]);
+
+  useEffect(() => {
+    if (connection) {
+      connection.on("ReceiveTaskDeleted", (taskId: string) => {
+        fetchData();
+        console.log(`Task ${taskId} deleted`);
+      });
+    }
+    return () => {
+      if (connection) {
+        connection.off("ReceiveTaskDeleted");
+      }
+    };
+  }, [connection]);
 
   const handleOnDragEnd = async (result: {
     destination: any;
@@ -210,6 +245,29 @@ const PhaseAdvancement = () => {
     }
   };
 
+  const handleToogleMenuDelete = (taskId: string, event: React.MouseEvent) => {
+    event.stopPropagation();
+    setActiveTaskId(activeTaskId === taskId ? null : taskId);
+  };
+
+  const handleDeleteTask = async (taskId: string) => {
+    try {
+      await deletetaskProject(taskId);
+      notyf.success("Tache supprimé");
+
+      if (connection) {
+        try {
+          await connection.invoke("TaskDeleted", taskId);
+        } catch (error) {
+          console.error(`Error while sending event TaskDeleted: ${error}`);
+        }
+      }
+    } catch (error) {
+      notyf.error("Une erreur s'est produite, veuillez réessayer.");
+      console.error(`Error at handle delete task: ${error}`);
+    }
+  };
+
   return (
     <div className="p-5 ">
       <DragDropContext onDragEnd={handleOnDragEnd}>
@@ -257,7 +315,7 @@ const PhaseAdvancement = () => {
                               <div
                                 className="absolute top-2 right-1 hover:bg-zinc-100 dark:hover:bg-boxdark2 px-1 h-4 cursor-pointer"
                                 onClick={(e) => {
-                                  e.stopPropagation();
+                                  handleToogleMenuDelete(task.id, e);
                                 }}
                               >
                                 <svg
@@ -288,6 +346,25 @@ const PhaseAdvancement = () => {
                                   </g>
                                 </svg>
                               </div>
+                              {/* pop up menu delete */}
+                              {activeTaskId === task.id && (
+                                <div
+                                  ref={deletePopUp}
+                                  className="absolute z-20 right-0 top-5 bg-white dark:bg-boxdark dark:border-formStrokedark border-zinc-100 dark:hover:border-red-950 border shadow-lg rounded-md "
+                                >
+                                  <button
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      handleDeleteTask(task.id);
+                                      console.log("delete task id: ", task.id);
+                                    }}
+                                    className="text-red-600 dark:text-red-400 dark:hover:bg-red-950  hover:bg-red-50 px-4 py-2 rounded"
+                                  >
+                                    Supprimer
+                                  </button>
+                                </div>
+                              )}
+                              {/* pop up menu delete */}
                               {task.content.title}
                             </div>
                           )}
