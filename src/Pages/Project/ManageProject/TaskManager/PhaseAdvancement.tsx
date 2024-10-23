@@ -75,10 +75,10 @@ const PhaseAdvancement = () => {
     const clickHandler = ({ target }: MouseEvent) => {
       if (!deletePopUp.current) return;
       if (!deletePopUp || deletePopUp.current.contains(target)) return;
-      setActiveTaskId("")
+      setActiveTaskId("");
     };
-    document.addEventListener("click", clickHandler)
-    return()=> document.removeEventListener("click", clickHandler)
+    document.addEventListener("click", clickHandler);
+    return () => document.removeEventListener("click", clickHandler);
   });
 
   // fetch data phase to get user asociated with the project
@@ -297,7 +297,7 @@ const PhaseAdvancement = () => {
                               ref={provided.innerRef}
                               {...provided.draggableProps}
                               {...provided.dragHandleProps}
-                              className={`p-4 mb-1 relative text-xs rounded-md shadow-2  ${
+                              className={`p-4 mb-1 relative shadow-2 hover:shadow-md hover:shadow-slate-300 dark:hover:shadow-slate-500 text-xs rounded-md  ${
                                 snapshot.isDragging
                                   ? "bg-green-50 dark:bg-emerald-100"
                                   : "bg-white dark:bg-boxdark"
