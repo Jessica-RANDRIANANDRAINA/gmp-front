@@ -4,6 +4,7 @@ import { CustomSelect, CustomInput } from "../../UIElements";
 import { Modal, ModalBody, ModalFooter } from "../Modal";
 import { getPhaseById, updatePhaseSettings } from "../../../services/Project";
 import { decodeToken } from "../../../services/Function/TokenService";
+import { formatDate } from "../../../services/Function/DateServices";
 import { IPhase } from "../../../types/Project";
 import { BeatLoader } from "react-spinners";
 import { Notyf } from "notyf";
@@ -26,6 +27,24 @@ const PhaseSettings = ({
     deliverable: "",
   });
   const [ableToEnd, setAbleToEnd] = useState<boolean>(false);
+  const [datePhase, setDatePhase] = useState({
+    startDate: "",
+    endDate: "",
+  });
+  useEffect(() => {
+    var start = "";
+    var end = "";
+    if (phaseData?.startDate) {
+      start = formatDate(phaseData?.startDate);
+    }
+    if (phaseData?.endDate) {
+      end = formatDate(phaseData?.endDate);
+    }
+    setDatePhase({
+      startDate: start,
+      endDate: end,
+    });
+  }, [phaseData]);
 
   const fetchDataPhase = async () => {
     try {
@@ -84,8 +103,8 @@ const PhaseSettings = ({
       <ModalBody>
         <div className="space-y-2">
           <div>
-            <div>Date de début : {phaseData?.startDate?.split("T")?.[0]}</div>
-            <div>Date de fin : {phaseData?.endDate?.split("T")}</div>
+            <div>Date de début : {datePhase?.startDate}</div>
+            <div>Date de fin : {datePhase?.endDate}</div>
           </div>
           <div className=" space-y-2 ">
             <CustomSelect
