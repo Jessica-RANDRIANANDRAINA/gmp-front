@@ -238,10 +238,10 @@ const TableProjet = ({
           />
 
           <div className="flex items-end gap-2 mx-3">
-            <div className="pb-3">
+            <div className="pb-2">
               <button
                 onClick={handleDeleteFilter}
-                className="flex justify-center gap-1 h-fit text-sm font-medium"
+                className="flex justify-center whitespace-nowrap text-sm gap-1 h-fit "
               >
                 Effacer les filtres
                 <svg
