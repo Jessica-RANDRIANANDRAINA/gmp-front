@@ -952,7 +952,10 @@ const TableProjet = ({
                         <ListUsers data={project?.listUsers} type="director" />
                       </td>
                       <td className="border-b  gap-1 border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                        <ListUsers data={project?.listUsers} type="no-director" />
+                        <ListUsers
+                          data={project?.listUsers}
+                          type="no-director"
+                        />
                       </td>
                       <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
                         <p className="text-black dark:text-white">
@@ -965,7 +968,17 @@ const TableProjet = ({
                       <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
                         <div className="w-full bg-zinc-100 rounded-full dark:bg-strokedark h-6 relative">
                           <div
-                            className="bg-primaryGreen h-6 rounded-full"
+                            className={`h-6 rounded-full ${
+                              project?.completionPercentage === 0
+                                ? "bg-red-500"
+                                : project?.completionPercentage === 25
+                                ? "bg-orange"
+                                : project?.completionPercentage === 50
+                                ? "bg-yellow-500"
+                                : project?.completionPercentage === 75
+                                ? "bg-lime-500"
+                                : "bg-green-500"
+                            }`}
                             style={{
                               width: `${project?.completionPercentage}%`,
                             }}
