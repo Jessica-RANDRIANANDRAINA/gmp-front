@@ -54,13 +54,19 @@ const DetailsProject = () => {
                     <div className="text-base flex">
                       <u>Avancement</u> :
                     </div>
-                    {/* <span className="">
-                      {projectData?.completionPercentage} %
-                    </span> */}
-
                     <div className="w-1/3 bg-zinc-100 rounded-full dark:bg-strokedark h-4 relative ml-4">
                       <div
-                        className="bg-primaryGreen h-4 rounded-full"
+                        className={`h-4 rounded-full ${
+                          projectData?.completionPercentage === 0
+                            ? "bg-red-500"
+                            : projectData?.completionPercentage === 25
+                            ? "bg-orange"
+                            : projectData?.completionPercentage === 50
+                            ? "bg-yellow-500"
+                            : projectData?.completionPercentage === 75
+                            ? "bg-lime-500"
+                            : "bg-green-500"
+                        }`}
                         style={{
                           width: `${projectData?.completionPercentage}%`,
                         }}
@@ -127,11 +133,12 @@ const DetailsProject = () => {
                     </u>{" "}
                     :
                   </div>
-                  <div className="flex">
-                    <ListUsers
-                      data={projectData?.listUsers ?? []}
-                      type="show"
-                    />
+                  <div className="grid md:grid-cols-2 grid-cols-1 whitespace-nowrap gap-1">
+                    {projectData?.listUsers?.map((user) => (
+                      <div className="">
+                        <p className="text-xs">{user?.user?.name}</p>
+                      </div>
+                    ))}
                   </div>
                 </div>
                 {/* ----- team start ----- */}
@@ -408,10 +415,10 @@ const DetailsProject = () => {
                                 <span
                                   className={`inline-flex space-x-1 items-center px-3 py-1 rounded-full text-xs font-semibold   ${
                                     phases?.status === "Terminé"
-                                      ? "bg-blue-50 text-teal-800"
+                                      ? "bg-green-100 text-green-500"
                                       : phases?.status === "En cours"
                                       ? "bg-yellow-100 text-orange "
-                                      : "bg-green-100 text-green-500"
+                                      : "bg-blue-50 text-teal-800"
                                   }`}
                                 >
                                   <span
@@ -441,7 +448,7 @@ const DetailsProject = () => {
                                         {" "}
                                         <path
                                           d="M4 12.6111L8.92308 17.5L20 6.5"
-                                          stroke="#000000"
+                                          className="stroke-green-500"
                                           strokeWidth="2"
                                           strokeLinecap="round"
                                           strokeLinejoin="round"
