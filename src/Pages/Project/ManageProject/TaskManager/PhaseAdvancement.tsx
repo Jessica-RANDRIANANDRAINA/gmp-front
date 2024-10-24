@@ -131,7 +131,6 @@ const PhaseAdvancement = () => {
         .withAutomaticReconnect()
         .build();
 
-   
       try {
         await newConnection.start();
         setConnection(newConnection);
@@ -235,6 +234,7 @@ const PhaseAdvancement = () => {
             startColumn.title,
             endColumn.title
           );
+          fetchData();
         } catch (error) {
           console.error(`Error at calling task moved: ${error}`);
         }
@@ -266,7 +266,46 @@ const PhaseAdvancement = () => {
   };
 
   return (
-    <div className="p-5 ">
+    <div className={`p-5`}>
+      <div
+        className={`absolute t-0 left-0 w-full h-full opacity-80 dark:opacity-85 bg-green-50 dark:bg-green-200 z-40 ${
+          phaseData?.status === "Terminé" ? "" : "hidden"
+        }`}
+      >
+        <div className="flex flex-col items-center pt-24">
+          <svg
+            width="100"
+            height="100"
+            viewBox="0 0 24 24"
+            className="fill-green-500"
+          >
+            <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+            <g
+              id="SVGRepo_tracerCarrier"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            ></g>
+            <g id="SVGRepo_iconCarrier">
+              {" "}
+              <circle
+                cx="12"
+                cy="12"
+                r="10"
+                className="stroke-green-500"
+                strokeWidth="1.5"
+              ></circle>{" "}
+              <path
+                d="M8.5 12.5L10.5 14.5L15.5 9.5"
+                className="stroke-white"
+                strokeWidth="3"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              ></path>{" "}
+            </g>
+          </svg>
+          <span className="uppercase font-bold dark:text-black">Terminé</span>
+        </div>
+      </div>
       <DragDropContext onDragEnd={handleOnDragEnd}>
         <div style={{ display: "flex" }}>
           {data.columnOrder.map((columnId: string) => {
@@ -367,7 +406,50 @@ const PhaseAdvancement = () => {
                                   </div>
                                 )}
                                 {/* pop up menu delete */}
-                                <div>{task.content.title}</div>
+                                <div className="flex gap-1">
+                                  <span
+                                    className={`${
+                                      task.content.status === "Traité"
+                                        ? ""
+                                        : "hidden"
+                                    }`}
+                                  >
+                                    <svg
+                                      width="17"
+                                      height="17"
+                                      viewBox="0 0 24 24"
+                                      className="fill-green-500"
+                                    >
+                                      <g
+                                        id="SVGRepo_bgCarrier"
+                                        strokeWidth="0"
+                                      ></g>
+                                      <g
+                                        id="SVGRepo_tracerCarrier"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                      ></g>
+                                      <g id="SVGRepo_iconCarrier">
+                                        {" "}
+                                        <circle
+                                          cx="12"
+                                          cy="12"
+                                          r="10"
+                                          className="stroke-green-500"
+                                          strokeWidth="1.5"
+                                        ></circle>{" "}
+                                        <path
+                                          d="M8.5 12.5L10.5 14.5L15.5 9.5"
+                                          className="stroke-white"
+                                          strokeWidth="3"
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                        ></path>{" "}
+                                      </g>
+                                    </svg>
+                                  </span>
+                                  {task.content.title}
+                                </div>
                                 <div
                                   className={` pt-1 mt-2 text-xs ${
                                     task.content.priority === "Moyen" ||
@@ -379,7 +461,9 @@ const PhaseAdvancement = () => {
                                   {task.content.priority}
                                 </div>
                                 <div
-                                  className={`border-t border-t-zinc-200 pt-1 mt-2 text-xs ${endDate==="--" ? "hidden": ""}`}
+                                  className={`border-t border-t-zinc-200 pt-1 mt-2 text-xs ${
+                                    endDate === "--" ? "hidden" : ""
+                                  }`}
                                 >
                                   {endDate}
                                 </div>

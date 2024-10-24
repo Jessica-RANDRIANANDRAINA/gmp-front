@@ -145,7 +145,7 @@ const ListUsers = ({ data, type }: { data: IUserProject[]; type?: string }) => {
             )}
         </div>
       ) : (
-        <div className="flex">
+        <div className="flex flex-wrap">
           {data?.map(
             (user: { [x: string]: any; userid: Key | null | undefined }) => {
               const initials = getInitials(user?.user?.name);

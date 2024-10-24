@@ -33,7 +33,7 @@ const DetailsProject = () => {
               INFORMATION GENERALE
             </h1>
             <div className="text-sm">
-              <div className="flex flex-col space-y-1">
+              <div className="flex flex-col space-y-3">
                 <div className="font-semibold  text-lg flex flex-wrap mb-3">
                   <div className="mr-3">
                     <span>{projectData?.title}</span>
@@ -51,7 +51,6 @@ const DetailsProject = () => {
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    
                     <div className="text-base flex">
                       <u>Avancement</u> :
                     </div>
@@ -121,8 +120,19 @@ const DetailsProject = () => {
                   </div>
                 </div>
                 {/* ----- team start ----- */}
-                <div>
-                  <ListUsers data={projectData?.listUsers ?? []} type="show" />
+                <div className="">
+                  <div className="text-base">
+                    <u>
+                      <span className="uppercase">é</span>quipe
+                    </u>{" "}
+                    :
+                  </div>
+                  <div className="flex">
+                    <ListUsers
+                      data={projectData?.listUsers ?? []}
+                      type="show"
+                    />
+                  </div>
                 </div>
                 {/* ----- team start ----- */}
 
@@ -337,6 +347,9 @@ const DetailsProject = () => {
                         </th>
                         <th className="py-3 px-6 text-left">Date de début</th>
                         <th className="py-3 px-6 text-left">Date de fin</th>
+                        <th className="py-3 px-6 text-left">
+                          Lien du livrable
+                        </th>
                         <th className="py-3 px-6 text-left">Status</th>
                       </tr>
                     </thead>
@@ -377,6 +390,18 @@ const DetailsProject = () => {
                               <td className="py-3 px-6 text-left">
                                 <span className="text-gray-700 whitespace-nowrap">
                                   {endDatePhase}
+                                </span>
+                              </td>
+                              <td className="py-3 px-6 text-left">
+                                <span className="text-gray-700 whitespace-nowrap">
+                                  {phases?.deliverable && (
+                                    <a
+                                      href={phases?.deliverable}
+                                      className="border p-1 rounded-md cursor-pointer bg-white border-zinc-200 hover:bg-zinc-100 dark:bg-boxdark dark:hover:bg-boxdark2 dark:border-formStrokedark "
+                                    >
+                                      Le lien
+                                    </a>
+                                  )}
                                 </span>
                               </td>
                               <td className="text-left ">
