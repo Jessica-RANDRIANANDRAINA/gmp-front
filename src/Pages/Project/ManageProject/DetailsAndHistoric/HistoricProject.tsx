@@ -41,7 +41,7 @@ const HistoricProject = () => {
                 <th className="py-3 px-6 text-left">Modifié par</th>
                 <th className="py-3 px-6 text-center">Modifié le</th>
                 <th className="py-3 px-6 text-center">Table modifiée</th>
-                <th className="py-3 px-6 text-center">champ modifié</th>
+                <th className="py-3 px-6 text-center">Rubrique</th>
                 <th className="py-3 px-6 text-center">Ancienne valeur</th>
                 <th className="py-3 px-6 text-center">Nouvelle valeur</th>
                 <th className="py-3 px-6 text-center">
@@ -167,7 +167,7 @@ const HistoricProject = () => {
                   </div>
                   <div>
                     <span className="text-emerald-500 font-semibold">
-                      champ modifié :{" "}
+                      Rubrique :{" "}
                     </span>
                     <span className="text-gray-800">{historic?.column}</span>
                   </div>
