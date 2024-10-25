@@ -109,14 +109,21 @@ const PhasesUpdate = ({
 
   // ADD PHASE IN THE LIST
   const handleAddPhaseList = () => {
+    const highestRank = Math.max(
+      ...phaseAndLivrableList?.map((phase) => phase.rank ?? 0)
+    );
+    let rank = highestRank + 1;
     let phaseData: IPhase = {
       id: uuid4(),
       phase1: "",
       expectedDeliverable: "",
       startDate: undefined,
       endDate: undefined,
+      rank,
     };
-    setPhaseAndLivrableList([...phaseAndLivrableList, phaseData]);
+
+    const newPhaseList = [...phaseAndLivrableList, phaseData];
+    setPhaseAndLivrableList(newPhaseList);
   };
   return (
     <form
