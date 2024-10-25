@@ -82,7 +82,7 @@ const ManageUser = () => {
       fetchUser();
       notyf.success("Données actualiser");
     } catch (error) {
-      console.error(`Error while actualise data`);
+      console.error(`Error while actualise data: ${error}`);
     } finally {
       setLoadingActualise(false);
     }

@@ -104,7 +104,7 @@ const AddTaskPhase = ({
         listUsers: formatuser,
       };
       await createTaskPhase(dataToSend);
-      notyf.success("Création de la tache réussi.");
+      notyf.success("Création de la tache réussie.");
 
       setIsAddTaskFinished(true);
       handleCloseModal();

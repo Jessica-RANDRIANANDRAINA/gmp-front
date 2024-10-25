@@ -23,7 +23,6 @@ import "notyf/notyf.min.css";
 
 const notyf = new Notyf({ position: { x: "center", y: "top" } });
 
-
 const AddProject = () => {
   const navigate = useNavigate();
   // const [isLoaded, setIsLoaded] = useState(false);
@@ -134,11 +133,11 @@ const AddProject = () => {
     try {
       // create project service
       await createProject(data);
-      
-      notyf.success(`Projet Crée avec succès.`)
+
+      notyf.success(`Projet Crée avec succès.`);
       navigate("/gmp/project/list");
     } catch (error) {
-      notyf.success(`Une erreur s'est produite, veuillez réessayer plus tard`)
+      notyf.error(`Une erreur s'est produite, veuillez réessayer plus tard`);
       console.log(`Error at create project: ${error}`);
     } finally {
       // stop loading
