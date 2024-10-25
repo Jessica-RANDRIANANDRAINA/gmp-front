@@ -16,9 +16,7 @@ export const getAllMyHabilitation = async () => {
       const decoded = decodeToken("pr");
 
       if (decoded?.jti) {
-        
         const habilitation = await getUserHabilitations(decoded?.jti);
-
 
         const transformed = transformHabilitation(habilitation.habilitations);
 
@@ -48,8 +46,11 @@ const transformHabilitation = (habilitations: any[]) => {
       update: false,
       watchMyProject: false,
       watchMySubordinatesProject: false,
+      watchAllProject: false,
       updateMySubordinatesProject: false,
+      updateAllProject: false,
       deleteMySubordinatesProject: false,
+      deleteAllProject: false,
       manageMySubordinatesProject: false,
       manage: false,
     },
@@ -74,11 +75,14 @@ const transformHabilitation = (habilitations: any[]) => {
       habilitation.project.watchMyProject ||= project.watchMyProject === 1;
       habilitation.project.watchMySubordinatesProject ||=
         project.watchMySubordinatesProject === 1;
+      habilitation.project.watchAllProject ||= project.watchAllProject === 1;
       habilitation.project.create ||= project.create === 1;
       habilitation.project.update ||= project.update === 1;
+      habilitation.project.updateAllProject ||= project.updateAllProject === 1;
       habilitation.project.updateMySubordinatesProject ||=
         project.updateMySubordinatesProject === 1;
       habilitation.project.delete ||= project.delete === 1;
+      habilitation.project.deleteAllProject ||= project.deleteAllProject === 1;
       habilitation.project.deleteMySubordinatesProject ||=
         project.deleteMySubordinatesProject === 1;
       habilitation.project.manageMySubordinatesProject ||=

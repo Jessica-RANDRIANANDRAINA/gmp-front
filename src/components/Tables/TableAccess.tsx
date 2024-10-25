@@ -441,6 +441,12 @@ const TableAccess = ({
                         );
                         count++;
                       }
+                      if (project.watchAllProject === 1) {
+                        message.push(
+                          "Voir la lite de tous les projets de Ravinala"
+                        );
+                        count++;
+                      }
                       if (project.create === 1) {
                         message.push("Créer un projet");
                         count++;
@@ -452,6 +458,12 @@ const TableAccess = ({
                       if (project.updateMySubordinatesProject === 1) {
                         message.push(
                           "Modifier les détails des projets et celle de mes subordonnées"
+                        );
+                        count++;
+                      }
+                      if (project.updateAllProject === 1) {
+                        message.push(
+                          "Modifier les détails de tous les projets"
                         );
                         count++;
                       }
@@ -475,6 +487,10 @@ const TableAccess = ({
                         message.push(
                           "Archiver les projets de mes subordonné(e)s"
                         );
+                        count++;
+                      }
+                      if (project.deleteAllProject === 1) {
+                        message.push("Archiver tous projets");
                         count++;
                       }
                       if (project.assign === 1) {

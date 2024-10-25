@@ -36,10 +36,13 @@ const AddAccessModal = ({
     create: 0,
     update: 0,
     updateMySubordinatesProject: 0,
+    updateAllProject: 0,
     delete: 0,
     deleteMySubordinatesProject: 0,
+    deleteAllProject: 0,
     watchMyProject: 0,
     watchMySubordinatesProject: 0,
+    watchAllProject: 0,
     manage: 0,
     manageMySubordinatesProject: 0,
   });
@@ -264,6 +267,14 @@ const AddAccessModal = ({
                   }
                 />
                 <Checkbox
+                  label="Voir tous les projets"
+                  onStateCheckChange={(isChecked) =>
+                    isChecked
+                      ? handleCheckBoxChange("project", "watchAllProject", 1)
+                      : handleCheckBoxChange("project", "watchAllProject", 0)
+                  }
+                />
+                <Checkbox
                   label="Créer un nouveau projet"
                   onStateCheckChange={(isChecked) =>
                     isChecked
@@ -293,6 +304,14 @@ const AddAccessModal = ({
                           "updateMySubordinatesProject",
                           0
                         )
+                  }
+                />
+                <Checkbox
+                  label="Modifier tout les projets"
+                  onStateCheckChange={(isChecked) =>
+                    isChecked
+                      ? handleCheckBoxChange("project", "updateAllProject", 1)
+                      : handleCheckBoxChange("project", "updateAllProject", 0)
                   }
                 />
                 <Checkbox
@@ -341,6 +360,14 @@ const AddAccessModal = ({
                           "deleteMySubordinatesProject",
                           0
                         )
+                  }
+                />
+                <Checkbox
+                  label="Archiver tous les projets"
+                  onStateCheckChange={(isChecked) =>
+                    isChecked
+                      ? handleCheckBoxChange("project", "deleteAllProject", 1)
+                      : handleCheckBoxChange("project", "deleteAllProject", 0)
                   }
                 />
                 <Checkbox

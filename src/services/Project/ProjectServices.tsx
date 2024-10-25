@@ -5,9 +5,20 @@ const endPoint = import.meta.env.VITE_API_ENDPOINT;
 
 // ======GET========
 // get all projects
-export const getAllProject = async () => {
+export const getAllProject = async (
+  pageNumber?: number,
+  pageSize?: number,
+  title?: string,
+  member?: string
+) => {
   try {
-    const response = await axios.get(`${endPoint}/api/Project/all`);
+    const params: any = {
+      pageNumber,
+      pageSize,
+    };
+    if (title) params.title = title;
+    if (member) params.member = member;
+    const response = await axios.get(`${endPoint}/api/Project/all`, { params });
     return response.data;
   } catch (error) {
     throw new Error(`Error at fetching project`);

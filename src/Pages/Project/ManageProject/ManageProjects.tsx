@@ -3,7 +3,11 @@ import { useNavigate } from "react-router-dom";
 import ProjectLayout from "../../../layout/ProjectLayout";
 import { TableProjet } from "../../../components/Tables/projets";
 import ArchiveProject from "../../../components/Modals/Project/ArchiveProject";
-import { getAllLevelProjectByUserId } from "../../../services/Project";
+import {
+  getAllLevelProjectByUserId,
+  getAllProject,
+} from "../../../services/Project";
+import { getAllMyHabilitation } from "../../../services/Function/UserFunctionService";
 import { decodeToken } from "../../../services/Function/TokenService";
 
 const ManageProjects = () => {
@@ -64,16 +68,28 @@ const ManageProjects = () => {
   const fetchProject = async () => {
     const decode = decodeToken("pr");
 
-    // const project = await getProjectByUserId(decode?.jti);
-    const project = await getAllLevelProjectByUserId(
-      decode?.jti,
-      page?.pageNumber,
-      page?.pageSize,
-      search?.title,
-      search?.member
-    );
-    setProjectData(project?.project);
-    setTotalProjectCount(project?.totalCount);
+    const hab = await getAllMyHabilitation();
+    if (hab?.project?.watchAllProject) {
+      const project = await getAllProject(
+        page?.pageNumber,
+        page?.pageSize,
+        search?.title,
+        search?.member
+      );
+      setProjectData(project?.project);
+      setTotalProjectCount(project?.totalCount);
+    } else {
+      // const project = await getProjectByUserId(decode?.jti);
+      const project = await getAllLevelProjectByUserId(
+        decode?.jti,
+        page?.pageNumber,
+        page?.pageSize,
+        search?.title,
+        search?.member
+      );
+      setProjectData(project?.project);
+      setTotalProjectCount(project?.totalCount);
+    }
   };
 
   useEffect(() => {

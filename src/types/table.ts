@@ -16,9 +16,12 @@ export interface TableAccessProps {
       create: number;
       update: number;
       updateMySubordinatesProject: number;
+      updateAllProject: number;
       delete: number;
       deleteMySubordinatesProject: number;
+      deleteAllProject: number;
       watchMyProject: number;
+      watchAllProject: number;
       watchMySubordinatesProject: number;
       manage: number;
       manageMySubordinatesProject: number;
