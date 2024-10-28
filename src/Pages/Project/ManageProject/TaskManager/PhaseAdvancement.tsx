@@ -250,7 +250,7 @@ const PhaseAdvancement = () => {
   const handleDeleteTask = async (taskId: string) => {
     try {
       await deletetaskProject(taskId);
-      notyf.success("Tache supprimé");
+      notyf.success("Tâche supprimé");
 
       if (connection) {
         try {
@@ -483,7 +483,7 @@ const PhaseAdvancement = () => {
                       setModalOpen(true);
                     }}
                   >
-                    <span>+ ajouter une tache</span>
+                    <span>+ ajouter une tâche</span>
                   </div>
                 )}
               </div>

@@ -16,6 +16,8 @@ import DetailsAndHistoricProject from "./Pages/Project/ManageProject/DetailsAndH
 import DetailsProject from "./Pages/Project/ManageProject/DetailsAndHistoric/DetailsProject";
 import HistoricProject from "./Pages/Project/ManageProject/DetailsAndHistoric/HistoricProject";
 import UpdateAdvancement from "./Pages/Project/ManageProject/UpdateProject/UpdateAdvancement";
+import MyTask from "./Pages/Project/Activity/MyTask";
+import InterContract from "./Pages/Project/Activity/InterContract";
 import "./App.css";
 
 const App = () => {
@@ -164,6 +166,33 @@ const App = () => {
             <>
               <PageTitle title="G.M.P" />
               <Hebdo />
+            </>
+          }
+        />
+        <Route
+          path="/gmp/activity/task"
+          element={
+            <>
+              <PageTitle title="G.M.P" />
+              <MyTask />
+            </>
+          }
+        />
+        <Route
+          path="/gmp/activity/task"
+          element={
+            <>
+              <PageTitle title="G.M.P" />
+              <MyTask />
+            </>
+          }
+        />
+        <Route
+          path="/gmp/activity/intercontract"
+          element={
+            <>
+              <PageTitle title="G.M.P" />
+              <InterContract />
             </>
           }
         />

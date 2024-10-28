@@ -104,13 +104,13 @@ const AddTaskPhase = ({
         listUsers: formatuser,
       };
       await createTaskPhase(dataToSend);
-      notyf.success("Création de la tache réussie.");
+      notyf.success("Création de la tâche réussie.");
 
       setIsAddTaskFinished(true);
       handleCloseModal();
     } catch (error) {
       notyf.error(
-        "Une erreur s'est produite lors de la création de la tache, veuillez réessayer plus tard."
+        "Une erreur s'est produite lors de la création de la tâche, veuillez réessayer plus tard."
       );
       console.error(`Error at create task phase: ${error}`);
     } finally {
@@ -126,7 +126,7 @@ const AddTaskPhase = ({
     <Modal
       modalOpen={modalOpen}
       setModalOpen={setModalOpen}
-      header="Ajouter une tache"
+      header="Ajouter une tâche"
       heightSize="80vh"
       widthSize="medium"
     >

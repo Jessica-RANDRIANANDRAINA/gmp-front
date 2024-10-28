@@ -37,7 +37,7 @@ const TaskProject = () => {
     <ProjectLayout>
       <div className="">
         <div className="bg-white dark:bg-boxdark pt-4 pb-3 px-9 shadow-sm">
-          <Breadcrumb pageName="Tache" />
+          <Breadcrumb pageName="Tâche" />
           {/* ===== PROJECT DATA START ==== */}
           <div className="flex justify-between">
             <div>

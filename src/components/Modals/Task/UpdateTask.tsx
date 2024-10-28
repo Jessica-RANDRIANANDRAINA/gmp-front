@@ -86,7 +86,7 @@ const UpdateTask = ({
       const taskId = task.content.id;
       await updateTaskProject(taskId, dataToSend);
       setIsRefreshTaskNeeded(true);
-      notyf.success("Modification de la tache réussi");
+      notyf.success("Modification de la tâche réussi");
       handleCloseModal();
     } catch (error) {
       notyf.error(
