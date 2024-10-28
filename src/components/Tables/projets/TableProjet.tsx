@@ -865,11 +865,20 @@ const TableProjet = ({
                 ?.map((project) => {
                   const dateStart = formatDate(project?.startDate);
                   const dateEnd = formatDate(project?.endDate);
+                  const today = new Date();
+                  const dateEndCHeck = new Date(project?.endDate);
+                  const isDateEndPassed =
+                    dateEndCHeck < today &&
+                    project?.completionPercentage !== 100;
 
                   return (
                     <tr
                       key={project?.id}
-                      className="hover:bg-whiten dark:hover:bg-boxdark2"
+                      className={`  ${
+                        isDateEndPassed
+                          ? "bg-red-100 hover:bg-red-50 dark:bg-red-300 dark:hover:bg-red-200  "
+                          : "hover:bg-whiten dark:hover:bg-boxdark2"
+                      }`}
                     >
                       <td className="pl-2">
                         <button
@@ -963,7 +972,41 @@ const TableProjet = ({
                         </p>
                       </td>
                       <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                        <p className="text-black dark:text-white">{dateEnd}</p>
+                        <p className="text-black flex gap-1 dark:text-white">
+                          {isDateEndPassed ? (
+                            <svg
+                              width="20"
+                              height="20"
+                              viewBox="0 0 64 64"
+                              aria-hidden="true"
+                              preserveAspectRatio="xMidYMid meet"
+                              fill="#000000"
+                            >
+                              <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                              <g
+                                id="SVGRepo_tracerCarrier"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              ></g>
+                              <g id="SVGRepo_iconCarrier">
+                                {" "}
+                                <g fill="#ff002f">
+                                  {" "}
+                                  <path d="M23 42.4H13L9 2h18z"> </path>{" "}
+                                  <ellipse cx="18" cy="54.4" rx="7.7" ry="7.6">
+                                    {" "}
+                                  </ellipse>{" "}
+                                  <path d="M51 42.4H41L37 2h18z"> </path>{" "}
+                                  <ellipse cx="46" cy="54.4" rx="7.7" ry="7.6">
+                                    {" "}
+                                  </ellipse>{" "}
+                                </g>{" "}
+                              </g>
+                            </svg>
+                          ) : null}
+
+                          {dateEnd}
+                        </p>
                       </td>
                       <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
                         <div className="w-full bg-zinc-100 rounded-full dark:bg-strokedark h-6 relative">
@@ -1003,11 +1046,19 @@ const TableProjet = ({
             .map((project) => {
               const dateStart = formatDate(project?.startDate);
               const dateEnd = formatDate(project?.endDate);
+              const today = new Date();
+              const dateEndCHeck = new Date(project?.endDate);
+              const isDateEndPassed =
+                dateEndCHeck < today && project?.completionPercentage !== 100;
 
               return (
                 <div
                   key={project?.id}
-                  className="bg-white *:grid *:grid-cols-2 dark:bg-boxdark shadow-lg rounded-lg mb-4 p-4 border border-zinc-200 dark:border-black"
+                  className={` *:grid *:grid-cols-2  shadow-lg rounded-lg mb-4 p-4 border border-zinc-200 dark:border-black ${
+                    isDateEndPassed
+                      ? "bg-red-100 dark:bg-red-200 text-black"
+                      : "bg-white dark:bg-boxdark"
+                  }`}
                 >
                   <div className="">
                     <button
@@ -1101,7 +1152,40 @@ const TableProjet = ({
                     <span className="text-emerald-500 font-semibold">
                       Date fin :{" "}
                     </span>
-                    <span className="text-gray-800">{dateEnd}</span>
+                    <span className=" flex gap-1 text-gray-800">
+                      {isDateEndPassed ? (
+                        <svg
+                          width="20"
+                          height="20"
+                          viewBox="0 0 64 64"
+                          aria-hidden="true"
+                          preserveAspectRatio="xMidYMid meet"
+                          fill="#000000"
+                        >
+                          <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                          <g
+                            id="SVGRepo_tracerCarrier"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          ></g>
+                          <g id="SVGRepo_iconCarrier">
+                            {" "}
+                            <g fill="#ff002f">
+                              {" "}
+                              <path d="M23 42.4H13L9 2h18z"> </path>{" "}
+                              <ellipse cx="18" cy="54.4" rx="7.7" ry="7.6">
+                                {" "}
+                              </ellipse>{" "}
+                              <path d="M51 42.4H41L37 2h18z"> </path>{" "}
+                              <ellipse cx="46" cy="54.4" rx="7.7" ry="7.6">
+                                {" "}
+                              </ellipse>{" "}
+                            </g>{" "}
+                          </g>
+                        </svg>
+                      ) : null}
+                      {dateEnd}
+                    </span>
                   </div>
                   <div className="mb-2">
                     <span className="text-emerald-500 font-semibold">

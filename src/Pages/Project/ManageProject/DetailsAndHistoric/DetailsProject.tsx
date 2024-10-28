@@ -7,11 +7,17 @@ import { formatDate } from "../../../../services/Function/DateServices";
 const DetailsProject = () => {
   const { projectId } = useParams();
   const [projectData, setProjectData] = useState<IProjectData>();
+  const [isDateEndPassed, setIsEndPassed] = useState<boolean>(false);
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
   const fetchProjectData = async () => {
     if (projectId) {
       const project = await getProjectById(projectId);
+      const today = new Date();
+      const dateEndCheck = new Date(project?.endDate);
+      const isEndDatePassed =
+        dateEndCheck < today && project?.completionPercentage !== 100;
+      setIsEndPassed(isEndDatePassed);
       setProjectData(project);
     }
   };
@@ -152,13 +158,53 @@ const DetailsProject = () => {
                       ? formatDate(projectData?.startDate)
                       : ""}
                   </div>
-                  <div className={`${projectData?.endDate ? "" : "hidden"}`}>
+                  <div
+                    className={`${
+                      projectData?.endDate ? "flex gap-2" : "hidden"
+                    }`}
+                  >
                     <span className="text-base">
                       <u>Fin</u> :{" "}
                     </span>
-                    {projectData?.endDate
-                      ? formatDate(projectData?.endDate)
-                      : ""}
+                    <span className="flex gap-1 text-red-500">
+                      {isDateEndPassed ? (
+                        <svg
+                          width="20"
+                          height="20"
+                          viewBox="0 0 64 64"
+                          aria-hidden="true"
+                          preserveAspectRatio="xMidYMid meet"
+                          fill="#000000"
+                        >
+                          <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                          <g
+                            id="SVGRepo_tracerCarrier"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          ></g>
+                          <g id="SVGRepo_iconCarrier">
+                            {" "}
+                            <g fill="#ff002f">
+                              {" "}
+                              <path d="M23 42.4H13L9 2h18z"> </path>{" "}
+                              <ellipse cx="18" cy="54.4" rx="7.7" ry="7.6">
+                                {" "}
+                              </ellipse>{" "}
+                              <path d="M51 42.4H41L37 2h18z"> </path>{" "}
+                              <ellipse cx="46" cy="54.4" rx="7.7" ry="7.6">
+                                {" "}
+                              </ellipse>{" "}
+                            </g>{" "}
+                          </g>
+                        </svg>
+                      ) : null}
+                      {projectData?.endDate
+                        ? formatDate(projectData?.endDate)
+                        : ""}
+                        {
+                          isDateEndPassed ? " - En retard" :""
+                        }
+                    </span>
                   </div>
                 </div>
                 {/* ----- DATE END ----- */}
