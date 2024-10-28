@@ -869,7 +869,8 @@ const TableProjet = ({
                   const dateEndCHeck = new Date(project?.endDate);
                   const isDateEndPassed =
                     dateEndCHeck < today &&
-                    project?.completionPercentage !== 100;
+                    project?.completionPercentage !== 100 &&
+                    dateEnd !== "--";
 
                   return (
                     <tr
@@ -1049,7 +1050,9 @@ const TableProjet = ({
               const today = new Date();
               const dateEndCHeck = new Date(project?.endDate);
               const isDateEndPassed =
-                dateEndCHeck < today && project?.completionPercentage !== 100;
+                dateEndCHeck < today &&
+                project?.completionPercentage !== 100 &&
+                dateEnd != "--";
 
               return (
                 <div
