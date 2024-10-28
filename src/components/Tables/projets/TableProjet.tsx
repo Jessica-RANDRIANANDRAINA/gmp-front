@@ -176,6 +176,7 @@ const TableProjet = ({
 
   // GET THE NUMBER OF PAGES EACH TIME A ENTRIES PER PAGE OR THE FILTEREDDATA CHANGE
   useEffect(() => {
+    setActualPage(1);
     setPageNumbers(getPageNumber(totalProjectCount));
   }, [entriesPerPage, totalProjectCount]);
 
