@@ -16,8 +16,11 @@ import DetailsAndHistoricProject from "./Pages/Project/ManageProject/DetailsAndH
 import DetailsProject from "./Pages/Project/ManageProject/DetailsAndHistoric/DetailsProject";
 import HistoricProject from "./Pages/Project/ManageProject/DetailsAndHistoric/HistoricProject";
 import UpdateAdvancement from "./Pages/Project/ManageProject/UpdateProject/UpdateAdvancement";
+import Activity from "./Pages/Project/Activity/Activity";
+import AllActivity from "./Pages/Project/Activity/AllActivity";
 import MyTask from "./Pages/Project/Activity/MyTask";
 import InterContract from "./Pages/Project/Activity/InterContract";
+import Transverse from "./Pages/Project/Activity/Transverse";
 import "./App.css";
 
 const App = () => {
@@ -79,7 +82,7 @@ const App = () => {
             </>
           }
         />
-        
+
         <Route
           path="/gmp/project/details/:projectId"
           element={
@@ -134,6 +137,56 @@ const App = () => {
           }
         />
         <Route
+          path="/gmp/activity/:userid"
+          element={
+            <>
+              <PageTitle title="G.M.P" />
+              <Activity />
+            </>
+          }
+          children={
+            <>
+              <Route
+                path="/gmp/activity/:userid/list"
+                element={
+                  <>
+                    <PageTitle title="G.M.P" />
+                    <AllActivity />
+                  </>
+                }
+              />
+              <Route
+                path="/gmp/activity/:userid/task"
+                element={
+                  <>
+                    <PageTitle title="G.M.P" />
+                    <MyTask />
+                  </>
+                }
+              />
+              <Route
+                path="/gmp/activity/:userid/intercontract"
+                element={
+                  <>
+                    <PageTitle title="G.M.P" />
+                    <InterContract />
+                  </>
+                }
+              />
+              <Route
+                path="/gmp/activity/:userid/transverse"
+                element={
+                  <>
+                    <PageTitle title="G.M.P" />
+                    <Transverse />
+                  </>
+                }
+              />
+            </>
+          }
+        />
+
+        <Route
           path="/gmp/project/list"
           element={
             <>
@@ -170,29 +223,11 @@ const App = () => {
           }
         />
         <Route
-          path="/gmp/activity/task"
+          path="/gmp/activity/list"
           element={
             <>
               <PageTitle title="G.M.P" />
-              <MyTask />
-            </>
-          }
-        />
-        <Route
-          path="/gmp/activity/task"
-          element={
-            <>
-              <PageTitle title="G.M.P" />
-              <MyTask />
-            </>
-          }
-        />
-        <Route
-          path="/gmp/activity/intercontract"
-          element={
-            <>
-              <PageTitle title="G.M.P" />
-              <InterContract />
+              <Activity />
             </>
           }
         />
