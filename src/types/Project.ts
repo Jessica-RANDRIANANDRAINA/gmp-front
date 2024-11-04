@@ -111,3 +111,16 @@ export interface ITaskAdd {
   startDate?: string;
   dueDate?: string;
 }
+
+export interface IActivityAdd {
+  id?: string;
+  title: string;
+  description: string;
+  type: string;
+  dailyEffort?: number;
+  startDate?: string;
+  projectTitle?: string;
+  phaseTitle?: string;
+  projectId?: string;
+  phaseId?: string;
+}
