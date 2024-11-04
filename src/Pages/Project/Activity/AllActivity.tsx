@@ -4,6 +4,7 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { HubConnectionBuilder, HubConnection } from "@microsoft/signalr";
 import { formatDate } from "../../../services/Function/DateServices";
 import { getAllActivitiesOfUser } from "../../../services/Project";
+import AddActivity from "../../../components/Modals/Activity/AddActivity";
 
 const organizeActivityByStatus = (activities: any[]) => {
   const columns: {
@@ -15,9 +16,7 @@ const organizeActivityByStatus = (activities: any[]) => {
     "column-4": { id: "column-4", title: "En pause", activityIds: [] },
     "column-5": { id: "column-5", title: "Abandonné", activityIds: [] },
   };
-  console.log("*/*/*/*/*/*/")
-  console.log(activities)
-  console.log("*/*/*/*/*/*/")
+
   const activityMap = activities.reduce((acc, activity) => {
     acc[activity.id] = {
       id: activity.id,
@@ -33,7 +32,6 @@ const organizeActivityByStatus = (activities: any[]) => {
         projectTitle: activity.projectTitle,
         phaseTitle: activity.phaseTitle,
         priority: activity.priority,
-        
       },
     };
     const columnKey = Object.keys(columns).find(
@@ -54,6 +52,8 @@ const AllActivity = () => {
     columns: {},
     columnOrder: [],
   });
+  const [isModalAddActivityOpen, setIsModalAddActivityOpen] =
+    useState<boolean>(false);
   const [connection, setConnection] = useState<HubConnection | null>(null);
 
   const fetchData = async () => {
@@ -307,9 +307,9 @@ const AllActivity = () => {
                 {columnId === "column-1" && (
                   <div
                     className="border ml-4 p-1 cursor-pointer border-slate-300 hover:bg-slate-100 dark:hover:bg-boxdark2 flex justify-center text-xs"
-                    // onClick={() => {
-                    //   setModalOpen(true);
-                    // }}
+                    onClick={() => {
+                      setIsModalAddActivityOpen(true);
+                    }}
                   >
                     <span>+ ajouter une tâche</span>
                   </div>
@@ -319,6 +319,15 @@ const AllActivity = () => {
           })}
         </div>
       </DragDropContext>
+      {
+        isModalAddActivityOpen && (
+          <AddActivity
+            modalOpen={isModalAddActivityOpen}
+            setModalOpen={setIsModalAddActivityOpen}
+            // setIsActivityFinished={}
+          />
+        )
+      }
     </div>
   );
 };
