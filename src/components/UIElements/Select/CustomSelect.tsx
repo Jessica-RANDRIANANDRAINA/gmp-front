@@ -101,7 +101,7 @@ const CustomSelect = ({
       </button>
       <div
         ref={dropdown}
-        className={`absolute z-999999 min-w-fit w-full bg-white dark:bg-black border border-stroke rounded-lg mt-1 transition-transform duration-200 ease-in-out transform ${
+        className={`absolute z-999999  w-full bg-white dark:bg-black border border-stroke rounded-lg mt-1 transition-transform duration-200 ease-in-out transform ${
           isOpen
             ? "scale-y-100 scale-x-100 opacity-100 "
             : " scale-y-0 scale-x-0 opacity-0 "
