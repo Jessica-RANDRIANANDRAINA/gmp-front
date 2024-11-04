@@ -21,7 +21,11 @@ import {
   deletetaskProject,
 } from "./TaskServices";
 
-import { getAllActivitiesOfUser } from "./Activities";
+import {
+  getAllActivitiesOfUser,
+  getTransverseByUserId,
+  getInterContractByUserId,
+} from "./Activities";
 
 export {
   getAllProject,
@@ -41,5 +45,7 @@ export {
   getTaskByProjectAndPhaseID,
   updateTaskProject,
   deletetaskProject,
-  getAllActivitiesOfUser
+  getAllActivitiesOfUser,
+  getTransverseByUserId,
+  getInterContractByUserId,
 };

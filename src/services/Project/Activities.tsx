@@ -14,3 +14,27 @@ export const getAllActivitiesOfUser = async (userid: string) => {
     );
   }
 };
+
+// get all transverse related to one user
+export const getTransverseByUserId = async (userid: string) => {
+  try {
+    const response = await axios.get(
+      `${endPoint}/api/Activity/transverse/${userid}`
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(`Error at get transverses of an user services: ${error}`);
+  }
+};
+
+// get all intercontract related to one user
+export const getInterContractByUserId = async (userid: string) => {
+  try {
+    const response = await axios.get(
+      `${endPoint}/api/Activity/intercontract/${userid}`
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(`Error at get intercontract of an user services: ${error}`);
+  }
+};
