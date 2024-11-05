@@ -27,6 +27,7 @@ import {
   getInterContractByUserId,
   createTransverse,
   updateTransverse,
+  deleteTransverse,
 } from "./Activities";
 
 export {
@@ -52,4 +53,5 @@ export {
   getInterContractByUserId,
   createTransverse,
   updateTransverse,
+  deleteTransverse,
 };

@@ -69,3 +69,16 @@ export const updateTransverse = async (
     throw new Error(`Error at update transverse: ${error}`);
   }
 };
+
+// DELETE
+// delete transverse
+export const deleteTransverse = async (transverseId: string) => {
+  try {
+    const response = await axios.delete(
+      `${endPoint}/api/Activity/transverse/delete/${transverseId}`
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(`Error at delete transverse project: ${error}`);
+  }
+};

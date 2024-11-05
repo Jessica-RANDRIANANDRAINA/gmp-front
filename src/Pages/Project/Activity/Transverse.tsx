@@ -1,8 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { HubConnectionBuilder, HubConnection } from "@microsoft/signalr";
-import { getTransverseByUserId } from "../../../services/Project";
+import {
+  getTransverseByUserId,
+  deleteTransverse,
+} from "../../../services/Project";
 import {
   AddTransverse,
   UpdateTransverse,
@@ -61,6 +64,21 @@ const Transverse = () => {
   const [isRefreshNeeded, setIsRefreshNeeded] = useState<boolean>(false);
   const [isModalUpdateOpen, setIsModalUpdateOpen] = useState<boolean>(false);
   const [transverseData, setTransverseData] = useState<any>();
+  const [activeTransverseId, setActiveTransverseId] = useState<string | null>(
+    null
+  );
+  const deletePopUp = useRef<any>(null);
+
+  // close delete pop up when click outside
+  useEffect(() => {
+    const clickHandler = ({ target }: MouseEvent) => {
+      if (!deletePopUp.current) return;
+      if (!deletePopUp || deletePopUp.current.contains(target)) return;
+      setActiveTransverseId("");
+    };
+    document.addEventListener("click", clickHandler);
+    return () => document.removeEventListener("click", clickHandler);
+  });
 
   // get all transverse data of the connected user
   const fetchData = async () => {
@@ -110,6 +128,20 @@ const Transverse = () => {
       }
     };
   }, [isRefreshNeeded]);
+
+  // when transverse deleted refetchData by using signal R
+  useEffect(() => {
+    if (connection) {
+      connection.on("ReceiveTransverseDeleted", (transverseId: string) => {
+        fetchData();
+      });
+    }
+    return () => {
+      if (connection) {
+        connection.off("ReceiveTransverseDeleted");
+      }
+    };
+  }, [connection]);
 
   const handleOnDragEnd = async (result: {
     destination: any;
@@ -189,6 +221,35 @@ const Transverse = () => {
       }
     }
   };
+
+  const handleToogleMenuDelete = (
+    transverseId: string,
+    event: React.MouseEvent
+  ) => {
+    event.stopPropagation();
+    setActiveTransverseId(
+      activeTransverseId === transverseId ? null : transverseId
+    );
+  };
+
+  const handleDeleteTransverse = async (transverseId: string) => {
+    try {
+      await deleteTransverse(transverseId);
+      notyf.success("Tâche transverse supprimé");
+      if (connection) {
+        try {
+          await connection.invoke("TransverseDeleted", transverseId);
+        } catch (error) {
+          console.error(
+            `Error while sending event TransverseDeleted : ${error}`
+          );
+        }
+      }
+    } catch (error) {
+      notyf.error("Une erreur s'est produite, veuillez réessayer.");
+      console.error(`Error at handle delete task: ${error}`);
+    }
+  };
   return (
     <div className={`p-5`}>
       <DragDropContext onDragEnd={handleOnDragEnd}>
@@ -238,7 +299,12 @@ const Transverse = () => {
                                   setIsModalUpdateOpen(true);
                                 }}
                               >
-                                <div className="absolute top-2 right-1 hover:bg-zinc-100 dark:hover:bg-boxdark2 px-1 h-4 cursor-pointer">
+                                <div
+                                  className="absolute top-2 right-1 hover:bg-zinc-100 dark:hover:bg-boxdark2 px-1 h-4 cursor-pointer"
+                                  onClick={(e) => {
+                                    handleToogleMenuDelete(transverse.id, e);
+                                  }}
+                                >
                                   <svg
                                     width="15"
                                     height="15"
@@ -267,6 +333,28 @@ const Transverse = () => {
                                     </g>
                                   </svg>
                                 </div>
+                                {/* pop up menu delete */}
+                                {activeTransverseId === transverse.id && (
+                                  <div
+                                    ref={deletePopUp}
+                                    className="absolute z-20 right-0 top-5 bg-white dark:bg-boxdark dark:border-formStrokedark border-zinc-100 dark:hover:border-red-950 border shadow-lg rounded-md "
+                                  >
+                                    <button
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleDeleteTransverse(transverse.id);
+                                        console.log(
+                                          "delete transverse id: ",
+                                          transverse.id
+                                        );
+                                      }}
+                                      className="text-red-600 dark:text-red-400 dark:hover:bg-red-950  hover:bg-red-50 px-4 py-2 rounded"
+                                    >
+                                      Supprimer
+                                    </button>
+                                  </div>
+                                )}
+                                {/* pop up menu delete */}
 
                                 <div className="flex gap-1">
                                   <span
