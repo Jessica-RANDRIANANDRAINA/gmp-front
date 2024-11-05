@@ -28,6 +28,9 @@ import {
   createTransverse,
   updateTransverse,
   deleteTransverse,
+  createInterContract,
+  updateIntercontract,
+  deleteIntercontract,
 } from "./Activities";
 
 export {
@@ -54,4 +57,7 @@ export {
   createTransverse,
   updateTransverse,
   deleteTransverse,
+  createInterContract,
+  updateIntercontract,
+  deleteIntercontract,
 };

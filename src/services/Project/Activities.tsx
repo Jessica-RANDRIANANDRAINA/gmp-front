@@ -47,9 +47,21 @@ export const createTransverse = async (transverseData: any) => {
       `${endPoint}/api/Activity/transverse/create`,
       transverseData
     );
-    return response;
+    return response.data;
   } catch (error) {
     throw new Error(`Error at create transverse service : , ${error}`);
+  }
+};
+// create a new intercontract
+export const createInterContract = async (intercontractData: any) => {
+  try {
+    const response = await axios.post(
+      `${endPoint}/api/Activity/intercontract/create`,
+      intercontractData
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(`Error at create intercontract service : , ${error}`);
   }
 };
 
@@ -69,6 +81,21 @@ export const updateTransverse = async (
     throw new Error(`Error at update transverse: ${error}`);
   }
 };
+// update intercontract
+export const updateIntercontract = async (
+  intercontractId: string,
+  intercontractData: any
+) => {
+  try {
+    const response = await axios.put(
+      `${endPoint}/api/Activity/intercontract/update/${intercontractId}`,
+      intercontractData
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(`Error at update intercontract: ${error}`);
+  }
+};
 
 // DELETE
 // delete transverse
@@ -80,5 +107,16 @@ export const deleteTransverse = async (transverseId: string) => {
     return response.data;
   } catch (error) {
     throw new Error(`Error at delete transverse project: ${error}`);
+  }
+};
+// delete intercontract
+export const deleteIntercontract = async (intercontractId: string) => {
+  try {
+    const response = await axios.delete(
+      `${endPoint}/api/Activity/intercontract/delete/${intercontractId}`
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(`Error at delete intercontract project: ${error}`);
   }
 };
