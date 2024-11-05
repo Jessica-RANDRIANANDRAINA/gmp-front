@@ -149,6 +149,7 @@ const PhaseAdvancement = () => {
     };
   }, [phaseId, isRefreshTaskNeeded]);
 
+  // when task deleted refetchData by using signalR
   useEffect(() => {
     if (connection) {
       connection.on("ReceiveTaskDeleted", (taskId: string) => {

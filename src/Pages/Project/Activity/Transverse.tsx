@@ -3,6 +3,10 @@ import { useParams } from "react-router-dom";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { HubConnectionBuilder, HubConnection } from "@microsoft/signalr";
 import { getTransverseByUserId } from "../../../services/Project";
+import {
+  AddTransverse,
+  UpdateTransverse,
+} from "../../../components/Modals/Activity";
 import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
 import { formatDate } from "../../../services/Function/DateServices";
@@ -29,6 +33,9 @@ const organizeTransverseByStatus = (transverses: any[]) => {
         title: transverse.title,
         description: transverse.description,
         status: transverse.status,
+        startDate: transverse.startDate,
+        type: transverse.type,
+        dailyEffort: transverse.dailyEffort,
       },
     };
     const columnKey = Object.keys(columns).find(
@@ -38,7 +45,7 @@ const organizeTransverseByStatus = (transverses: any[]) => {
       columns[columnKey].transverseIds.push(transverse.id);
     }
     return acc;
-  }, {} as { [key: string]: { id: string; content: { title: string; id: string } } });
+  }, {} as { [key: string]: { id: string; content: { startDate: string; dailyEffort: number; type: string; status: string; description: string; title: string; id: string } } });
   return { transverseMap, columns };
 };
 
@@ -49,9 +56,13 @@ const Transverse = () => {
     columns: {},
     columnOrder: [],
   });
-  const [transverseData, setTransverseData] = useState<any>();
   const [connection, setConnection] = useState<HubConnection | null>(null);
+  const [isModalAddOpen, setIsModalAddOpen] = useState<boolean>(false);
+  const [isRefreshNeeded, setIsRefreshNeeded] = useState<boolean>(false);
+  const [isModalUpdateOpen, setIsModalUpdateOpen] = useState<boolean>(false);
+  const [transverseData, setTransverseData] = useState<any>();
 
+  // get all transverse data of the connected user
   const fetchData = async () => {
     try {
       if (userid) {
@@ -74,9 +85,31 @@ const Transverse = () => {
     }
   };
 
-  useEffect(()=>{
-    fetchData()
-  }, [])
+  useEffect(() => {
+    fetchData();
+    setIsRefreshNeeded(false);
+
+    const connect = async () => {
+      const newConnection = new HubConnectionBuilder()
+        .withUrl(`${import.meta.env.VITE_API_ENDPOINT}/activityHub`)
+        .withAutomaticReconnect()
+        .build();
+
+      try {
+        await newConnection.start();
+        setConnection(newConnection);
+      } catch (error) {
+        console.error("Connection activity hub failed : ", error);
+      }
+    };
+    connect();
+
+    return () => {
+      if (connection) {
+        connection.stop();
+      }
+    };
+  }, [isRefreshNeeded]);
 
   const handleOnDragEnd = async (result: {
     destination: any;
@@ -144,14 +177,14 @@ const Transverse = () => {
       if (connection) {
         try {
           await connection.invoke(
-            "TaskMoved",
+            "TransverseMoved",
             draggableId,
             startColumn.title,
             endColumn.title
           );
-          // fetchData();
+          fetchData();
         } catch (error) {
-          console.error(`Error at calling task moved: ${error}`);
+          console.error(`Error at calling transverse moved: ${error}`);
         }
       }
     }
@@ -185,7 +218,7 @@ const Transverse = () => {
                         >
                           {(provided, snapshot) => {
                             const endDate = formatDate(
-                              transverse.content.dueDate
+                              transverse.content.startDate
                             );
                             return (
                               <div
@@ -199,6 +232,10 @@ const Transverse = () => {
                                 }`}
                                 style={{
                                   ...provided.draggableProps.style,
+                                }}
+                                onClick={() => {
+                                  setTransverseData(transverse);
+                                  setIsModalUpdateOpen(true);
                                 }}
                               >
                                 <div className="absolute top-2 right-1 hover:bg-zinc-100 dark:hover:bg-boxdark2 px-1 h-4 cursor-pointer">
@@ -273,7 +310,17 @@ const Transverse = () => {
                                       </g>
                                     </svg>
                                   </span>
-                                  {transverse.content.title}
+                                  <div className="grid grid-flow-row gap-2 ">
+                                    <div>{transverse.content.title}</div>
+                                    <div className="flex flex-wrap gap-1">
+                                      <div className="border text-slate-700 dark:text-whiten rounded-full w-7 h-5 flex justify-center items-center">
+                                        {transverse.content.dailyEffort}h
+                                      </div>
+                                      <div className="border text-slate-700 dark:text-whiten rounded-full w-fit px-1 h-5 flex justify-center items-center">
+                                        {transverse.content.type}
+                                      </div>
+                                    </div>
+                                  </div>
                                 </div>
                                 <div
                                   className={` pt-1 mt-2 text-xs ${
@@ -304,9 +351,9 @@ const Transverse = () => {
                 {columnId === "column-1" && (
                   <div
                     className="border ml-4 p-1 cursor-pointer border-slate-300 hover:bg-slate-100 dark:hover:bg-boxdark2 flex justify-center text-xs"
-                    // onClick={() => {
-                    //   setModalOpen(true);
-                    // }}
+                    onClick={() => {
+                      setIsModalAddOpen(true);
+                    }}
                   >
                     <span>+ ajouter une tâche transverse</span>
                   </div>
@@ -316,6 +363,21 @@ const Transverse = () => {
           })}
         </div>
       </DragDropContext>
+      {isModalAddOpen && (
+        <AddTransverse
+          modalOpen={isModalAddOpen}
+          setModalOpen={setIsModalAddOpen}
+          setIsAddFinished={setIsRefreshNeeded}
+        />
+      )}
+      {isModalUpdateOpen && (
+        <UpdateTransverse
+          modalUpdateOpen={isModalUpdateOpen}
+          setModalUpdateOpen={setIsModalUpdateOpen}
+          setIsRefreshNeeded={setIsRefreshNeeded}
+          transverse={transverseData}
+        />
+      )}
     </div>
   );
 };

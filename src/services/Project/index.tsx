@@ -25,6 +25,8 @@ import {
   getAllActivitiesOfUser,
   getTransverseByUserId,
   getInterContractByUserId,
+  createTransverse,
+  updateTransverse,
 } from "./Activities";
 
 export {
@@ -48,4 +50,6 @@ export {
   getAllActivitiesOfUser,
   getTransverseByUserId,
   getInterContractByUserId,
+  createTransverse,
+  updateTransverse,
 };

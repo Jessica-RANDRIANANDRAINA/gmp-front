@@ -38,3 +38,34 @@ export const getInterContractByUserId = async (userid: string) => {
     throw new Error(`Error at get intercontract of an user services: ${error}`);
   }
 };
+
+// POST
+// create a new transverse task
+export const createTransverse = async (transverseData: any) => {
+  try {
+    const response = await axios.post(
+      `${endPoint}/api/Activity/transverse/create`,
+      transverseData
+    );
+    return response;
+  } catch (error) {
+    throw new Error(`Error at create transverse service : , ${error}`);
+  }
+};
+
+// PUT
+// update transverse
+export const updateTransverse = async (
+  transverseId: string,
+  transverseData: any
+) => {
+  try {
+    const response = await axios.put(
+      `${endPoint}/api/Activity/transverse/update/${transverseId}`,
+      transverseData
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(`Error at update transverse: ${error}`);
+  }
+};

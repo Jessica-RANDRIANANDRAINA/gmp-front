@@ -1,0 +1,1 @@
+export const transverseType = ["Réunion", "Induction"];

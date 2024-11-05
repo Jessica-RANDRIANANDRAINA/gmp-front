@@ -6,6 +6,7 @@ import { BeatLoader } from "react-spinners";
 import { IActivityAdd } from "../../../types/Project";
 import { getProjectByUserId } from "../../../services/Project";
 import { v4 as uuid4 } from "uuid";
+import { getMondayAndFriday } from "../../../services/Function/DateServices";
 
 const AddActivity = ({
   modalOpen,
@@ -29,22 +30,7 @@ const AddActivity = ({
     projectId: "",
     phaseId: "",
   });
-  //   get modany and friday of actual week
-  const getMondayAndFriday = () => {
-    const today = new Date();
-    const day = today.getDay();
 
-    const monday = new Date(today);
-    monday.setDate(monday.getDate() - (day === 0 ? 6 : day - 1));
-
-    const friday = new Date(monday);
-    friday.setDate(monday.getDate() + 4);
-
-    return {
-      monday: monday.toISOString().split("T")[0],
-      friday: friday.toISOString().split("T")[0],
-    };
-  };
   const { monday, friday } = getMondayAndFriday();
   const [projectTitle, setProjectTitle] = useState<Array<string>>([]);
   const [phaseTitle, setPhaseTitle] = useState<Array<string>>([]);

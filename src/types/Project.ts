@@ -124,3 +124,12 @@ export interface IActivityAdd {
   projectId?: string;
   phaseId?: string;
 }
+
+export interface ITransverseAdd {
+  id?: string;
+  title: string;
+  description?: string;
+  type: string;
+  dailyEffort: number;
+  startDate?: string;
+}
