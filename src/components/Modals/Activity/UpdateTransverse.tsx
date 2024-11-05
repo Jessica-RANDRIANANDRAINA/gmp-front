@@ -6,6 +6,10 @@ import { BeatLoader } from "react-spinners";
 import { transverseType } from "../../../constants/Activity";
 import { getMondayAndFriday } from "../../../services/Function/DateServices";
 import { updateTransverse } from "../../../services/Project";
+import { Notyf } from "notyf";
+import "notyf/notyf.min.css";
+
+const notyf = new Notyf({ position: { x: "center", y: "top" } });
 
 const UpdateTransverse = ({
   modalUpdateOpen,
@@ -55,13 +59,16 @@ const UpdateTransverse = ({
         type: transverseData.type,
         description: transverseData.description,
       };
-      console.log("***************");
-      console.log(dataToSend);
-      console.log("***************");
       if (transverseData.id) {
         await updateTransverse(transverseData.id, dataToSend);
+        setIsRefreshNeeded(true);
+        notyf.success("Modification de la tâche transverse réussi");
+        handleCloseModal()
       }
     } catch (error) {
+      notyf.error(
+        "Une erreur s'est produite lors de la modification, veuillez réessayer plus tard"
+      );
       console.error(`Error at update transverse : ${error}`);
     } finally {
       setIsLoading(false);
