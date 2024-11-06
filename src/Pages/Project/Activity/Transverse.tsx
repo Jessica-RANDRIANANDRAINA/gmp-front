@@ -10,9 +10,9 @@ import {
   AddTransverse,
   UpdateTransverse,
 } from "../../../components/Modals/Activity";
+import { formatDate } from "../../../services/Function/DateServices";
 import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
-import { formatDate } from "../../../services/Function/DateServices";
 
 const notyf = new Notyf({ position: { x: "center", y: "top" } });
 
@@ -247,7 +247,7 @@ const Transverse = () => {
       }
     } catch (error) {
       notyf.error("Une erreur s'est produite, veuillez réessayer.");
-      console.error(`Error at handle delete task: ${error}`);
+      console.error(`Error at handle delete task transverse: ${error}`);
     }
   };
   return (
