@@ -237,7 +237,7 @@ const InterContract = () => {
   const handleDeleteIntercontract = async (intercontractId: string) => {
     try {
       await deleteIntercontract(intercontractId);
-      notyf.success("Tâche intercontract supprimé");
+      notyf.success("Intercontract supprimé");
       if (connection) {
         try {
           await connection.invoke("IntercontractDeleted", intercontractId);

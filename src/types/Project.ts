@@ -116,7 +116,7 @@ export interface IActivityAdd {
   id?: string;
   title: string;
   description: string;
-  type: string;
+  type?: string;
   dailyEffort?: number;
   startDate?: string;
   projectTitle?: string;
