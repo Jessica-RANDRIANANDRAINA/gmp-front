@@ -31,6 +31,10 @@ import {
   createInterContract,
   updateIntercontract,
   deleteIntercontract,
+  getTaskActivityByUserId,
+  createTaskActivity,
+  updateTaskActicity,
+  deleteTaskActivity,
 } from "./Activities";
 
 export {
@@ -60,4 +64,8 @@ export {
   createInterContract,
   updateIntercontract,
   deleteIntercontract,
+  getTaskActivityByUserId,
+  createTaskActivity,
+  updateTaskActicity,
+  deleteTaskActivity,
 };

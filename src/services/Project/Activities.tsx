@@ -38,6 +38,17 @@ export const getInterContractByUserId = async (userid: string) => {
     throw new Error(`Error at get intercontract of an user services: ${error}`);
   }
 };
+// get all task project activity related to one user
+export const getTaskActivityByUserId = async (userid: string) => {
+  try {
+    const response = await axios.get(
+      `${endPoint}/api/Activity/project/${userid}`
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(`Error at get task activity of an user services: ${error}`);
+  }
+};
 
 // POST
 // create a new transverse task
@@ -62,6 +73,19 @@ export const createInterContract = async (intercontractData: any) => {
     return response.data;
   } catch (error) {
     throw new Error(`Error at create intercontract service : , ${error}`);
+  }
+};
+// create a new task project activity
+export const createTaskActivity = async (taskActivityData: any) => {
+  try {
+    const response = await axios.post(
+      `
+      ${endPoint}/api/Activity/project/create`,
+      taskActivityData
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(`Error at create task activity service : , ${error}`);
   }
 };
 
@@ -96,6 +120,21 @@ export const updateIntercontract = async (
     throw new Error(`Error at update intercontract: ${error}`);
   }
 };
+// update task activity
+export const updateTaskActicity = async (
+  taskActivityId: string,
+  taskActivityData: any
+) => {
+  try {
+    const response = await axios.put(
+      `${endPoint}/api/Activity/project/update/${taskActivityId}`,
+      taskActivityData
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(`Error at update task activity: ${error}`);
+  }
+};
 
 // DELETE
 // delete transverse
@@ -118,5 +157,16 @@ export const deleteIntercontract = async (intercontractId: string) => {
     return response.data;
   } catch (error) {
     throw new Error(`Error at delete intercontract project: ${error}`);
+  }
+};
+// delete intercontract
+export const deleteTaskActivity = async (taskActivityId: string) => {
+  try {
+    const response = await axios.delete(
+      `${endPoint}/api/Activity/project/delete/${taskActivityId}`
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(`Error at delete task activity project: ${error}`);
   }
 };
