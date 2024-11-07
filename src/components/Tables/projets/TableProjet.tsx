@@ -37,6 +37,8 @@ const TableProjet = ({
     priority: string;
     criticity: string;
     completionPercentage: string;
+    startDate: string | undefined;
+    endDate: string | undefined;
   };
   setProjectsToDelete: React.Dispatch<React.SetStateAction<Array<string>>>;
   setProjectsSelected: React.Dispatch<React.SetStateAction<Array<string>>>;
@@ -59,6 +61,8 @@ const TableProjet = ({
       priority: string;
       criticity: string;
       completionPercentage: string;
+      startDate: string | undefined;
+      endDate: string | undefined;
     }>
   >;
 }) => {
@@ -168,6 +172,8 @@ const TableProjet = ({
       priority: "",
       criticity: "",
       completionPercentage: "",
+      startDate: "",
+      endDate: "",
     });
     setIsSearchButtonClicked(true);
   };
@@ -219,7 +225,7 @@ const TableProjet = ({
     <div className="bg-white  min-h-[80vh] pt-2 shadow-1 rounded-lg border border-zinc-200 dark:border-strokedark dark:bg-boxdark">
       {/* ===== FILTER START ===== */}
       <div className="flex m-5 flex-wrap justify-between items-center">
-        <div className="grid sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-8 grid-cols-1 gap-3 w-full">
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-9 grid-cols-1 gap-3 w-full">
           <CustomInput
             type="text"
             value={search.title}
@@ -268,7 +274,7 @@ const TableProjet = ({
               });
             }}
           />
-          
+
           <CustomSelect
             label="Avancement"
             data={["0", "25", "50", "75", "100"]}
@@ -277,6 +283,30 @@ const TableProjet = ({
               setSearch({
                 ...search,
                 completionPercentage: e,
+              });
+            }}
+          />
+          <CustomInput
+            type="date"
+            value={search.startDate}
+            label="Date début"
+            rounded="medium"
+            onChange={(e) => {
+              setSearch({
+                ...search,
+                startDate: e.target.value,
+              });
+            }}
+          />
+          <CustomInput
+            type="date"
+            value={search.endDate}
+            label="Date de fin"
+            rounded="medium"
+            onChange={(e) => {
+              setSearch({
+                ...search,
+                endDate: e.target.value,
               });
             }}
           />

@@ -12,7 +12,9 @@ export const getAllProject = async (
   member?: string,
   priority?: string,
   criticity?: string,
-  completionPercentage?: string
+  completionPercentage?: string,
+  startDate?: string,
+  endDate?: string
 ) => {
   try {
     const params: any = {
@@ -25,6 +27,8 @@ export const getAllProject = async (
     if (criticity) params.criticity = criticity;
     if (completionPercentage)
       params.completionPercentage = completionPercentage;
+    if (startDate) params.startDate = startDate;
+    if (endDate) params.endDate = endDate;
     const response = await axios.get(`${endPoint}/api/Project/all`, { params });
     return response.data;
   } catch (error) {
@@ -50,7 +54,9 @@ export const getAllLevelProjectByUserId = async (
   member?: string,
   priority?: string,
   criticity?: string,
-  completionPercentage?: string
+  completionPercentage?: string,
+  startDate?: string,
+  endDate?: string
 ) => {
   try {
     const params: any = {
@@ -63,7 +69,8 @@ export const getAllLevelProjectByUserId = async (
     if (criticity) params.criticity = criticity;
     if (completionPercentage)
       params.completionPercentage = completionPercentage;
-
+    if (startDate) params.startDate = startDate;
+    if (endDate) params.endDate = endDate;
     const response = await axios.get(
       `${endPoint}/api/Project/user/${userid}/all-level`,
       { params }

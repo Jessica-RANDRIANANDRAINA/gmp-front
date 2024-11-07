@@ -35,6 +35,8 @@ const ManageProjects = () => {
     priority: "",
     criticity: "",
     completionPercentage: "",
+    startDate: undefined as string | undefined,
+    endDate: undefined as string | undefined,
   });
   const navigate = useNavigate();
 
@@ -80,7 +82,9 @@ const ManageProjects = () => {
         search?.member,
         search?.priority,
         search?.criticity,
-        search?.completionPercentage
+        search?.completionPercentage,
+        search?.startDate,
+        search?.endDate
       );
       setProjectData(project?.project);
       setTotalProjectCount(project?.totalCount);
@@ -94,7 +98,9 @@ const ManageProjects = () => {
         search?.member,
         search?.priority,
         search?.criticity,
-        search?.completionPercentage
+        search?.completionPercentage,
+        search?.startDate,
+        search?.endDate
       );
       setProjectData(project?.project);
       setTotalProjectCount(project?.totalCount);
