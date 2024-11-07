@@ -63,7 +63,7 @@ const UpdateTransverse = ({
         await updateTransverse(transverseData.id, dataToSend);
         setIsRefreshNeeded(true);
         notyf.success("Modification de la tâche transverse réussi");
-        handleCloseModal()
+        handleCloseModal();
       }
     } catch (error) {
       notyf.error(
@@ -176,8 +176,21 @@ const UpdateTransverse = ({
         </button>
         <button
           type="button"
+          disabled={
+            transverseData?.title !== "" &&
+            transverseData?.type !== "" &&
+            transverseData.startDate !== ""
+              ? false
+              : true
+          }
           onClick={handleUpdateTransverse}
-          className="border flex justify-center items-center dark:border-boxdark text-xs p-2 rounded-md bg-green-700 hover:opacity-85 text-white font-semibold"
+          className={`border flex justify-center items-center dark:border-boxdark text-xs p-2 rounded-md text-white font-semibold ${
+            transverseData?.title !== "" &&
+            transverseData?.type !== "" &&
+            transverseData.startDate !== ""
+              ? "cursor-pointer bg-green-700 hover:opacity-85"
+              : "cursor-not-allowed bg-graydark"
+          }`}
         >
           {isLoading ? (
             <BeatLoader size={5} className="mr-2" color={"#fff"} />
