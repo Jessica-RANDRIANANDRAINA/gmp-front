@@ -27,15 +27,15 @@ const UpdateTaskActivity = ({
 }) => {
   const { userid } = useParams();
   const [taskData, setTaskData] = useState<IActivityAdd>({
-    id: "",
-    title: "",
-    description: "",
-    dailyEffort: 1,
-    startDate: "",
-    projectTitle: "",
-    phaseTitle: "",
-    projectId: "",
-    phaseId: "",
+    id: task?.content?.id,
+    title: task?.content?.title,
+    description: task?.content?.description,
+    dailyEffort: task?.content?.dailyEffort,
+    startDate: task?.content?.startDate,
+    projectTitle: task?.content?.projectTitle,
+    phaseTitle: task?.content?.phaseTitle,
+    projectId: task?.content?.projectid,
+    phaseId: task?.content?.phaseid,
   });
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [projectTitle, setProjectTitle] = useState<Array<string>>([]);
@@ -50,31 +50,42 @@ const UpdateTaskActivity = ({
   const { monday, friday } = getMondayAndFriday();
 
   useEffect(() => {
-    if (task.content) {
-      setTaskData({
-        id: task?.content?.id,
-        title: task?.content?.title,
-        description: task?.content?.description,
-        startDate: task?.content?.startDate,
-        dailyEffort: task?.content?.dailyEffort,
-        type: task?.content?.type,
-        projectTitle: task?.content?.projectTitle,
-        phaseTitle: task?.content?.phaseTitle,
-        projectId: task?.content?.projectId,
-        phaseId: task?.content?.phaseId,
-      });
-    }
-  }, [task, initial]);
-
-  useEffect(() => {
     fetchProjectData();
   }, []);
 
+  // initialize project title and phase title
   useEffect(() => {
     const project = projectData?.find(
-      (pr: { title: string }) => pr?.title === taskData.projectTitle
+      (pr: { title: string; id: string }) => pr?.id === taskData.projectId
     );
     const listPhase = project?.listPhases;
+
+    const updatedTaskData = {
+      ...taskData,
+      projectTitle: project?.title || taskData.projectTitle,
+    };
+
+    if (taskData.phaseTitle !== "") {
+      const phase = listPhase?.find(
+        (lp: { phase1: string; id: string }) => lp.id === taskData.phaseId
+      );
+      updatedTaskData.phaseTitle = phase?.phase1 || taskData.phaseTitle;
+    }
+
+    setTaskData(updatedTaskData);
+  }, [projectData]);
+
+  // change list of phase available if projectTitle change and change both project id and phaseId
+  useEffect(() => {
+    const project = projectData?.find(
+      (pr: { title: string; id: string }) => pr?.title === taskData.projectTitle
+    );
+    const listPhase = project?.listPhases;
+
+    const updatedTaskData = {
+      ...taskData,
+      projectId: project?.id || taskData.projectId,
+    };
 
     const arrayPhaseTitle: Array<string> = [];
     listPhase?.forEach((lp: { phase1: string; status: string }) => {
@@ -82,27 +93,17 @@ const UpdateTaskActivity = ({
         arrayPhaseTitle.push(lp?.phase1);
       }
     });
-
-    const updatedTaskData = {
-      ...taskData,
-      projectId: project?.id || taskData.projectId,
-    };
-
     if (taskData.phaseTitle !== "") {
       const phase = listPhase?.find(
-        (lp: { phase1: string }) => lp.phase1 === taskData.phaseTitle
+        (lp: { phase1: string; id: string }) =>
+          lp.phase1 === taskData.phaseTitle
       );
       updatedTaskData.phaseId = phase?.id || taskData.phaseId;
-      setInitial({
-        ...initial,
-        phaseId: phase?.id,
-        projectId: project?.id,
-      });
     }
 
-    // setTaskData(updatedTaskData);
+    setTaskData(updatedTaskData);
     setPhaseTitle(arrayPhaseTitle);
-  }, [taskData.projectTitle, taskData.phaseTitle]);
+  }, [taskData?.projectTitle, taskData?.phaseTitle]);
 
   const fetchProjectData = async () => {
     try {
@@ -158,6 +159,7 @@ const UpdateTaskActivity = ({
         phaseId: taskData.phaseId,
       };
       if (taskData.id) {
+        console.log(dataToSend);
         await updateTaskActicity(taskData.id, dataToSend);
         setIsRefreshNeeded(true);
         notyf.success("Modification de l'intercontract réussi");
@@ -301,8 +303,23 @@ const UpdateTaskActivity = ({
         </button>
         <button
           type="button"
+          disabled={
+            taskData?.title !== "" &&
+            taskData?.projectId !== "" &&
+            taskData?.phaseId !== "" &&
+            taskData.startDate !== ""
+              ? false
+              : true
+          }
           onClick={handleUpdateTaskActivity}
-          className="border flex justify-center items-center dark:border-boxdark text-xs p-2 rounded-md bg-green-700 hover:opacity-85 text-white font-semibold"
+          className={`border flex justify-center items-center dark:border-boxdark text-xs p-2 rounded-md text-white font-semibold ${
+            taskData?.title !== "" &&
+            taskData?.projectId !== "" &&
+            taskData?.phaseId !== "" &&
+            taskData.startDate !== ""
+              ? "cursor-pointer bg-green-700 hover:opacity-85"
+              : "cursor-not-allowed bg-graydark"
+          }`}
         >
           {isLoading ? (
             <BeatLoader size={5} className="mr-2" color={"#fff"} />

@@ -93,7 +93,6 @@ const AddIntercontract = ({
               data={intercontractType}
               value={intercontractData.type}
               onValueChange={(e) => {
-                console.log(e);
                 setIntercontractData({
                   ...intercontractData,
                   type: e,
@@ -160,8 +159,21 @@ const AddIntercontract = ({
         </button>
         <button
           type="button"
+          disabled={
+            intercontractData?.title !== "" &&
+            intercontractData?.type !== "" &&
+            intercontractData.startDate !== ""
+              ? false
+              : true
+          }
           onClick={handleCreateIntercontract}
-          className="border flex justify-center items-center dark:border-boxdark text-xs p-2 rounded-md bg-green-700 hover:opacity-85 text-white font-semibold"
+          className={` border flex justify-center items-center dark:border-boxdark text-xs p-2 rounded-md   text-white font-semibold ${
+            intercontractData?.title !== "" &&
+            intercontractData?.type !== "" &&
+            intercontractData.startDate !== ""
+              ? "cursor-pointer bg-green-700 hover:opacity-85"
+              : "cursor-not-allowed bg-graydark"
+          }`}
         >
           {isLoading ? (
             <BeatLoader size={5} className="mr-2" color={"#fff"} />
