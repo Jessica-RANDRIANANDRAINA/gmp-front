@@ -34,6 +34,9 @@ const TableProjet = ({
   search: {
     title: string;
     member: string;
+    priority: string;
+    criticity: string;
+    completionPercentage: string;
   };
   setProjectsToDelete: React.Dispatch<React.SetStateAction<Array<string>>>;
   setProjectsSelected: React.Dispatch<React.SetStateAction<Array<string>>>;
@@ -53,6 +56,9 @@ const TableProjet = ({
     React.SetStateAction<{
       title: string;
       member: string;
+      priority: string;
+      criticity: string;
+      completionPercentage: string;
     }>
   >;
 }) => {
@@ -159,6 +165,9 @@ const TableProjet = ({
       ...search,
       title: "",
       member: "",
+      priority: "",
+      criticity: "",
+      completionPercentage: "",
     });
     setIsSearchButtonClicked(true);
   };
@@ -210,7 +219,7 @@ const TableProjet = ({
     <div className="bg-white  min-h-[80vh] pt-2 shadow-1 rounded-lg border border-zinc-200 dark:border-strokedark dark:bg-boxdark">
       {/* ===== FILTER START ===== */}
       <div className="flex m-5 flex-wrap justify-between items-center">
-        <div className="grid md:grid-cols-4 grid-cols-1 gap-3 w-full">
+        <div className="grid sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-8 grid-cols-1 gap-3 w-full">
           <CustomInput
             type="text"
             value={search.title}
@@ -234,6 +243,40 @@ const TableProjet = ({
               setSearch({
                 ...search,
                 member: e.target.value,
+              });
+            }}
+          />
+          <CustomSelect
+            label="Priorité"
+            data={["Elevée", "Moyenne", "Faible"]}
+            value={search.priority}
+            onValueChange={(e) => {
+              setSearch({
+                ...search,
+                priority: e,
+              });
+            }}
+          />
+          <CustomSelect
+            label="Criticité"
+            data={["Urgente", "Normale"]}
+            value={search.criticity}
+            onValueChange={(e) => {
+              setSearch({
+                ...search,
+                criticity: e,
+              });
+            }}
+          />
+          
+          <CustomSelect
+            label="Avancement"
+            data={["0", "25", "50", "75", "100"]}
+            value={search.completionPercentage}
+            onValueChange={(e) => {
+              setSearch({
+                ...search,
+                completionPercentage: e,
               });
             }}
           />

@@ -9,7 +9,10 @@ export const getAllProject = async (
   pageNumber?: number,
   pageSize?: number,
   title?: string,
-  member?: string
+  member?: string,
+  priority?: string,
+  criticity?: string,
+  completionPercentage?: string
 ) => {
   try {
     const params: any = {
@@ -18,6 +21,10 @@ export const getAllProject = async (
     };
     if (title) params.title = title;
     if (member) params.member = member;
+    if (priority) params.priority = priority;
+    if (criticity) params.criticity = criticity;
+    if (completionPercentage)
+      params.completionPercentage = completionPercentage;
     const response = await axios.get(`${endPoint}/api/Project/all`, { params });
     return response.data;
   } catch (error) {
@@ -40,7 +47,10 @@ export const getAllLevelProjectByUserId = async (
   pageNumber?: number,
   pageSize?: number,
   title?: string,
-  member?: string
+  member?: string,
+  priority?: string,
+  criticity?: string,
+  completionPercentage?: string
 ) => {
   try {
     const params: any = {
@@ -49,6 +59,10 @@ export const getAllLevelProjectByUserId = async (
     };
     if (title) params.title = title;
     if (member) params.member = member;
+    if (priority) params.priority = priority;
+    if (criticity) params.criticity = criticity;
+    if (completionPercentage)
+      params.completionPercentage = completionPercentage;
 
     const response = await axios.get(
       `${endPoint}/api/Project/user/${userid}/all-level`,

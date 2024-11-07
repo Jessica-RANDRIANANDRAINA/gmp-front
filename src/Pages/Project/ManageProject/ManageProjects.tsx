@@ -32,6 +32,9 @@ const ManageProjects = () => {
   const [search, setSearch] = useState({
     title: "",
     member: "",
+    priority: "",
+    criticity: "",
+    completionPercentage: "",
   });
   const navigate = useNavigate();
 
@@ -74,7 +77,10 @@ const ManageProjects = () => {
         page?.pageNumber,
         page?.pageSize,
         search?.title,
-        search?.member
+        search?.member,
+        search?.priority,
+        search?.criticity,
+        search?.completionPercentage
       );
       setProjectData(project?.project);
       setTotalProjectCount(project?.totalCount);
@@ -85,7 +91,10 @@ const ManageProjects = () => {
         page?.pageNumber,
         page?.pageSize,
         search?.title,
-        search?.member
+        search?.member,
+        search?.priority,
+        search?.criticity,
+        search?.completionPercentage
       );
       setProjectData(project?.project);
       setTotalProjectCount(project?.totalCount);
