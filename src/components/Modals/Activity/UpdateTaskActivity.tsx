@@ -303,8 +303,23 @@ const UpdateTaskActivity = ({
         </button>
         <button
           type="button"
+          disabled={
+            taskData?.title !== "" &&
+            taskData?.projectId !== "" &&
+            taskData?.phaseId !== "" &&
+            taskData.startDate !== ""
+              ? false
+              : true
+          }
           onClick={handleUpdateTaskActivity}
-          className="border flex justify-center items-center dark:border-boxdark text-xs p-2 rounded-md bg-green-700 hover:opacity-85 text-white font-semibold"
+          className={`border flex justify-center items-center dark:border-boxdark text-xs p-2 rounded-md text-white font-semibold ${
+            taskData?.title !== "" &&
+            taskData?.projectId !== "" &&
+            taskData?.phaseId !== "" &&
+            taskData.startDate !== ""
+              ? "cursor-pointer bg-green-700 hover:opacity-85"
+              : "cursor-not-allowed bg-graydark"
+          }`}
         >
           {isLoading ? (
             <BeatLoader size={5} className="mr-2" color={"#fff"} />
