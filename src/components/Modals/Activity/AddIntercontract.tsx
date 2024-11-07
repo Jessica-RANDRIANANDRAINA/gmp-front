@@ -93,7 +93,6 @@ const AddIntercontract = ({
               data={intercontractType}
               value={intercontractData.type}
               onValueChange={(e) => {
-                console.log(e);
                 setIntercontractData({
                   ...intercontractData,
                   type: e,

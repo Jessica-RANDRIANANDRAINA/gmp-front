@@ -55,6 +55,7 @@ const AllActivity = () => {
   const [isModalAddActivityOpen, setIsModalAddActivityOpen] =
     useState<boolean>(false);
   const [connection, setConnection] = useState<HubConnection | null>(null);
+  const [isRefreshNeeded, setIsRefreshNeeded] = useState<boolean>(false);
 
   const fetchData = async () => {
     try {
@@ -80,7 +81,7 @@ const AllActivity = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [isRefreshNeeded]);
 
   const handleOnDragEnd = async (result: {
     destination: any;
@@ -311,7 +312,7 @@ const AllActivity = () => {
                       setIsModalAddActivityOpen(true);
                     }}
                   >
-                    <span>+ ajouter une tâche</span>
+                    <span>+ ajouter une activité</span>
                   </div>
                 )}
               </div>
@@ -319,15 +320,13 @@ const AllActivity = () => {
           })}
         </div>
       </DragDropContext>
-      {
-        isModalAddActivityOpen && (
-          <AddActivity
-            modalOpen={isModalAddActivityOpen}
-            setModalOpen={setIsModalAddActivityOpen}
-            // setIsActivityFinished={}
-          />
-        )
-      }
+      {isModalAddActivityOpen && (
+        <AddActivity
+          modalOpen={isModalAddActivityOpen}
+          setModalOpen={setIsModalAddActivityOpen}
+          setIsActivityFinished={setIsRefreshNeeded}
+        />
+      )}
     </div>
   );
 };

@@ -4,18 +4,27 @@ import { Modal, ModalBody, ModalFooter } from "../Modal";
 import { CustomInput, CustomSelect } from "../../UIElements";
 import { BeatLoader } from "react-spinners";
 import { IActivityAdd } from "../../../types/Project";
-import { getProjectByUserId } from "../../../services/Project";
+import {
+  createInterContract,
+  createTaskActivity,
+  createTransverse,
+  getProjectByUserId,
+} from "../../../services/Project";
 import { v4 as uuid4 } from "uuid";
 import { getMondayAndFriday } from "../../../services/Function/DateServices";
+import { intercontractType, transverseType } from "../../../constants/Activity";
+import { Notyf } from "notyf";
+import "notyf/notyf.min.css";
+const notyf = new Notyf({ position: { x: "center", y: "top" } });
 
 const AddActivity = ({
   modalOpen,
   setModalOpen,
-}: //   setIsActivityFinished,
-{
+  setIsActivityFinished,
+}: {
   modalOpen: boolean;
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  //   setIsActivityFinished: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsActivityFinished: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const { userid } = useParams();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -29,6 +38,8 @@ const AddActivity = ({
     phaseTitle: "",
     projectId: "",
     phaseId: "",
+    transverseType: "",
+    intercontractType: "",
   });
 
   const { monday, friday } = getMondayAndFriday();
@@ -92,31 +103,53 @@ const AddActivity = ({
     setModalOpen(false);
   };
 
-  const handleCreateActivity = () => {
+  const handleCreateActivity = async () => {
     setIsLoading(true);
     try {
       const id = uuid4();
-      const dataToSend = {
-        id,
-        title: activityData?.title,
-        description: activityData?.description,
-        phaseid: activityData?.phaseId,
-        projectid: activityData?.projectId,
-        priority: "Moyen",
-        listUsers: [
-          {
-            userid: userid,
-            taskid: id,
-            user: {
-              name: "",
-            },
-          },
-        ],
-      };
-      console.log("/////////////////");
-      console.log(activityData);
-      console.log("/////////////////");
+      if (activityData?.type === "Projet") {
+        const dataToSend = {
+          id,
+          title: activityData?.title,
+          description: activityData?.description,
+          dailyEffort: activityData?.dailyEffort,
+          startDate: activityData?.startDate,
+          status: "Backlog",
+          userid,
+          phaseid: activityData?.phaseId,
+          projectid: activityData?.projectId,
+        };
+        await createTaskActivity(dataToSend);
+      } else if (activityData?.type === "Transverse") {
+        const dataToSend = {
+          id,
+          dailyEffort: activityData.dailyEffort,
+          description: activityData.description,
+          startDate: activityData.startDate,
+          status: "Backlog",
+          title: activityData.title,
+          type: activityData.transverseType,
+          userid,
+        };
+        await createTransverse(dataToSend);
+      } else {
+        const dataToSend = {
+          id,
+          dailyEffort: activityData.dailyEffort,
+          description: activityData.description,
+          startDate: activityData.startDate,
+          status: "Backlog",
+          title: activityData.title,
+          type: activityData.intercontractType,
+          userid,
+        };
+        await createInterContract(dataToSend);
+      }
+      notyf.success("Création de l'activité réussie.");
+      setIsActivityFinished(true);
+      handleCloseModal();
     } catch (error) {
+      notyf.error("Une erreur s'est produite, veuillez réessayer plus tard.");
       console.error("Error at create activity : ", error);
     } finally {
       setIsLoading(false);
@@ -188,6 +221,42 @@ const AddActivity = ({
                   setActivityData({
                     ...activityData,
                     phaseTitle: e,
+                  });
+                }}
+              />
+            </div>
+            <div
+              className={` w-full *:w-full flex-wrap md:flex-nowrap  gap-2 ${
+                activityData.type === "Transverse" ? "flex" : "hidden"
+              } `}
+            >
+              <CustomSelect
+                required={true}
+                label="Type de transverse"
+                data={transverseType}
+                value={activityData.transverseType}
+                onValueChange={(e) => {
+                  setActivityData({
+                    ...activityData,
+                    transverseType: e,
+                  });
+                }}
+              />
+            </div>
+            <div
+              className={` w-full *:w-full flex-wrap md:flex-nowrap  gap-2 ${
+                activityData.type === "Intercontract" ? "flex" : "hidden"
+              } `}
+            >
+              <CustomSelect
+                required={true}
+                label="Type d'intercontrat"
+                data={intercontractType}
+                value={activityData.intercontractType}
+                onValueChange={(e) => {
+                  setActivityData({
+                    ...activityData,
+                    intercontractType: e,
                   });
                 }}
               />

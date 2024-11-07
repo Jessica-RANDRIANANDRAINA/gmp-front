@@ -123,6 +123,8 @@ export interface IActivityAdd {
   phaseTitle?: string;
   projectId?: string;
   phaseId?: string;
+  transverseType?: string;
+  intercontractType?: string;
 }
 
 export interface ITransverseAdd {
