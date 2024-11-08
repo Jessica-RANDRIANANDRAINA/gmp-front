@@ -1,12 +1,12 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import { useParams } from "react-router-dom";
+import { SignalRContext } from "./Activity";
 import {
   DragDropContext,
   Droppable,
   Draggable,
   DropResult,
 } from "react-beautiful-dnd";
-import { HubConnectionBuilder, HubConnection } from "@microsoft/signalr";
 import { formatDate } from "../../../services/Function/DateServices";
 import {
   deleteIntercontract,
@@ -71,7 +71,8 @@ const AllActivity = () => {
     useState<boolean>(false);
   const [isModalUpdateActivityOpen, setIsModalUpdateActivityOpen] =
     useState<boolean>(false);
-  const [connection, setConnection] = useState<HubConnection | null>(null);
+  // const [connection, setConnection] = useState<HubConnection | null>(null);
+  const connection = useContext(SignalRContext);
   const [isRefreshNeeded, setIsRefreshNeeded] = useState<boolean>(false);
   const [activityData, setActivityData] = useState<any>();
   const deletePopUp = useRef<any>(null);
@@ -112,33 +113,8 @@ const AllActivity = () => {
 
   useEffect(() => {
     fetchData();
-  }, [isRefreshNeeded]);
-  // connect signalR in activityHub
-  useEffect(() => {
-    fetchData();
     setIsRefreshNeeded(false);
-
-    const connect = async () => {
-      const newConnection = new HubConnectionBuilder()
-        .withUrl(`${import.meta.env.VITE_API_ENDPOINT}/activityHub`)
-        .withAutomaticReconnect()
-        .build();
-
-      try {
-        await newConnection.start();
-        setConnection(newConnection);
-      } catch (error) {
-        console.error("Connection activity hub failed : ", error);
-      }
-    };
-    connect();
-
-    return () => {
-      if (connection) {
-        connection.stop();
-      }
-    };
-  }, [isRefreshNeeded]);
+  }, [connection, isRefreshNeeded]);
 
   // when task deleted refetchData by using signal R
   useEffect(() => {

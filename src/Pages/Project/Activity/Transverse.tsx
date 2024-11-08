@@ -1,7 +1,7 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import { useParams } from "react-router-dom";
+import { SignalRContext } from "./Activity";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { HubConnectionBuilder, HubConnection } from "@microsoft/signalr";
 import {
   getTransverseByUserId,
   deleteTransverse,
@@ -59,7 +59,7 @@ const Transverse = () => {
     columns: {},
     columnOrder: [],
   });
-  const [connection, setConnection] = useState<HubConnection | null>(null);
+  const connection = useContext(SignalRContext);
   const [isModalAddOpen, setIsModalAddOpen] = useState<boolean>(false);
   const [isRefreshNeeded, setIsRefreshNeeded] = useState<boolean>(false);
   const [isModalUpdateOpen, setIsModalUpdateOpen] = useState<boolean>(false);
@@ -106,28 +106,7 @@ const Transverse = () => {
   useEffect(() => {
     fetchData();
     setIsRefreshNeeded(false);
-
-    const connect = async () => {
-      const newConnection = new HubConnectionBuilder()
-        .withUrl(`${import.meta.env.VITE_API_ENDPOINT}/activityHub`)
-        .withAutomaticReconnect()
-        .build();
-
-      try {
-        await newConnection.start();
-        setConnection(newConnection);
-      } catch (error) {
-        console.error("Connection activity hub failed : ", error);
-      }
-    };
-    connect();
-
-    return () => {
-      if (connection) {
-        connection.stop();
-      }
-    };
-  }, [isRefreshNeeded]);
+  }, [isRefreshNeeded, connection]);
 
   // when transverse deleted refetchData by using signal R
   useEffect(() => {
