@@ -990,16 +990,17 @@ const TableProjet = ({
                           </svg>
                         </button>
                       </td>
-                      <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                      <td className="border-b max-w-90 min-w-50 border-[#eee] pl-9  py-5 dark:border-strokedark ">
                         <p
-                          className="text-black dark:text-white font-bold cursor-pointer"
+                          className="text-black text-justify  dark:text-white font-bold cursor-pointer"
                           onClick={() => {
                             setIdProjectForDetails(project.id);
                           }}
                         >
-                          {project?.title.length > 30
-                            ? `${project?.title?.slice(0, 30)}...`
-                            : project?.title}
+                          {project?.title}
+                          {/* {project?.title.length > 40
+                            ? `${project?.title?.slice(0, 40)}...`
+                            : project?.title} */}
                         </p>
                       </td>
                       <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
@@ -1041,13 +1042,13 @@ const TableProjet = ({
                           type="no-director"
                         />
                       </td>
-                      <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                        <p className="text-black dark:text-white">
+                      <td className="border-b text-right   border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                        <p className="text-black  pr-4 dark:text-white">
                           {dateStart}
                         </p>
                       </td>
-                      <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                        <p className="text-black flex gap-1 dark:text-white">
+                      <td className="border-b  border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                        <p className="text-black flex justify-end pr-4 gap-1 dark:text-white">
                           {isDateEndPassed ? (
                             <svg
                               width="20"
