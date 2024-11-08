@@ -159,7 +159,6 @@ const UpdateTaskActivity = ({
         phaseId: taskData.phaseId,
       };
       if (taskData.id) {
-        console.log(dataToSend);
         await updateTaskActicity(taskData.id, dataToSend);
         setIsRefreshNeeded(true);
         notyf.success("Modification de l'intercontract réussi");

@@ -131,12 +131,9 @@ const InterContract = () => {
   // when intercontract deleted refetchData by using signal R
   useEffect(() => {
     if (connection) {
-      connection.on(
-        "ReceiveIntercontractDeleted",
-        () => {
-          fetchData();
-        }
-      );
+      connection.on("ReceiveIntercontractDeleted", () => {
+        fetchData();
+      });
     }
     return () => {
       if (connection) {
@@ -346,10 +343,6 @@ const InterContract = () => {
                                       onClick={(e) => {
                                         e.stopPropagation();
                                         handleDeleteIntercontract(
-                                          intercontract.id
-                                        );
-                                        console.log(
-                                          "delete intercontract id: ",
                                           intercontract.id
                                         );
                                       }}

@@ -13,7 +13,6 @@ const Activity = () => {
     if (token) {
       try {
         const decoded = decodeToken("pr");
-        console.log(decoded);
         setDecodedToken(decoded);
       } catch (error) {
         console.error(`Invalid token ${error}`);

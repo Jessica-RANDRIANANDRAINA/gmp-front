@@ -1,10 +1,24 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import {
+  DragDropContext,
+  Droppable,
+  Draggable,
+  DropResult,
+} from "react-beautiful-dnd";
 import { HubConnectionBuilder, HubConnection } from "@microsoft/signalr";
 import { formatDate } from "../../../services/Function/DateServices";
-import { getAllActivitiesOfUser } from "../../../services/Project";
+import {
+  deleteIntercontract,
+  deleteTaskActivity,
+  deleteTransverse,
+  getAllActivitiesOfUser,
+} from "../../../services/Project";
 import AddActivity from "../../../components/Modals/Activity/AddActivity";
+import UpdateActivity from "../../../components/Modals/Activity/UpdateActivity";
+import { Notyf } from "notyf";
+import "notyf/notyf.min.css";
+const notyf = new Notyf({ position: { x: "center", y: "top" } });
 
 const organizeActivityByStatus = (activities: any[]) => {
   const columns: {
@@ -30,8 +44,8 @@ const organizeActivityByStatus = (activities: any[]) => {
         finished: activity.finished,
         type: activity.type,
         subType: activity.subType,
-        projectTitle: activity.projectTitle,
-        phaseTitle: activity.phaseTitle,
+        projectId: activity.projectid,
+        phaseId: activity.phaseid,
         priority: activity.priority,
       },
     };
@@ -55,8 +69,24 @@ const AllActivity = () => {
   });
   const [isModalAddActivityOpen, setIsModalAddActivityOpen] =
     useState<boolean>(false);
+  const [isModalUpdateActivityOpen, setIsModalUpdateActivityOpen] =
+    useState<boolean>(false);
   const [connection, setConnection] = useState<HubConnection | null>(null);
   const [isRefreshNeeded, setIsRefreshNeeded] = useState<boolean>(false);
+  const [activityData, setActivityData] = useState<any>();
+  const deletePopUp = useRef<any>(null);
+  const [activeActivityId, setActiveActivityId] = useState<string | null>(null);
+
+  // close delete pop up when click outside
+  useEffect(() => {
+    const clickHandler = ({ target }: MouseEvent) => {
+      if (!deletePopUp.current) return;
+      if (!deletePopUp || deletePopUp.current.contains(target)) return;
+      setActiveActivityId("");
+    };
+    document.addEventListener("click", clickHandler);
+    return () => document.removeEventListener("click", clickHandler);
+  });
 
   const fetchData = async () => {
     try {
@@ -83,12 +113,53 @@ const AllActivity = () => {
   useEffect(() => {
     fetchData();
   }, [isRefreshNeeded]);
+  // connect signalR in activityHub
+  useEffect(() => {
+    fetchData();
+    setIsRefreshNeeded(false);
 
-  const handleOnDragEnd = async (result: {
-    destination: any;
-    source: any;
-    draggableId: any;
-  }) => {
+    const connect = async () => {
+      const newConnection = new HubConnectionBuilder()
+        .withUrl(`${import.meta.env.VITE_API_ENDPOINT}/activityHub`)
+        .withAutomaticReconnect()
+        .build();
+
+      try {
+        await newConnection.start();
+        setConnection(newConnection);
+      } catch (error) {
+        console.error("Connection activity hub failed : ", error);
+      }
+    };
+    connect();
+
+    return () => {
+      if (connection) {
+        connection.stop();
+      }
+    };
+  }, [isRefreshNeeded]);
+
+  // when task deleted refetchData by using signal R
+  useEffect(() => {
+    if (!connection) return;
+
+    const handleTaskDeleted = () => fetchData();
+    const handleIntercontractDeleted = () => fetchData();
+    const handleTransverseDeleted = () => fetchData();
+
+    connection.on("ReceiveTaskActivityDeleted", handleTaskDeleted);
+    connection.on("ReceiveIntercontractDeleted", handleIntercontractDeleted);
+    connection.on("ReceiveTransverseDeleted", handleTransverseDeleted);
+
+    return () => {
+      connection.off("ReceiveTaskActivityDeleted", handleTaskDeleted);
+      connection.off("ReceiveIntercontractDeleted", handleIntercontractDeleted);
+      connection.off("ReceiveTransverseDeleted", handleTransverseDeleted);
+    };
+  }, [connection, fetchData]);
+
+  const handleOnDragEnd = async (result: DropResult, activitype: string) => {
     const { destination, source, draggableId } = result;
 
     if (!destination) return;
@@ -149,22 +220,93 @@ const AllActivity = () => {
       });
       if (connection) {
         try {
-          await connection.invoke(
-            "TaskMoved",
-            draggableId,
-            startColumn.title,
-            endColumn.title
-          );
-          // fetchData();
+          if (activitype === "Transverse") {
+            await connection.invoke(
+              "TransverseMoved",
+              draggableId,
+              startColumn.title,
+              endColumn.title
+            );
+          } else if (activitype === "InterContract") {
+            await connection.invoke(
+              "IntercontractMoved",
+              draggableId,
+              startColumn.title,
+              endColumn.title
+            );
+          } else {
+            await connection.invoke(
+              "TaskActivityMoved",
+              draggableId,
+              startColumn.title,
+              endColumn.title
+            );
+          }
+          fetchData();
         } catch (error) {
           console.error(`Error at calling task moved: ${error}`);
         }
       }
     }
   };
+  const handleToogleMenuDelete = (
+    activityId: string,
+    event: React.MouseEvent
+  ) => {
+    event.stopPropagation();
+    setActiveActivityId(activeActivityId === activityId ? null : activityId);
+  };
+  const handleDeleteActivity = async (activityId: string, type: string) => {
+    try {
+      if (type === "Transverse") {
+        await deleteTransverse(activityId);
+        if (connection) {
+          try {
+            await connection.invoke("TransverseDeleted", activityId);
+          } catch (error) {
+            console.error(
+              `Error while sending event TransverseDeleted : ${error}`
+            );
+          }
+        }
+      } else if (type === "InterContract") {
+        await deleteIntercontract(activityId);
+        if (connection) {
+          try {
+            await connection.invoke("IntercontractDeleted", activityId);
+          } catch (error) {
+            console.error(
+              `Error while sending event IntercontractDeleted : ${error}`
+            );
+          }
+        }
+      } else {
+        await deleteTaskActivity(activityId);
+        if (connection) {
+          try {
+            await connection.invoke("TaskActivityDeleted", activityId);
+          } catch (error) {
+            console.error(
+              `Error while sending event TaskActivityDeleted : ${error}`
+            );
+          }
+        }
+      }
+      notyf.success("Activité supprimée");
+    } catch (error) {
+      notyf.error("Une erreur s'est produite, veuillez réessayer.");
+      console.error(`Error at handle delete activity: ${error}`);
+    }
+  };
   return (
     <div className={`p-5`}>
-      <DragDropContext onDragEnd={handleOnDragEnd}>
+      <DragDropContext
+        onDragEnd={(result) => {
+          const draggableId = result.draggableId;
+          const activitype = data?.acivities?.[draggableId]?.content?.type;
+          handleOnDragEnd(result, activitype);
+        }}
+      >
         <div style={{ display: "flex" }}>
           {data?.columnOrder?.map((columnId: string) => {
             const column = data?.columns[columnId];
@@ -205,8 +347,17 @@ const AllActivity = () => {
                                 style={{
                                   ...provided.draggableProps.style,
                                 }}
+                                onClick={() => {
+                                  setActivityData(activity);
+                                  setIsModalUpdateActivityOpen(true);
+                                }}
                               >
-                                <div className="absolute top-2 right-1 hover:bg-zinc-100 dark:hover:bg-boxdark2 px-1 h-4 cursor-pointer">
+                                <div
+                                  className="absolute top-2 right-1 hover:bg-zinc-100 dark:hover:bg-boxdark2 px-1 h-4 cursor-pointer"
+                                  onClick={(e) => {
+                                    handleToogleMenuDelete(activity.id, e);
+                                  }}
+                                >
                                   <svg
                                     width="15"
                                     height="15"
@@ -235,6 +386,27 @@ const AllActivity = () => {
                                     </g>
                                   </svg>
                                 </div>
+                                {/* pop up menu delete */}
+                                {activeActivityId === activity.id && (
+                                  <div
+                                    ref={deletePopUp}
+                                    className="absolute z-20 right-0 top-5 bg-white dark:bg-boxdark dark:border-formStrokedark border-zinc-100 dark:hover:border-red-950 border shadow-lg rounded-md "
+                                  >
+                                    <button
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleDeleteActivity(
+                                          activity.id,
+                                          activity.content.type
+                                        );
+                                      }}
+                                      className="text-red-600 dark:text-red-400 dark:hover:bg-red-950  hover:bg-red-50 px-4 py-2 rounded"
+                                    >
+                                      Supprimer
+                                    </button>
+                                  </div>
+                                )}
+                                {/* pop up menu delete */}
 
                                 <div className="flex flex-col gap-1 dark:text-zinc-400 text-zinc-500">
                                   <div
@@ -347,6 +519,14 @@ const AllActivity = () => {
           modalOpen={isModalAddActivityOpen}
           setModalOpen={setIsModalAddActivityOpen}
           setIsActivityFinished={setIsRefreshNeeded}
+        />
+      )}
+      {isModalUpdateActivityOpen && (
+        <UpdateActivity
+          modalUpdateOpen={isModalUpdateActivityOpen}
+          setModalUpdateOpen={setIsModalUpdateActivityOpen}
+          setIsRefreshNeeded={setIsRefreshNeeded}
+          activity={activityData}
         />
       )}
     </div>

@@ -95,7 +95,6 @@ const AddTransverse = ({
               data={transverseType}
               value={transverseData.type}
               onValueChange={(e) => {
-                console.log(e);
                 setTransverseData({
                   ...transverseData,
                   type: e,
