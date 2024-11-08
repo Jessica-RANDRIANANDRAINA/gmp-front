@@ -133,7 +133,7 @@ const InterContract = () => {
     if (connection) {
       connection.on(
         "ReceiveIntercontractDeleted",
-        (intercontractId: string) => {
+        () => {
           fetchData();
         }
       );

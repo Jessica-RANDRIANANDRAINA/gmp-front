@@ -132,7 +132,7 @@ const Transverse = () => {
   // when transverse deleted refetchData by using signal R
   useEffect(() => {
     if (connection) {
-      connection.on("ReceiveTransverseDeleted", (transverseId: string) => {
+      connection.on("ReceiveTransverseDeleted", () => {
         fetchData();
       });
     }

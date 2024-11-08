@@ -131,7 +131,7 @@ const MyTask = () => {
   // when task deleted refetchData by using signal R
   useEffect(() => {
     if (connection) {
-      connection.on("ReceiveTaskActivityDeleted", (taskId: string) => {
+      connection.on("ReceiveTaskActivityDeleted", () => {
         fetchData();
       });
     }
