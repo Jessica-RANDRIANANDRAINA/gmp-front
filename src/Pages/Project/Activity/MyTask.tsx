@@ -2,7 +2,6 @@ import { useState, useEffect, useRef, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { SignalRContext } from "./Activity";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { HubConnectionBuilder, HubConnection } from "@microsoft/signalr";
 import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
 import { formatDate } from "../../../services/Function/DateServices";
