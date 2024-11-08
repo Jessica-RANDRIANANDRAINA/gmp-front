@@ -33,7 +33,7 @@ const AddActivity = ({
     description: "",
     type: "",
     dailyEffort: 1,
-    startDate: undefined,
+    startDate: "",
     projectTitle: "",
     phaseTitle: "",
     projectId: "",
@@ -319,16 +319,48 @@ const AddActivity = ({
         >
           Annuler
         </button>
-        <button
-          type="button"
-          onClick={handleCreateActivity}
-          className="border flex justify-center items-center dark:border-boxdark text-xs p-2 rounded-md bg-green-700 hover:opacity-85 text-white font-semibold"
-        >
-          {isLoading ? (
-            <BeatLoader size={5} className="mr-2" color={"#fff"} />
-          ) : null}
-          Créer
-        </button>
+
+        {(() => {
+          const hasRequiredFields =
+            activityData?.title !== "" &&
+            activityData?.type !== "" &&
+            activityData?.startDate !== "";
+
+          const isProjectComplete =
+            activityData?.type === "Projet" &&
+            activityData?.projectTitle !== "" &&
+            activityData?.phaseTitle !== "";
+
+          const istransverseComplete =
+            activityData?.type === "Transverse" &&
+            activityData?.transverseType !== "";
+          const isIntercontractComplete =
+            activityData?.type === "Intercontract" &&
+            activityData?.intercontractType !== "";
+
+          const isDisabled =
+            hasRequiredFields &&
+            (isProjectComplete ||
+              istransverseComplete ||
+              isIntercontractComplete);
+          const buttonClassName = !isDisabled
+            ? "cursor-not-allowed bg-graydark"
+            : "cursor-pointer bg-green-700 hover:opacity-85";
+
+          return (
+            <button
+              disabled={!isDisabled}
+              type="button"
+              onClick={handleCreateActivity}
+              className={`border flex justify-center items-center dark:border-boxdark text-xs p-2 rounded-md text-white font-semibold ${buttonClassName}`}
+            >
+              {isLoading ? (
+                <BeatLoader size={5} className="mr-2" color={"#fff"} />
+              ) : null}
+              Créer
+            </button>
+          );
+        })()}
       </ModalFooter>
     </Modal>
   );

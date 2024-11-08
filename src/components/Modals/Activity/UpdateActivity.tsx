@@ -373,16 +373,47 @@ const UpdateActivity = ({
         >
           Annuler
         </button>
-        <button
-          type="button"
-          onClick={handleUpdateActivity}
-          className="border flex justify-center items-center dark:border-boxdark text-xs p-2 rounded-md bg-green-700 hover:opacity-85 text-white font-semibold"
-        >
-          {isLoading ? (
-            <BeatLoader size={5} className="mr-2" color={"#fff"} />
-          ) : null}
-          Valider
-        </button>
+        {(() => {
+          const hasRequiredFields =
+            activityData?.title !== "" &&
+            activityData?.type !== "" &&
+            activityData?.startDate !== "";
+
+          const isProjectComplete =
+            activityData?.type === "Projet" &&
+            activityData?.projectTitle !== "" &&
+            activityData?.phaseTitle !== "";
+
+          const istransverseComplete =
+            activityData?.type === "Transverse" &&
+            activityData?.transverseType !== "";
+          const isIntercontractComplete =
+            activityData?.type === "InterContract" &&
+            activityData?.intercontractType !== "";
+
+          const isDisabled =
+            hasRequiredFields &&
+            (isProjectComplete ||
+              istransverseComplete ||
+              isIntercontractComplete);
+          const buttonClassName = !isDisabled
+            ? "cursor-not-allowed bg-graydark"
+            : "cursor-pointer bg-green-700 hover:opacity-85";
+
+          return (
+            <button
+              type="button"
+              disabled={!isDisabled}
+              onClick={handleUpdateActivity}
+              className={`border flex justify-center items-center dark:border-boxdark text-xs p-2 rounded-md text-white font-semibold ${buttonClassName}`}
+            >
+              {isLoading ? (
+                <BeatLoader size={5} className="mr-2" color={"#fff"} />
+              ) : null}
+              Valider
+            </button>
+          );
+        })()}
       </ModalFooter>
     </Modal>
   );

@@ -162,7 +162,7 @@ const AddIntercontract = ({
           disabled={
             intercontractData?.title !== "" &&
             intercontractData?.type !== "" &&
-            intercontractData.startDate !== ""
+            intercontractData?.startDate !== ""
               ? false
               : true
           }
@@ -170,7 +170,7 @@ const AddIntercontract = ({
           className={` border flex justify-center items-center dark:border-boxdark text-xs p-2 rounded-md   text-white font-semibold ${
             intercontractData?.title !== "" &&
             intercontractData?.type !== "" &&
-            intercontractData.startDate !== ""
+            intercontractData?.startDate !== ""
               ? "cursor-pointer bg-green-700 hover:opacity-85"
               : "cursor-not-allowed bg-graydark"
           }`}
