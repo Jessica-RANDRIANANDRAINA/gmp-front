@@ -25,6 +25,7 @@ const organizeActivityByStatus = (activities: any[]) => {
         title: activity.title,
         description: activity.description,
         status: activity.status,
+        startDate: activity.startDate,
         dailyEffort: activity.dailyEffort,
         finished: activity.finished,
         type: activity.type,
@@ -189,7 +190,7 @@ const AllActivity = () => {
                         >
                           {(provided, snapshot) => {
                             const endDate = formatDate(
-                              activity.content.dueDate
+                              activity.content.startDate
                             );
                             return (
                               <div
@@ -235,49 +236,74 @@ const AllActivity = () => {
                                   </svg>
                                 </div>
 
-                                <div className="flex gap-1">
-                                  <span
-                                    className={`${
-                                      activity.content.status === "Traité"
-                                        ? ""
-                                        : "hidden"
-                                    }`}
+                                <div className="flex flex-col gap-1 dark:text-zinc-400 text-zinc-500">
+                                  <div
+                                    className={`border rounded w-fit px-1 cursor-pointer mb-2`}
                                   >
-                                    <svg
-                                      width="17"
-                                      height="17"
-                                      viewBox="0 0 24 24"
-                                      className="fill-green-500"
-                                    >
-                                      <g
-                                        id="SVGRepo_bgCarrier"
-                                        strokeWidth="0"
-                                      ></g>
-                                      <g
-                                        id="SVGRepo_tracerCarrier"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                      ></g>
-                                      <g id="SVGRepo_iconCarrier">
-                                        {" "}
-                                        <circle
-                                          cx="12"
-                                          cy="12"
-                                          r="10"
-                                          className="stroke-green-500"
-                                          strokeWidth="1.5"
-                                        ></circle>{" "}
-                                        <path
-                                          d="M8.5 12.5L10.5 14.5L15.5 9.5"
-                                          className="stroke-white"
-                                          strokeWidth="3"
-                                          strokeLinecap="round"
-                                          strokeLinejoin="round"
-                                        ></path>{" "}
-                                      </g>
-                                    </svg>
-                                  </span>
-                                  {activity.content.title}
+                                    {activity.content.type}
+                                  </div>
+                                  <div className="grid grid-flow-row gap-2 ">
+                                    <div className="flex gap-1">
+                                      <span
+                                        className={`${
+                                          activity.content.status === "Traité"
+                                            ? ""
+                                            : "hidden"
+                                        }`}
+                                      >
+                                        <svg
+                                          width="17"
+                                          height="17"
+                                          viewBox="0 0 24 24"
+                                          className="fill-green-500"
+                                        >
+                                          <g
+                                            id="SVGRepo_bgCarrier"
+                                            strokeWidth="0"
+                                          ></g>
+                                          <g
+                                            id="SVGRepo_tracerCarrier"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                          ></g>
+                                          <g id="SVGRepo_iconCarrier">
+                                            {" "}
+                                            <circle
+                                              cx="12"
+                                              cy="12"
+                                              r="10"
+                                              className="stroke-green-500"
+                                              strokeWidth="1.5"
+                                            ></circle>{" "}
+                                            <path
+                                              d="M8.5 12.5L10.5 14.5L15.5 9.5"
+                                              className="stroke-white"
+                                              strokeWidth="3"
+                                              strokeLinecap="round"
+                                              strokeLinejoin="round"
+                                            ></path>{" "}
+                                          </g>
+                                        </svg>
+                                      </span>
+                                      <div className="dark:text-whiten text-black">
+                                        {activity.content.title}
+                                      </div>
+                                    </div>
+                                    <div className="flex flex-wrap gap-1">
+                                      <div className="border   rounded-full w-7 h-5 flex justify-center items-center">
+                                        {activity.content.dailyEffort}h
+                                      </div>
+                                      <div
+                                        className={`border  rounded-full w-fit px-1 h-5 flex justify-center items-center whitespace-nowrap ${
+                                          activity?.content?.subType
+                                            ? ""
+                                            : "hidden"
+                                        }`}
+                                      >
+                                        {activity.content.subType}
+                                      </div>
+                                    </div>
+                                  </div>
                                 </div>
                                 <div
                                   className={` pt-1 mt-2 text-xs ${
@@ -289,12 +315,8 @@ const AllActivity = () => {
                                 >
                                   {activity.content.priority}
                                 </div>
-                                <div
-                                  className={`border-t border-t-zinc-200 pt-1 mt-2 text-xs ${
-                                    endDate === "--" ? "hidden" : ""
-                                  }`}
-                                >
-                                  {endDate}
+                                <div className="border-t dark:border-t-zinc-600 text-zinc-400  space-y-1 pt-1">
+                                  <div className={`text-xs `}>{endDate}</div>
                                 </div>
                               </div>
                             );
