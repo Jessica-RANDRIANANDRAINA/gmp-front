@@ -6,30 +6,27 @@ import interactionPlugin from "@fullcalendar/interaction";
 import listPlugin from "@fullcalendar/list";
 import frLocale from "@fullcalendar/core/locales/fr";
 import {
-  getTransverseByUserId,
-  deleteTransverse,
+  deleteTaskActivity,
+  getTaskActivityByUserId,
 } from "../../../../services/Project";
 import { SignalRContext } from "../Activity";
-import { Notyf } from "notyf";
-import {
-  AddTransverse,
-  UpdateTransverse,
-} from "../../../../components/Modals/Activity";
-import "notyf/notyf.min.css";
+import AddTaskActivity from "../../../../components/Modals/Activity/AddTaskActivity";
+import UpdateTaskActivity from "../../../../components/Modals/Activity/UpdateTaskActivity";
 import CollapsibleSection from "../../../../components/UIElements/CollapsibleSection";
+import { Notyf } from "notyf";
+import "notyf/notyf.min.css";
+
 const notyf = new Notyf({ position: { x: "center", y: "top" } });
 
-const TransverseCalendar = () => {
+const MyTaskCalendar = () => {
   const { userid } = useParams();
   const [events, setEvents] = useState<any[]>([]);
   const connection = useContext(SignalRContext);
   const [isModalAddOpen, setIsModalAddOpen] = useState<boolean>(false);
   const [isRefreshNeeded, setIsRefreshNeeded] = useState<boolean>(false);
   const [isModalUpdateOpen, setIsModalUpdateOpen] = useState<boolean>(false);
-  const [transverseData, setTransverseData] = useState<any>();
-  const [activeTransverseId, setActiveTransverseId] = useState<string | null>(
-    null
-  );
+  const [taskData, setTaskData] = useState<any>();
+  const [activeTaskId, setActiveTaskId] = useState<string | null>(null);
   const [data, setData] = useState<any>();
   const deletePopUp = useRef<any>(null);
 
@@ -38,7 +35,7 @@ const TransverseCalendar = () => {
     const clickHandler = ({ target }: MouseEvent) => {
       if (!deletePopUp.current) return;
       if (!deletePopUp || deletePopUp.current.contains(target)) return;
-      setActiveTransverseId("");
+      setActiveTaskId("");
     };
     document.addEventListener("click", clickHandler);
     return () => document.removeEventListener("click", clickHandler);
@@ -47,7 +44,7 @@ const TransverseCalendar = () => {
   const fetchData = async () => {
     try {
       if (userid) {
-        const response = await getTransverseByUserId(userid);
+        const response = await getTaskActivityByUserId(userid);
         setData(response);
         const calendarEvents = response.map((intercontract: any) => {
           const startDate = new Date(intercontract.startDate);
@@ -64,13 +61,15 @@ const TransverseCalendar = () => {
             status: intercontract.status,
             type: intercontract.type,
             dailyEffort: intercontract.dailyEffort,
+            phaseid: intercontract.phaseid,
+            projectid: intercontract.projectid,
           };
         });
 
         setEvents(calendarEvents);
       }
     } catch (error) {
-      console.error(`Error fetching intercontract data: ${error}`);
+      console.error(`Error fetching TASK ACTIVITY data: ${error}`);
     }
   };
 
@@ -79,34 +78,37 @@ const TransverseCalendar = () => {
     setIsRefreshNeeded(false);
   }, [connection, isRefreshNeeded]);
 
-  // when transverse deleted refetchData by using signal R
+  // when task deleted refetchData by using signal R
   useEffect(() => {
     if (connection) {
-      connection.on("ReceiveTransverseDeleted", () => {
+      connection.on("ReceiveTaskActivityDeleted", () => {
         fetchData();
       });
     }
     return () => {
       if (connection) {
-        connection.off("ReceiveTransverseDeleted");
+        connection.off("ReceiveTaskActivityDeleted");
       }
     };
   }, [connection]);
 
   const handleEventClick = (info: any) => {
-    const transverse = events.find((event) => event.id === info.event.id);
+    const task = events.find((event) => event.id === info.event.id);
+
     const data = {
       content: {
-        dailyEffort: transverse?.dailyEffort,
-        description: transverse?.description,
-        id: transverse?.id,
-        startDate: transverse?.start,
-        status: transverse?.status,
-        title: transverse?.title,
-        type: transverse?.type,
+        dailyEffort: task?.dailyEffort,
+        description: task?.description,
+        id: task?.id,
+        startDate: task?.start,
+        status: task?.status,
+        title: task?.title,
+        type: task?.type,
+        phaseid: task?.phaseid,
+        projectid: task?.projectid,
       },
     };
-    setTransverseData(data);
+    setTaskData(data);
     setIsModalUpdateOpen(true);
   };
 
@@ -115,37 +117,32 @@ const TransverseCalendar = () => {
       content: task,
     };
 
-    setTransverseData(data);
+    setTaskData(data);
     setIsModalUpdateOpen(true);
   };
 
-  const handleDeleteTransverse = async (transverseId: string) => {
+  const handleToogleMenuDelete = (taskId: string, event: React.MouseEvent) => {
+    event.stopPropagation();
+    setActiveTaskId(activeTaskId === taskId ? null : taskId);
+  };
+
+  const handleDeleteTaskActivity = async (taskId: string) => {
     try {
-      await deleteTransverse(transverseId);
-      notyf.success("Tâche transverse supprimé");
+      await deleteTaskActivity(taskId);
+      notyf.success("Activité supprimée");
       if (connection) {
         try {
-          await connection.invoke("TransverseDeleted", transverseId);
+          await connection.invoke("TaskActivityDeleted", taskId);
         } catch (error) {
           console.error(
-            `Error while sending event TransverseDeleted : ${error}`
+            `Error while sending event TaskActivityDeleted : ${error}`
           );
         }
       }
     } catch (error) {
       notyf.error("Une erreur s'est produite, veuillez réessayer.");
-      console.error(`Error at handle delete task transverse: ${error}`);
+      console.error(`Error at handle delete task activity: ${error}`);
     }
-  };
-
-  const handleToogleMenuDelete = (
-    transverseId: string,
-    event: React.MouseEvent
-  ) => {
-    event.stopPropagation();
-    setActiveTransverseId(
-      activeTransverseId === transverseId ? null : transverseId
-    );
   };
 
   return (
@@ -196,7 +193,7 @@ const TransverseCalendar = () => {
             setIsModalAddOpen(true);
           }}
         >
-          <span>+ ajouter une tâche transverse</span>
+          <span>+ ajouter une activité</span>
         </div>
         <div className="">
           <CollapsibleSection title="Backlog">
@@ -247,7 +244,7 @@ const TransverseCalendar = () => {
                       </svg>
                     </div>
                     {/* pop up menu delete */}
-                    {activeTransverseId === task.id && (
+                    {activeTaskId === task.id && (
                       <div
                         ref={deletePopUp}
                         className="absolute z-20 right-0 top-5 bg-white dark:bg-boxdark dark:border-formStrokedark border-zinc-100 dark:hover:border-red-950 border shadow-lg rounded-md "
@@ -255,7 +252,7 @@ const TransverseCalendar = () => {
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
-                            handleDeleteTransverse(task.id);
+                            handleDeleteTaskActivity(task.id);
                           }}
                           className="text-red-600 dark:text-red-400 dark:hover:bg-red-950  hover:bg-red-50 px-4 py-2 rounded"
                         >
@@ -317,7 +314,7 @@ const TransverseCalendar = () => {
                       </svg>
                     </div>
                     {/* pop up menu delete */}
-                    {activeTransverseId === task.id && (
+                    {activeTaskId === task.id && (
                       <div
                         ref={deletePopUp}
                         className="absolute z-20 right-0 top-5 bg-white dark:bg-boxdark dark:border-formStrokedark border-zinc-100 dark:hover:border-red-950 border shadow-lg rounded-md "
@@ -325,7 +322,7 @@ const TransverseCalendar = () => {
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
-                            handleDeleteTransverse(task.id);
+                            handleDeleteTaskActivity(task.id);
                           }}
                           className="text-red-600 dark:text-red-400 dark:hover:bg-red-950  hover:bg-red-50 px-4 py-2 rounded"
                         >
@@ -385,7 +382,7 @@ const TransverseCalendar = () => {
                       </svg>
                     </div>
                     {/* pop up menu delete */}
-                    {activeTransverseId === task.id && (
+                    {activeTaskId === task.id && (
                       <div
                         ref={deletePopUp}
                         className="absolute z-20 right-0 top-5 bg-white dark:bg-boxdark dark:border-formStrokedark border-zinc-100 dark:hover:border-red-950 border shadow-lg rounded-md "
@@ -393,7 +390,7 @@ const TransverseCalendar = () => {
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
-                            handleDeleteTransverse(task.id);
+                            handleDeleteTaskActivity(task.id);
                           }}
                           className="text-red-600 dark:text-red-400 dark:hover:bg-red-950  hover:bg-red-50 px-4 py-2 rounded"
                         >
@@ -455,7 +452,7 @@ const TransverseCalendar = () => {
                       </svg>
                     </div>
                     {/* pop up menu delete */}
-                    {activeTransverseId === task.id && (
+                    {activeTaskId === task.id && (
                       <div
                         ref={deletePopUp}
                         className="absolute z-20 right-0 top-5 bg-white dark:bg-boxdark dark:border-formStrokedark border-zinc-100 dark:hover:border-red-950 border shadow-lg rounded-md "
@@ -463,7 +460,7 @@ const TransverseCalendar = () => {
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
-                            handleDeleteTransverse(task.id);
+                            handleDeleteTaskActivity(task.id);
                           }}
                           className="text-red-600 dark:text-red-400 dark:hover:bg-red-950  hover:bg-red-50 px-4 py-2 rounded"
                         >
@@ -525,7 +522,7 @@ const TransverseCalendar = () => {
                       </svg>
                     </div>
                     {/* pop up menu delete */}
-                    {activeTransverseId === task.id && (
+                    {activeTaskId === task.id && (
                       <div
                         ref={deletePopUp}
                         className="absolute z-20 right-0 top-5 bg-white dark:bg-boxdark dark:border-formStrokedark border-zinc-100 dark:hover:border-red-950 border shadow-lg rounded-md "
@@ -533,7 +530,7 @@ const TransverseCalendar = () => {
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
-                            handleDeleteTransverse(task.id);
+                            handleDeleteTaskActivity(task.id);
                           }}
                           className="text-red-600 dark:text-red-400 dark:hover:bg-red-950  hover:bg-red-50 px-4 py-2 rounded"
                         >
@@ -552,22 +549,22 @@ const TransverseCalendar = () => {
 
       {/* Modal pour ajouter et mettre à jour les intercontracts */}
       {isModalAddOpen && (
-        <AddTransverse
+        <AddTaskActivity
           modalOpen={isModalAddOpen}
           setModalOpen={setIsModalAddOpen}
           setIsAddFinished={setIsRefreshNeeded}
         />
       )}
       {isModalUpdateOpen && (
-        <UpdateTransverse
+        <UpdateTaskActivity
           modalUpdateOpen={isModalUpdateOpen}
           setModalUpdateOpen={setIsModalUpdateOpen}
           setIsRefreshNeeded={setIsRefreshNeeded}
-          transverse={transverseData}
+          task={taskData}
         />
       )}
     </div>
   );
 };
 
-export default TransverseCalendar;
+export default MyTaskCalendar;
