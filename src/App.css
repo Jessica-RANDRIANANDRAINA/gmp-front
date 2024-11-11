@@ -7,3 +7,18 @@
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
   }
+
+  /* title in the header toolbar  */
+.fc .fc-toolbar-title {
+  font-size: 1rem; 
+  font-weight: bold; 
+  
+}
+
+.fc .fc-list-day-cushion {
+  background-color: #3ea16b; /* Couleur de fond personnalisée */
+  color: #333; /* Couleur du texte */
+  font-weight: bold;
+  padding: 10px;
+}
+
