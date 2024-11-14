@@ -76,6 +76,17 @@ export const getAllUserPaginated = async (
   }
 };
 
+export const getMySubordinatesNameAndId = async (superiorid: string) => {
+  try {
+    const response = await axios.get(
+      `${endPoint}/api/User/subordinates/${superiorid}`
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(`Error at getMySubordinatesNameAndId services: ${error}`);
+  }
+};
+
 // GET ALL DEPARTMENTS
 export const getAllDepartments = async () => {
   try {

@@ -1,24 +1,65 @@
 import { useState, useEffect, createContext } from "react";
+import { useParams } from "react-router-dom";
+// import { CustomInputUserSpecifiedSearch } from "../../../components/UIElements";
 import { HubConnection, HubConnectionBuilder } from "@microsoft/signalr";
 import ProjectLayout from "../../../layout/ProjectLayout";
 import { NavLink, Outlet } from "react-router-dom";
 import Breadcrumb from "../../../components/BreadCrumbs/BreadCrumb";
 import { IDecodedToken } from "../../../types/user";
 import { decodeToken } from "../../../services/Function/TokenService";
+import { getMySubordinatesNameAndId } from "../../../services/User";
 
 export const SignalRContext = createContext<HubConnection | null>(null);
 
 export const ViewContext = createContext({
   view: "table",
-  setView: (view: string) => {},
+  setView: (_view: string) => {},
 });
 
+type TSubordinate = {
+  id: string;
+  name: string;
+  email: string;
+};
+
 const Activity = () => {
+  const { userid } = useParams();
   const [decodedToken, setDecodedToken] = useState<IDecodedToken>();
   const [connection, setConnection] = useState<HubConnection | null>(null);
   const [activityView, setActivityView] = useState<string>(
     localStorage.getItem("activity_view") || "table"
   );
+  // const [subordinates, setSubordinates] = useState<
+  //   Array<{ id: string; name: string; email: string }>
+  // >([]);
+  // const [subordinatesName, setSubordinatesName] = useState<string>("Moi");
+
+  const fetchSubordinates = async () => {
+    try {
+      if (userid) {
+        // const data: TSubordinate[] = await getMySubordinatesNameAndId(userid);
+
+        const data: TSubordinate[] = await getMySubordinatesNameAndId(
+          "ba5d519e-3b23-4201-a6a6-1d3760f6b214"
+        );
+
+        const transformedArray = data?.map(({ id, name, email }) => ({
+          id,
+          name,
+          email,
+        }));
+        console.log(transformedArray)
+
+        // setSubordinates(transformedArray);
+      }
+    } catch (error) {
+      console.error(`Error at fetch subordinates`);
+    }
+  };
+
+  useEffect(() => {
+    fetchSubordinates();
+  }, []);
 
   const handleViewChange = (view: string) => {
     setActivityView(view);
@@ -205,6 +246,16 @@ const Activity = () => {
                   </svg>
                   <span>Calendrier</span>
                 </div>
+              </div>
+              <div>
+                {/* {(() => {
+                  return (
+                    <CustomInputUserSpecifiedSearch
+                      label="Rechercher"
+                      user={subordinates}
+                    />
+                  );
+                })()} */}
               </div>
               <div className="flex w-full justify-between flex-wrap">
                 <div className="flex gap-4 *:p-3 *:rounded-md *:mt-5 text-xs font-semibold overflow-x-scroll hide-scrollbar mb-2 whitespace-nowrap">
