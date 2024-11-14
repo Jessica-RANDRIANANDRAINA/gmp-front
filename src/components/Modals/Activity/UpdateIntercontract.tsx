@@ -29,6 +29,7 @@ const UpdateIntercontract = ({
     description: "",
     startDate: undefined,
     dailyEffort: 1,
+    status: "Backlog",
   });
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { monday, friday } = getMondayAndFriday();
@@ -42,6 +43,7 @@ const UpdateIntercontract = ({
         startDate: intercontract?.content?.startDate,
         dailyEffort: intercontract?.content?.dailyEffort,
         type: intercontract?.content?.type,
+        status: intercontract?.content?.status,
       });
     }
   }, [intercontract]);
@@ -58,6 +60,7 @@ const UpdateIntercontract = ({
         dailyEffort: intercontractData.dailyEffort,
         type: intercontractData.type,
         description: intercontractData.description,
+        status: intercontractData.status,
       };
       if (intercontractData.id) {
         await updateIntercontract(intercontractData.id, dataToSend);
@@ -98,18 +101,37 @@ const UpdateIntercontract = ({
                 });
               }}
             />
-            <CustomSelect
-              required={true}
-              label="Type"
-              data={intercontractType}
-              value={intercontractData.type}
-              onValueChange={(e) => {
-                setIntercontractData({
-                  ...intercontractData,
-                  type: e,
-                });
-              }}
-            />
+            <div className="flex *:w-full flex-wrap md:flex-nowrap gap-2">
+              <CustomSelect
+                required={true}
+                label="Type"
+                data={intercontractType}
+                value={intercontractData.type}
+                onValueChange={(e) => {
+                  setIntercontractData({
+                    ...intercontractData,
+                    type: e,
+                  });
+                }}
+              />
+              <CustomSelect
+                label="Status"
+                data={[
+                  "Backlog",
+                  "En cours",
+                  "Traité",
+                  "En pause",
+                  "Abandonné",
+                ]}
+                value={intercontractData.status}
+                onValueChange={(e) => {
+                  setIntercontractData({
+                    ...intercontractData,
+                    status: e,
+                  });
+                }}
+              />
+            </div>
             <div className="flex *:w-full flex-wrap md:flex-nowrap gap-2">
               <CustomInput
                 required={true}

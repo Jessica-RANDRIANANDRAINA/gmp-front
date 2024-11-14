@@ -42,6 +42,7 @@ const UpdateActivity = ({
     phaseId: activity?.content?.phaseId,
     transverseType: activity?.content?.subType,
     intercontractType: activity?.content?.subType,
+    status: activity?.content?.status,
   });
   const [projectData, setProjectData] = useState<any>();
   const [projectTitle, setProjectTitle] = useState<Array<string>>([]);
@@ -159,6 +160,7 @@ const UpdateActivity = ({
           dailyEffort: activityData.dailyEffort,
           type: activityData.transverseType,
           description: activityData.description,
+          status: activityData.status,
         };
         if (activityData.id) {
           await updateTransverse(activityData.id, dataToSend);
@@ -170,6 +172,7 @@ const UpdateActivity = ({
           dailyEffort: activityData.dailyEffort,
           type: activityData.intercontractType,
           description: activityData.description,
+          status: activityData.status,
         };
         if (activityData.id) {
           await updateIntercontract(activityData.id, dataToSend);
@@ -182,6 +185,7 @@ const UpdateActivity = ({
           description: activityData.description,
           projectId: activityData.projectId,
           phaseId: activityData.phaseId,
+          status: activityData.status,
         };
         if (activityData.id) {
           await updateTaskActicity(activityData.id, dataToSend);
@@ -223,15 +227,34 @@ const UpdateActivity = ({
                 });
               }}
             />
-            <CustomInput
-              required={true}
-              label="Type"
-              type="text"
-              rounded="medium"
-              className="text-sm"
-              value={activityData.type}
-              disabled={true}
-            />
+            <div className="flex *:w-full flex-wrap md:flex-nowrap gap-2">
+              <CustomInput
+                required={true}
+                label="Type"
+                type="text"
+                rounded="medium"
+                className="text-sm"
+                value={activityData.type}
+                disabled={true}
+              />
+              <CustomSelect
+                label="Status"
+                data={[
+                  "Backlog",
+                  "En cours",
+                  "Traité",
+                  "En pause",
+                  "Abandonné",
+                ]}
+                value={activityData.status}
+                onValueChange={(e) => {
+                  setActivityData({
+                    ...activityData,
+                    status: e,
+                  });
+                }}
+              />
+            </div>
             <div
               className={` w-full *:w-full flex-wrap md:flex-nowrap  gap-2 ${
                 activity.content.type === "Projet" ? "flex" : "hidden"

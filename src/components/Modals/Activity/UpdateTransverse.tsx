@@ -29,6 +29,7 @@ const UpdateTransverse = ({
     description: "",
     startDate: undefined,
     dailyEffort: 1,
+    status:'Backlog'
   });
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { monday, friday } = getMondayAndFriday();
@@ -42,6 +43,7 @@ const UpdateTransverse = ({
         startDate: transverse?.content?.startDate,
         dailyEffort: transverse?.content?.dailyEffort,
         type: transverse?.content?.type,
+        status: transverse?.content?.status,
       });
     }
   }, [transverse]);
@@ -58,6 +60,8 @@ const UpdateTransverse = ({
         dailyEffort: transverseData.dailyEffort,
         type: transverseData.type,
         description: transverseData.description,
+        status: transverseData.status,
+
       };
       if (transverseData.id) {
         await updateTransverse(transverseData.id, dataToSend);
@@ -99,18 +103,37 @@ const UpdateTransverse = ({
                 });
               }}
             />
-            <CustomSelect
-              required={true}
-              label="Type"
-              data={transverseType}
-              value={transverseData.type}
-              onValueChange={(e) => {
-                setTransverseData({
-                  ...transverseData,
-                  type: e,
-                });
-              }}
-            />
+            <div className="flex *:w-full flex-wrap md:flex-nowrap gap-2">
+              <CustomSelect
+                required={true}
+                label="Type"
+                data={transverseType}
+                value={transverseData.type}
+                onValueChange={(e) => {
+                  setTransverseData({
+                    ...transverseData,
+                    type: e,
+                  });
+                }}
+              />
+              <CustomSelect
+                label="Status"
+                data={[
+                  "Backlog",
+                  "En cours",
+                  "Traité",
+                  "En pause",
+                  "Abandonné",
+                ]}
+                value={transverseData.status}
+                onValueChange={(e) => {
+                  setTransverseData({
+                    ...transverseData,
+                    status: e,
+                  });
+                }}
+              />
+            </div>
             <div className="flex *:w-full flex-wrap md:flex-nowrap gap-2">
               <CustomInput
                 required={true}

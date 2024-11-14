@@ -4,7 +4,8 @@ import {
   assignHabilitations,
   actualiseUserData,
   getUserHabilitations,
-  getAllUserPaginated
+  getAllUserPaginated,
+  getMySubordinatesNameAndId,
 } from "./UserServices";
 import {
   createHabilitation,
@@ -27,5 +28,6 @@ export {
   updateHabilitation,
   actualiseUserData,
   getUserHabilitations,
-  getAllUserPaginated
+  getAllUserPaginated,
+  getMySubordinatesNameAndId,
 };

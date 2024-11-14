@@ -3,6 +3,7 @@ import CustomSelect from "./Select/CustomSelect";
 import MultiSelect from "./Select/MultiSelect";
 import Checkbox from "./Select/CheckBox";
 import CutomInputUserSearch from "./Input/CutomInputUserSearch";
+import CustomInputUserSpecifiedSearch from "./Input/CustomInputUserSpecifiedSearch";
 
 export {
   CustomInput,
@@ -10,4 +11,5 @@ export {
   CustomSelect,
   MultiSelect,
   Checkbox,
+  CustomInputUserSpecifiedSearch
 };

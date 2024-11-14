@@ -125,6 +125,7 @@ export interface IActivityAdd {
   phaseId?: string;
   transverseType?: string;
   intercontractType?: string;
+  status?: string;
 }
 
 export interface ITransverseAdd {
@@ -134,4 +135,5 @@ export interface ITransverseAdd {
   type: string;
   dailyEffort: number;
   startDate?: string;
+  status?: string;
 }
