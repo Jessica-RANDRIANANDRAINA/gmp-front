@@ -36,6 +36,7 @@ const UpdateTaskActivity = ({
     phaseTitle: task?.content?.phaseTitle,
     projectId: task?.content?.projectid,
     phaseId: task?.content?.phaseid,
+    status: task?.content?.status,
   });
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [projectTitle, setProjectTitle] = useState<Array<string>>([]);
@@ -157,6 +158,7 @@ const UpdateTaskActivity = ({
         description: taskData.description,
         projectId: taskData.projectId,
         phaseId: taskData.phaseId,
+        status: taskData.status,
       };
       if (taskData.id) {
         await updateTaskActicity(taskData.id, dataToSend);
@@ -194,6 +196,17 @@ const UpdateTaskActivity = ({
                 setTaskData({
                   ...taskData,
                   title: e.target.value,
+                });
+              }}
+            />
+            <CustomSelect
+              label="Status"
+              data={["Backlog", "En cours", "Traité", "En pause", "Abandonné"]}
+              value={taskData.status}
+              onValueChange={(e) => {
+                setTaskData({
+                  ...taskData,
+                  status: e,
                 });
               }}
             />
