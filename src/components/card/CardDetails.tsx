@@ -1,0 +1,102 @@
+import React, { ReactNode, useEffect, useState } from 'react';
+
+interface CardDataStatsProps {
+  title: string;
+  total: number;
+  dataPrev: string;
+  currency?: string;
+  children: ReactNode;
+}
+
+const CardDetails: React.FC<CardDataStatsProps> = ({
+  title,
+  total,
+  dataPrev,
+  currency,
+  children,
+}) => {
+  const [isLevelup, setIsLevelUp] = useState(Boolean);
+  const [rate, setRate] = useState('0');
+
+  useEffect(() => {
+    const prev = parseFloat(dataPrev);
+    const curr = (total);
+    if (prev < curr) {
+      setIsLevelUp(true);
+      if (prev !== 0) {
+        let percent = (curr * 100) / prev;
+        setRate(percent.toFixed(2));
+      } else {
+        setRate((curr * 100).toFixed(2));
+      }
+    } else {
+      setIsLevelUp(false);
+      if (prev !== 0) {
+        let percent = 100 - (curr * 100) / prev;
+        setRate(percent?.toFixed(2));
+      } else {
+        setRate('0');
+      }
+    }
+  }, [dataPrev, total]);
+
+  return (
+    <div className="rounded-sm border border-stroke bg-white py-6 px-4 shadow-default dark:border-strokedark dark:bg-boxdark">
+      <div className="flex h-0 w-10 items-center justify-center rounded-full bg-meta-2 dark:bg-meta-4">
+        {children}
+      </div>
+
+      <div className="mt-4">
+        <div>
+          <h4 className="text-title-md font-bold text-black dark:text-white">
+          {currency}{total} 
+          </h4>
+          <div></div>
+        </div>
+        <div className="grid grid-cols-2 ">
+          <span className="text-sm font-medium">{title}</span>
+
+          <span
+            className={` justify-center hidden items-center gap-1 text-sm font-medium ${
+              isLevelup && 'text-meta-3'
+            } ${!isLevelup && 'text-meta-5'} `}
+          >
+            <div>{isNaN(parseFloat(rate)) ? 0 : rate ?? 0}%</div>
+            {isLevelup && (
+              <div>
+                <svg
+                  className="fill-meta-3"
+                  width="10"
+                  height="11"
+                  viewBox="0 0 10 11"
+                  fill="none"
+                >
+                  <path
+                    d="M4.35716 2.47737L0.908974 5.82987L5.0443e-07 4.94612L5 0.0848689L10 4.94612L9.09103 5.82987L5.64284 2.47737L5.64284 10.0849L4.35716 10.0849L4.35716 2.47737Z"
+                    fill=""
+                  />
+                </svg>
+              </div>
+            )}
+            {!isLevelup && (
+              <svg
+                className="fill-meta-5"
+                width="10"
+                height="11"
+                viewBox="0 0 10 11"
+                fill="none"
+              >
+                <path
+                  d="M5.64284 7.69237L9.09102 4.33987L10 5.22362L5 10.0849L-8.98488e-07 5.22362L0.908973 4.33987L4.35716 7.69237L4.35716 0.0848701L5.64284 0.0848704L5.64284 7.69237Z"
+                  fill=""
+                />
+              </svg>
+            )}
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default CardDetails;

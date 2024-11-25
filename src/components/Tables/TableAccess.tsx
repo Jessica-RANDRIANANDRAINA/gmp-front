@@ -432,18 +432,18 @@ const TableAccess = ({
                       const message = [];
                       let count = 0;
                       if (project.watchMyProject === 1) {
-                        message.push("Voir la lite de mes projets");
+                        message.push("Voir la liste de mes projets");
                         count++;
                       }
                       if (project.watchMySubordinatesProject === 1) {
                         message.push(
-                          "Voir la lite de mes projets et celle de mes subordonné(e)s"
+                          "Voir la liste de mes projets et celle de mes subordonné(e)s"
                         );
                         count++;
                       }
                       if (project.watchAllProject === 1) {
                         message.push(
-                          "Voir la lite de tous les projets de Ravinala"
+                          "Voir la liste de tous les projets de Ravinala"
                         );
                         count++;
                       }

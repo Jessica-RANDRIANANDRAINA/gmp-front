@@ -12,6 +12,7 @@ import {
   updateTeamProject,
   getPhaseById,
   updatePhaseSettings,
+  getCountProject
 } from "./ProjectServices";
 
 import {
@@ -68,4 +69,5 @@ export {
   createTaskActivity,
   updateTaskActicity,
   deleteTaskActivity,
+  getCountProject
 };

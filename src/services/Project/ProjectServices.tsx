@@ -83,6 +83,16 @@ export const getAllLevelProjectByUserId = async (
   }
 };
 
+// get count for dashboard
+export const getCountProject = async(userid: string | undefined) => {
+  try {
+    const response = await axios.get(`${endPoint}/api/Project/count/${userid}`)
+    return response.data
+  } catch (error) {
+    throw new Error(`Error at fetching count project by user id service: ${error}`);
+  }
+}
+
 //get project by project id
 export const getProjectById = async (projectid: string) => {
   try {
