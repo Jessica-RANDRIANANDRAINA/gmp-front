@@ -44,6 +44,11 @@ const Activity = () => {
   >([]);
 
   useEffect(() => {
+    localStorage.setItem("sub_id_", "");
+    handleSubordinateSelectedChange("")
+  }, []);
+
+  useEffect(() => {
     if (selectedUserInput && selectedUserInput.length > 0) {
       const id = selectedUserInput?.[0]?.id;
       handleSubordinateSelectedChange(id);
