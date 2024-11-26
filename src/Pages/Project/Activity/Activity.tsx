@@ -1,6 +1,9 @@
 import { useState, useEffect, createContext } from "react";
 import { useParams } from "react-router-dom";
-import { CustomInputUserSpecifiedSearch } from "../../../components/UIElements";
+import {
+  CustomInput,
+  CustomInputUserSpecifiedSearch,
+} from "../../../components/UIElements";
 import { HubConnection, HubConnectionBuilder } from "@microsoft/signalr";
 import ProjectLayout from "../../../layout/ProjectLayout";
 import { NavLink, Outlet } from "react-router-dom";
@@ -42,10 +45,14 @@ const Activity = () => {
   const [selectedUserInput, setSelecteduserInput] = useState<
     Array<{ id: string; name: string; email: string }>
   >([]);
+  const [search, setSearch] = useState({
+    startDate: undefined as string | undefined,
+    endDate: undefined as string | undefined,
+  });
 
   useEffect(() => {
     localStorage.setItem("sub_id_", "");
-    handleSubordinateSelectedChange("")
+    handleSubordinateSelectedChange("");
   }, []);
 
   useEffect(() => {
@@ -60,9 +67,6 @@ const Activity = () => {
       if (userid) {
         // const data: TSubordinate[] = await getMySubordinatesNameAndId(userid);
 
-        // const data: TSubordinate[] = await getMySubordinatesNameAndId(
-        //   "c894ab8a-7e91-41c9-8102-5eef8d8e99a0"
-        // );
         const data: TSubordinate[] = await getMySubordinatesNameAndId(
           "ba5d519e-3b23-4201-a6a6-1d3760f6b214"
         );
@@ -99,6 +103,15 @@ const Activity = () => {
   const handleRemoveUserSelectedInput = () => {
     setSelecteduserInput([]);
     handleSubordinateSelectedChange("");
+  };
+
+  const handleDeleteFilter = () => {
+    setSearch({
+      ...search,
+      startDate: "",
+      endDate: "",
+    });
+    handleRemoveUserSelectedInput()
   };
 
   useEffect(() => {
@@ -348,40 +361,102 @@ const Activity = () => {
                   </div>
                 </div>
                 {/* FILTER BEGIN */}
-                <div className="grid grid-cols-6">
-                  <div
-                    className={`${
-                      selectedUserInput.length > 0 ? "hidden" : ""
-                    }`}
-                  >
-                    <CustomInputUserSpecifiedSearch
-                      label="Activité de"
-                      rounded="medium"
-                      user={subordinates}
-                      className="text-xs"
-                      userSelected={selectedUserInput}
-                      setUserSelected={setSelecteduserInput}
-                    />
-                  </div>
-                  {selectedUserInput.length > 0 && (
-                    <div>
-                      <label htmlFor="" className="text-sm font-semibold">
-                        Activité de
-                      </label>
-                      <div className="flex items-center text-sm border rounded-lg shadow-sm dark:border-formStrokedark bg-gray-100 dark:bg-gray-800 transition hover:shadow-md">
-                        <span className="px-3 py-1 whitespace-nowrap overflow-hidden text-ellipsis text-gray-700 dark:text-gray-300 font-medium">
-                          {selectedUserInput?.[0]?.name}
-                        </span>
-                        <button
-                          className="flex items-center justify-center px-3 py-1 text-red-500 dark:text-red-400 hover:text-white hover:bg-red-500 transition rounded-r-lg focus:outline-none focus:ring-2 focus:ring-red-500"
-                          aria-label="Remove user"
-                          onClick={handleRemoveUserSelectedInput}
-                        >
-                          ✕
-                        </button>
-                      </div>
+                <div className="grid place-content-center grid-cols-6 gap-4">
+                  <div>
+                    <div
+                      className={`${
+                        selectedUserInput.length > 0 ? "hidden" : ""
+                      }`}
+                    >
+                      <CustomInputUserSpecifiedSearch
+                        label="Activité de"
+                        rounded="medium"
+                        placeholder="Nom"
+                        user={subordinates}
+                        className="text-xs"
+                        userSelected={selectedUserInput}
+                        setUserSelected={setSelecteduserInput}
+                      />
                     </div>
-                  )}
+                    {selectedUserInput.length > 0 && (
+                      <div>
+                        <label htmlFor="" className="text-sm font-semibold">
+                          Activité de
+                        </label>
+                        <div className="flex mt-2.5 justify-between items-center text-sm border border-primaryGreen  rounded-md shadow-sm dark:border-primaryGreen bg-gray-100 dark:bg-gray-800 transition hover:shadow-md">
+                          <span className="px-3 py-2 whitespace-nowrap overflow-hidden text-ellipsis text-gray-700 dark:text-gray-300 font-medium">
+                            {selectedUserInput?.[0]?.name}
+                          </span>
+                          <button
+                            className="flex items-center justify-center px-3 py-2 text-red-500 dark:text-red-400 hover:text-white dark:hover:text-whiten hover:bg-red-500 transition rounded-r-md focus:outline-none focus:ring-2 focus:ring-red-500"
+                            onClick={handleRemoveUserSelectedInput}
+                          >
+                            ✕
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                  <CustomInput
+                    type="date"
+                    value={search.startDate}
+                    label="De la date du"
+                    rounded="medium"
+                    onChange={(e) => {
+                      setSearch({
+                        ...search,
+                        startDate: e.target.value,
+                      });
+                    }}
+                  />
+                  <CustomInput
+                    type="date"
+                    value={search.endDate}
+                    label="Au"
+                    rounded="medium"
+                    onChange={(e) => {
+                      setSearch({
+                        ...search,
+                        endDate: e.target.value,
+                      });
+                    }}
+                  />
+                  <div className="flex items-end gap-2  mb-1">
+                    <div className="pb-2">
+                      <button
+                        onClick={handleDeleteFilter}
+                        className="flex justify-center whitespace-nowrap text-sm gap-1 h-fit "
+                      >
+                        Effacer les filtres
+                        <svg
+                          width="20"
+                          height="20"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                          stroke="#00AE5D"
+                        >
+                          <path
+                            d="M21 12C21 16.9706 16.9706 21 12 21C9.69494 21 7.59227 20.1334 6 18.7083L3 16M3 12C3 7.02944 7.02944 3 12 3C14.3051 3 16.4077 3.86656 18 5.29168L21 8M3 21V16M3 16H8M21 3V8M21 8H16"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                    <div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          // setIsSearchButtonClicked(true);
+                        }}
+                        className=" px-2 cursor-pointer mt-2 py-2 lg:px-3 xl:px-2  text-center font-medium text-sm text-white hover:bg-opacity-90  border border-primaryGreen bg-primaryGreen rounded-lg dark:border-darkgreen dark:bg-darkgreen dark:hover:bg-opacity-90  md:ease-in md:duration-300 md:transform  "
+                      >
+                        Rechercher
+                      </button>
+                    </div>
+                  </div>
                 </div>
                 {/* FILTER END */}
               </div>
