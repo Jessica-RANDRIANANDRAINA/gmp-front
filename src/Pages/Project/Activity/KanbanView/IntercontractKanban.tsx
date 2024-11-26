@@ -11,6 +11,7 @@ import {
 import { formatDate } from "../../../../services/Function/DateServices";
 import AddIntercontract from "../../../../components/Modals/Activity/AddIntercontract";
 import UpdateIntercontract from "../../../../components/Modals/Activity/UpdateIntercontract";
+import { UserSelectedContext } from "../Activity";
 
 const notyf = new Notyf({ position: { x: "center", y: "top" } });
 
@@ -51,6 +52,7 @@ const organizeIntercontractByStatus = (intercontracts: any[]) => {
 };
 const IntercontractKanban = () => {
   const { userid } = useParams();
+  const { userSelected } = useContext(UserSelectedContext);
   const [data, setData] = useState<any>({
     intercontracts: {},
     columns: {},
@@ -80,22 +82,28 @@ const IntercontractKanban = () => {
   // get all transverse data of the connected user
   const fetchData = async () => {
     try {
-      if (userid) {
-        const response = await getInterContractByUserId(userid);
-        const { intercontractMap, columns } =
-          organizeIntercontractByStatus(response);
-        setData({
-          intercontracts: intercontractMap,
-          columns,
-          columnOrder: [
-            "column-1",
-            "column-2",
-            "column-3",
-            "column-4",
-            "column-5",
-          ],
-        });
+      var response;
+      if (userSelected !== "") {
+        response = await getInterContractByUserId(userSelected);
+      } else {
+        if (userid) {
+          response = await getInterContractByUserId(userid);
+        }
       }
+
+      const { intercontractMap, columns } =
+        organizeIntercontractByStatus(response);
+      setData({
+        intercontracts: intercontractMap,
+        columns,
+        columnOrder: [
+          "column-1",
+          "column-2",
+          "column-3",
+          "column-4",
+          "column-5",
+        ],
+      });
     } catch (error) {
       console.error(`Error at fetch intercontract data: ${error}`);
     }
@@ -103,7 +111,7 @@ const IntercontractKanban = () => {
   useEffect(() => {
     fetchData();
     setIsRefreshNeeded(false);
-  }, [isRefreshNeeded, connection]);
+  }, [isRefreshNeeded, connection, userSelected]);
 
   // when intercontract deleted refetchData by using signal R
   useEffect(() => {

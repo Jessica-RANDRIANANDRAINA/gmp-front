@@ -13,13 +13,14 @@ import { SignalRContext } from "../Activity";
 import { Notyf } from "notyf";
 import AddIntercontract from "../../../../components/Modals/Activity/AddIntercontract";
 import UpdateIntercontract from "../../../../components/Modals/Activity/UpdateIntercontract";
-
+import { UserSelectedContext } from "../Activity";
 import "notyf/notyf.min.css";
 import CollapsibleSection from "../../../../components/UIElements/CollapsibleSection";
 const notyf = new Notyf({ position: { x: "center", y: "top" } });
 
 const IntercontractCalendar = () => {
   const { userid } = useParams();
+  const { userSelected } = useContext(UserSelectedContext);
   const [events, setEvents] = useState<any[]>([]);
   const connection = useContext(SignalRContext);
   const [isModalAddOpen, setIsModalAddOpen] = useState<boolean>(false);
@@ -45,29 +46,35 @@ const IntercontractCalendar = () => {
 
   const fetchData = async () => {
     try {
-      if (userid) {
-        const response = await getInterContractByUserId(userid);
-        setData(response);
-        const calendarEvents = response.map((intercontract: any) => {
-          const startDate = new Date(intercontract.startDate);
-          const endDate = new Date(startDate);
-          startDate.setHours(7, 30, 0, 0);
-          endDate.setHours(15, 30, 0, 0);
-
-          return {
-            id: intercontract.id,
-            title: intercontract.title,
-            start: startDate.toISOString(),
-            end: endDate.toISOString(),
-            description: intercontract.description,
-            status: intercontract.status,
-            type: intercontract.type,
-            dailyEffort: intercontract.dailyEffort,
-          };
-        });
-
-        setEvents(calendarEvents);
+      var response;
+      if (userSelected !== "") {
+        response = await getInterContractByUserId(userSelected);
+      } else {
+        if (userid) {
+          response = await getInterContractByUserId(userid);
+        }
       }
+
+      setData(response);
+      const calendarEvents = response.map((intercontract: any) => {
+        const startDate = new Date(intercontract.startDate);
+        const endDate = new Date(startDate);
+        startDate.setHours(7, 30, 0, 0);
+        endDate.setHours(15, 30, 0, 0);
+
+        return {
+          id: intercontract.id,
+          title: intercontract.title,
+          start: startDate.toISOString(),
+          end: endDate.toISOString(),
+          description: intercontract.description,
+          status: intercontract.status,
+          type: intercontract.type,
+          dailyEffort: intercontract.dailyEffort,
+        };
+      });
+
+      setEvents(calendarEvents);
     } catch (error) {
       console.error(`Error fetching intercontract data: ${error}`);
     }
@@ -76,7 +83,7 @@ const IntercontractCalendar = () => {
   useEffect(() => {
     fetchData();
     setIsRefreshNeeded(false);
-  }, [connection, isRefreshNeeded]);
+  }, [connection, isRefreshNeeded, userSelected]);
 
   // Rafraîchir les données en cas de suppression via SignalR
   useEffect(() => {

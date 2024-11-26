@@ -15,6 +15,7 @@ import { SignalRContext } from "../Activity";
 import AddActivity from "../../../../components/Modals/Activity/AddActivity";
 import UpdateActivity from "../../../../components/Modals/Activity/UpdateActivity";
 import CollapsibleSection from "../../../../components/UIElements/CollapsibleSection";
+import { UserSelectedContext } from "../Activity";
 import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
 
@@ -22,6 +23,7 @@ const notyf = new Notyf({ position: { x: "center", y: "top" } });
 
 const AllActivityCalendar = () => {
   const { userid } = useParams();
+  const { userSelected } = useContext(UserSelectedContext);
   const [events, setEvents] = useState<any[]>([]);
   const connection = useContext(SignalRContext);
   const [isModalAddOpen, setIsModalAddOpen] = useState<boolean>(false);
@@ -45,31 +47,37 @@ const AllActivityCalendar = () => {
 
   const fetchData = async () => {
     try {
-      if (userid) {
-        const response = await getAllActivitiesOfUser(userid);
-        setData(response);
-        const calendarEvents = response.map((intercontract: any) => {
-          const startDate = new Date(intercontract.startDate);
-          const endDate = new Date(startDate);
-          startDate.setHours(7, 30, 0, 0);
-          endDate.setHours(15, 30, 0, 0);
-
-          return {
-            id: intercontract.id,
-            title: intercontract.title,
-            start: startDate.toISOString(),
-            end: endDate.toISOString(),
-            description: intercontract.description,
-            status: intercontract.status,
-            type: intercontract.type,
-            dailyEffort: intercontract.dailyEffort,
-            phaseid: intercontract?.phaseid,
-            projectid: intercontract?.projectid,
-          };
-        });
-
-        setEvents(calendarEvents);
+      var response;
+      if (userSelected !== "") {
+        response = response = await getAllActivitiesOfUser(userSelected);
+      } else {
+        if (userid) {
+          response = await getAllActivitiesOfUser(userid);
+        }
       }
+
+      setData(response);
+      const calendarEvents = response.map((intercontract: any) => {
+        const startDate = new Date(intercontract.startDate);
+        const endDate = new Date(startDate);
+        startDate.setHours(7, 30, 0, 0);
+        endDate.setHours(15, 30, 0, 0);
+
+        return {
+          id: intercontract.id,
+          title: intercontract.title,
+          start: startDate.toISOString(),
+          end: endDate.toISOString(),
+          description: intercontract.description,
+          status: intercontract.status,
+          type: intercontract.type,
+          dailyEffort: intercontract.dailyEffort,
+          phaseid: intercontract?.phaseid,
+          projectid: intercontract?.projectid,
+        };
+      });
+
+      setEvents(calendarEvents);
     } catch (error) {
       console.error(`Error fetching TASK ACTIVITY data: ${error}`);
     }
@@ -78,7 +86,7 @@ const AllActivityCalendar = () => {
   useEffect(() => {
     fetchData();
     setIsRefreshNeeded(false);
-  }, [connection, isRefreshNeeded]);
+  }, [connection, isRefreshNeeded, userSelected]);
 
   // when task deleted refetchData by using signal R
   useEffect(() => {

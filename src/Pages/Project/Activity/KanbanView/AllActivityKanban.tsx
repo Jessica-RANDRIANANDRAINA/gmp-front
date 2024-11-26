@@ -16,6 +16,7 @@ import {
 } from "../../../../services/Project";
 import AddActivity from "../../../../components/Modals/Activity/AddActivity";
 import UpdateActivity from "../../../../components/Modals/Activity/UpdateActivity";
+import { UserSelectedContext } from "../Activity";
 import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
 const notyf = new Notyf({ position: { x: "center", y: "top" } });
@@ -62,6 +63,7 @@ const organizeActivityByStatus = (activities: any[]) => {
 
 const AllActivityKanban = () => {
   const { userid } = useParams();
+  const { userSelected } = useContext(UserSelectedContext);
   const [data, setData] = useState<any>({
     acivities: {},
     columns: {},
@@ -91,21 +93,27 @@ const AllActivityKanban = () => {
 
   const fetchData = async () => {
     try {
-      if (userid) {
-        const response = await getAllActivitiesOfUser(userid);
-        const { activityMap, columns } = organizeActivityByStatus(response);
-        setData({
-          acivities: activityMap,
-          columns,
-          columnOrder: [
-            "column-1",
-            "column-2",
-            "column-3",
-            "column-4",
-            "column-5",
-          ],
-        });
+      var response;
+      if (userSelected !== "") {
+        response = await getAllActivitiesOfUser(userSelected);
+      } else {
+        if (userid) {
+          response = await getAllActivitiesOfUser(userid);
+        }
       }
+
+      const { activityMap, columns } = organizeActivityByStatus(response);
+      setData({
+        acivities: activityMap,
+        columns,
+        columnOrder: [
+          "column-1",
+          "column-2",
+          "column-3",
+          "column-4",
+          "column-5",
+        ],
+      });
     } catch (error) {
       console.error(`Error at fetch task data: ${error}`);
     }
@@ -114,7 +122,7 @@ const AllActivityKanban = () => {
   useEffect(() => {
     fetchData();
     setIsRefreshNeeded(false);
-  }, [connection, isRefreshNeeded]);
+  }, [connection, isRefreshNeeded, userSelected]);
 
   // when task deleted refetchData by using signal R
   useEffect(() => {

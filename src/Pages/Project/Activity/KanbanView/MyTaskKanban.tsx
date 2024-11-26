@@ -11,6 +11,7 @@ import {
 } from "../../../../services/Project";
 import AddTaskActivity from "../../../../components/Modals/Activity/AddTaskActivity";
 import UpdateTaskActivity from "../../../../components/Modals/Activity/UpdateTaskActivity";
+import { UserSelectedContext } from "../Activity";
 
 const notyf = new Notyf({ position: { x: "center", y: "top" } });
 
@@ -54,6 +55,7 @@ const organizeTaskByStatus = (tasks: any[]) => {
 
 const MyTaskKanban = () => {
   const { userid } = useParams();
+  const { userSelected } = useContext(UserSelectedContext);
   const [data, setData] = useState<any>({
     tasks: {},
     columns: {},
@@ -81,21 +83,27 @@ const MyTaskKanban = () => {
   // get all transverse data of the connected user
   const fetchData = async () => {
     try {
-      if (userid) {
-        const response = await getTaskActivityByUserId(userid);
-        const { taskMap, columns } = organizeTaskByStatus(response);
-        setData({
-          tasks: taskMap,
-          columns,
-          columnOrder: [
-            "column-1",
-            "column-2",
-            "column-3",
-            "column-4",
-            "column-5",
-          ],
-        });
+      var response;
+      if (userSelected !== "") {
+        response = await getTaskActivityByUserId(userSelected);
+      } else {
+        if (userid) {
+          response = await getTaskActivityByUserId(userid);
+        }
       }
+
+      const { taskMap, columns } = organizeTaskByStatus(response);
+      setData({
+        tasks: taskMap,
+        columns,
+        columnOrder: [
+          "column-1",
+          "column-2",
+          "column-3",
+          "column-4",
+          "column-5",
+        ],
+      });
     } catch (error) {
       console.error(`Error at fetch task activity data: ${error}`);
     }
@@ -105,7 +113,7 @@ const MyTaskKanban = () => {
   useEffect(() => {
     fetchData();
     setIsRefreshNeeded(false);
-  }, [isRefreshNeeded, connection]);
+  }, [isRefreshNeeded, connection, userSelected]);
 
   // when task deleted refetchData by using signal R
   useEffect(() => {
