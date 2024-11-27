@@ -11,7 +11,6 @@ import {
   UpdateTransverse,
 } from "../../../../components/Modals/Activity";
 import { formatDate } from "../../../../services/Function/DateServices";
-import { UserSelectedContext } from "../Activity";
 import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
 
@@ -55,7 +54,6 @@ const organizeTransverseByStatus = (transverses: any[]) => {
 
 const TransverseKanban = () => {
   const { userid } = useParams();
-  const { userSelected } = useContext(UserSelectedContext);
   const [data, setData] = useState<any>({
     transverses: {},
     columns: {},
@@ -86,12 +84,9 @@ const TransverseKanban = () => {
   const fetchData = async () => {
     try {
       var response;
-      if (userSelected !== "") {
-        response = await getTransverseByUserId(userSelected);
-      } else {
-        if (userid) {
-          response = await getTransverseByUserId(userid);
-        }
+
+      if (userid) {
+        response = await getTransverseByUserId(userid);
       }
 
       const { transverseMap, columns } = organizeTransverseByStatus(response);
@@ -114,7 +109,7 @@ const TransverseKanban = () => {
   useEffect(() => {
     fetchData();
     setIsRefreshNeeded(false);
-  }, [isRefreshNeeded, connection, userSelected]);
+  }, [isRefreshNeeded, connection]);
 
   // when transverse deleted refetchData by using signal R
   useEffect(() => {

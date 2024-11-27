@@ -15,15 +15,23 @@ import { SignalRContext } from "../Activity";
 import AddActivity from "../../../../components/Modals/Activity/AddActivity";
 import UpdateActivity from "../../../../components/Modals/Activity/UpdateActivity";
 import CollapsibleSection from "../../../../components/UIElements/CollapsibleSection";
-import { UserSelectedContext } from "../Activity";
 import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
 
 const notyf = new Notyf({ position: { x: "center", y: "top" } });
 
-const AllActivityCalendar = () => {
+const AllActivityCalendar = ({
+  selectedOptions,
+  search,
+  setSearchClicked,
+  searchClicked,
+}: {
+  selectedOptions: Array<string>;
+  search: any;
+  setSearchClicked: React.Dispatch<React.SetStateAction<boolean>>;
+  searchClicked: boolean;
+}) => {
   const { userid } = useParams();
-  const { userSelected } = useContext(UserSelectedContext);
   const [events, setEvents] = useState<any[]>([]);
   const connection = useContext(SignalRContext);
   const [isModalAddOpen, setIsModalAddOpen] = useState<boolean>(false);
@@ -45,17 +53,26 @@ const AllActivityCalendar = () => {
     return () => document.removeEventListener("click", clickHandler);
   });
 
+  // EVERY TIME THE SEARCH BUTTON IS CLICKED, fetch data
+  useEffect(() => {
+    if (searchClicked) {
+      fetchData();
+    }
+    setSearchClicked(false);
+  }, [searchClicked]);
+
   const fetchData = async () => {
     try {
       var response;
-      if (userSelected !== "") {
-        response = response = await getAllActivitiesOfUser(userSelected);
-      } else {
-        if (userid) {
-          response = await getAllActivitiesOfUser(userid);
-        }
-      }
 
+      if (userid) {
+        response = await getAllActivitiesOfUser(
+          search?.startDate,
+          search?.endDate,
+          selectedOptions,
+          search?.ids
+        );
+      }
       setData(response);
       const calendarEvents = response.map((intercontract: any) => {
         const startDate = new Date(intercontract.startDate);
@@ -86,7 +103,7 @@ const AllActivityCalendar = () => {
   useEffect(() => {
     fetchData();
     setIsRefreshNeeded(false);
-  }, [connection, isRefreshNeeded, userSelected]);
+  }, [connection, isRefreshNeeded]);
 
   // when task deleted refetchData by using signal R
   useEffect(() => {

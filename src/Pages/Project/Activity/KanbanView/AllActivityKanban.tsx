@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useContext } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { SignalRContext } from "../Activity";
 import {
@@ -16,7 +16,7 @@ import {
 } from "../../../../services/Project";
 import AddActivity from "../../../../components/Modals/Activity/AddActivity";
 import UpdateActivity from "../../../../components/Modals/Activity/UpdateActivity";
-import { UserSelectedContext } from "../Activity";
+
 import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
 const notyf = new Notyf({ position: { x: "center", y: "top" } });
@@ -61,9 +61,18 @@ const organizeActivityByStatus = (activities: any[]) => {
   return { activityMap, columns };
 };
 
-const AllActivityKanban = () => {
+const AllActivityKanban = ({
+  selectedOptions,
+  search,
+  setSearchClicked,
+  searchClicked,
+}: {
+  selectedOptions: Array<string>;
+  search: any;
+  setSearchClicked: React.Dispatch<React.SetStateAction<boolean>>;
+  searchClicked: boolean;
+}) => {
   const { userid } = useParams();
-  const { userSelected } = useContext(UserSelectedContext);
   const [data, setData] = useState<any>({
     acivities: {},
     columns: {},
@@ -91,17 +100,26 @@ const AllActivityKanban = () => {
     return () => document.removeEventListener("click", clickHandler);
   });
 
+  // EVERY TIME THE SEARCH BUTTON IS CLICKED, fetch data
+  useEffect(() => {
+    if (searchClicked) {
+      fetchData();
+    }
+    setSearchClicked(false);
+  }, [searchClicked]);
+
   const fetchData = async () => {
     try {
       var response;
-      if (userSelected !== "") {
-        response = await getAllActivitiesOfUser(userSelected);
-      } else {
-        if (userid) {
-          response = await getAllActivitiesOfUser(userid);
-        }
-      }
 
+      if (userid) {
+        response = await getAllActivitiesOfUser(
+          search?.startDate,
+          search?.endDate,
+          selectedOptions,
+          search?.ids
+        );
+      }
       const { activityMap, columns } = organizeActivityByStatus(response);
       setData({
         acivities: activityMap,
@@ -122,7 +140,7 @@ const AllActivityKanban = () => {
   useEffect(() => {
     fetchData();
     setIsRefreshNeeded(false);
-  }, [connection, isRefreshNeeded, userSelected]);
+  }, [connection, isRefreshNeeded]);
 
   // when task deleted refetchData by using signal R
   useEffect(() => {

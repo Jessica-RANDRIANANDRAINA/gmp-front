@@ -17,12 +17,10 @@ import {
 } from "../../../../components/Modals/Activity";
 import "notyf/notyf.min.css";
 import CollapsibleSection from "../../../../components/UIElements/CollapsibleSection";
-import { UserSelectedContext } from "../Activity";
 const notyf = new Notyf({ position: { x: "center", y: "top" } });
 
 const TransverseCalendar = () => {
   const { userid } = useParams();
-  const { userSelected } = useContext(UserSelectedContext);
   const [events, setEvents] = useState<any[]>([]);
   const connection = useContext(SignalRContext);
   const [isModalAddOpen, setIsModalAddOpen] = useState<boolean>(false);
@@ -49,12 +47,9 @@ const TransverseCalendar = () => {
   const fetchData = async () => {
     try {
       var response;
-      if (userSelected !== "") {
-        response = await getTransverseByUserId(userSelected);
-      } else {
-        if (userid) {
-          response = await getTransverseByUserId(userid);
-        }
+      
+      if (userid) {
+        response = await getTransverseByUserId(userid);
       }
       setData(response);
       const calendarEvents = response.map((intercontract: any) => {
@@ -84,7 +79,7 @@ const TransverseCalendar = () => {
   useEffect(() => {
     fetchData();
     setIsRefreshNeeded(false);
-  }, [connection, isRefreshNeeded, userSelected]);
+  }, [connection, isRefreshNeeded]);
 
   // when transverse deleted refetchData by using signal R
   useEffect(() => {

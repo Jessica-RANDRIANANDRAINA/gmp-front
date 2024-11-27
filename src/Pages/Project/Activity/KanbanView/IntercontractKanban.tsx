@@ -11,7 +11,7 @@ import {
 import { formatDate } from "../../../../services/Function/DateServices";
 import AddIntercontract from "../../../../components/Modals/Activity/AddIntercontract";
 import UpdateIntercontract from "../../../../components/Modals/Activity/UpdateIntercontract";
-import { UserSelectedContext } from "../Activity";
+
 
 const notyf = new Notyf({ position: { x: "center", y: "top" } });
 
@@ -52,7 +52,6 @@ const organizeIntercontractByStatus = (intercontracts: any[]) => {
 };
 const IntercontractKanban = () => {
   const { userid } = useParams();
-  const { userSelected } = useContext(UserSelectedContext);
   const [data, setData] = useState<any>({
     intercontracts: {},
     columns: {},
@@ -83,12 +82,9 @@ const IntercontractKanban = () => {
   const fetchData = async () => {
     try {
       var response;
-      if (userSelected !== "") {
-        response = await getInterContractByUserId(userSelected);
-      } else {
-        if (userid) {
-          response = await getInterContractByUserId(userid);
-        }
+      
+      if (userid) {
+        response = await getInterContractByUserId(userid);
       }
 
       const { intercontractMap, columns } =
@@ -111,7 +107,7 @@ const IntercontractKanban = () => {
   useEffect(() => {
     fetchData();
     setIsRefreshNeeded(false);
-  }, [isRefreshNeeded, connection, userSelected]);
+  }, [isRefreshNeeded, connection]);
 
   // when intercontract deleted refetchData by using signal R
   useEffect(() => {

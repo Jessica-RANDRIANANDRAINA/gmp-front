@@ -15,13 +15,11 @@ import UpdateTaskActivity from "../../../../components/Modals/Activity/UpdateTas
 import CollapsibleSection from "../../../../components/UIElements/CollapsibleSection";
 import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
-import { UserSelectedContext } from "../Activity";
 
 const notyf = new Notyf({ position: { x: "center", y: "top" } });
 
 const MyTaskCalendar = () => {
   const { userid } = useParams();
-  const { userSelected } = useContext(UserSelectedContext);
   const [events, setEvents] = useState<any[]>([]);
   const connection = useContext(SignalRContext);
   const [isModalAddOpen, setIsModalAddOpen] = useState<boolean>(false);
@@ -46,12 +44,9 @@ const MyTaskCalendar = () => {
   const fetchData = async () => {
     try {
       var response;
-      if (userSelected !== "") {
-        response = await getTaskActivityByUserId(userSelected);
-      } else {
-        if (userid) {
-          response = await getTaskActivityByUserId(userid);
-        }
+      
+      if (userid) {
+        response = await getTaskActivityByUserId(userid);
       }
       setData(response);
       const calendarEvents = response.map((intercontract: any) => {
@@ -83,7 +78,7 @@ const MyTaskCalendar = () => {
   useEffect(() => {
     fetchData();
     setIsRefreshNeeded(false);
-  }, [connection, isRefreshNeeded, userSelected]);
+  }, [connection, isRefreshNeeded]);
 
   // when task deleted refetchData by using signal R
   useEffect(() => {

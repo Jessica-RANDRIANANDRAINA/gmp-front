@@ -11,7 +11,7 @@ import {
 } from "../../../../services/Project";
 import AddTaskActivity from "../../../../components/Modals/Activity/AddTaskActivity";
 import UpdateTaskActivity from "../../../../components/Modals/Activity/UpdateTaskActivity";
-import { UserSelectedContext } from "../Activity";
+
 
 const notyf = new Notyf({ position: { x: "center", y: "top" } });
 
@@ -55,7 +55,6 @@ const organizeTaskByStatus = (tasks: any[]) => {
 
 const MyTaskKanban = () => {
   const { userid } = useParams();
-  const { userSelected } = useContext(UserSelectedContext);
   const [data, setData] = useState<any>({
     tasks: {},
     columns: {},
@@ -84,12 +83,9 @@ const MyTaskKanban = () => {
   const fetchData = async () => {
     try {
       var response;
-      if (userSelected !== "") {
-        response = await getTaskActivityByUserId(userSelected);
-      } else {
-        if (userid) {
-          response = await getTaskActivityByUserId(userid);
-        }
+      
+      if (userid) {
+        response = await getTaskActivityByUserId(userid);
       }
 
       const { taskMap, columns } = organizeTaskByStatus(response);
@@ -113,7 +109,7 @@ const MyTaskKanban = () => {
   useEffect(() => {
     fetchData();
     setIsRefreshNeeded(false);
-  }, [isRefreshNeeded, connection, userSelected]);
+  }, [isRefreshNeeded, connection]);
 
   // when task deleted refetchData by using signal R
   useEffect(() => {

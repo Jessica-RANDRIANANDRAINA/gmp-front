@@ -13,14 +13,12 @@ import { SignalRContext } from "../Activity";
 import { Notyf } from "notyf";
 import AddIntercontract from "../../../../components/Modals/Activity/AddIntercontract";
 import UpdateIntercontract from "../../../../components/Modals/Activity/UpdateIntercontract";
-import { UserSelectedContext } from "../Activity";
 import "notyf/notyf.min.css";
 import CollapsibleSection from "../../../../components/UIElements/CollapsibleSection";
 const notyf = new Notyf({ position: { x: "center", y: "top" } });
 
 const IntercontractCalendar = () => {
   const { userid } = useParams();
-  const { userSelected } = useContext(UserSelectedContext);
   const [events, setEvents] = useState<any[]>([]);
   const connection = useContext(SignalRContext);
   const [isModalAddOpen, setIsModalAddOpen] = useState<boolean>(false);
@@ -47,12 +45,9 @@ const IntercontractCalendar = () => {
   const fetchData = async () => {
     try {
       var response;
-      if (userSelected !== "") {
-        response = await getInterContractByUserId(userSelected);
-      } else {
-        if (userid) {
-          response = await getInterContractByUserId(userid);
-        }
+      
+      if (userid) {
+        response = await getInterContractByUserId(userid);
       }
 
       setData(response);
@@ -83,7 +78,7 @@ const IntercontractCalendar = () => {
   useEffect(() => {
     fetchData();
     setIsRefreshNeeded(false);
-  }, [connection, isRefreshNeeded, userSelected]);
+  }, [connection, isRefreshNeeded]);
 
   // Rafraîchir les données en cas de suppression via SignalR
   useEffect(() => {
