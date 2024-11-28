@@ -48,6 +48,7 @@ const organizeActivityByStatus = (activities: any[]) => {
         projectId: activity.projectid,
         phaseId: activity.phaseid,
         priority: activity.priority,
+        userid: activity.userid,
       },
     };
     const columnKey = Object.keys(columns).find(
@@ -66,11 +67,17 @@ const AllActivityKanban = ({
   search,
   setSearchClicked,
   searchClicked,
+  colors,
 }: {
   selectedOptions: Array<string>;
-  search: any;
+  search: {
+    ids: (string | undefined)[];
+    startDate: string | undefined;
+    endDate: string | undefined;
+  };
   setSearchClicked: React.Dispatch<React.SetStateAction<boolean>>;
   searchClicked: boolean;
+  colors: Record<string, string>;
 }) => {
   const { userid } = useParams();
   const [data, setData] = useState<any>({
@@ -120,6 +127,7 @@ const AllActivityKanban = ({
           search?.ids
         );
       }
+
       const { activityMap, columns } = organizeActivityByStatus(response);
       setData({
         acivities: activityMap,
@@ -351,6 +359,11 @@ const AllActivityKanban = ({
                                 }`}
                                 style={{
                                   ...provided.draggableProps.style,
+                                  boxShadow: colors[activity.content.userid]
+                                    ? `0px 2px 8px 1px ${
+                                        colors[activity.content.userid]
+                                      }`
+                                    : "0px 2px 8px 1px rgba(0,0,0,0.1)",
                                 }}
                                 onClick={() => {
                                   setActivityData(activity);

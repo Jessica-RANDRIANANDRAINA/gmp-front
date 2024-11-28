@@ -8,7 +8,7 @@ export const getAllActivitiesOfUser = async (
   startDate?: string,
   endDate?: string,
   activityType?: string[],
-  ids?: string[]
+  ids?: (string | undefined)[]
 ) => {
   try {
     const params: any = {};

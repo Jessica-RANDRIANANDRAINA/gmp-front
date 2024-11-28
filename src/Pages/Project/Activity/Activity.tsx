@@ -1,6 +1,7 @@
 import { useState, useEffect, createContext } from "react";
 import { useParams } from "react-router-dom";
 import { HubConnection, HubConnectionBuilder } from "@microsoft/signalr";
+import { SketchPicker } from "react-color";
 // component
 import {
   CustomInput,
@@ -60,9 +61,39 @@ const Activity = () => {
   const [resetCustomSelectChoice, setResetCustomSelectChoice] =
     useState<boolean>(false);
 
+  const [colors, setColors] = useState<Record<string, string>>({});
+  const [activeUserId, setActiveUserId] = useState<string | null>(null);
+
   const availableSubordinate = subordinates.filter(
     (sub) => !selectedUserInput.some((selected) => selected.id === sub.id)
   );
+
+  const generateColor = (index: number) => {
+    const hue = (index * 137.5) % 360;
+    return `hsl(${hue}, 70%, 50%)`;
+  };
+
+  const getColorMap = () =>{
+    const colorMap: Record<string, string> ={}
+
+    selectedUserInput.forEach((user, index) => {
+      colorMap[user.id] = colors[user.id] || generateColor(index)
+    })
+
+    return colorMap
+  }
+
+  const resetColorMap = () =>{
+    setColors({})
+    setSelecteduserInput([])
+  }
+
+  const handleColorChange = (userId: string, color: string) => {
+    setColors((prev) => ({
+      ...prev,
+      [userId]: color,
+    }));
+  };
 
   const handleSearchClicked = () => {
     const subIds = selectedUserInput?.map((user) => user.id);
@@ -130,8 +161,10 @@ const Activity = () => {
 
     setSelectedOptions(["Projet", "Transverse", "Intercontract"]);
     setSelecteduserInput([]);
+    
+    resetColorMap()
     setSearchClicked(true);
-
+    
     setTimeout(() => setResetCustomSelectChoice(false), 0);
   };
 
@@ -166,6 +199,8 @@ const Activity = () => {
       }
     };
   }, []);
+
+ 
 
   return (
     <ViewContext.Provider
@@ -411,9 +446,15 @@ const Activity = () => {
               </div>
               <div className="grid grid-cols-8 gap-2">
                 {selectedUserInput.length > 0 &&
-                  selectedUserInput?.map((user) => (
+                  selectedUserInput?.map((user, index) => (
                     <div key={user.id}>
-                      <div className="flex mt-2.5 justify-between items-center text-sm border border-primaryGreen  rounded-md shadow-sm dark:border-primaryGreen bg-gray-100 dark:bg-gray-800 transition hover:shadow-md">
+                      <div
+                        style={{
+                          borderColor: colors[user?.id] || generateColor(index),
+                        }}
+                        className="flex mt-2.5 justify-between items-center text-sm border   rounded-md shadow-sm  bg-gray-100 dark:bg-gray-800 transition hover:shadow-md"
+                        onClick={() => setActiveUserId(user?.id)}
+                      >
                         <span className="px-3 py-2 whitespace-nowrap overflow-hidden text-ellipsis text-gray-700 dark:text-gray-300 font-medium">
                           {user?.name}
                         </span>
@@ -424,6 +465,22 @@ const Activity = () => {
                           ✕
                         </button>
                       </div>
+                      {activeUserId === user.id && (
+                        <div className="absolute z-10">
+                          <SketchPicker
+                            color={colors[user.id] || "#000"}
+                            onChangeComplete={(color) =>
+                              handleColorChange(user.id, color.hex)
+                            }
+                          />
+                          <button
+                            className="mt-2 bg-primaryGreen text-white px-3 py-1 rounded"
+                            onClick={() => setActiveUserId(null)} // Close picker
+                          >
+                            Valider
+                          </button>
+                        </div>
+                      )}
                     </div>
                   ))}
               </div>
@@ -436,6 +493,7 @@ const Activity = () => {
                   search={search}
                   setSearchClicked={setSearchClicked}
                   searchClicked={searchClicked}
+                  colors={getColorMap()}
                 />
               ) : (
                 <AllActivityCalendar
@@ -443,6 +501,7 @@ const Activity = () => {
                   search={search}
                   setSearchClicked={setSearchClicked}
                   searchClicked={searchClicked}
+                  colors={getColorMap()}
                 />
               )}
             </div>

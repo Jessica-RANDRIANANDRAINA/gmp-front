@@ -25,11 +25,13 @@ const AllActivityCalendar = ({
   search,
   setSearchClicked,
   searchClicked,
+  colors,
 }: {
   selectedOptions: Array<string>;
   search: any;
   setSearchClicked: React.Dispatch<React.SetStateAction<boolean>>;
   searchClicked: boolean;
+  colors: Record<string, string>;
 }) => {
   const { userid } = useParams();
   const [events, setEvents] = useState<any[]>([]);
@@ -73,6 +75,7 @@ const AllActivityCalendar = ({
           search?.ids
         );
       }
+
       setData(response);
       const calendarEvents = response.map((intercontract: any) => {
         const startDate = new Date(intercontract.startDate);
@@ -91,6 +94,7 @@ const AllActivityCalendar = ({
           dailyEffort: intercontract.dailyEffort,
           phaseid: intercontract?.phaseid,
           projectid: intercontract?.projectid,
+          user: intercontract?.userid,
         };
       });
 
@@ -234,9 +238,17 @@ const AllActivityCalendar = ({
           height={"70vh"}
           eventContent={(arg) => {
             const { title, extendedProps } = arg.event;
+            
             const dailyEffort = extendedProps?.dailyEffort; // task duration in hours
             return (
-              <div className="flex whitespace-break-spaces cursor-pointer text-xs ">
+              <div
+                style={{
+                  boxShadow: colors[extendedProps?.user]
+                    ? `0px 1px 8px 1px ${colors[extendedProps?.user]}`
+                    : "0px 1px 8px 1px rgba(0,0,0,0.1)",
+                }}
+                className={`flex shadow  w-full p-1  whitespace-break-spaces cursor-pointer text-xs `}
+              >
                 <b>
                   {dailyEffort}h - {title}
                 </b>
