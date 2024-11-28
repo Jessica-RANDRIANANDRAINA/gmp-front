@@ -12,6 +12,7 @@ import {
 import AddTaskActivity from "../../../../components/Modals/Activity/AddTaskActivity";
 import UpdateTaskActivity from "../../../../components/Modals/Activity/UpdateTaskActivity";
 
+
 const notyf = new Notyf({ position: { x: "center", y: "top" } });
 
 // function to organize task in column by status
@@ -81,21 +82,24 @@ const MyTaskKanban = () => {
   // get all transverse data of the connected user
   const fetchData = async () => {
     try {
+      var response;
+      
       if (userid) {
-        const response = await getTaskActivityByUserId(userid);
-        const { taskMap, columns } = organizeTaskByStatus(response);
-        setData({
-          tasks: taskMap,
-          columns,
-          columnOrder: [
-            "column-1",
-            "column-2",
-            "column-3",
-            "column-4",
-            "column-5",
-          ],
-        });
+        response = await getTaskActivityByUserId(userid);
       }
+
+      const { taskMap, columns } = organizeTaskByStatus(response);
+      setData({
+        tasks: taskMap,
+        columns,
+        columnOrder: [
+          "column-1",
+          "column-2",
+          "column-3",
+          "column-4",
+          "column-5",
+        ],
+      });
     } catch (error) {
       console.error(`Error at fetch task activity data: ${error}`);
     }

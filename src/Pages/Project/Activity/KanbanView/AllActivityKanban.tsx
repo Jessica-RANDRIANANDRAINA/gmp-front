@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useContext } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { SignalRContext } from "../Activity";
 import {
@@ -16,6 +16,8 @@ import {
 } from "../../../../services/Project";
 import AddActivity from "../../../../components/Modals/Activity/AddActivity";
 import UpdateActivity from "../../../../components/Modals/Activity/UpdateActivity";
+import { IDecodedToken } from "../../../../types/user";
+
 import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
 const notyf = new Notyf({ position: { x: "center", y: "top" } });
@@ -32,10 +34,12 @@ const organizeActivityByStatus = (activities: any[]) => {
   };
 
   const activityMap = activities.reduce((acc, activity) => {
-    acc[activity.id] = {
-      id: activity.id,
+    const uniqueKey = `${activity.id}.${activity.userid}`;
+
+    acc[uniqueKey] = {
+      id: uniqueKey,
       content: {
-        id: activity.id,
+        id: uniqueKey,
         title: activity.title,
         description: activity.description,
         status: activity.status,
@@ -47,20 +51,39 @@ const organizeActivityByStatus = (activities: any[]) => {
         projectId: activity.projectid,
         phaseId: activity.phaseid,
         priority: activity.priority,
+        userid: activity.userid,
       },
     };
     const columnKey = Object.keys(columns).find(
       (key) => columns[key].title === activity.status
     );
     if (columnKey) {
-      columns[columnKey].activityIds.push(activity.id);
+      columns[columnKey].activityIds.push(uniqueKey);
     }
     return acc;
   }, {} as { [key: string]: { id: string; content: { title: string; id: string } } });
   return { activityMap, columns };
 };
 
-const AllActivityKanban = () => {
+const AllActivityKanban = ({
+  selectedOptions,
+  search,
+  setSearchClicked,
+  searchClicked,
+  colors,
+  decodedToken,
+}: {
+  selectedOptions: Array<string>;
+  search: {
+    ids: (string | undefined)[];
+    startDate: string | undefined;
+    endDate: string | undefined;
+  };
+  setSearchClicked: React.Dispatch<React.SetStateAction<boolean>>;
+  searchClicked: boolean;
+  colors: Record<string, string>;
+  decodedToken: IDecodedToken | undefined;
+}) => {
   const { userid } = useParams();
   const [data, setData] = useState<any>({
     acivities: {},
@@ -89,23 +112,48 @@ const AllActivityKanban = () => {
     return () => document.removeEventListener("click", clickHandler);
   });
 
+  // EVERY TIME THE SEARCH BUTTON IS CLICKED, fetch data
+  useEffect(() => {
+    if (searchClicked) {
+      fetchData();
+    }
+    setSearchClicked(false);
+  }, [searchClicked]);
+
   const fetchData = async () => {
     try {
-      if (userid) {
-        const response = await getAllActivitiesOfUser(userid);
-        const { activityMap, columns } = organizeActivityByStatus(response);
-        setData({
-          acivities: activityMap,
-          columns,
-          columnOrder: [
-            "column-1",
-            "column-2",
-            "column-3",
-            "column-4",
-            "column-5",
-          ],
-        });
+      var response;
+      var Ids: (string | undefined)[] = [];
+      if (search?.ids.length === 1) {
+        if (!search?.ids?.[0]) {
+          Ids = [decodedToken?.jti];
+        } else {
+          Ids = search?.ids;
+        }
       }
+
+      if (userid) {
+        response = await getAllActivitiesOfUser(
+          search?.startDate,
+          search?.endDate,
+          selectedOptions,
+          Ids
+        );
+      }
+
+      const { activityMap, columns } = organizeActivityByStatus(response);
+
+      setData({
+        acivities: activityMap,
+        columns,
+        columnOrder: [
+          "column-1",
+          "column-2",
+          "column-3",
+          "column-4",
+          "column-5",
+        ],
+      });
     } catch (error) {
       console.error(`Error at fetch task data: ${error}`);
     }
@@ -196,24 +244,25 @@ const AllActivityKanban = () => {
       });
       if (connection) {
         try {
+          const taskDraggedId = draggableId?.split(".")?.[0];
           if (activitype === "Transverse") {
             await connection.invoke(
               "TransverseMoved",
-              draggableId,
+              taskDraggedId,
               startColumn.title,
               endColumn.title
             );
           } else if (activitype === "InterContract") {
             await connection.invoke(
               "IntercontractMoved",
-              draggableId,
+              taskDraggedId,
               startColumn.title,
               endColumn.title
             );
           } else {
             await connection.invoke(
               "TaskActivityMoved",
-              draggableId,
+              taskDraggedId,
               startColumn.title,
               endColumn.title
             );
@@ -234,8 +283,12 @@ const AllActivityKanban = () => {
     setActiveActivityId(activeActivityId === activityId ? null : activityId);
   };
 
-  const handleDeleteActivity = async (activityId: string, type: string) => {
+  const handleDeleteActivity = async (
+    activityIdWithUser: string,
+    type: string
+  ) => {
     try {
+      const activityId = activityIdWithUser?.split(".")?.[0];
       if (type === "Transverse") {
         await deleteTransverse(activityId);
         if (connection) {
@@ -305,14 +358,15 @@ const AllActivityKanban = () => {
                       <h3 className="mb-3 text-sm">{column.title}</h3>
                       {acivities?.map((activity: any, index: any) => (
                         <Draggable
-                          key={activity.id}
-                          draggableId={activity.id}
+                          key={activity.content.id}
+                          draggableId={activity.content.id}
                           index={index}
                         >
                           {(provided, snapshot) => {
                             const endDate = formatDate(
                               activity.content.startDate
                             );
+
                             return (
                               <div
                                 ref={provided.innerRef}
@@ -325,6 +379,11 @@ const AllActivityKanban = () => {
                                 }`}
                                 style={{
                                   ...provided.draggableProps.style,
+                                  boxShadow: colors[activity.content.userid]
+                                    ? `0px 2px 8px 1px ${
+                                        colors[activity.content.userid]
+                                      }`
+                                    : "0px 2px 8px 1px rgba(0,0,0,0.1)",
                                 }}
                                 onClick={() => {
                                   setActivityData(activity);

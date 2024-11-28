@@ -13,7 +13,6 @@ import { SignalRContext } from "../Activity";
 import { Notyf } from "notyf";
 import AddIntercontract from "../../../../components/Modals/Activity/AddIntercontract";
 import UpdateIntercontract from "../../../../components/Modals/Activity/UpdateIntercontract";
-
 import "notyf/notyf.min.css";
 import CollapsibleSection from "../../../../components/UIElements/CollapsibleSection";
 const notyf = new Notyf({ position: { x: "center", y: "top" } });
@@ -45,29 +44,32 @@ const IntercontractCalendar = () => {
 
   const fetchData = async () => {
     try {
+      var response;
+      
       if (userid) {
-        const response = await getInterContractByUserId(userid);
-        setData(response);
-        const calendarEvents = response.map((intercontract: any) => {
-          const startDate = new Date(intercontract.startDate);
-          const endDate = new Date(startDate);
-          startDate.setHours(7, 30, 0, 0);
-          endDate.setHours(15, 30, 0, 0);
-
-          return {
-            id: intercontract.id,
-            title: intercontract.title,
-            start: startDate.toISOString(),
-            end: endDate.toISOString(),
-            description: intercontract.description,
-            status: intercontract.status,
-            type: intercontract.type,
-            dailyEffort: intercontract.dailyEffort,
-          };
-        });
-
-        setEvents(calendarEvents);
+        response = await getInterContractByUserId(userid);
       }
+
+      setData(response);
+      const calendarEvents = response.map((intercontract: any) => {
+        const startDate = new Date(intercontract.startDate);
+        const endDate = new Date(startDate);
+        startDate.setHours(7, 30, 0, 0);
+        endDate.setHours(15, 30, 0, 0);
+
+        return {
+          id: intercontract.id,
+          title: intercontract.title,
+          start: startDate.toISOString(),
+          end: endDate.toISOString(),
+          description: intercontract.description,
+          status: intercontract.status,
+          type: intercontract.type,
+          dailyEffort: intercontract.dailyEffort,
+        };
+      });
+
+      setEvents(calendarEvents);
     } catch (error) {
       console.error(`Error fetching intercontract data: ${error}`);
     }

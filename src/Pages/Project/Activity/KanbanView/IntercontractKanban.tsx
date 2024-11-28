@@ -12,6 +12,7 @@ import { formatDate } from "../../../../services/Function/DateServices";
 import AddIntercontract from "../../../../components/Modals/Activity/AddIntercontract";
 import UpdateIntercontract from "../../../../components/Modals/Activity/UpdateIntercontract";
 
+
 const notyf = new Notyf({ position: { x: "center", y: "top" } });
 
 // function to organize intercontract task in column by status
@@ -80,22 +81,25 @@ const IntercontractKanban = () => {
   // get all transverse data of the connected user
   const fetchData = async () => {
     try {
+      var response;
+      
       if (userid) {
-        const response = await getInterContractByUserId(userid);
-        const { intercontractMap, columns } =
-          organizeIntercontractByStatus(response);
-        setData({
-          intercontracts: intercontractMap,
-          columns,
-          columnOrder: [
-            "column-1",
-            "column-2",
-            "column-3",
-            "column-4",
-            "column-5",
-          ],
-        });
+        response = await getInterContractByUserId(userid);
       }
+
+      const { intercontractMap, columns } =
+        organizeIntercontractByStatus(response);
+      setData({
+        intercontracts: intercontractMap,
+        columns,
+        columnOrder: [
+          "column-1",
+          "column-2",
+          "column-3",
+          "column-4",
+          "column-5",
+        ],
+      });
     } catch (error) {
       console.error(`Error at fetch intercontract data: ${error}`);
     }

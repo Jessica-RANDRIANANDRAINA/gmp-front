@@ -1,16 +1,27 @@
 import { useState, useEffect, createContext } from "react";
 import { useParams } from "react-router-dom";
-// import { CustomInputUserSpecifiedSearch } from "../../../components/UIElements";
 import { HubConnection, HubConnectionBuilder } from "@microsoft/signalr";
-import ProjectLayout from "../../../layout/ProjectLayout";
-import { NavLink, Outlet } from "react-router-dom";
+import { SketchPicker } from "react-color";
+// component
+import {
+  CustomInput,
+  CustomInputUserSpecifiedSearch,
+  CustomSelectChoice,
+} from "../../../components/UIElements";
 import Breadcrumb from "../../../components/BreadCrumbs/BreadCrumb";
+// pages component
+import ProjectLayout from "../../../layout/ProjectLayout";
+import AllActivityKanban from "./KanbanView/AllActivityKanban";
+import AllActivityCalendar from "./CalendarView/AllActivityCalendar";
+// types
 import { IDecodedToken } from "../../../types/user";
+// services
 import { decodeToken } from "../../../services/Function/TokenService";
 import { getMySubordinatesNameAndId } from "../../../services/User";
 
 export const SignalRContext = createContext<HubConnection | null>(null);
 
+// context for viex calendar and view table
 export const ViewContext = createContext({
   view: "table",
   setView: (_view: string) => {},
@@ -29,16 +40,80 @@ const Activity = () => {
   const [activityView, setActivityView] = useState<string>(
     localStorage.getItem("activity_view") || "table"
   );
-  // const [subordinates, setSubordinates] = useState<
-  //   Array<{ id: string; name: string; email: string }>
-  // >([]);
-  // const [subordinatesName, setSubordinatesName] = useState<string>("Moi");
+  const [subordinates, setSubordinates] = useState<
+    Array<{ id: string; name: string; email: string }>
+  >([]);
+
+  const [selectedUserInput, setSelecteduserInput] = useState<
+    Array<{ id: string; name: string; email: string }>
+  >([]);
+  const [search, setSearch] = useState<{
+    ids: (string | undefined)[];
+    startDate: string | undefined;
+    endDate: string | undefined;
+  }>({
+    ids: [""],
+    startDate: undefined as string | undefined,
+    endDate: undefined as string | undefined,
+  });
+  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+  const [searchClicked, setSearchClicked] = useState<boolean>(false);
+  const [resetCustomSelectChoice, setResetCustomSelectChoice] =
+    useState<boolean>(false);
+
+  const [colors, setColors] = useState<Record<string, string>>({});
+  const [activeUserId, setActiveUserId] = useState<string | null>(null);
+
+  const availableSubordinate = subordinates.filter(
+    (sub) => !selectedUserInput.some((selected) => selected.id === sub.id)
+  );
+
+  const generateColor = (index: number) => {
+    const hue = (index * 137.5) % 360;
+    return `hsl(${hue}, 70%, 50%)`;
+  };
+
+  const getColorMap = () =>{
+    const colorMap: Record<string, string> ={}
+
+    selectedUserInput.forEach((user, index) => {
+      colorMap[user.id] = colors[user.id] || generateColor(index)
+    })
+
+    return colorMap
+  }
+
+  const resetColorMap = () =>{
+    setColors({})
+    setSelecteduserInput([])
+  }
+
+  const handleColorChange = (userId: string, color: string) => {
+    setColors((prev) => ({
+      ...prev,
+      [userId]: color,
+    }));
+  };
+
+  const handleSearchClicked = () => {
+    const subIds = selectedUserInput?.map((user) => user.id);
+    const myId = [decodedToken?.jti];
+    var Ids = [];
+    if (subIds.length > 0) {
+      Ids = subIds;
+    } else {
+      Ids = myId;
+    }
+    setSearch({
+      ...search,
+      ids: Ids,
+    });
+    setSearchClicked(true);
+  };
 
   const fetchSubordinates = async () => {
     try {
       if (userid) {
-        // const data: TSubordinate[] = await getMySubordinatesNameAndId(userid);
-
         const data: TSubordinate[] = await getMySubordinatesNameAndId(
           "ba5d519e-3b23-4201-a6a6-1d3760f6b214"
         );
@@ -48,9 +123,7 @@ const Activity = () => {
           name,
           email,
         }));
-        console.log(transformedArray)
-
-        // setSubordinates(transformedArray);
+        setSubordinates(transformedArray);
       }
     } catch (error) {
       console.error(`Error at fetch subordinates`);
@@ -59,12 +132,42 @@ const Activity = () => {
 
   useEffect(() => {
     fetchSubordinates();
+    handleDeleteFilter();
   }, []);
 
   const handleViewChange = (view: string) => {
     setActivityView(view);
     localStorage.setItem("activity_view", view);
   };
+
+  // remove a selected user
+  const handleRemoveUserSelectedInput = (userId: string) => {
+    const updatedSelectedUsers = selectedUserInput.filter(
+      (user) => user.id !== userId
+    );
+    setSelecteduserInput(updatedSelectedUsers);
+  };
+
+  // clear filter
+  const handleDeleteFilter = () => {
+    setSearch({
+      ...search,
+      ids: [decodedToken?.jti],
+      startDate: undefined,
+      endDate: undefined,
+    });
+
+    setResetCustomSelectChoice(true);
+
+    setSelectedOptions(["Projet", "Transverse", "Intercontract"]);
+    setSelecteduserInput([]);
+    
+    resetColorMap()
+    setSearchClicked(true);
+    
+    setTimeout(() => setResetCustomSelectChoice(false), 0);
+  };
+
   useEffect(() => {
     const token = localStorage.getItem("_au_pr");
     if (token) {
@@ -96,6 +199,9 @@ const Activity = () => {
       }
     };
   }, []);
+
+ 
+
   return (
     <ViewContext.Provider
       value={{ view: activityView, setView: handleViewChange }}
@@ -247,63 +353,159 @@ const Activity = () => {
                   <span>Calendrier</span>
                 </div>
               </div>
-              <div>
-                {/* {(() => {
-                  return (
-                    <CustomInputUserSpecifiedSearch
-                      label="Rechercher"
-                      user={subordinates}
-                    />
-                  );
-                })()} */}
-              </div>
-              <div className="flex w-full justify-between flex-wrap">
-                <div className="flex gap-4 *:p-3 *:rounded-md *:mt-5 text-xs font-semibold overflow-x-scroll hide-scrollbar mb-2 whitespace-nowrap">
-                  <NavLink
-                    className={({ isActive }) =>
-                      isActive
-                        ? "text-green-700 bg-green-50 dark:bg-green-100"
-                        : "hover:text-green-700 text-slate-600"
-                    }
-                    to={`/gmp/activity/${decodedToken?.jti}/list`}
+
+              {/* FILTER BEGIN */}
+              <div className="grid place-content-center grid-cols-6 gap-4 mt-3">
+                <CustomSelectChoice
+                  label="Activité"
+                  options={["Projet", "Transverse", "Intercontract"]}
+                  onChange={(selected) => setSelectedOptions(selected)}
+                  rounded="medium"
+                  resetToAll={resetCustomSelectChoice}
+                />
+                <div className={`${subordinates.length > 0 ? "" : "hidden"}`}>
+                  <CustomInputUserSpecifiedSearch
+                    label="Activité de"
+                    rounded="medium"
+                    placeholder="Nom"
+                    user={availableSubordinate}
+                    className="text-xs"
+                    userSelected={selectedUserInput}
+                    setUserSelected={setSelecteduserInput}
+                  />
+                </div>
+
+                <CustomInput
+                  type="date"
+                  value={search.startDate || ""}
+                  label="Du"
+                  rounded="medium"
+                  onChange={(e) => {
+                    setSearch({
+                      ...search,
+                      startDate: e.target.value,
+                    });
+                  }}
+                />
+                <CustomInput
+                  type="date"
+                  value={search.endDate || ""}
+                  label="Au"
+                  rounded="medium"
+                  onChange={(e) => {
+                    setSearch({
+                      ...search,
+                      endDate: e.target.value,
+                    });
+                  }}
+                />
+                <div className="flex items-end gap-2">
+                  <div
+                    className={`pb-2 ${
+                      search?.startDate !== undefined ||
+                      search?.endDate !== undefined ||
+                      selectedOptions.length !== 3 ||
+                      (selectedUserInput.length > 0 &&
+                        selectedUserInput?.[0]?.id !== decodedToken?.jti)
+                        ? ""
+                        : "hidden"
+                    }`}
                   >
-                    Tous
-                  </NavLink>
-                  <NavLink
-                    className={({ isActive }) =>
-                      isActive
-                        ? "text-green-700 bg-green-50 dark:bg-green-100"
-                        : "hover:text-green-700 text-slate-600"
-                    }
-                    to={`/gmp/activity/${decodedToken?.jti}/task`}
-                  >
-                    Projets
-                  </NavLink>
-                  <NavLink
-                    className={({ isActive }) =>
-                      isActive
-                        ? "text-green-700 bg-green-50 dark:bg-green-100"
-                        : "hover:text-green-700 text-slate-600"
-                    }
-                    to={`/gmp/activity/${decodedToken?.jti}/transverse`}
-                  >
-                    Transverses
-                  </NavLink>
-                  <NavLink
-                    className={({ isActive }) =>
-                      isActive
-                        ? "text-green-700 bg-green-50 dark:bg-green-100"
-                        : "hover:text-green-700 text-slate-600"
-                    }
-                    to={`/gmp/activity/${decodedToken?.jti}/intercontract`}
-                  >
-                    Intercontracts
-                  </NavLink>
+                    <button
+                      onClick={handleDeleteFilter}
+                      className="flex justify-center whitespace-nowrap text-sm gap-1 h-fit "
+                    >
+                      Effacer les filtres
+                      <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        stroke="#00AE5D"
+                      >
+                        <path
+                          d="M21 12C21 16.9706 16.9706 21 12 21C9.69494 21 7.59227 20.1334 6 18.7083L3 16M3 12C3 7.02944 7.02944 3 12 3C14.3051 3 16.4077 3.86656 18 5.29168L21 8M3 21V16M3 16H8M21 3V8M21 8H16"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                  <div className="">
+                    <button
+                      type="button"
+                      onClick={handleSearchClicked}
+                      className=" px-2 cursor-pointer py-2 lg:px-3 xl:px-2  text-center font-medium text-sm text-white hover:bg-opacity-90  border border-primaryGreen bg-primaryGreen rounded-lg dark:border-darkgreen dark:bg-darkgreen dark:hover:bg-opacity-90  md:ease-in md:duration-300 md:transform  "
+                    >
+                      Rechercher
+                    </button>
+                  </div>
                 </div>
               </div>
+              <div className="grid grid-cols-8 gap-2">
+                {selectedUserInput.length > 0 &&
+                  selectedUserInput?.map((user, index) => (
+                    <div key={user.id}>
+                      <div
+                        style={{
+                          borderColor: colors[user?.id] || generateColor(index),
+                        }}
+                        className="flex mt-2.5 justify-between items-center text-sm border   rounded-md shadow-sm  bg-gray-100 dark:bg-gray-800 transition hover:shadow-md"
+                        onClick={() => setActiveUserId(user?.id)}
+                      >
+                        <span className="px-3 py-2 whitespace-nowrap overflow-hidden text-ellipsis text-gray-700 dark:text-gray-300 font-medium">
+                          {user?.name}
+                        </span>
+                        <button
+                          className="flex items-center justify-center px-3 py-2 text-red-500 dark:text-red-400 hover:text-white dark:hover:text-whiten hover:bg-red-500 transition rounded-r-md focus:outline-none focus:ring-2 focus:ring-red-500"
+                          onClick={() => handleRemoveUserSelectedInput(user.id)}
+                        >
+                          ✕
+                        </button>
+                      </div>
+                      {activeUserId === user.id && (
+                        <div className="absolute z-10">
+                          <SketchPicker
+                            color={colors[user.id] || "#000"}
+                            onChangeComplete={(color) =>
+                              handleColorChange(user.id, color.hex)
+                            }
+                          />
+                          <button
+                            className="mt-2 bg-primaryGreen text-white px-3 py-1 rounded"
+                            onClick={() => setActiveUserId(null)} // Close picker
+                          >
+                            Valider
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+              </div>
+              {/* FILTER END */}
             </div>
             <div>
-              <Outlet />
+              {activityView === "table" ? (
+                <AllActivityKanban
+                  selectedOptions={selectedOptions}
+                  search={search}
+                  setSearchClicked={setSearchClicked}
+                  searchClicked={searchClicked}
+                  colors={getColorMap()}
+                  decodedToken={decodedToken}
+                />
+              ) : (
+                <AllActivityCalendar
+                  selectedOptions={selectedOptions}
+                  search={search}
+                  setSearchClicked={setSearchClicked}
+                  searchClicked={searchClicked}
+                  colors={getColorMap()}
+                  decodedToken={decodedToken}
+                />
+              )}
             </div>
           </div>
         </ProjectLayout>

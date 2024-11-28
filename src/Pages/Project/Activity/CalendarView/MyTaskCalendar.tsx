@@ -43,31 +43,33 @@ const MyTaskCalendar = () => {
 
   const fetchData = async () => {
     try {
+      var response;
+      
       if (userid) {
-        const response = await getTaskActivityByUserId(userid);
-        setData(response);
-        const calendarEvents = response.map((intercontract: any) => {
-          const startDate = new Date(intercontract.startDate);
-          const endDate = new Date(startDate);
-          startDate.setHours(7, 30, 0, 0);
-          endDate.setHours(15, 30, 0, 0);
-
-          return {
-            id: intercontract.id,
-            title: intercontract.title,
-            start: startDate.toISOString(),
-            end: endDate.toISOString(),
-            description: intercontract.description,
-            status: intercontract.status,
-            type: intercontract.type,
-            dailyEffort: intercontract.dailyEffort,
-            phaseid: intercontract.phaseid,
-            projectid: intercontract.projectid,
-          };
-        });
-
-        setEvents(calendarEvents);
+        response = await getTaskActivityByUserId(userid);
       }
+      setData(response);
+      const calendarEvents = response.map((intercontract: any) => {
+        const startDate = new Date(intercontract.startDate);
+        const endDate = new Date(startDate);
+        startDate.setHours(7, 30, 0, 0);
+        endDate.setHours(15, 30, 0, 0);
+
+        return {
+          id: intercontract.id,
+          title: intercontract.title,
+          start: startDate.toISOString(),
+          end: endDate.toISOString(),
+          description: intercontract.description,
+          status: intercontract.status,
+          type: intercontract.type,
+          dailyEffort: intercontract.dailyEffort,
+          phaseid: intercontract.phaseid,
+          projectid: intercontract.projectid,
+        };
+      });
+
+      setEvents(calendarEvents);
     } catch (error) {
       console.error(`Error fetching TASK ACTIVITY data: ${error}`);
     }

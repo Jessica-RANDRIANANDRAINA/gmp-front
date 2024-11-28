@@ -4,9 +4,35 @@ const endPoint = import.meta.env.VITE_API_ENDPOINT;
 
 // GET
 // get all activities of the given user
-export const getAllActivitiesOfUser = async (userid: string) => {
+export const getAllActivitiesOfUser = async (
+  startDate?: string,
+  endDate?: string,
+  activityType?: string[],
+  ids?: (string | undefined)[]
+) => {
   try {
-    const response = await axios.get(`${endPoint}/api/Activity/all/${userid}`);
+    const params: any = {};
+    if (startDate) params.startDate = startDate;
+    if (endDate) params.endDate = endDate;
+    if (activityType) {
+      activityType.forEach((type, index) => {
+        params[`ActivityType[${index}]`] = type;
+      });
+    }
+    if (ids) {
+      ids.forEach((type, index) => {
+        params[`Ids[${index}]`] = type;
+      });
+    }
+
+
+    console.log("----------------")
+    console.log(params)
+    console.log("----------------")
+
+    const response = await axios.get(`${endPoint}/api/Activity/all`, {
+      params,
+    });
     return response.data;
   } catch (error) {
     throw new Error(

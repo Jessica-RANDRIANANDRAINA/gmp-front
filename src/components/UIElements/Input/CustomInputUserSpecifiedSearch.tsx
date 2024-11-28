@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 
-type TUser = { id: string | undefined; name: string; email: string };
+type TUser = { id: string ; name: string; email: string };
 type TUserSearch = {
   placeholder?: string;
   className?: string;
@@ -45,7 +45,7 @@ const CustomInputUserSpecifiedSearch = ({
   };
 
   return (
-    <div className="relative">
+    <div className="relative text-sm">
       <div>
         <label className="mb-2.5 font-poppins font-semibold leading-relaxed block text-sm text-black dark:text-white">
           {label}
@@ -53,13 +53,13 @@ const CustomInputUserSpecifiedSearch = ({
         <input
           ref={inputRef}
           type="text"
-          className={`w-full border border-stroke bg-transparent py-3 pl-6 pr-10 text-black dark:text-gray outline-none focus:border-primaryGreen focus-visible:shadow-none dark:border-formStrokedark dark:focus:border-primaryGreen ${className} ${round[rounded]}`}
+          className={`w-full border md:h-10 md:text-xs  bg-transparent py-3 pl-6 pr-10 text-black dark:text-gray outline-none border-stroke focus:border-primaryGreen focus-visible:shadow-none dark:border-formStrokedark dark:focus:border-primaryGreen ${className} ${round[rounded]}`}
           value={valueChange}
           placeholder={placeholder}
           onChange={handleuserMatch}
         />
         <div
-          className={`absolute mt-1 bg-opacity-90 max-h-45 overflow-y-scroll z-999999 min-w-fit w-full bg-white border border-stroke rounded-sm transition-transform duration-200 ease-in-out transform ${
+          className={`absolute mt-1 bg-white whitespace-nowrap bg-opacity-90 max-h-45 overflow-y-scroll z-999999 min-w-fit w-full  border border-stroke rounded-sm transition-transform duration-200 ease-in-out transform ${
             valueChange.length > 0  
               ? "scale-y-100 scale-x-100 opacity-100"
               : "scale-y-0 scale-x-0 opacity-0"

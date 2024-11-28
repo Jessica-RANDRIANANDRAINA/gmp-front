@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext, useRef } from "react";
 import { useParams } from "react-router-dom";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
+import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import listPlugin from "@fullcalendar/list";
 import frLocale from "@fullcalendar/core/locales/fr";
@@ -17,10 +18,25 @@ import UpdateActivity from "../../../../components/Modals/Activity/UpdateActivit
 import CollapsibleSection from "../../../../components/UIElements/CollapsibleSection";
 import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
+import { IDecodedToken } from "../../../../types/user";
 
 const notyf = new Notyf({ position: { x: "center", y: "top" } });
 
-const AllActivityCalendar = () => {
+const AllActivityCalendar = ({
+  selectedOptions,
+  search,
+  setSearchClicked,
+  searchClicked,
+  colors,
+  decodedToken,
+}: {
+  selectedOptions: Array<string>;
+  search: any;
+  setSearchClicked: React.Dispatch<React.SetStateAction<boolean>>;
+  searchClicked: boolean;
+  colors: Record<string, string>;
+  decodedToken: IDecodedToken | undefined;
+}) => {
   const { userid } = useParams();
   const [events, setEvents] = useState<any[]>([]);
   const connection = useContext(SignalRContext);
@@ -43,33 +59,57 @@ const AllActivityCalendar = () => {
     return () => document.removeEventListener("click", clickHandler);
   });
 
+  // EVERY TIME THE SEARCH BUTTON IS CLICKED, fetch data
+  useEffect(() => {
+    if (searchClicked) {
+      fetchData();
+    }
+    setSearchClicked(false);
+  }, [searchClicked]);
+
   const fetchData = async () => {
     try {
-      if (userid) {
-        const response = await getAllActivitiesOfUser(userid);
-        setData(response);
-        const calendarEvents = response.map((intercontract: any) => {
-          const startDate = new Date(intercontract.startDate);
-          const endDate = new Date(startDate);
-          startDate.setHours(7, 30, 0, 0);
-          endDate.setHours(15, 30, 0, 0);
-
-          return {
-            id: intercontract.id,
-            title: intercontract.title,
-            start: startDate.toISOString(),
-            end: endDate.toISOString(),
-            description: intercontract.description,
-            status: intercontract.status,
-            type: intercontract.type,
-            dailyEffort: intercontract.dailyEffort,
-            phaseid: intercontract?.phaseid,
-            projectid: intercontract?.projectid,
-          };
-        });
-
-        setEvents(calendarEvents);
+      var response;
+      var Ids: (string | undefined)[] = [];
+      if (search?.ids.length === 1) {
+        if (!search?.ids?.[0]) {
+          Ids = [decodedToken?.jti];
+        } else {
+          Ids = search?.ids;
+        }
       }
+      if (userid) {
+        response = await getAllActivitiesOfUser(
+          search?.startDate,
+          search?.endDate,
+          selectedOptions,
+          Ids
+        );
+      }
+
+      setData(response);
+      const calendarEvents = response.map((intercontract: any) => {
+        const startDate = new Date(intercontract.startDate);
+        const endDate = new Date(startDate);
+        startDate.setHours(7, 30, 0, 0);
+        endDate.setHours(15, 30, 0, 0);
+
+        return {
+          id: `${intercontract.id}.${intercontract?.userid}`,
+          title: intercontract.title,
+          start: startDate.toISOString(),
+          end: endDate.toISOString(),
+          description: intercontract.description,
+          status: intercontract.status,
+          type: intercontract.type,
+          dailyEffort: intercontract.dailyEffort,
+          phaseid: intercontract?.phaseid,
+          projectid: intercontract?.projectid,
+          user: intercontract?.userid,
+        };
+      });
+
+      setEvents(calendarEvents);
     } catch (error) {
       console.error(`Error fetching TASK ACTIVITY data: ${error}`);
     }
@@ -106,7 +146,7 @@ const AllActivityCalendar = () => {
       content: {
         dailyEffort: task?.dailyEffort,
         description: task?.description,
-        id: task?.id,
+        id: task?.id?.split(".")?.[0],
         startDate: task?.start,
         status: task?.status,
         title: task?.title,
@@ -145,7 +185,11 @@ const AllActivityCalendar = () => {
     setActiveTaskId(activeTaskId === activityId ? null : activityId);
   };
 
-  const handleDeleteActivity = async (activityId: string, type: string) => {
+  const handleDeleteActivity = async (
+    activityIdWithUser: string,
+    type: string
+  ) => {
+    const [activityId, userId] = activityIdWithUser.split(".");
     try {
       if (type === "Transverse") {
         await deleteTransverse(activityId);
@@ -192,8 +236,15 @@ const AllActivityCalendar = () => {
     <div className="p-5 flex flex-col-reverse md:grid md:grid-cols-5">
       <div className="md:col-span-4">
         <FullCalendar
-          plugins={[dayGridPlugin, interactionPlugin, listPlugin]}
-          initialView={window.innerWidth < 768 ? "listWeek" : "dayGridMonth"}
+          plugins={[
+            dayGridPlugin,
+            interactionPlugin,
+            listPlugin,
+            timeGridPlugin,
+          ]}
+          initialView={
+            window.innerWidth < 768 ? "timeGridWeek" : "dayGridMonth"
+          }
           events={events}
           eventClick={handleEventClick}
           headerToolbar={{
@@ -201,17 +252,26 @@ const AllActivityCalendar = () => {
             center: "title",
             right:
               window.innerWidth < 768
-                ? "listWeek,listDay"
-                : "dayGridMonth,listWeek,listDay",
+                ? "timeGridWeek,timeGridDay"
+                : "dayGridMonth,timeGridWeek,timeGridDay",
           }}
-          noEventsText="Pas d'intercontrat prévues pour cette période"
+          noEventsText="Pas d'activité prévues pour cette période"
           locale={frLocale}
           height={"70vh"}
           eventContent={(arg) => {
             const { title, extendedProps } = arg.event;
-            const dailyEffort = extendedProps?.dailyEffort; // task duration in hours
+
+            const dailyEffort = extendedProps?.dailyEffort;
+
             return (
-              <div className="flex whitespace-break-spaces cursor-pointer text-xs ">
+              <div
+                style={{
+                  boxShadow: colors[extendedProps?.user]
+                    ? `0px 1px 8px 1px ${colors[extendedProps?.user]}`
+                    : "0px 1px 8px 1px rgba(0,0,0,0.1)",
+                }}
+                className={`flex shadow  w-full p-1  whitespace-break-spaces cursor-pointer text-xs `}
+              >
                 <b>
                   {dailyEffort}h - {title}
                 </b>
@@ -223,9 +283,11 @@ const AllActivityCalendar = () => {
             month: "Mois",
             week: "Semaine",
 
-            listWeek: window.innerWidth < 768 ? "S" : "Semaine",
-            listDay: window.innerWidth < 768 ? "J" : "Jour",
+            timeGridWeek: window.innerWidth < 768 ? "S" : "Semaine",
+            timeGridDay: window.innerWidth < 768 ? "J" : "Jour",
           }}
+          slotMinTime={"07:00:00"}
+          slotMaxTime={"17:00:00"}
           dayHeaderClassNames="text-xs sm:text-sm md:text-base"
         />
       </div>
@@ -317,6 +379,7 @@ const AllActivityCalendar = () => {
                 )
                 ?.map((task: any) => (
                   <div
+                    key={`${task.id}.${task?.userid}`}
                     onClick={() => {
                       handleModifClick(task);
                     }}

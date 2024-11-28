@@ -83,21 +83,24 @@ const TransverseKanban = () => {
   // get all transverse data of the connected user
   const fetchData = async () => {
     try {
+      var response;
+
       if (userid) {
-        const response = await getTransverseByUserId(userid);
-        const { transverseMap, columns } = organizeTransverseByStatus(response);
-        setData({
-          transverses: transverseMap,
-          columns,
-          columnOrder: [
-            "column-1",
-            "column-2",
-            "column-3",
-            "column-4",
-            "column-5",
-          ],
-        });
+        response = await getTransverseByUserId(userid);
       }
+
+      const { transverseMap, columns } = organizeTransverseByStatus(response);
+      setData({
+        transverses: transverseMap,
+        columns,
+        columnOrder: [
+          "column-1",
+          "column-2",
+          "column-3",
+          "column-4",
+          "column-5",
+        ],
+      });
     } catch (error) {
       console.error(`Error at fetch transverse data: ${error}`);
     }
