@@ -494,6 +494,7 @@ const Activity = () => {
                   setSearchClicked={setSearchClicked}
                   searchClicked={searchClicked}
                   colors={getColorMap()}
+                  decodedToken={decodedToken}
                 />
               ) : (
                 <AllActivityCalendar
@@ -502,6 +503,7 @@ const Activity = () => {
                   setSearchClicked={setSearchClicked}
                   searchClicked={searchClicked}
                   colors={getColorMap()}
+                  decodedToken={decodedToken}
                 />
               )}
             </div>

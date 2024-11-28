@@ -16,6 +16,7 @@ import {
 } from "../../../../services/Project";
 import AddActivity from "../../../../components/Modals/Activity/AddActivity";
 import UpdateActivity from "../../../../components/Modals/Activity/UpdateActivity";
+import { IDecodedToken } from "../../../../types/user";
 
 import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
@@ -33,10 +34,12 @@ const organizeActivityByStatus = (activities: any[]) => {
   };
 
   const activityMap = activities.reduce((acc, activity) => {
-    acc[activity.id] = {
-      id: activity.id,
+    const uniqueKey = `${activity.id}.${activity.userid}`;
+
+    acc[uniqueKey] = {
+      id: uniqueKey,
       content: {
-        id: activity.id,
+        id: uniqueKey,
         title: activity.title,
         description: activity.description,
         status: activity.status,
@@ -55,7 +58,7 @@ const organizeActivityByStatus = (activities: any[]) => {
       (key) => columns[key].title === activity.status
     );
     if (columnKey) {
-      columns[columnKey].activityIds.push(activity.id);
+      columns[columnKey].activityIds.push(uniqueKey);
     }
     return acc;
   }, {} as { [key: string]: { id: string; content: { title: string; id: string } } });
@@ -68,6 +71,7 @@ const AllActivityKanban = ({
   setSearchClicked,
   searchClicked,
   colors,
+  decodedToken,
 }: {
   selectedOptions: Array<string>;
   search: {
@@ -78,6 +82,7 @@ const AllActivityKanban = ({
   setSearchClicked: React.Dispatch<React.SetStateAction<boolean>>;
   searchClicked: boolean;
   colors: Record<string, string>;
+  decodedToken: IDecodedToken | undefined;
 }) => {
   const { userid } = useParams();
   const [data, setData] = useState<any>({
@@ -118,17 +123,26 @@ const AllActivityKanban = ({
   const fetchData = async () => {
     try {
       var response;
+      var Ids: (string | undefined)[] = [];
+      if (search?.ids.length === 1) {
+        if (!search?.ids?.[0]) {
+          Ids = [decodedToken?.jti];
+        } else {
+          Ids = search?.ids;
+        }
+      }
 
       if (userid) {
         response = await getAllActivitiesOfUser(
           search?.startDate,
           search?.endDate,
           selectedOptions,
-          search?.ids
+          Ids
         );
       }
 
       const { activityMap, columns } = organizeActivityByStatus(response);
+
       setData({
         acivities: activityMap,
         columns,
@@ -230,24 +244,25 @@ const AllActivityKanban = ({
       });
       if (connection) {
         try {
+          const taskDraggedId = draggableId?.split(".")?.[0];
           if (activitype === "Transverse") {
             await connection.invoke(
               "TransverseMoved",
-              draggableId,
+              taskDraggedId,
               startColumn.title,
               endColumn.title
             );
           } else if (activitype === "InterContract") {
             await connection.invoke(
               "IntercontractMoved",
-              draggableId,
+              taskDraggedId,
               startColumn.title,
               endColumn.title
             );
           } else {
             await connection.invoke(
               "TaskActivityMoved",
-              draggableId,
+              taskDraggedId,
               startColumn.title,
               endColumn.title
             );
@@ -268,8 +283,12 @@ const AllActivityKanban = ({
     setActiveActivityId(activeActivityId === activityId ? null : activityId);
   };
 
-  const handleDeleteActivity = async (activityId: string, type: string) => {
+  const handleDeleteActivity = async (
+    activityIdWithUser: string,
+    type: string
+  ) => {
     try {
+      const activityId = activityIdWithUser?.split(".")?.[0];
       if (type === "Transverse") {
         await deleteTransverse(activityId);
         if (connection) {
@@ -339,14 +358,15 @@ const AllActivityKanban = ({
                       <h3 className="mb-3 text-sm">{column.title}</h3>
                       {acivities?.map((activity: any, index: any) => (
                         <Draggable
-                          key={activity.id}
-                          draggableId={activity.id}
+                          key={activity.content.id}
+                          draggableId={activity.content.id}
                           index={index}
                         >
                           {(provided, snapshot) => {
                             const endDate = formatDate(
                               activity.content.startDate
                             );
+
                             return (
                               <div
                                 ref={provided.innerRef}

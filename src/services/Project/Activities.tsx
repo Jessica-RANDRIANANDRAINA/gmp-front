@@ -25,6 +25,11 @@ export const getAllActivitiesOfUser = async (
       });
     }
 
+
+    console.log("----------------")
+    console.log(params)
+    console.log("----------------")
+
     const response = await axios.get(`${endPoint}/api/Activity/all`, {
       params,
     });

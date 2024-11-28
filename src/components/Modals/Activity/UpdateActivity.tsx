@@ -30,7 +30,7 @@ const UpdateActivity = ({
 }) => {
   const { userid } = useParams();
   const [activityData, setActivityData] = useState<IActivityAdd>({
-    id: activity?.content?.id,
+    id: activity?.content?.id?.split(".")?.[0],
     title: activity?.content?.title,
     description: activity?.content?.description,
     type: activity?.content?.type,
@@ -165,7 +165,7 @@ const UpdateActivity = ({
         if (activityData.id) {
           await updateTransverse(activityData.id, dataToSend);
         }
-      } else if (activityData?.type === "Intercontract") {
+      } else if (activityData?.type === "InterContract") {
         const dataToSend = {
           title: activityData.title,
           startDate: activityData.startDate,
