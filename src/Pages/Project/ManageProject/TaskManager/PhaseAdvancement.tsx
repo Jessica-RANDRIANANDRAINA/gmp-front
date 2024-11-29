@@ -325,6 +325,16 @@ const PhaseAdvancement = () => {
                       {...provided.droppableProps}
                     >
                       <h3 className="mb-3 text-sm">{column.title}</h3>
+                      {columnId === "column-1" && (
+                        <div
+                          className="border mb-4 p-1 cursor-pointer border-slate-300 hover:bg-slate-100 dark:hover:bg-boxdark2 flex justify-center text-xs"
+                          onClick={() => {
+                            setModalOpen(true);
+                          }}
+                        >
+                          <span>+ ajouter une tâche</span>
+                        </div>
+                      )}
                       {tasks.map((task: any, index: any) => (
                         <Draggable
                           key={task.id}
@@ -477,16 +487,6 @@ const PhaseAdvancement = () => {
                     </div>
                   )}
                 </Droppable>
-                {columnId === "column-1" && (
-                  <div
-                    className="border ml-4 p-1 cursor-pointer border-slate-300 hover:bg-slate-100 dark:hover:bg-boxdark2 flex justify-center text-xs"
-                    onClick={() => {
-                      setModalOpen(true);
-                    }}
-                  >
-                    <span>+ ajouter une tâche</span>
-                  </div>
-                )}
               </div>
             );
           })}
