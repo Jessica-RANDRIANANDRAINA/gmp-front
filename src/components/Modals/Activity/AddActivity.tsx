@@ -320,6 +320,7 @@ const AddActivity = ({
               label="Description"
               rounded="medium"
               className="text-sm"
+              rows={5}
               value={activityData.description}
               onChange={(e) => {
                 setActivityData({
