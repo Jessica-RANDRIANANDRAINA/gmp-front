@@ -105,7 +105,6 @@ const AllActivityKanban = ({
   const deletePopUp = useRef<any>(null);
   const [activeActivityId, setActiveActivityId] = useState<string | null>(null);
 
-
   // open add activity modal with parent props trigger
   useEffect(() => {
     if (isAddActivity) {
@@ -371,204 +370,209 @@ const AllActivityKanban = ({
                       {...provided.droppableProps}
                     >
                       <h3 className="mb-3 text-sm">{column.title}</h3>
-                      {acivities?.map((activity: any, index: any) => (
-                        <Draggable
-                          key={activity.content.id}
-                          draggableId={activity.content.id}
-                          index={index}
+                      {columnId === "column-1" && (
+                        <div
+                          className="border text-sm mb-4 p-1 cursor-pointer dark:border-2 shadow-1  shadow-slate-400   text-primaryGreen border-slate-300 hover:bg-slate-100 dark:bg-strokedark dark:border-formStrokedark dark:hover:bg-boxdark2 flex justify-center "
+                          onClick={() => {
+                            setIsModalAddActivityOpen(true);
+                          }}
                         >
-                          {(provided, snapshot) => {
-                            const endDate = formatDate(
-                              activity.content.startDate
-                            );
+                          <span>+ ajouter une activité</span>
+                        </div>
+                      )}
+                      {acivities?.map((activity: any, index: any) => (
+                        <>
+                          <Draggable
+                            key={activity.content.id}
+                            draggableId={activity.content.id}
+                            index={index}
+                          >
+                            {(provided, snapshot) => {
+                              const endDate = formatDate(
+                                activity.content.startDate
+                              );
 
-                            return (
-                              <div
-                                ref={provided.innerRef}
-                                {...provided.draggableProps}
-                                {...provided.dragHandleProps}
-                                className={`p-4 mb-1 relative shadow-2 hover:shadow-md hover:shadow-slate-300 dark:hover:shadow-slate-500 text-xs rounded-md  ${
-                                  snapshot.isDragging
-                                    ? "bg-green-50 dark:bg-emerald-100"
-                                    : "bg-white dark:bg-boxdark"
-                                }`}
-                                style={{
-                                  ...provided.draggableProps.style,
-                                  boxShadow: colors[activity.content.userid]
-                                    ? `0px 2px 8px 1px ${
-                                        colors[activity.content.userid]
-                                      }`
-                                    : "0px 2px 8px 1px rgba(0,0,0,0.1)",
-                                }}
-                                onClick={() => {
-                                  setActivityData(activity);
-                                  setIsModalUpdateActivityOpen(true);
-                                }}
-                              >
+                              return (
                                 <div
-                                  className="absolute top-2 right-1 hover:bg-zinc-100 dark:hover:bg-boxdark2 px-1 h-4 cursor-pointer"
-                                  onClick={(e) => {
-                                    handleToogleMenuDelete(activity.id, e);
+                                  ref={provided.innerRef}
+                                  {...provided.draggableProps}
+                                  {...provided.dragHandleProps}
+                                  className={`p-4 mb-1 relative border border-gray-2 dark:border-2 dark:border-strokedark shadow-2 hover:shadow-md hover:shadow-slate-300 dark:hover:shadow-slate-500 text-xs rounded-md  ${
+                                    snapshot.isDragging
+                                      ? "bg-green-50 dark:bg-emerald-100"
+                                      : "bg-white dark:bg-boxdark"
+                                  }`}
+                                  style={{
+                                    ...provided.draggableProps.style,
+                                    boxShadow: colors[activity.content.userid]
+                                      ? `0px 2px 8px 1px ${
+                                          colors[activity.content.userid]
+                                        }`
+                                      : "0px 2px 8px 1px rgba(0,0,0,0.1)",
+                                    borderColor: colors[activity.content.userid]
+                                      ? colors[activity.content.userid]
+                                      : "",
+                                  }}
+                                  onClick={() => {
+                                    setActivityData(activity);
+                                    setIsModalUpdateActivityOpen(true);
                                   }}
                                 >
-                                  <svg
-                                    width="15"
-                                    height="15"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                  >
-                                    <g id="SVGRepo_bgCarrier"></g>
-                                    <g
-                                      id="SVGRepo_tracerCarrier"
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                    ></g>
-                                    <g id="SVGRepo_iconCarrier">
-                                      <path
-                                        d="M12 13.75C12.9665 13.75 13.75 12.9665 13.75 12C13.75 11.0335 12.9665 10.25 12 10.25C11.0335 10.25 10.25 11.0335 10.25 12C10.25 12.9665 11.0335 13.75 12 13.75Z"
-                                        className="fill-black dark:fill-white"
-                                      ></path>{" "}
-                                      <path
-                                        d="M19 13.75C19.9665 13.75 20.75 12.9665 20.75 12C20.75 11.0335 19.9665 10.25 19 10.25C18.0335 10.25 17.25 11.0335 17.25 12C17.25 12.9665 18.0335 13.75 19 13.75Z"
-                                        className="fill-black dark:fill-white"
-                                      ></path>{" "}
-                                      <path
-                                        d="M5 13.75C5.9665 13.75 6.75 12.9665 6.75 12C6.75 11.0335 5.9665 10.25 5 10.25C4.0335 10.25 3.25 11.0335 3.25 12C3.25 12.9665 4.0335 13.75 5 13.75Z"
-                                        className="fill-black dark:fill-white"
-                                      ></path>{" "}
-                                    </g>
-                                  </svg>
-                                </div>
-                                {/* pop up menu delete */}
-                                {activeActivityId === activity.id && (
                                   <div
-                                    ref={deletePopUp}
-                                    className="absolute z-20 right-0 top-5 bg-white dark:bg-boxdark dark:border-formStrokedark border-zinc-100 dark:hover:border-red-950 border shadow-lg rounded-md "
+                                    className="absolute top-2 right-1 hover:bg-zinc-100 dark:hover:bg-boxdark2 px-1 h-4 cursor-pointer"
+                                    onClick={(e) => {
+                                      handleToogleMenuDelete(activity.id, e);
+                                    }}
                                   >
-                                    <button
-                                      onClick={(e) => {
-                                        e.stopPropagation();
-                                        handleDeleteActivity(
-                                          activity.id,
-                                          activity.content.type
-                                        );
-                                      }}
-                                      className="text-red-600 dark:text-red-400 dark:hover:bg-red-950  hover:bg-red-50 px-4 py-2 rounded"
+                                    <svg
+                                      width="15"
+                                      height="15"
+                                      viewBox="0 0 24 24"
+                                      fill="none"
                                     >
-                                      Supprimer
-                                    </button>
+                                      <g id="SVGRepo_bgCarrier"></g>
+                                      <g
+                                        id="SVGRepo_tracerCarrier"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                      ></g>
+                                      <g id="SVGRepo_iconCarrier">
+                                        <path
+                                          d="M12 13.75C12.9665 13.75 13.75 12.9665 13.75 12C13.75 11.0335 12.9665 10.25 12 10.25C11.0335 10.25 10.25 11.0335 10.25 12C10.25 12.9665 11.0335 13.75 12 13.75Z"
+                                          className="fill-black dark:fill-white"
+                                        ></path>{" "}
+                                        <path
+                                          d="M19 13.75C19.9665 13.75 20.75 12.9665 20.75 12C20.75 11.0335 19.9665 10.25 19 10.25C18.0335 10.25 17.25 11.0335 17.25 12C17.25 12.9665 18.0335 13.75 19 13.75Z"
+                                          className="fill-black dark:fill-white"
+                                        ></path>{" "}
+                                        <path
+                                          d="M5 13.75C5.9665 13.75 6.75 12.9665 6.75 12C6.75 11.0335 5.9665 10.25 5 10.25C4.0335 10.25 3.25 11.0335 3.25 12C3.25 12.9665 4.0335 13.75 5 13.75Z"
+                                          className="fill-black dark:fill-white"
+                                        ></path>{" "}
+                                      </g>
+                                    </svg>
                                   </div>
-                                )}
-                                {/* pop up menu delete */}
-
-                                <div className="flex flex-col gap-1 dark:text-zinc-400 text-zinc-500">
-                                  <div
-                                    className={`border rounded w-fit px-1 cursor-pointer mb-2 ${
-                                      activity.content.type === "Projet"
-                                        ? "bg-purple-100 text-purple-600 border-purple-300 dark:bg-purple-900 dark:text-purple-300 dark:border-purple-700"
-                                        : activity?.content.type ===
-                                          "Transverse"
-                                        ? "bg-blue-100 text-blue-600 border-blue-300 dark:bg-blue-900 dark:text-blue-300 dark:border-blue-700"
-                                        : "bg-green-100 text-green-600 border-green-300  dark:bg-green-900 dark:text-green-300 dark:border-green-700"
-                                    }`}
-                                  >
-                                    {activity.content.type}
-                                  </div>
-                                  <div className="grid grid-flow-row gap-2 ">
-                                    <div className="flex gap-1">
-                                      <span
-                                        className={`${
-                                          activity.content.status === "Traité"
-                                            ? ""
-                                            : "hidden"
-                                        }`}
+                                  {/* pop up menu delete */}
+                                  {activeActivityId === activity.id && (
+                                    <div
+                                      ref={deletePopUp}
+                                      className="absolute z-20 right-0 top-5 bg-white dark:bg-boxdark dark:border-formStrokedark border-zinc-100 dark:hover:border-red-950 border shadow-lg rounded-md "
+                                    >
+                                      <button
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          handleDeleteActivity(
+                                            activity.id,
+                                            activity.content.type
+                                          );
+                                        }}
+                                        className="text-red-600 dark:text-red-400 dark:hover:bg-red-950  hover:bg-red-50 px-4 py-2 rounded"
                                       >
-                                        <svg
-                                          width="17"
-                                          height="17"
-                                          viewBox="0 0 24 24"
-                                          className="fill-green-500"
+                                        Supprimer
+                                      </button>
+                                    </div>
+                                  )}
+                                  {/* pop up menu delete */}
+
+                                  <div className="flex flex-col gap-1 dark:text-zinc-400 text-zinc-500">
+                                    <div
+                                      className={`border rounded w-fit px-1 cursor-pointer mb-2 ${
+                                        activity.content.type === "Projet"
+                                          ? "bg-green-100 text-green-600 border-green-300  dark:bg-green-900 dark:text-green-300 dark:border-green-700"
+                                          : activity?.content.type ===
+                                            "Transverse"
+                                          ? "bg-purple-100 text-purple-600 border-purple-300 dark:bg-purple-900 dark:text-purple-300 dark:border-purple-700"
+                                          : "bg-red-100 text-red-600 border-red-300  dark:bg-red-900 dark:text-red-300 dark:border-red-700"
+                                      }`}
+                                    >
+                                      {activity.content.type}
+                                    </div>
+                                    <div className="grid grid-flow-row gap-2 ">
+                                      <div className="flex gap-1">
+                                        <span
+                                          className={`${
+                                            activity.content.status === "Traité"
+                                              ? ""
+                                              : "hidden"
+                                          }`}
                                         >
-                                          <g
-                                            id="SVGRepo_bgCarrier"
-                                            strokeWidth="0"
-                                          ></g>
-                                          <g
-                                            id="SVGRepo_tracerCarrier"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                          ></g>
-                                          <g id="SVGRepo_iconCarrier">
-                                            {" "}
-                                            <circle
-                                              cx="12"
-                                              cy="12"
-                                              r="10"
-                                              className="stroke-green-500"
-                                              strokeWidth="1.5"
-                                            ></circle>{" "}
-                                            <path
-                                              d="M8.5 12.5L10.5 14.5L15.5 9.5"
-                                              className="stroke-white"
-                                              strokeWidth="3"
+                                          <svg
+                                            width="17"
+                                            height="17"
+                                            viewBox="0 0 24 24"
+                                            className="fill-green-500"
+                                          >
+                                            <g
+                                              id="SVGRepo_bgCarrier"
+                                              strokeWidth="0"
+                                            ></g>
+                                            <g
+                                              id="SVGRepo_tracerCarrier"
                                               strokeLinecap="round"
                                               strokeLinejoin="round"
-                                            ></path>{" "}
-                                          </g>
-                                        </svg>
-                                      </span>
-                                      <div className="dark:text-whiten text-black">
-                                        {activity.content.title}
+                                            ></g>
+                                            <g id="SVGRepo_iconCarrier">
+                                              {" "}
+                                              <circle
+                                                cx="12"
+                                                cy="12"
+                                                r="10"
+                                                className="stroke-green-500"
+                                                strokeWidth="1.5"
+                                              ></circle>{" "}
+                                              <path
+                                                d="M8.5 12.5L10.5 14.5L15.5 9.5"
+                                                className="stroke-white"
+                                                strokeWidth="3"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                              ></path>{" "}
+                                            </g>
+                                          </svg>
+                                        </span>
+                                        <div className="dark:text-whiten text-black">
+                                          {activity.content.title}
+                                        </div>
                                       </div>
-                                    </div>
-                                    <div className="flex flex-wrap gap-1">
-                                      <div className="border   rounded-full w-7 h-5 flex justify-center items-center">
-                                        {activity.content.dailyEffort}h
-                                      </div>
-                                      <div
-                                        className={`border  rounded-full w-fit px-1 h-5 flex justify-center items-center whitespace-nowrap ${
-                                          activity?.content?.subType
-                                            ? ""
-                                            : "hidden"
-                                        }`}
-                                      >
-                                        {activity.content.subType}
+                                      <div className="flex flex-wrap gap-1">
+                                        <div className="border   rounded-full w-7 h-5 flex justify-center items-center">
+                                          {activity.content.dailyEffort}h
+                                        </div>
+                                        <div
+                                          className={`border  rounded-full w-fit px-1 h-5 flex justify-center items-center whitespace-nowrap ${
+                                            activity?.content?.subType
+                                              ? ""
+                                              : "hidden"
+                                          }`}
+                                        >
+                                          {activity.content.subType}
+                                        </div>
                                       </div>
                                     </div>
                                   </div>
+                                  <div
+                                    className={` pt-1 mt-2 text-xs ${
+                                      activity.content.priority === "Moyen" ||
+                                      activity.content.priority === "Bas"
+                                        ? "hidden "
+                                        : "text-orange"
+                                    }`}
+                                  >
+                                    {activity.content.priority}
+                                  </div>
+                                  <div className="border-t dark:border-t-zinc-600 text-zinc-400  space-y-1 pt-1">
+                                    <div className={`text-xs `}>{endDate}</div>
+                                  </div>
                                 </div>
-                                <div
-                                  className={` pt-1 mt-2 text-xs ${
-                                    activity.content.priority === "Moyen" ||
-                                    activity.content.priority === "Bas"
-                                      ? "hidden "
-                                      : "text-orange"
-                                  }`}
-                                >
-                                  {activity.content.priority}
-                                </div>
-                                <div className="border-t dark:border-t-zinc-600 text-zinc-400  space-y-1 pt-1">
-                                  <div className={`text-xs `}>{endDate}</div>
-                                </div>
-                              </div>
-                            );
-                          }}
-                        </Draggable>
+                              );
+                            }}
+                          </Draggable>
+                        </>
                       ))}
                       {provided.placeholder}
                     </div>
                   )}
                 </Droppable>
-                {columnId === "column-1" && (
-                  <div
-                    className="border ml-4 p-1 cursor-pointer border-slate-300 hover:bg-slate-100 dark:hover:bg-boxdark2 flex justify-center text-xs"
-                    onClick={() => {
-                      setIsModalAddActivityOpen(true);
-                    }}
-                  >
-                    <span>+ ajouter une activité</span>
-                  </div>
-                )}
               </div>
             );
           })}

@@ -283,15 +283,35 @@ const AllActivityCalendar = ({
                   boxShadow: colors[extendedProps?.user]
                     ? `0px 1px 8px 1px ${colors[extendedProps?.user]}`
                     : "0px 1px 8px 1px rgba(0,0,0,0.1)",
+                  borderColor: colors[extendedProps?.user]
+                    ? colors[extendedProps?.user]
+                    : "",
                 }}
-                className={`flex shadow  w-full p-1  whitespace-break-spaces cursor-pointer text-xs relative group`}
+                className={`flex flex-row justify-between font-light items-center shadow dark:border-2 border border-gray dark:border-strokedark w-full p-1  whitespace-break-spaces cursor-pointer text-xs relative group`}
               >
-                <b>
-                  {dailyEffort}h -{" "}
-                  {title.length > 10 ? `${title.slice(0, 10)}...` : title}
-                </b>
-                <div className="absolute bottom-full left-0 mt-1 dark:bg-whiten dark:text-black bg-black text-white text-xs rounded p-1 opacity-0 group-hover:opacity-100  whitespace-nowrap ">
-                  {title}
+                <div>
+                  <b>
+                    {dailyEffort}h -{" "}
+                    {title.length > 15 ? `${title.slice(0, 15)}...` : title}
+                  </b>
+                  <div className="absolute bottom-full left-0 mt-1 dark:bg-whiten dark:text-black bg-black text-white text-xs rounded p-1 hidden group-hover:block  whitespace-nowrap ">
+                    {title}
+                  </div>
+                </div>
+                <div
+                  className={`border p-1 rounded-full ${
+                    extendedProps.type === "Projet"
+                      ? "bg-green-100 text-green-600 border-green-300  dark:bg-green-900 dark:text-green-300 dark:border-green-700"
+                      : extendedProps?.type === "Transverse"
+                      ? "bg-purple-100 text-purple-600 border-purple-300 dark:bg-purple-900 dark:text-purple-300 dark:border-purple-700"
+                      : "bg-red-100 text-red-600 border-red-300  dark:bg-red-900 dark:text-red-300 dark:border-red-700"
+                  }`}
+                >
+                  {extendedProps?.type === "Projet"
+                    ? "P"
+                    : extendedProps?.type === "Transverse"
+                    ? "T"
+                    : "I"}
                 </div>
               </div>
             );
