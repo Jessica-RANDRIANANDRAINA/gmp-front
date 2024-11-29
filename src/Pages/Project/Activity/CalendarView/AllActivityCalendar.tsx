@@ -548,7 +548,7 @@ const AllActivityCalendar = ({
                 ))}
             </div>
           </CollapsibleSection>
-          <CollapsibleSection title="Stand by">
+          <CollapsibleSection title="En pause">
             <div className="space-y-2 text-xs">
               {data
                 ?.filter(

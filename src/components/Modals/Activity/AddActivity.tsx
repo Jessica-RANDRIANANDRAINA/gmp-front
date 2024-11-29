@@ -32,6 +32,7 @@ const AddActivity = ({
     title: "",
     description: "",
     type: "",
+    status: "Backlog",
     dailyEffort: 1,
     startDate: "",
     projectTitle: "",
@@ -114,7 +115,7 @@ const AddActivity = ({
           description: activityData?.description,
           dailyEffort: activityData?.dailyEffort,
           startDate: activityData?.startDate,
-          status: "Backlog",
+          status: activityData?.status,
           userid,
           phaseid: activityData?.phaseId,
           projectid: activityData?.projectId,
@@ -126,7 +127,7 @@ const AddActivity = ({
           dailyEffort: activityData.dailyEffort,
           description: activityData.description,
           startDate: activityData.startDate,
-          status: "Backlog",
+          status: activityData?.status,
           title: activityData.title,
           type: activityData.transverseType,
           userid,
@@ -138,7 +139,7 @@ const AddActivity = ({
           dailyEffort: activityData.dailyEffort,
           description: activityData.description,
           startDate: activityData.startDate,
-          status: "Backlog",
+          status: activityData?.status,
           title: activityData.title,
           type: activityData.intercontractType,
           userid,
@@ -180,18 +181,37 @@ const AddActivity = ({
                 });
               }}
             />
-            <CustomSelect
-              required={true}
-              label="Type"
-              data={["Projet", "Transverse", "Intercontract"]}
-              value={activityData.type}
-              onValueChange={(e) => {
-                setActivityData({
-                  ...activityData,
-                  type: e,
-                });
-              }}
-            />
+            <div className="flex *:w-full flex-wrap md:flex-nowrap gap-2">
+              <CustomSelect
+                required={true}
+                label="Type"
+                data={["Projet", "Transverse", "Intercontract"]}
+                value={activityData.type}
+                onValueChange={(e) => {
+                  setActivityData({
+                    ...activityData,
+                    type: e,
+                  });
+                }}
+              />
+              <CustomSelect
+                label="Status"
+                data={[
+                  "Backlog",
+                  "En cours",
+                  "Traité",
+                  "En pause",
+                  "Abandonné",
+                ]}
+                value={activityData.status}
+                onValueChange={(e) => {
+                  setActivityData({
+                    ...activityData,
+                    status: e,
+                  });
+                }}
+              />
+            </div>
             <div
               className={` w-full *:w-full flex-wrap md:flex-nowrap  gap-2 ${
                 activityData.type === "Projet" ? "flex" : "hidden"
