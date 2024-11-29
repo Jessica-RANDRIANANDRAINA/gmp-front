@@ -130,6 +130,8 @@ const AllActivityKanban = ({
         } else {
           Ids = search?.ids;
         }
+      } else {
+        Ids = search?.ids;
       }
 
       if (userid) {
@@ -448,7 +450,14 @@ const AllActivityKanban = ({
 
                                 <div className="flex flex-col gap-1 dark:text-zinc-400 text-zinc-500">
                                   <div
-                                    className={`border rounded w-fit px-1 cursor-pointer mb-2`}
+                                    className={`border rounded w-fit px-1 cursor-pointer mb-2 ${
+                                      activity.content.type === "Projet"
+                                        ? "bg-purple-100 text-purple-600 border-purple-300 dark:bg-purple-900 dark:text-purple-300 dark:border-purple-700"
+                                        : activity?.content.type ===
+                                          "Transverse"
+                                        ? "bg-blue-100 text-blue-600 border-blue-300 dark:bg-blue-900 dark:text-blue-300 dark:border-blue-700"
+                                        : "bg-green-100 text-green-600 border-green-300  dark:bg-green-900 dark:text-green-300 dark:border-green-700"
+                                    }`}
                                   >
                                     {activity.content.type}
                                   </div>

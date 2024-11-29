@@ -77,6 +77,8 @@ const AllActivityCalendar = ({
         } else {
           Ids = search?.ids;
         }
+      } else {
+        Ids = search?.ids;
       }
       if (userid) {
         response = await getAllActivitiesOfUser(
@@ -270,11 +272,15 @@ const AllActivityCalendar = ({
                     ? `0px 1px 8px 1px ${colors[extendedProps?.user]}`
                     : "0px 1px 8px 1px rgba(0,0,0,0.1)",
                 }}
-                className={`flex shadow  w-full p-1  whitespace-break-spaces cursor-pointer text-xs `}
+                className={`flex shadow  w-full p-1  whitespace-break-spaces cursor-pointer text-xs relative group`}
               >
                 <b>
-                  {dailyEffort}h - {title}
+                  {dailyEffort}h -{" "}
+                  {title.length > 10 ? `${title.slice(0, 10)}...` : title}
                 </b>
+                <div className="absolute bottom-full left-0 mt-1 dark:bg-whiten dark:text-black bg-black text-white text-xs rounded p-1 opacity-0 group-hover:opacity-100  whitespace-nowrap ">
+                  {title}
+                </div>
               </div>
             );
           }}

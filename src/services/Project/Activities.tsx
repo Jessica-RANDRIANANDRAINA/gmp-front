@@ -20,15 +20,10 @@ export const getAllActivitiesOfUser = async (
       });
     }
     if (ids) {
-      ids.forEach((type, index) => {
-        params[`Ids[${index}]`] = type;
+      ids.forEach((id, index) => {
+        params[`Ids[${index}]`] = id;
       });
     }
-
-
-    console.log("----------------")
-    console.log(params)
-    console.log("----------------")
 
     const response = await axios.get(`${endPoint}/api/Activity/all`, {
       params,
