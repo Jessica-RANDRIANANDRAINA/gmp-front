@@ -67,7 +67,7 @@ const DetailsProject = () => {
                             : projectData?.completionPercentage === 25
                             ? "bg-orange"
                             : projectData?.completionPercentage === 50
-                            ? "bg-yellow-500"
+                            ? "bg-amber-500"
                             : projectData?.completionPercentage === 75
                             ? "bg-lime-500"
                             : "bg-green-500"
@@ -201,9 +201,7 @@ const DetailsProject = () => {
                       {projectData?.endDate
                         ? formatDate(projectData?.endDate)
                         : ""}
-                        {
-                          isDateEndPassed ? " - En retard" :""
-                        }
+                      {isDateEndPassed ? " - En retard" : ""}
                     </span>
                   </div>
                 </div>
@@ -320,8 +318,8 @@ const DetailsProject = () => {
                               className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold 
                             ${
                               ressource?.type === "Disponible"
-                                ? "bg-green-100 text-green-500"
-                                : "bg-yellow-100 text-yellow-600"
+                                ? "bg-green-100 text-green-600 border-green-300  dark:bg-green-900 dark:text-green-300 dark:border-green-700"
+                                : "bg-amber-100 text-amber-600 border-amber-300  dark:bg-amber-900 dark:text-amber-300 dark:border-amber-700"
                             } `}
                             >
                               {ressource?.type}
@@ -363,8 +361,8 @@ const DetailsProject = () => {
                             className={`inline-flex w-fit items-center px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap
                         ${
                           ressource?.type === "Disponible"
-                            ? "bg-green-100 text-green-500"
-                            : "bg-yellow-100 text-yellow-600"
+                            ? "bg-green-100 text-green-600 border-green-300  dark:bg-green-900 dark:text-green-300 dark:border-green-700"
+                            : "bg-amber-100 text-amber-600 border-amber-300  dark:bg-amber-900 dark:text-amber-300 dark:border-amber-700"
                         }
                         `}
                           >
@@ -460,10 +458,10 @@ const DetailsProject = () => {
                                 <span
                                   className={`inline-flex space-x-1 items-center px-3 py-1 rounded-full text-xs font-semibold   ${
                                     phases?.status === "Terminé"
-                                      ? "bg-green-100 text-green-500"
+                                      ? "bg-green-100 text-green-600 border-green-300  dark:bg-green-900 dark:text-green-300 dark:border-green-700"
                                       : phases?.status === "En cours"
-                                      ? "bg-yellow-100 text-orange "
-                                      : "bg-blue-50 text-teal-800"
+                                      ? "bg-amber-100 text-amber-600 border-amber-300  dark:bg-amber-900 dark:text-amber-300 dark:border-amber-700"
+                                      : "bg-cyan-100 text-cyan-600 border-cyan-300  dark:bg-cyan-900 dark:text-cyan-300 dark:border-cyan-700"
                                   }`}
                                 >
                                   <span
@@ -569,10 +567,10 @@ const DetailsProject = () => {
                                 className={`inline-flex space-x-1 w-fit whitespace-nowrap items-center px-3 py-1 rounded-full text-xs font-semibold 
                         ${
                           phases?.status === "Terminé"
-                            ? "bg-green-100 text-green-500"
+                            ? "bg-green-100 text-green-600 border-green-300  dark:bg-green-900 dark:text-green-300 dark:border-green-700"
                             : phases?.status === "En cours"
-                            ? "bg-yellow-100 text-yellow-600"
-                            : "bg-teal-100 text-teal-600"
+                            ? "bg-amber-100 text-amber-600 border-amber-300  dark:bg-amber-900 dark:text-amber-300 dark:border-amber-700"
+                            : "bg-cyan-100 text-cyan-600 border-cyan-300  dark:bg-cyan-900 dark:text-cyan-300 dark:border-cyan-700"
                         }
                         `}
                               >

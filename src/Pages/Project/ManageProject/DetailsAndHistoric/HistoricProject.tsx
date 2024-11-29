@@ -61,12 +61,12 @@ const HistoricProject = () => {
                     <td className="py-3 px-6 text-left whitespace-nowrap">
                       <div className="flex items-center">
                         <span
-                          className={`font-medium border p-1 rounded-full ${
+                          className={`font-medium border p-1 text-center rounded-full ${
                             historic?.modificationType === "update"
-                              ? "bg-yellow-100 text-orange "
+                              ? "bg-amber-100 text-amber-600 border-amber-300  dark:bg-amber-900 dark:text-amber-300 dark:border-amber-700 "
                               : historic?.modificationType === "delete"
-                              ? "bg-rose-50 text-rose-600"
-                              : "bg-green-50 text-green-600"
+                              ? "bg-red-100 text-red-600 border-red-300  dark:bg-red-900 dark:text-red-300 dark:border-red-700"
+                              : "bg-green-100 text-green-600 border-green-300  dark:bg-green-900 dark:text-green-300 dark:border-green-700"
                           }`}
                         >
                           {historic?.modificationType === "update"
@@ -130,12 +130,12 @@ const HistoricProject = () => {
                       Type :{" "}
                     </span>
                     <span
-                      className={`font-medium border p-1 rounded-full ${
+                      className={`font-medium text-center border p-1 rounded-full ${
                         historic?.modificationType === "update"
-                          ? "bg-yellow-100 text-orange "
+                          ? "bg-amber-100 text-amber-600 border-amber-300  dark:bg-amber-900 dark:text-amber-300 dark:border-amber-700  "
                           : historic?.modificationType === "delete"
-                          ? "bg-rose-50 text-rose-600"
-                          : "bg-green-50 text-green-600"
+                          ? "bg-red-100 text-red-600 border-red-300  dark:bg-red-900 dark:text-red-300 dark:border-red-700"
+                          : "bg-green-100 text-green-600 border-green-300  dark:bg-green-900 dark:text-green-300 dark:border-green-700"
                       }`}
                     >
                       {historic?.modificationType === "update"

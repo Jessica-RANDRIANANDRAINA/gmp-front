@@ -1008,11 +1008,11 @@ const TableProjet = ({
                           className={`  font-semibold rounded-md  text-center py-1 px-2 text-xs  w-fit
                             ${
                               project?.priority === "Moyenne"
-                                ? "bg-orange3  text-orange dark:text-amber-100 dark:bg-orange2 "
+                                ? "bg-amber-100 border text-amber-600 border-amber-300 dark:bg-amber-900 dark:text-amber-300 dark:border-amber-700 "
                                 : project?.priority === "Faible"
-                                ? "bg-cyan-100 border border-cyan-100 text-cyan-700 dark:text-cyan-700 "
+                                ? "bg-cyan-100 border text-cyan-600 border-cyan-300 dark:bg-cyan-900 dark:text-cyan-300 dark:border-cyan-700 "
                                 : project?.priority === "Elevée"
-                                ? "bg-red-200 text-red-600 dark:text-red-600"
+                                ? "bg-red-100 border text-red-600 border-red-300 dark:bg-red-900 dark:text-red-300 dark:border-red-700 "
                                 : ""
                             }
                             `}
@@ -1025,8 +1025,8 @@ const TableProjet = ({
                           className={` font-semibold rounded-md whitespace-nowrap text-center py-1 px-2 text-xs  w-fit
                             ${
                               project?.criticality === "Urgente"
-                                ? "bg-orange3  text-orange dark:text-amber-100 dark:bg-orange2"
-                                : "bg-cyan-100 border border-cyan-100 text-cyan-700 dark:text-cyan-700 "
+                                ? "bg-amber-100 border text-amber-600 border-amber-300 dark:bg-amber-900 dark:text-amber-300 dark:border-amber-700"
+                                : "bg-cyan-100 border text-cyan-600 border-cyan-300 dark:bg-cyan-900 dark:text-cyan-300 dark:border-cyan-700 "
                             }
                             `}
                         >
