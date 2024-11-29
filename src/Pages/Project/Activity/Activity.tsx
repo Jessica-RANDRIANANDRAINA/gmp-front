@@ -63,6 +63,7 @@ const Activity = () => {
 
   const [colors, setColors] = useState<Record<string, string>>({});
   const [activeUserId, setActiveUserId] = useState<string | null>(null);
+  const [isAddActivity, setIsAddActivity] = useState<boolean>(false);
 
   const availableSubordinate = subordinates.filter(
     (sub) => !selectedUserInput.some((selected) => selected.id === sub.id)
@@ -73,20 +74,20 @@ const Activity = () => {
     return `hsl(${hue}, 70%, 50%)`;
   };
 
-  const getColorMap = () =>{
-    const colorMap: Record<string, string> ={}
+  const getColorMap = () => {
+    const colorMap: Record<string, string> = {};
 
     selectedUserInput.forEach((user, index) => {
-      colorMap[user.id] = colors[user.id] || generateColor(index)
-    })
+      colorMap[user.id] = colors[user.id] || generateColor(index);
+    });
 
-    return colorMap
-  }
+    return colorMap;
+  };
 
-  const resetColorMap = () =>{
-    setColors({})
-    setSelecteduserInput([])
-  }
+  const resetColorMap = () => {
+    setColors({});
+    setSelecteduserInput([]);
+  };
 
   const handleColorChange = (userId: string, color: string) => {
     setColors((prev) => ({
@@ -161,10 +162,10 @@ const Activity = () => {
 
     setSelectedOptions(["Projet", "Transverse", "Intercontract"]);
     setSelecteduserInput([]);
-    
-    resetColorMap()
+
+    resetColorMap();
     setSearchClicked(true);
-    
+
     setTimeout(() => setResetCustomSelectChoice(false), 0);
   };
 
@@ -199,8 +200,6 @@ const Activity = () => {
       }
     };
   }, []);
-
- 
 
   return (
     <ViewContext.Provider
@@ -443,6 +442,16 @@ const Activity = () => {
                     </button>
                   </div>
                 </div>
+                <div className="flex items-end text-sm justify-center">
+                  <span
+                    onClick={() => {
+                      setIsAddActivity(true);
+                    }}
+                    className="border p-1 border-slate-300 hover:bg-slate-100 dark:hover:bg-boxdark2 cursor-pointer mb-1"
+                  >
+                    + ajouter une activité
+                  </span>
+                </div>
               </div>
               <div className="grid grid-cols-8 gap-2">
                 {selectedUserInput.length > 0 &&
@@ -495,6 +504,8 @@ const Activity = () => {
                   searchClicked={searchClicked}
                   colors={getColorMap()}
                   decodedToken={decodedToken}
+                  isAddActivity={isAddActivity}
+                  setIsAddActivity={setIsAddActivity}
                 />
               ) : (
                 <AllActivityCalendar
@@ -504,6 +515,8 @@ const Activity = () => {
                   searchClicked={searchClicked}
                   colors={getColorMap()}
                   decodedToken={decodedToken}
+                  isAddActivity={isAddActivity}
+                  setIsAddActivity={setIsAddActivity}
                 />
               )}
             </div>

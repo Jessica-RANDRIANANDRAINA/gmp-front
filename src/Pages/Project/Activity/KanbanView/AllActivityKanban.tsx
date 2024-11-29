@@ -72,6 +72,8 @@ const AllActivityKanban = ({
   searchClicked,
   colors,
   decodedToken,
+  isAddActivity,
+  setIsAddActivity,
 }: {
   selectedOptions: Array<string>;
   search: {
@@ -83,6 +85,8 @@ const AllActivityKanban = ({
   searchClicked: boolean;
   colors: Record<string, string>;
   decodedToken: IDecodedToken | undefined;
+  isAddActivity: boolean;
+  setIsAddActivity: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const { userid } = useParams();
   const [data, setData] = useState<any>({
@@ -100,6 +104,15 @@ const AllActivityKanban = ({
   const [activityData, setActivityData] = useState<any>();
   const deletePopUp = useRef<any>(null);
   const [activeActivityId, setActiveActivityId] = useState<string | null>(null);
+
+
+  // open add activity modal with parent props trigger
+  useEffect(() => {
+    if (isAddActivity) {
+      setIsModalAddActivityOpen(true);
+      setIsAddActivity(false);
+    }
+  }, [isAddActivity]);
 
   // close delete pop up when click outside
   useEffect(() => {

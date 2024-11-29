@@ -29,6 +29,8 @@ const AllActivityCalendar = ({
   searchClicked,
   colors,
   decodedToken,
+  isAddActivity,
+  setIsAddActivity,
 }: {
   selectedOptions: Array<string>;
   search: any;
@@ -36,6 +38,8 @@ const AllActivityCalendar = ({
   searchClicked: boolean;
   colors: Record<string, string>;
   decodedToken: IDecodedToken | undefined;
+  isAddActivity: boolean;
+  setIsAddActivity: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const { userid } = useParams();
   const [events, setEvents] = useState<any[]>([]);
@@ -47,6 +51,14 @@ const AllActivityCalendar = ({
   const [activeTaskId, setActiveTaskId] = useState<string | null>(null);
   const [data, setData] = useState<any>();
   const deletePopUp = useRef<any>(null);
+
+  // open add activity modal with parent props trigger
+  useEffect(() => {
+    if (isAddActivity) {
+      setIsModalAddOpen(true);
+      setIsAddActivity(false);
+    }
+  }, [isAddActivity]);
 
   // close delete pop up when click outside
   useEffect(() => {
