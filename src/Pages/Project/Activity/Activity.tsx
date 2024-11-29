@@ -209,7 +209,7 @@ const Activity = () => {
         <ProjectLayout>
           <div>
             <div className="bg-white dark:bg-boxdark pt-4 pb-3 px-9 shadow-sm">
-              <Breadcrumb pageName="Mes Activités" />
+              <Breadcrumb pageName="Activités" />
               <div className="flex gap-2">
                 <div
                   onClick={() => handleViewChange("table")}
@@ -356,7 +356,7 @@ const Activity = () => {
               {/* FILTER BEGIN */}
               <div className="grid place-content-center grid-cols-1  md:grid-cols-5 lg:grid-cols-6 gap-4 mt-3">
                 <CustomSelectChoice
-                  label="Activité"
+                  label="Type d'activité"
                   options={["Projet", "Transverse", "Intercontract"]}
                   onChange={(selected) => setSelectedOptions(selected)}
                   rounded="medium"
@@ -364,7 +364,7 @@ const Activity = () => {
                 />
                 <div className={`${subordinates.length > 0 ? "" : "hidden"}`}>
                   <CustomInputUserSpecifiedSearch
-                    label="Activité de"
+                    label="Collaborateurs"
                     rounded="medium"
                     placeholder="Nom"
                     user={availableSubordinate}
@@ -447,7 +447,7 @@ const Activity = () => {
                     onClick={() => {
                       setIsAddActivity(true);
                     }}
-                    className="border p-1 border-slate-300 hover:bg-slate-100 dark:hover:bg-boxdark2 cursor-pointer mb-1"
+                    className="px-2 cursor-pointer py-2 lg:px-3 xl:px-2  text-center font-medium text-sm text-white hover:bg-opacity-90  border border-primaryGreen bg-primaryGreen rounded-lg dark:border-darkgreen dark:bg-darkgreen dark:hover:bg-opacity-90  md:ease-in md:duration-300 md:transform "
                   >
                     + ajouter une activité
                   </span>

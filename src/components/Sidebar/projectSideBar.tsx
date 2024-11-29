@@ -695,7 +695,7 @@ const ProjectSideBar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                                   fill=""
                                 />
                               </svg>
-                              Liste de mes activités
+                              Liste des activités
                             </NavLink>
                           </li>
                           <li>
