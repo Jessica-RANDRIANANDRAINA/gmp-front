@@ -98,7 +98,7 @@ const ManageAccess = () => {
                 strokeLinejoin="round"
               ></path>
             </svg>
-            Ajouter un accès
+            Ajouter un rôle
           </button>
         </div>
         {/* ===== ADD ACCESS END ===== */}

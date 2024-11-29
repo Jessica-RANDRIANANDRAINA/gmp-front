@@ -138,7 +138,7 @@ const AddAccessModal = ({
           }
         >
           <div className={"font-bold text-center text-base w-full "}>
-            Ajouter un nouvel accès
+            Ajouter un nouveau rôle
           </div>
           <div className={"cursor-pointer"} onClick={() => setAccessAdd(false)}>
             <svg

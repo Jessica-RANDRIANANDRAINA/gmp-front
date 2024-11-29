@@ -223,7 +223,7 @@ const UpdateAccessModal = ({
           }
         >
           <div className={"font-bold text-center text-base w-full"}>
-            Modifier cet accès
+            Modifier ce rôle
           </div>
           <div
             className={"cursor-pointer"}
