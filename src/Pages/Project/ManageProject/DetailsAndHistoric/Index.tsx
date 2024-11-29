@@ -37,6 +37,17 @@ const DetailsAndHistoricProject = () => {
             >
               Historique
             </NavLink>
+            <NavLink
+              to={`/gmp/project/task/${projectId}`}
+              className={({ isActive }) =>
+                isActive
+                  ? "text-green-700 bg-green-100 border border-green-700"
+                  : "hover:text-green-800 text-slate-600 "
+              }
+            >
+              Gérer
+            </NavLink>
+
           </div>
         </div>
         <div className="border mx-4 md:mx-9 rounded-lg p-4 bg-white min-h-[80vh] shadow-1 border-zinc-200 dark:border-strokedark dark:bg-boxdark ">
