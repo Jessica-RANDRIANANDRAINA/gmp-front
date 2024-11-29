@@ -355,7 +355,7 @@ const Activity = () => {
               </div>
 
               {/* FILTER BEGIN */}
-              <div className="grid place-content-center grid-cols-6 gap-4 mt-3">
+              <div className="grid place-content-center grid-cols-1  md:grid-cols-5 lg:grid-cols-6 gap-4 mt-3">
                 <CustomSelectChoice
                   label="Activité"
                   options={["Projet", "Transverse", "Intercontract"]}
