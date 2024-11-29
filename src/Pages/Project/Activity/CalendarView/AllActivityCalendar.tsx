@@ -129,6 +129,65 @@ const AllActivityCalendar = ({
     }
   };
 
+  // const fetchData = async () => {
+  //   try {
+  //     var response;
+  //     var Ids: (string | undefined)[] = [];
+  //     if (search?.ids.length === 1) {
+  //       if (!search?.ids?.[0]) {
+  //         Ids = [decodedToken?.jti];
+  //       } else {
+  //         Ids = search?.ids;
+  //       }
+  //     } else {
+  //       Ids = search?.ids;
+  //     }
+  //     if (userid) {
+  //       response = await getAllActivitiesOfUser(
+  //         search?.startDate,
+  //         search?.endDate,
+  //         selectedOptions,
+  //         Ids
+  //       );
+  //     }
+
+  //     setData(response);
+
+  //     const startOdDay = new Date(search?.startDate || new Date())
+  //     startOdDay.setHours(7, 0, 0, 0)
+      
+  //     const calendarEvents = response.map((intercontract: any) => {
+  //       const dailyEffort = intercontract.dailyEffort || 1
+  //       // const startDate = new Date(intercontract.startDate);
+  //       const startDate = new Date(startOdDay)
+  //       const endDate = new Date(startDate);
+  //       // startDate.setHours(7, 30, 0, 0);
+  //       // endDate.setHours(15, 30, 0, 0);
+
+  //       endDate.setHours(startDate.getHours()+dailyEffort)
+  //       startOdDay.setHours(startOdDay.getHours()+dailyEffort)
+
+  //       return {
+  //         id: `${intercontract.id}.${intercontract?.userid}`,
+  //         title: intercontract.title,
+  //         start: startDate.toISOString(),
+  //         end: endDate.toISOString(),
+  //         description: intercontract.description,
+  //         status: intercontract.status,
+  //         type: intercontract.type,
+  //         dailyEffort: intercontract.dailyEffort,
+  //         phaseid: intercontract?.phaseid,
+  //         projectid: intercontract?.projectid,
+  //         user: intercontract?.userid,
+  //       };
+  //     });
+
+  //     setEvents(calendarEvents);
+  //   } catch (error) {
+  //     console.error(`Error fetching TASK ACTIVITY data: ${error}`);
+  //   }
+  // };
+
   useEffect(() => {
     fetchData();
     setIsRefreshNeeded(false);
