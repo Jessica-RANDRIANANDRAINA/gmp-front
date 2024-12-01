@@ -43,7 +43,7 @@ const Modal = ({
   const [showModal, setShowModal] = useState(false);
   const [closingModal, setClosingModal] = useState(false);
   const [isTitleExpanded, setIsTitleExpanded] = useState<boolean>(false);
-  const charLimit = 40;
+  const charLimit = 41;
 
   const toogleExpand = () => {
     setIsTitleExpanded(!isTitleExpanded);

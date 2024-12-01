@@ -20,6 +20,7 @@ export interface IProjectData {
   directionSourceBudget: string;
   budgetAmount: number | null;
   budgetCurrency: string;
+  state?: string
 }
 
 export interface IProjectDto {

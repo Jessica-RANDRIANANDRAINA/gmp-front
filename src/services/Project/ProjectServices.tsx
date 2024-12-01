@@ -84,7 +84,7 @@ export const getAllLevelProjectByUserId = async (
 };
 
 // get count for dashboard
-export const getCountProject = async(userid: string | undefined) => {
+export const getCountProject = async (userid: string | undefined) => {
   try {
     const response = await axios.get(`${endPoint}/api/Project/count/${userid}`)
     return response.data
@@ -173,6 +173,20 @@ export const updateAdvancementProject = async (
     throw new Error(`Error at update project advancement services: ${error}`);
   }
 };
+
+// toggle state of a given project
+export const updateProjectState = async (projectId: string, state: string, name: string | undefined) => {
+  try {
+    const response = await axios.put(
+      `${endPoint}/api/Project/update/state/${projectId}`,
+      { state, initiator: name }
+    )
+    return response.data
+  } catch (error) {
+    throw new Error(`Error at update project state services: ${error}`);
+
+  }
+}
 
 // archive project(s)
 export const archiveProject = async (ids: Array<string>) => {
