@@ -33,6 +33,7 @@ const AddTaskPhase = ({
     priority: "Moyen",
     startDate: undefined,
     dueDate: undefined,
+    dailyEffort: 1,
   });
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -102,6 +103,7 @@ const AddTaskPhase = ({
         startDate: taskData?.startDate,
         dueDate: taskData?.dueDate,
         listUsers: formatuser,
+        DailyEffort: taskData?.dailyEffort,
       };
       await createTaskPhase(dataToSend);
       notyf.success("Création de la tâche réussie.");
@@ -237,6 +239,21 @@ const AddTaskPhase = ({
               }}
             />
           </div>
+          <CustomInput
+            type="number"
+            label="Heure consacrée"
+            min={1}
+            max={8}
+            rounded="medium"
+            className="text-sm"
+            value={taskData?.dailyEffort}
+            onChange={(e) => {
+              setTaskData({
+                ...taskData,
+                dailyEffort: parseInt(e.target.value),
+              });
+            }}
+          />
 
           <div>
             <CustomInput

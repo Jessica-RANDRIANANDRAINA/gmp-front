@@ -30,6 +30,7 @@ const UpdateTask = ({
     priority: "Moyen",
     startDate: undefined,
     dueDate: undefined,
+    dailyEffort: 1,
   });
   const userPopUp = useRef<any>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -56,6 +57,7 @@ const UpdateTask = ({
         priority: task?.content?.priority || "Moyen",
         startDate: task?.content?.startDate || undefined,
         dueDate: task?.content?.dueDate || undefined,
+        dailyEffort: task?.content?.dailyEffort,
       });
 
       setAssignedPerson(task.content.userTasks);
@@ -82,6 +84,7 @@ const UpdateTask = ({
         dueDate: taskData?.dueDate,
         description: taskData?.description,
         listUsers: formatUser,
+        dailyEffort: taskData?.dailyEffort,
       };
       const taskId = task.content.id;
       await updateTaskProject(taskId, dataToSend);
@@ -274,6 +277,21 @@ const UpdateTask = ({
               }}
             />
           </div>
+          <CustomInput
+            type="number"
+            label="Heure consacrée"
+            min={1}
+            max={8}
+            rounded="medium"
+            className="text-sm"
+            value={taskData?.dailyEffort}
+            onChange={(e) => {
+              setTaskData({
+                ...taskData,
+                dailyEffort: parseInt(e.target.value),
+              });
+            }}
+          />
 
           <div>
             <CustomInput

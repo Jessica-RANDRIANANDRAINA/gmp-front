@@ -40,6 +40,7 @@ const organizeTaskByStatus = (tasks: any[]) => {
         dueDate: task.dueDate,
         userTasks: task.userTasks,
         status: task.status,
+        dailyEffort: task.dailyEffort,
       },
     };
     const columnKey = Object.keys(columns).find(

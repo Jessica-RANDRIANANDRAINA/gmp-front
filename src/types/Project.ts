@@ -111,6 +111,7 @@ export interface ITaskAdd {
   priority: string;
   startDate?: string;
   dueDate?: string;
+  dailyEffort?: number;
 }
 
 export interface IActivityAdd {
