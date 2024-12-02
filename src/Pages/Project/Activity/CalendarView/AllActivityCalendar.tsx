@@ -97,86 +97,79 @@ const AllActivityCalendar = ({
       } else {
         Ids = search?.ids;
       }
-      if (userid) {
+      if (userid && Ids.length > 0) {
         response = await getAllActivitiesOfUser(
           search?.startDate,
           search?.endDate,
           selectedOptions,
           Ids
         );
-      }
+        setData(response);
 
-      setData(response);
+        const calendarEvents = response.reduce(
+          (acc: any[], intercontract: any, index: number) => {
+            const dailyEffort = intercontract.dailyEffort || 1;
 
-      // const startOdDay = new Date(search?.startDate || new Date());
-      // startOdDay.setHours(0, 0, 0, 0);
+            // Utiliser la date de début initiale si fournie
+            let startDate = new Date(
+              intercontract?.startDate || search?.startDate || new Date()
+            );
+            startDate.setHours(0, 0, 0, 0); // Début de la journée pour l'alignement initial
 
-      // const endOfDay = new Date(startOdDay);
-      // endOfDay.setHours(23, 59, 59, 999);
-
-      const calendarEvents = response.reduce(
-        (acc: any[], intercontract: any, index: number) => {
-          const dailyEffort = intercontract.dailyEffort || 1;
-
-          // Utiliser la date de début initiale si fournie
-          let startDate = new Date(
-            intercontract?.startDate || search?.startDate || new Date()
-          );
-          startDate.setHours(0, 0, 0, 0); // Début de la journée pour l'alignement initial
-
-          if (index > 0) {
-            const previousTaskEnd = new Date(acc[index - 1].end);
-            if (previousTaskEnd.toDateString() === startDate.toDateString()) {
-              startDate = previousTaskEnd; // La tâche commence après la précédente si elles sont dans le même jour
+            if (index > 0) {
+              const previousTaskEnd = new Date(acc[index - 1].end);
+              if (previousTaskEnd.toDateString() === startDate.toDateString()) {
+                startDate = previousTaskEnd; // La tâche commence après la précédente si elles sont dans le même jour
+              }
             }
-          }
 
-          // Calcul de la fin de la tâche
-          const endDate = new Date(startDate);
-          let calculatedEndHour = startDate.getHours() + dailyEffort;
+            // Calcul de la fin de la tâche
+            const endDate = new Date(startDate);
+            let calculatedEndHour = startDate.getHours() + dailyEffort;
 
-          if (calculatedEndHour > 24) {
-            // Si la tâche dépasse 24h, la garder dans le même jour et ajuster les heures
-            startDate.setHours(24 - dailyEffort, 0, 0, 0);
-            calculatedEndHour = 24;
-          }
+            if (calculatedEndHour > 24) {
+              // Si la tâche dépasse 24h, la garder dans le même jour et ajuster les heures
+              startDate.setHours(24 - dailyEffort, 0, 0, 0);
+              calculatedEndHour = 24;
+            }
 
-          endDate.setHours(calculatedEndHour, 0, 0, 0);
+            endDate.setHours(calculatedEndHour, 0, 0, 0);
 
-          // Ajout de l'événement
-          acc.push({
-            id: `${intercontract.id}.${intercontract?.userid}`,
-            title: intercontract.title,
-            start: startDate.toISOString(),
-            end: endDate.toISOString(),
-            description: intercontract.description,
-            status: intercontract.status,
-            type: intercontract.type,
-            dailyEffort: intercontract.dailyEffort,
-            phaseid: intercontract?.phaseid,
-            projectid: intercontract?.projectid,
-            user: intercontract?.userid,
-          });
+            // Ajout de l'événement
+            acc.push({
+              id: `${intercontract.id}.${intercontract?.userid}`,
+              title: intercontract.title,
+              start: startDate.toISOString(),
+              end: endDate.toISOString(),
+              description: intercontract.description,
+              status: intercontract.status,
+              type: intercontract.type,
+              dailyEffort: intercontract.dailyEffort,
+              phaseid: intercontract?.phaseid,
+              projectid: intercontract?.projectid,
+              user: intercontract?.userid,
+            });
 
-          return acc;
-          // return {
-          //   id: `${intercontract.id}.${intercontract?.userid}`,
-          //   title: intercontract.title,
-          //   start: startDate.toISOString(),
-          //   end: endDate.toISOString(),
-          //   description: intercontract.description,
-          //   status: intercontract.status,
-          //   type: intercontract.type,
-          //   dailyEffort: intercontract.dailyEffort,
-          //   phaseid: intercontract?.phaseid,
-          //   projectid: intercontract?.projectid,
-          //   user: intercontract?.userid,
-          // };
-        },
-        []
-      );
+            return acc;
+            // return {
+            //   id: `${intercontract.id}.${intercontract?.userid}`,
+            //   title: intercontract.title,
+            //   start: startDate.toISOString(),
+            //   end: endDate.toISOString(),
+            //   description: intercontract.description,
+            //   status: intercontract.status,
+            //   type: intercontract.type,
+            //   dailyEffort: intercontract.dailyEffort,
+            //   phaseid: intercontract?.phaseid,
+            //   projectid: intercontract?.projectid,
+            //   user: intercontract?.userid,
+            // };
+          },
+          []
+        );
 
-      setEvents(calendarEvents);
+        setEvents(calendarEvents);
+      }
     } catch (error) {
       console.error(`Error fetching TASK ACTIVITY data: ${error}`);
     }
@@ -409,6 +402,7 @@ const AllActivityCalendar = ({
                 )
                 ?.map((task: any) => (
                   <div
+                    key={`${task?.id}-${task?.userid}`}
                     onClick={() => {
                       handleModifClick(task);
                     }}
@@ -618,6 +612,7 @@ const AllActivityCalendar = ({
                 )
                 ?.map((task: any) => (
                   <div
+                  key={`${task?.id}-${task?.userid}`}
                     onClick={() => {
                       handleModifClick(task);
                     }}
@@ -688,6 +683,7 @@ const AllActivityCalendar = ({
                 )
                 ?.map((task: any) => (
                   <div
+                  key={`${task?.id}-${task?.userid}`}
                     onClick={() => {
                       handleModifClick(task);
                     }}

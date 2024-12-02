@@ -17,7 +17,7 @@ import DetailsProject from "./Pages/Project/ManageProject/DetailsAndHistoric/Det
 import HistoricProject from "./Pages/Project/ManageProject/DetailsAndHistoric/HistoricProject";
 import UpdateAdvancement from "./Pages/Project/ManageProject/UpdateProject/UpdateAdvancement";
 import Activity from "./Pages/Project/Activity/Activity";
-
+import AllActivity from "./Pages/Project/Activity/AllActivity";
 import "./App.css";
 
 const App = () => {
@@ -139,6 +139,19 @@ const App = () => {
             <>
               <PageTitle title="G.M.P" />
               <Activity />
+            </>
+          }
+          children={
+            <>
+              <Route
+                path="/gmp/activity/:userid/list"
+                element={
+                  <>
+                    <PageTitle title="G.M.P" />
+                    <AllActivity />
+                  </>
+                }
+              />
             </>
           }
         />

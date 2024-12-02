@@ -150,28 +150,27 @@ const AllActivityKanban = ({
         Ids = search?.ids;
       }
 
-      if (userid) {
+      if (userid && Ids.length > 0) {
         response = await getAllActivitiesOfUser(
           search?.startDate,
           search?.endDate,
           selectedOptions,
           Ids
         );
+        const { activityMap, columns } = organizeActivityByStatus(response);
+
+        setData({
+          acivities: activityMap,
+          columns,
+          columnOrder: [
+            "column-1",
+            "column-2",
+            "column-3",
+            "column-4",
+            "column-5",
+          ],
+        });
       }
-
-      const { activityMap, columns } = organizeActivityByStatus(response);
-
-      setData({
-        acivities: activityMap,
-        columns,
-        columnOrder: [
-          "column-1",
-          "column-2",
-          "column-3",
-          "column-4",
-          "column-5",
-        ],
-      });
     } catch (error) {
       console.error(`Error at fetch task data: ${error}`);
     }
@@ -387,7 +386,7 @@ const AllActivityKanban = ({
                       {acivities?.map((activity: any, index: any) => (
                         <>
                           <Draggable
-                            key={activity.content.id}
+                            key={`${activity.content.id}-${activity?.content?.userid}`}
                             draggableId={activity.content.id}
                             index={index}
                           >

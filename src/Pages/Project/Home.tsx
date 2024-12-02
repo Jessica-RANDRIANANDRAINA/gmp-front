@@ -1,93 +1,93 @@
-import { useState, useEffect } from "react";
-import CardDetails from "../../components/card/CardDetails";
+// import { useState, useEffect } from "react";
+// import CardDetails from "../../components/card/CardDetails";
 import ProjectLayout from "../../layout/ProjectLayout";
-import { getCountProject } from "../../services/Project";
-import { IDecodedToken } from "../../types/user";
-import { decodeToken } from "../../services/Function/TokenService";
-import CustomPieChart from "../../components/chart/CustomPieChart";
+// import { getCountProject } from "../../services/Project";
+// import { IDecodedToken } from "../../types/user";
+// import { decodeToken } from "../../services/Function/TokenService";
+// import CustomPieChart from "../../components/chart/CustomPieChart";
 
 const Home = () => {
-  const [decodedToken, setDecodedToken] = useState<IDecodedToken>();
-  const [count, setCount] = useState<{
-    activityFinished: number;
-    activityOnGoing: number;
-    projectDelayed: number;
-    projectFinished: number;
-    projectOnGoing: number;
-    projectArchived: number;
-    taskActivityWeek: number;
-    transverseWeek: number;
-    interContractWeek: number;
-  }>({
-    activityFinished: 0,
-    activityOnGoing: 0,
-    projectDelayed: 0,
-    projectFinished: 0,
-    projectOnGoing: 0,
-    projectArchived: 0,
-    taskActivityWeek: 0,
-    transverseWeek: 0,
-    interContractWeek: 0,
-  })
+  // const [decodedToken, setDecodedToken] = useState<IDecodedToken>();
+  // const [count, setCount] = useState<{
+  //   activityFinished: number;
+  //   activityOnGoing: number;
+  //   projectDelayed: number;
+  //   projectFinished: number;
+  //   projectOnGoing: number;
+  //   projectArchived: number;
+  //   taskActivityWeek: number;
+  //   transverseWeek: number;
+  //   interContractWeek: number;
+  // }>({
+  //   activityFinished: 0,
+  //   activityOnGoing: 0,
+  //   projectDelayed: 0,
+  //   projectFinished: 0,
+  //   projectOnGoing: 0,
+  //   projectArchived: 0,
+  //   taskActivityWeek: 0,
+  //   transverseWeek: 0,
+  //   interContractWeek: 0,
+  // })
 
-  const generateChartData = () => {
-    const data= [
-      { name: "En cours", value: count.projectOnGoing },
-      { name: "Terminé", value: count.projectFinished },
-      { name: "En retard", value: count.projectDelayed },
-      { name: "Archivé", value: count.projectArchived },
-    ];
+  // const generateChartData = () => {
+  //   const data= [
+  //     { name: "En cours", value: count.projectOnGoing },
+  //     { name: "Terminé", value: count.projectFinished },
+  //     { name: "En retard", value: count.projectDelayed },
+  //     { name: "Archivé", value: count.projectArchived },
+  //   ];
 
-    const totalValue = data.reduce((acc, item) => acc + item.value, 0);
-    if (totalValue === 0) {
-      // Remplace par des données fictives pour afficher un graphique
-      return [
-        { name: "Pas de projet", value: 1 },
-      ];
-    }
-    return data
-  };
+  //   const totalValue = data.reduce((acc, item) => acc + item.value, 0);
+  //   if (totalValue === 0) {
+  //     // Remplace par des données fictives pour afficher un graphique
+  //     return [
+  //       { name: "Pas de projet", value: 1 },
+  //     ];
+  //   }
+  //   return data
+  // };
 
-  const generateActivityData = () => {
-    const data = [
-      { name: "activité projet", value: count.taskActivityWeek },
-      { name: "transverse", value: count.transverseWeek },
-      { name: "intercontrat", value: count.interContractWeek },
-    ];
+  // const generateActivityData = () => {
+  //   const data = [
+  //     { name: "activité projet", value: count.taskActivityWeek },
+  //     { name: "transverse", value: count.transverseWeek },
+  //     { name: "intercontrat", value: count.interContractWeek },
+  //   ];
   
-    const totalValue = data.reduce((acc, item) => acc + item.value, 0);
+  //   const totalValue = data.reduce((acc, item) => acc + item.value, 0);
   
-    if (totalValue === 0) {
-      // Remplace par des données fictives pour afficher un graphique
-      return [
-        { name: "Pas d'activité", value: 1 },
-      ];
-    }
+  //   if (totalValue === 0) {
+  //     // Remplace par des données fictives pour afficher un graphique
+  //     return [
+  //       { name: "Pas d'activité", value: 1 },
+  //     ];
+  //   }
   
-    return data;
-  }
+  //   return data;
+  // }
 
-  useEffect(() => {
-    const token = localStorage.getItem("_au_pr");
+  // useEffect(() => {
+  //   const token = localStorage.getItem("_au_pr");
 
-    if (token) {
-      try {
-        const decoded = decodeToken("pr");
-        setDecodedToken(decoded);
-      } catch (error) {
-        console.error(`Invalid token ${error}`);
-      }
-    }
-  }, []);
+  //   if (token) {
+  //     try {
+  //       const decoded = decodeToken("pr");
+  //       setDecodedToken(decoded);
+  //     } catch (error) {
+  //       console.error(`Invalid token ${error}`);
+  //     }
+  //   }
+  // }, []);
 
-  useEffect(() => {
-    getCount()
-  }, [decodedToken])
+  // useEffect(() => {
+  //   getCount()
+  // }, [decodedToken])
 
-  const getCount = async () => {
-    const countProject = await getCountProject(decodedToken?.jti)
-    setCount(countProject)
-  }
+  // const getCount = async () => {
+  //   const countProject = await getCountProject(decodedToken?.jti)
+  //   setCount(countProject)
+  // }
   return (
     <ProjectLayout>
       <div className="grid place-items-center h-[50vh] font-bold text-2xl">

@@ -113,12 +113,10 @@ const Activity = () => {
 
   const fetchSubordinates = async () => {
     try {
-      if (userid) {
+      if (userid && decodedToken) {
         const myId = decodedToken?.jti ?? "";
-        const data: TSubordinate[] = await getMySubordinatesNameAndId(
-          // "ba5d519e-3b23-4201-a6a6-1d3760f6b214"
-          myId
-        );
+
+        const data: TSubordinate[] = await getMySubordinatesNameAndId(myId);
 
         const transformedArray = data?.map(({ id, name, email }) => ({
           id,
@@ -135,7 +133,7 @@ const Activity = () => {
         setSubordinates(subordinatesAndMe);
       }
     } catch (error) {
-      console.error(`Error at fetch subordinates`);
+      console.error(`Error at fetch subordinates :${error}`);
     }
   };
 
