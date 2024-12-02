@@ -90,13 +90,13 @@ const Home = () => {
   }
   return (
     <ProjectLayout>
-      {/* <div className="grid place-items-center h-[50vh] font-bold text-2xl">
+      <div className="grid place-items-center h-[50vh] font-bold text-2xl">
         <div className="flex flex-col justify-center items-center">
           <span>Bienvenue dans le G.M.P</span>
           <span className="text-base font-medium">Gestion et management de projet</span>
         </div>
-      </div> */}
-      <div className="p-4 grid grid-cols-1 gap-4 md:grid-cols-4 md:gap-5 xl:grid-cols-5 ">
+      </div>
+      {/* <div className="p-4 grid grid-cols-1 gap-4 md:grid-cols-4 md:gap-5 xl:grid-cols-5 ">
         <CardDetails title="Projet en cours" total={count?.projectOnGoing} dataPrev={'0'}>
           <svg width="32" height="32" viewBox="0 0 24 24" fill="none" ><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M12 1V5" className="stroke-primaryGreen dark:stroke-white" strokeWidth="1.7" strokeLinecap="round"></path> <path d="M19.4246 18.9246L16.5961 16.0962" className="stroke-primaryGreen dark:stroke-white" strokeWidth="1.7" strokeLinecap="round"></path> <path d="M22.5 11.5L18.5 11.5" className="stroke-primaryGreen dark:stroke-white" strokeWidth="1.7" strokeLinecap="round"></path> <path d="M12 18V22" className="stroke-primaryGreen dark:stroke-white" strokeWidth="1.7" strokeLinecap="round"></path> <path d="M7.40381 6.90381L4.57538 4.07538" className="stroke-primaryGreen dark:stroke-white" strokeWidth="1.7" strokeLinecap="round"></path> <path d="M5.5 11.5L1.5 11.5" className="stroke-primaryGreen dark:stroke-white" strokeWidth="1.7" strokeLinecap="round"></path> <path d="M7.40381 16.0962L4.57538 18.9246" className="stroke-primaryGreen dark:stroke-white" strokeWidth="1.7" strokeLinecap="round"></path> </g></svg>
         </CardDetails>
@@ -122,7 +122,7 @@ const Home = () => {
           <CustomPieChart data={generateActivityData()} />
           Activité cette semaine
         </div>
-      </div>
+      </div> */}
     </ProjectLayout>
   );
 };
