@@ -8,7 +8,6 @@ import {
   CustomInputUserSpecifiedSearch,
   CustomSelectChoice,
 } from "../../../components/UIElements";
-import Breadcrumb from "../../../components/BreadCrumbs/BreadCrumb";
 // pages component
 import ProjectLayout from "../../../layout/ProjectLayout";
 import AllActivityKanban from "./KanbanView/AllActivityKanban";
@@ -115,8 +114,10 @@ const Activity = () => {
   const fetchSubordinates = async () => {
     try {
       if (userid) {
+        const myId = decodedToken?.jti ?? "";
         const data: TSubordinate[] = await getMySubordinatesNameAndId(
-          "ba5d519e-3b23-4201-a6a6-1d3760f6b214"
+          // "ba5d519e-3b23-4201-a6a6-1d3760f6b214"
+          myId
         );
 
         const transformedArray = data?.map(({ id, name, email }) => ({
@@ -124,7 +125,14 @@ const Activity = () => {
           name,
           email,
         }));
-        setSubordinates(transformedArray);
+        const me = {
+          id: decodedToken?.jti ?? "",
+          name: decodedToken?.name ?? "",
+          email: decodedToken?.sub ?? "",
+        };
+        const subordinatesAndMe = [...transformedArray, me];
+
+        setSubordinates(subordinatesAndMe);
       }
     } catch (error) {
       console.error(`Error at fetch subordinates`);
@@ -133,6 +141,8 @@ const Activity = () => {
 
   useEffect(() => {
     fetchSubordinates();
+  }, [decodedToken]);
+  useEffect(() => {
     handleDeleteFilter();
   }, []);
 
@@ -505,6 +515,7 @@ const Activity = () => {
                   decodedToken={decodedToken}
                   isAddActivity={isAddActivity}
                   setIsAddActivity={setIsAddActivity}
+                  subordinates={subordinates}
                 />
               ) : (
                 <AllActivityCalendar
@@ -516,6 +527,7 @@ const Activity = () => {
                   decodedToken={decodedToken}
                   isAddActivity={isAddActivity}
                   setIsAddActivity={setIsAddActivity}
+                  subordinates={subordinates}
                 />
               )}
             </div>

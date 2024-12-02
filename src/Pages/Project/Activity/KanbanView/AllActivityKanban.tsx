@@ -74,6 +74,7 @@ const AllActivityKanban = ({
   decodedToken,
   isAddActivity,
   setIsAddActivity,
+  subordinates,
 }: {
   selectedOptions: Array<string>;
   search: {
@@ -87,6 +88,11 @@ const AllActivityKanban = ({
   decodedToken: IDecodedToken | undefined;
   isAddActivity: boolean;
   setIsAddActivity: React.Dispatch<React.SetStateAction<boolean>>;
+  subordinates: Array<{
+    id: string;
+    name: string;
+    email: string;
+  }>;
 }) => {
   const { userid } = useParams();
   const [data, setData] = useState<any>({
@@ -98,7 +104,6 @@ const AllActivityKanban = ({
     useState<boolean>(false);
   const [isModalUpdateActivityOpen, setIsModalUpdateActivityOpen] =
     useState<boolean>(false);
-  // const [connection, setConnection] = useState<HubConnection | null>(null);
   const connection = useContext(SignalRContext);
   const [isRefreshNeeded, setIsRefreshNeeded] = useState<boolean>(false);
   const [activityData, setActivityData] = useState<any>();
@@ -138,7 +143,9 @@ const AllActivityKanban = ({
       var Ids: (string | undefined)[] = [];
       if (search?.ids.length === 1) {
         if (!search?.ids?.[0]) {
-          Ids = [decodedToken?.jti];
+          Ids = subordinates?.map((sub) => sub?.id);
+
+          // Ids = [decodedToken?.jti];
         } else {
           Ids = search?.ids;
         }

@@ -31,6 +31,7 @@ const AllActivityCalendar = ({
   decodedToken,
   isAddActivity,
   setIsAddActivity,
+  subordinates
 }: {
   selectedOptions: Array<string>;
   search: any;
@@ -40,6 +41,11 @@ const AllActivityCalendar = ({
   decodedToken: IDecodedToken | undefined;
   isAddActivity: boolean;
   setIsAddActivity: React.Dispatch<React.SetStateAction<boolean>>;
+  subordinates: Array<{
+    id: string;
+    name: string;
+    email: string;
+  }>;
 }) => {
   const { userid } = useParams();
   const [events, setEvents] = useState<any[]>([]);
@@ -85,7 +91,8 @@ const AllActivityCalendar = ({
       var Ids: (string | undefined)[] = [];
       if (search?.ids.length === 1) {
         if (!search?.ids?.[0]) {
-          Ids = [decodedToken?.jti];
+          Ids = subordinates?.map((sub) => sub?.id);
+          // Ids = [decodedToken?.jti];
         } else {
           Ids = search?.ids;
         }
@@ -346,7 +353,7 @@ const AllActivityCalendar = ({
                     ? colors[extendedProps?.user]
                     : "",
                 }}
-                className={`z-99 grid grid-flow-col place-content-between border dark:border-2 border-transparent font-light w-full p-1 text-black dark:text-whiten cursor-pointer text-xs relative group`}
+                className={`z-99 grid grid-flow-col overflow-x-clip place-content-between border dark:border-2 border-transparent font-light w-full p-1 text-black dark:text-whiten cursor-pointer text-xs relative group`}
               >
                 <div>
                   <b>
