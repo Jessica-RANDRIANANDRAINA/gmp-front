@@ -16,7 +16,6 @@ import {
 } from "../../../../services/Project";
 import AddActivity from "../../../../components/Modals/Activity/AddActivity";
 import UpdateActivity from "../../../../components/Modals/Activity/UpdateActivity";
-import { IDecodedToken } from "../../../../types/user";
 
 import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
@@ -71,7 +70,6 @@ const AllActivityKanban = ({
   setSearchClicked,
   searchClicked,
   colors,
-  decodedToken,
   isAddActivity,
   setIsAddActivity,
   subordinates,
@@ -85,7 +83,6 @@ const AllActivityKanban = ({
   setSearchClicked: React.Dispatch<React.SetStateAction<boolean>>;
   searchClicked: boolean;
   colors: Record<string, string>;
-  decodedToken: IDecodedToken | undefined;
   isAddActivity: boolean;
   setIsAddActivity: React.Dispatch<React.SetStateAction<boolean>>;
   subordinates: Array<{

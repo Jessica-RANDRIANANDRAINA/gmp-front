@@ -11,47 +11,49 @@ const DetailsAndHistoricProject = () => {
   const { projectId } = useParams();
   const location = useLocation();
 
-  const [showModalDelete, setShowModalDelete] = useState<boolean>(false)
-  const [showModalRestore, setShowModalRestore] = useState<boolean>(false)
-  const [showModalDeblock, setShowModalDeblock] = useState<boolean>(false)
-  const [showModalStandBy, setShowModalStandBy] = useState<boolean>(false)
-  const [isArchiveFinished, setIsArchiveFinished] = useState<boolean>(false)
+  const [showModalDelete, setShowModalDelete] = useState<boolean>(false);
+  const [showModalRestore, setShowModalRestore] = useState<boolean>(false);
+  const [showModalDeblock, setShowModalDeblock] = useState<boolean>(false);
+  const [showModalStandBy, setShowModalStandBy] = useState<boolean>(false);
+  const [isArchiveFinished, setIsArchiveFinished] = useState<boolean>(false);
   const [projectData, setProjectData] = useState<IProjectData>();
 
   const fetchData = async () => {
     if (projectId) {
-      const project = await getProjectById(projectId)
+      const project = await getProjectById(projectId);
       setProjectData(project);
     }
-  }
+  };
 
   useEffect(() => {
-    fetchData()
-  }, [])
+    fetchData();
+  }, [isArchiveFinished]);
 
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const handleShowModalDelete = () => {
-    setShowModalDelete(true)
-  }
+    setShowModalDelete(true);
+  };
   const handleShowModalDeblock = () => {
-    setShowModalDeblock(true)
-  }
+    setShowModalDeblock(true);
+  };
   const handleShowModalRestore = () => {
-    setShowModalRestore(true)
-  }
+    setShowModalRestore(true);
+  };
   const handleShowModalStandBy = () => {
-    setShowModalStandBy(true)
-  }
-
-
+    setShowModalStandBy(true);
+  };
 
   return (
     <ProjectLayout>
       <div className="">
         <div className=" mx-4 pt-4 md:mx-10">
           <Breadcrumb
-            pageName={`${location.pathname.includes("historic") ? "Historique" : "Détail"
-              }`}
+            pageName={`${
+              location.pathname.includes("historic") ? "Historique" : "Détail"
+            }`}
           />
 
           <div className="flex *:p-3 text-sm flex-wrap">
@@ -85,80 +87,103 @@ const DetailsAndHistoricProject = () => {
             >
               Gérer
             </NavLink>
-            <button className={`hover:text-green-800 text-slate-600 ${projectData?.state === 'Archived' ? "hidden" : ""
-              }`} onClick={handleShowModalDelete} >
+            <button
+              className={`hover:text-green-800 text-slate-600 ${
+                projectData?.state === "Archived" ? "hidden" : ""
+              }`}
+              onClick={handleShowModalDelete}
+            >
               Archiver
             </button>
-            <button className={`hover:text-green-800 text-slate-600 ${projectData?.state === 'Archived' ? "" : "hidden"
-              }`} onClick={handleShowModalRestore} >
+            <button
+              className={`hover:text-green-800 text-slate-600 ${
+                projectData?.state === "Archived" ? "" : "hidden"
+              }`}
+              onClick={handleShowModalRestore}
+            >
               Restaurer
             </button>
-            <button className={`hover:text-green-800 text-slate-600 ${projectData?.state === "Stand by" ? "hidden" : ""}`}
+            <button
+              className={`hover:text-green-800 text-slate-600 ${
+                projectData?.state === "Stand by" ? "hidden" : ""
+              }`}
               onClick={handleShowModalStandBy}
             >
               Mettre en stand by
             </button>
-            <button className={`hover:text-green-800 text-slate-600 ${projectData?.state === "Stand by" ? "" : "hidden"}`}
+            <button
+              className={`hover:text-green-800 text-slate-600 ${
+                projectData?.state === "Stand by" ? "" : "hidden"
+              }`}
               onClick={handleShowModalDeblock}
             >
               Débloquer
             </button>
-
           </div>
         </div>
         <div className="border mx-4 md:mx-9 rounded-lg p-4 bg-white min-h-[80vh] shadow-1 border-zinc-200 dark:border-strokedark dark:bg-boxdark ">
           <Outlet />
         </div>
-        {
-          showModalDelete && (
-            <ArchiveProject
-              showModalDelete={showModalDelete}
-              setShowModalDelete={setShowModalDelete}
-              projectsToDetele={[projectId ?? ""]}
-              setIsArchiveFinished={setIsArchiveFinished}
-            />
-          )
-        }
-        {
-          showModalRestore || showModalDeblock || showModalStandBy && (
+        {showModalDelete && (
+          <ArchiveProject
+            showModalDelete={showModalDelete}
+            setShowModalDelete={setShowModalDelete}
+            projectsToDetele={[projectId ?? ""]}
+            setIsArchiveFinished={setIsArchiveFinished}
+          />
+        )}
+        {showModalRestore ||
+          showModalDeblock ||
+          (showModalStandBy && (
             <ToogleStateProject
-              showModal={showModalRestore ? showModalRestore : showModalDeblock ? showModalDeblock : showModalStandBy}
+              showModal={
+                showModalRestore
+                  ? showModalRestore
+                  : showModalDeblock
+                  ? showModalDeblock
+                  : showModalStandBy
+              }
               projectId={projectId ?? ""}
-              type={showModalRestore ? "Restaurer" : showModalDeblock ? "Débloquer" : "Stand by"}
-              setShowModal={showModalRestore ? setShowModalRestore : showModalDeblock ? setShowModalDeblock : setShowModalStandBy}
+              type={
+                showModalRestore
+                  ? "Restaurer"
+                  : showModalDeblock
+                  ? "Débloquer"
+                  : "Stand by"
+              }
+              setShowModal={
+                showModalRestore
+                  ? setShowModalRestore
+                  : showModalDeblock
+                  ? setShowModalDeblock
+                  : setShowModalStandBy
+              }
             />
-          )
-        }
-        {
-          showModalRestore && (
-            <ToogleStateProject
-              showModal={showModalRestore}
-              projectId={projectId ?? ""}
-              type={"Restaurer"}
-              setShowModal={setShowModalRestore}
-            />
-          )
-        }
-        {
-          showModalDeblock && (
-            <ToogleStateProject
-              showModal={showModalDeblock}
-              projectId={projectId ?? ""}
-              type={"Débloquer"}
-              setShowModal={setShowModalDeblock}
-            />
-          )
-        }
-        {
-          showModalStandBy && (
-            <ToogleStateProject
-              showModal={showModalStandBy}
-              projectId={projectId ?? ""}
-              type={"Stand by"}
-              setShowModal={setShowModalStandBy}
-            />
-          )
-        }
+          ))}
+        {showModalRestore && (
+          <ToogleStateProject
+            showModal={showModalRestore}
+            projectId={projectId ?? ""}
+            type={"Restaurer"}
+            setShowModal={setShowModalRestore}
+          />
+        )}
+        {showModalDeblock && (
+          <ToogleStateProject
+            showModal={showModalDeblock}
+            projectId={projectId ?? ""}
+            type={"Débloquer"}
+            setShowModal={setShowModalDeblock}
+          />
+        )}
+        {showModalStandBy && (
+          <ToogleStateProject
+            showModal={showModalStandBy}
+            projectId={projectId ?? ""}
+            type={"Stand by"}
+            setShowModal={setShowModalStandBy}
+          />
+        )}
       </div>
     </ProjectLayout>
   );

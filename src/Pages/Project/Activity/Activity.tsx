@@ -512,7 +512,6 @@ const Activity = () => {
                   setSearchClicked={setSearchClicked}
                   searchClicked={searchClicked}
                   colors={getColorMap()}
-                  decodedToken={decodedToken}
                   isAddActivity={isAddActivity}
                   setIsAddActivity={setIsAddActivity}
                   subordinates={subordinates}
@@ -524,7 +523,6 @@ const Activity = () => {
                   setSearchClicked={setSearchClicked}
                   searchClicked={searchClicked}
                   colors={getColorMap()}
-                  decodedToken={decodedToken}
                   isAddActivity={isAddActivity}
                   setIsAddActivity={setIsAddActivity}
                   subordinates={subordinates}

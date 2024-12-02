@@ -18,7 +18,6 @@ import UpdateActivity from "../../../../components/Modals/Activity/UpdateActivit
 import CollapsibleSection from "../../../../components/UIElements/CollapsibleSection";
 import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
-import { IDecodedToken } from "../../../../types/user";
 
 const notyf = new Notyf({ position: { x: "center", y: "top" } });
 
@@ -28,17 +27,16 @@ const AllActivityCalendar = ({
   setSearchClicked,
   searchClicked,
   colors,
-  decodedToken,
+
   isAddActivity,
   setIsAddActivity,
-  subordinates
+  subordinates,
 }: {
   selectedOptions: Array<string>;
   search: any;
   setSearchClicked: React.Dispatch<React.SetStateAction<boolean>>;
   searchClicked: boolean;
   colors: Record<string, string>;
-  decodedToken: IDecodedToken | undefined;
   isAddActivity: boolean;
   setIsAddActivity: React.Dispatch<React.SetStateAction<boolean>>;
   subordinates: Array<{
@@ -260,7 +258,7 @@ const AllActivityCalendar = ({
     activityIdWithUser: string,
     type: string
   ) => {
-    const [activityId, userId] = activityIdWithUser.split(".");
+    const [activityId] = activityIdWithUser.split(".");
     try {
       if (type === "Transverse") {
         await deleteTransverse(activityId);
