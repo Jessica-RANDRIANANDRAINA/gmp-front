@@ -11,7 +11,7 @@ import { intercontractType, transverseType } from "../../../constants/Activity";
 import {
   getProjectByUserId,
   updateIntercontract,
-  updateTaskActicity,
+  updateTaskProject,
   updateTransverse,
 } from "../../../services/Project";
 
@@ -43,6 +43,7 @@ const UpdateActivity = ({
     transverseType: activity?.content?.subType,
     intercontractType: activity?.content?.subType,
     status: activity?.content?.status,
+    priority: activity?.content?.priority,
   });
   const [projectData, setProjectData] = useState<any>();
   const [projectTitle, setProjectTitle] = useState<Array<string>>([]);
@@ -179,16 +180,19 @@ const UpdateActivity = ({
         }
       } else {
         const dataToSend = {
-          title: activityData.title,
-          startDate: activityData.startDate,
-          dailyEffort: activityData.dailyEffort,
-          description: activityData.description,
-          projectId: activityData.projectId,
-          phaseId: activityData.phaseId,
-          status: activityData.status,
+          startDate: activityData?.startDate,
+          description: activityData?.description,
+          dailyEffort: activityData?.dailyEffort,
+          title: activityData?.title,
+          priority: activityData?.priority,
         };
+
+
         if (activityData.id) {
-          await updateTaskActicity(activityData.id, dataToSend);
+          console.log("77");
+          console.log(activityData)
+          await updateTaskProject(activityData.id, dataToSend);
+          console.log("88");
         }
       }
       setIsRefreshNeeded(true);

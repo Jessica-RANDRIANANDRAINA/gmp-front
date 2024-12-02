@@ -85,6 +85,7 @@ const UpdateTask = ({
         description: taskData?.description,
         listUsers: formatUser,
         dailyEffort: taskData?.dailyEffort,
+        title: taskData?.title
       };
       const taskId = task.content.id;
       await updateTaskProject(taskId, dataToSend);

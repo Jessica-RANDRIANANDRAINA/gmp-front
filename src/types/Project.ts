@@ -20,7 +20,7 @@ export interface IProjectData {
   directionSourceBudget: string;
   budgetAmount: number | null;
   budgetCurrency: string;
-  state?: string
+  state?: string;
 }
 
 export interface IProjectDto {
@@ -128,6 +128,7 @@ export interface IActivityAdd {
   transverseType?: string;
   intercontractType?: string;
   status?: string;
+  priority?: string;
 }
 
 export interface ITransverseAdd {

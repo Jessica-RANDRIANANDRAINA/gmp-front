@@ -215,6 +215,7 @@ const AllActivityCalendar = ({
         type: task?.type,
         phaseId: task?.phaseid,
         projectId: task?.projectid,
+        priority: task?.priority,
       },
     };
     setTaskData(data);
@@ -233,6 +234,7 @@ const AllActivityCalendar = ({
         type: task?.type,
         phaseId: task?.phaseid,
         projectId: task?.projectid,
+        priority: task?.priority,
       },
     };
     setTaskData(data);
