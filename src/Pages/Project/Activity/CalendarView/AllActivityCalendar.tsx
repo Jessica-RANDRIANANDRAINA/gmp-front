@@ -102,91 +102,80 @@ const AllActivityCalendar = ({
       }
 
       setData(response);
-      const calendarEvents = response.map((intercontract: any) => {
-        const startDate = new Date(intercontract.startDate);
-        const endDate = new Date(startDate);
-        startDate.setHours(7, 30, 0, 0);
-        endDate.setHours(15, 30, 0, 0);
 
-        return {
-          id: `${intercontract.id}.${intercontract?.userid}`,
-          title: intercontract.title,
-          start: startDate.toISOString(),
-          end: endDate.toISOString(),
-          description: intercontract.description,
-          status: intercontract.status,
-          type: intercontract.type,
-          dailyEffort: intercontract.dailyEffort,
-          phaseid: intercontract?.phaseid,
-          projectid: intercontract?.projectid,
-          user: intercontract?.userid,
-        };
-      });
+      // const startOdDay = new Date(search?.startDate || new Date());
+      // startOdDay.setHours(0, 0, 0, 0);
+
+      // const endOfDay = new Date(startOdDay);
+      // endOfDay.setHours(23, 59, 59, 999);
+
+      const calendarEvents = response.reduce(
+        (acc: any[], intercontract: any, index: number) => {
+          const dailyEffort = intercontract.dailyEffort || 1;
+
+          // Utiliser la date de début initiale si fournie
+          let startDate = new Date(
+            intercontract?.startDate || search?.startDate || new Date()
+          );
+          startDate.setHours(0, 0, 0, 0); // Début de la journée pour l'alignement initial
+
+          if (index > 0) {
+            const previousTaskEnd = new Date(acc[index - 1].end);
+            if (previousTaskEnd.toDateString() === startDate.toDateString()) {
+              startDate = previousTaskEnd; // La tâche commence après la précédente si elles sont dans le même jour
+            }
+          }
+
+          // Calcul de la fin de la tâche
+          const endDate = new Date(startDate);
+          let calculatedEndHour = startDate.getHours() + dailyEffort;
+
+          if (calculatedEndHour > 24) {
+            // Si la tâche dépasse 24h, la garder dans le même jour et ajuster les heures
+            startDate.setHours(24 - dailyEffort, 0, 0, 0);
+            calculatedEndHour = 24;
+          }
+
+          endDate.setHours(calculatedEndHour, 0, 0, 0);
+
+          // Ajout de l'événement
+          acc.push({
+            id: `${intercontract.id}.${intercontract?.userid}`,
+            title: intercontract.title,
+            start: startDate.toISOString(),
+            end: endDate.toISOString(),
+            description: intercontract.description,
+            status: intercontract.status,
+            type: intercontract.type,
+            dailyEffort: intercontract.dailyEffort,
+            phaseid: intercontract?.phaseid,
+            projectid: intercontract?.projectid,
+            user: intercontract?.userid,
+          });
+
+          return acc;
+          // return {
+          //   id: `${intercontract.id}.${intercontract?.userid}`,
+          //   title: intercontract.title,
+          //   start: startDate.toISOString(),
+          //   end: endDate.toISOString(),
+          //   description: intercontract.description,
+          //   status: intercontract.status,
+          //   type: intercontract.type,
+          //   dailyEffort: intercontract.dailyEffort,
+          //   phaseid: intercontract?.phaseid,
+          //   projectid: intercontract?.projectid,
+          //   user: intercontract?.userid,
+          // };
+        },
+        []
+      );
 
       setEvents(calendarEvents);
     } catch (error) {
       console.error(`Error fetching TASK ACTIVITY data: ${error}`);
     }
   };
-
-  // const fetchData = async () => {
-  //   try {
-  //     var response;
-  //     var Ids: (string | undefined)[] = [];
-  //     if (search?.ids.length === 1) {
-  //       if (!search?.ids?.[0]) {
-  //         Ids = [decodedToken?.jti];
-  //       } else {
-  //         Ids = search?.ids;
-  //       }
-  //     } else {
-  //       Ids = search?.ids;
-  //     }
-  //     if (userid) {
-  //       response = await getAllActivitiesOfUser(
-  //         search?.startDate,
-  //         search?.endDate,
-  //         selectedOptions,
-  //         Ids
-  //       );
-  //     }
-
-  //     setData(response);
-
-  //     const startOdDay = new Date(search?.startDate || new Date())
-  //     startOdDay.setHours(7, 0, 0, 0)
-      
-  //     const calendarEvents = response.map((intercontract: any) => {
-  //       const dailyEffort = intercontract.dailyEffort || 1
-  //       // const startDate = new Date(intercontract.startDate);
-  //       const startDate = new Date(startOdDay)
-  //       const endDate = new Date(startDate);
-  //       // startDate.setHours(7, 30, 0, 0);
-  //       // endDate.setHours(15, 30, 0, 0);
-
-  //       endDate.setHours(startDate.getHours()+dailyEffort)
-  //       startOdDay.setHours(startOdDay.getHours()+dailyEffort)
-
-  //       return {
-  //         id: `${intercontract.id}.${intercontract?.userid}`,
-  //         title: intercontract.title,
-  //         start: startDate.toISOString(),
-  //         end: endDate.toISOString(),
-  //         description: intercontract.description,
-  //         status: intercontract.status,
-  //         type: intercontract.type,
-  //         dailyEffort: intercontract.dailyEffort,
-  //         phaseid: intercontract?.phaseid,
-  //         projectid: intercontract?.projectid,
-  //         user: intercontract?.userid,
-  //       };
-  //     });
-
-  //     setEvents(calendarEvents);
-  //   } catch (error) {
-  //     console.error(`Error fetching TASK ACTIVITY data: ${error}`);
-  //   }
-  // };
 
   useEffect(() => {
     fetchData();
@@ -320,6 +309,15 @@ const AllActivityCalendar = ({
           }
           events={events}
           eventClick={handleEventClick}
+          eventClassNames={(eventInfo) => {
+            if (eventInfo.event.extendedProps.type === "Projet") {
+              return "!bg-green-100 !border-green-300 !text-green-800 dark:!bg-green-900 dark:!border-green-700 dark:!text-green-300"; // Couleurs pour Projet
+            } else if (eventInfo.event.extendedProps.type === "Transverse") {
+              return "!bg-purple-100 !border-purple-300 !text-purple-800 dark:!bg-purple-900 dark:!border-purple-700 dark:!text-purple-300"; // Couleurs pour Transverse
+            } else {
+              return "!bg-red-100 !border-red-300 !text-red-800 dark:!bg-red-900 dark:!border-red-700 dark:!text-red-300"; // Couleurs par défaut
+            }
+          }}
           headerToolbar={{
             left: window.innerWidth < 768 ? "prev,next" : "prev,next today",
             center: "title",
@@ -346,19 +344,19 @@ const AllActivityCalendar = ({
                     ? colors[extendedProps?.user]
                     : "",
                 }}
-                className={`flex flex-row justify-between font-light items-center shadow dark:border-2 border border-gray dark:border-strokedark w-full p-1  whitespace-break-spaces cursor-pointer text-xs relative group`}
+                className={`z-99 grid grid-flow-col place-content-between border dark:border-2 border-transparent font-light w-full p-1 text-black dark:text-whiten cursor-pointer text-xs relative group`}
               >
                 <div>
                   <b>
                     {dailyEffort}h -{" "}
                     {title.length > 15 ? `${title.slice(0, 15)}...` : title}
                   </b>
-                  <div className="absolute bottom-full left-0 mt-1 dark:bg-whiten dark:text-black bg-black text-white text-xs rounded p-1 hidden group-hover:block  whitespace-nowrap ">
+                  <div className="absolute z-999999 bottom-full left-0 mt-1 dark:bg-whiten dark:text-black bg-black text-white text-xs rounded p-1 hidden group-hover:block  whitespace-nowrap ">
                     {title}
                   </div>
                 </div>
                 <div
-                  className={`border p-1 rounded-full ${
+                  className={`border w-4 flex justify-center items-center p-1 rounded-full ${
                     extendedProps.type === "Projet"
                       ? "bg-green-100 text-green-600 border-green-300  dark:bg-green-900 dark:text-green-300 dark:border-green-700"
                       : extendedProps?.type === "Transverse"
@@ -383,8 +381,6 @@ const AllActivityCalendar = ({
             timeGridWeek: window.innerWidth < 768 ? "S" : "Semaine",
             timeGridDay: window.innerWidth < 768 ? "J" : "Jour",
           }}
-          slotMinTime={"07:00:00"}
-          slotMaxTime={"17:00:00"}
           dayHeaderClassNames="text-xs sm:text-sm md:text-base"
         />
       </div>

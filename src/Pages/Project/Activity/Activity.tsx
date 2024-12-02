@@ -209,11 +209,10 @@ const Activity = () => {
         <ProjectLayout>
           <div>
             <div className="bg-white dark:bg-boxdark pt-4 pb-3 px-9 shadow-sm">
-              <Breadcrumb pageName="Activités" />
               <div className="flex gap-2">
                 <div
                   onClick={() => handleViewChange("table")}
-                  className={`flex gap-1 text-xs p-1 items-center font-semibold cursor-pointer rounded ${
+                  className={`flex gap-1 text-xs py-1 items-center font-semibold cursor-pointer rounded ${
                     activityView === "table"
                       ? "bg-green-50 text-green-700 dark:bg-green-100"
                       : ""
@@ -495,7 +494,7 @@ const Activity = () => {
               </div>
               {/* FILTER END */}
             </div>
-            <div>
+            <div className="px-5">
               {activityView === "table" ? (
                 <AllActivityKanban
                   selectedOptions={selectedOptions}

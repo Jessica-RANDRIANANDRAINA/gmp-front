@@ -10,9 +10,9 @@ import {
 import { formatDate } from "../../../../services/Function/DateServices";
 import {
   deleteIntercontract,
-  deleteTaskActivity,
   deleteTransverse,
   getAllActivitiesOfUser,
+  deletetaskProject,
 } from "../../../../services/Project";
 import AddActivity from "../../../../components/Modals/Activity/AddActivity";
 import UpdateActivity from "../../../../components/Modals/Activity/UpdateActivity";
@@ -326,7 +326,7 @@ const AllActivityKanban = ({
           }
         }
       } else {
-        await deleteTaskActivity(activityId);
+        await deletetaskProject(activityId);
         if (connection) {
           try {
             await connection.invoke("TaskActivityDeleted", activityId);
@@ -345,7 +345,7 @@ const AllActivityKanban = ({
   };
 
   return (
-    <div className={`p-5`}>
+    <div className={`py-5`}>
       <DragDropContext
         onDragEnd={(result) => {
           const draggableId = result.draggableId;
