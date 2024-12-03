@@ -90,7 +90,7 @@ const Modal = ({
       <div
         ref={trigger}
         style={{ maxHeight: heightSize }}
-        className={`bg-white h-fit  my-20 dark:bg-[#24303F] rounded-md ${
+        className={`bg-white overflow-y-auto h-fit  my-20 dark:bg-[#24303F] rounded-md ${
           size[widthSize]
         } p-4 transfrom transition-all duration-300 ease-out ${
           showModal && !closingModal
