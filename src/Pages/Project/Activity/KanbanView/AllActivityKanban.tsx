@@ -43,7 +43,7 @@ const organizeActivityByStatus = (activities: any[]) => {
         description: activity.description,
         status: activity.status,
         startDate: activity.startDate,
-        dailyEffort: activity.dailyEffort,
+        dailyEffort: activity.dailyEffort ?? 1,
         finished: activity.finished,
         type: activity.type,
         subType: activity.subType,

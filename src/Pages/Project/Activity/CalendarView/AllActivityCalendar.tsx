@@ -332,7 +332,7 @@ const AllActivityCalendar = ({
           eventContent={(arg) => {
             const { title, extendedProps } = arg.event;
 
-            const dailyEffort = extendedProps?.dailyEffort;
+            const dailyEffort = extendedProps?.dailyEffort ?? 1;
 
             return (
               <div
@@ -612,7 +612,7 @@ const AllActivityCalendar = ({
                 )
                 ?.map((task: any) => (
                   <div
-                  key={`${task?.id}-${task?.userid}`}
+                    key={`${task?.id}-${task?.userid}`}
                     onClick={() => {
                       handleModifClick(task);
                     }}
@@ -683,7 +683,7 @@ const AllActivityCalendar = ({
                 )
                 ?.map((task: any) => (
                   <div
-                  key={`${task?.id}-${task?.userid}`}
+                    key={`${task?.id}-${task?.userid}`}
                     onClick={() => {
                       handleModifClick(task);
                     }}
