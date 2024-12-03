@@ -148,10 +148,13 @@ const AddProject = () => {
 
   return (
     <ProjectLayout>
-      <div className="text-sm mx-2 p-4 md:mx-10">
+      <div className="text-sm mx-2 p-4 md:mx-5">
         {/* ===== LINK RETURN START ===== */}
-        <div className={`w-full mb-2 flex  items-center `}>
-          <Breadcrumb pageName="Ajout projet" />
+        <div className={`w-full mb-2 flex text-base items-center `}>
+          <Breadcrumb paths={[
+            {name: "Projets", to:"/gmp/project/list"},
+            {name: "Ajout Projet"}
+          ]} />
         </div>
         {/* ===== LINK RETURN END ===== */}
         {/* ===== BLOC ADD PROJECT START ===== */}

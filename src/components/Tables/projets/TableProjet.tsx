@@ -441,7 +441,7 @@ const TableProjet = ({
                     "Modifier",
                     "Avancement",
                     "Gérer",
-                    "Détail",
+                    "Détails",
                     "Historique",
                     "Archiver",
                   ].filter((action) => {

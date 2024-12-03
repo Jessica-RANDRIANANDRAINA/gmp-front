@@ -8,10 +8,7 @@ import {
 } from "../../../../types/Project";
 import Breadcrumb from "../../../../components/BreadCrumbs/BreadCrumb";
 import { getAllDepartments } from "../../../../services/User";
-import {
-  updateProject,
-  getProjectById,
-} from "../../../../services/Project";
+import { updateProject, getProjectById } from "../../../../services/Project";
 import { decodeToken } from "../../../../services/Function/TokenService";
 import {
   InfoGeneralUpdate,
@@ -44,7 +41,7 @@ const UpdateProject = () => {
     startDate: undefined,
     endDate: undefined,
     isEndDateImmuable: false,
-    endDateChangeReason :'',
+    endDateChangeReason: "",
     listBudgets: [],
     listRessources: [],
     listPhases: [],
@@ -223,10 +220,10 @@ const UpdateProject = () => {
     try {
       // update project service
       await updateProject(data?.id, data);
-      notyf.success(`Projet modifié avec succès !`)
+      notyf.success(`Projet modifié avec succès !`);
       navigate("/gmp/project/list");
     } catch (error) {
-      notyf.error(`Une erreur s'est produite, veuillez réessayer plus tard`)
+      notyf.error(`Une erreur s'est produite, veuillez réessayer plus tard`);
       console.log(`Error at create project: ${error}`);
     } finally {
       // stop loading
@@ -237,10 +234,19 @@ const UpdateProject = () => {
 
   return (
     <ProjectLayout>
-      <div className="text-sm mx-2 p-4 md:mx-10">
+      <div className="text-sm mx-2 p-4 md:mx-5">
         {/* ===== LINK RETURN START ===== */}
-        <div className={`w-full  mb-2 flex  items-center `}>
-          <Breadcrumb pageName="Modification projet" />
+        <div className={`w-full  text-base mb-2 flex  items-center `}>
+          <Breadcrumb
+            paths={[
+              { name: "Projets", to: "/gmp/project/list" },
+              {
+                name: "Détails",
+                to: `/gmp/project/details/${projectId}/details`,
+              },
+              { name: "Modification projet" },
+            ]}
+          />
         </div>
         {/* ===== LINK RETURN END ===== */}
         {/* ===== BLOC UPDATE PROJECT START ===== */}
@@ -417,14 +423,18 @@ const UpdateProject = () => {
               >
                 <span
                   className={`absolute transition-transform duration-500 ease-in-out transform ${
-                    userTeam.length > 0 && pageCreate === 4 ? "scale-0" : "scale-100"
+                    userTeam.length > 0 && pageCreate === 4
+                      ? "scale-0"
+                      : "scale-100"
                   }`}
                 >
                   4
                 </span>
                 <svg
                   className={`transition-transform duration-500 ease-in-out transform stroke-current ${
-                    userTeam.length > 0 && pageCreate === 4 ? "scale-100" : "scale-0"
+                    userTeam.length > 0 && pageCreate === 4
+                      ? "scale-100"
+                      : "scale-0"
                   }`}
                   width="64px"
                   height="64px"

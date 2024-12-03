@@ -50,11 +50,21 @@ const DetailsAndHistoricProject = () => {
     <ProjectLayout>
       <div className="">
         <div className=" mx-4 pt-4 md:mx-10">
-          <Breadcrumb
-            pageName={`${
-              location.pathname.includes("historic") ? "Historique" : "Détail"
-            }`}
-          />
+          {location.pathname.includes("historic") ? (
+            <Breadcrumb
+              paths={[
+                { name: "Projets", to: "/gmp/project/list" },
+                { name: "Historique" },
+              ]}
+            />
+          ) : (
+            <Breadcrumb
+              paths={[
+                { name: "Projets", to: "/gmp/project/list" },
+                { name: "Détails" },
+              ]}
+            />
+          )}
 
           <div className="flex *:p-3 text-sm flex-wrap">
             <NavLink
@@ -65,7 +75,7 @@ const DetailsAndHistoricProject = () => {
                   : "hover:text-green-700 text-slate-600 "
               }
             >
-              Détail
+              Détails
             </NavLink>
             <NavLink
               to={`/gmp/project/details/${projectId}/historic`}
@@ -86,6 +96,16 @@ const DetailsAndHistoricProject = () => {
               }
             >
               Gérer
+            </NavLink>
+            <NavLink
+              to={`/gmp/project/update/${projectId}`}
+              className={({ isActive }) =>
+                isActive
+                  ? "text-green-700 bg-green-100 border border-green-700"
+                  : "hover:text-green-800 text-slate-600 "
+              }
+            >
+              Modifier
             </NavLink>
             <button
               className={`hover:text-green-800 text-slate-600 ${
