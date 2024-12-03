@@ -8,6 +8,7 @@ import { IPhase, IUserProject, ITaskAdd } from "../../../types/Project";
 import { createTaskPhase } from "../../../services/Project";
 import { v4 as uuid4 } from "uuid";
 import { BeatLoader } from "react-spinners";
+
 import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
 
@@ -135,7 +136,9 @@ const AddTaskPhase = ({
       <ModalBody>
         <>
           <div className="space-y-2">
-            <div className="font-semibold text-xs">Assigné à:</div>
+            <div className="font-semibold text-xs">
+              Assigné à : <span className="text-red-500 ml-1 text-sm">*</span>
+            </div>
             <div className="grid grid-cols-3 place-content-center place-items-stretch">
               <div className="flex  items-center">
                 <div>
@@ -186,6 +189,7 @@ const AddTaskPhase = ({
             <CustomInput
               type="text"
               label="Titre"
+              required={true}
               rounded="medium"
               className="text-sm"
               onChange={(e) => {
@@ -213,6 +217,7 @@ const AddTaskPhase = ({
           <div className="grid md:grid-cols-2 gap-2">
             <CustomInput
               type="date"
+              required={true}
               label="Date de début"
               rounded="medium"
               className="text-sm"
@@ -281,16 +286,28 @@ const AddTaskPhase = ({
         >
           Annuler
         </button>
-        <button
-          type="button"
-          onClick={handleCreateTask}
-          className="border flex justify-center items-center dark:border-boxdark text-xs p-2 rounded-md bg-green-700 hover:opacity-85 text-white font-semibold"
-        >
-          {isLoading ? (
-            <BeatLoader size={5} className="mr-2" color={"#fff"} />
-          ) : null}
-          Créer
-        </button>
+        {(() => {
+          const hasTitle = taskData?.title?.trim() !== "";
+          const hasStartDate = taskData?.startDate !== "";
+          const hasPersonAssigned = assignedPerson.length > 0;
+          const isDisabled = hasTitle && hasStartDate && hasPersonAssigned;
+          const buttonClassName = !isDisabled
+            ? "cursor-not-allowed bg-graydark"
+            : "cursor-pointer bg-green-700 hover:opacity-85";
+          return (
+            <button
+              disabled={!isDisabled}
+              type="button"
+              onClick={handleCreateTask}
+              className={`border flex justify-center items-center dark:border-boxdark text-xs p-2 rounded-md text-white font-semibold ${buttonClassName}`}
+            >
+              {isLoading ? (
+                <BeatLoader size={5} className="mr-2" color={"#fff"} />
+              ) : null}
+              Créer
+            </button>
+          );
+        })()}
       </ModalFooter>
     </Modal>
   );

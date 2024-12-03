@@ -85,7 +85,7 @@ const UpdateTask = ({
         description: taskData?.description,
         listUsers: formatUser,
         dailyEffort: taskData?.dailyEffort,
-        title: taskData?.title
+        title: taskData?.title,
       };
       const taskId = task.content.id;
       await updateTaskProject(taskId, dataToSend);
@@ -134,7 +134,9 @@ const UpdateTask = ({
       <ModalBody>
         <div className="space-y-5">
           <div className="space-y-2">
-            <div className="font-semibold text-xs">Assigné à:</div>
+            <div className="font-semibold text-xs">
+              Assigné à : <span className="text-red-500 ml-1 text-sm">*</span>
+            </div>
             <div className="">
               <div className="flex items-center gap-2">
                 <div className="space-y-2 w-full  ">
@@ -219,6 +221,7 @@ const UpdateTask = ({
           </div>
           <div className="grid md:grid-cols-2 gap-2">
             <CustomInput
+              required
               type="date"
               label="Date de début"
               rounded="medium"
@@ -321,16 +324,28 @@ const UpdateTask = ({
         >
           Annuler
         </button>
-        <button
-          type="button"
-          onClick={handleUpdateTask}
-          className="border flex justify-center items-center dark:border-boxdark text-xs p-2 rounded-md bg-green-700 hover:opacity-85 text-white font-semibold"
-        >
-          {isLoading ? (
-            <BeatLoader size={5} className="mr-2" color={"#fff"} />
-          ) : null}
-          Sauvegarder
-        </button>
+        {(() => {
+          const hasStartDate = taskData?.startDate !== ""
+          const hasPersonAssigned = assignedPerson.length > 0
+          const isDisabled = hasStartDate && hasPersonAssigned
+          const buttonClassName = !isDisabled
+            ? "cursor-not-allowed bg-graydark"
+            : "cursor-pointer bg-green-700 hover:opacity-85";
+
+          return (
+            <button
+            disabled={!isDisabled}
+              type="button"
+              onClick={handleUpdateTask}
+              className={`border flex justify-center items-center dark:border-boxdark text-xs p-2 rounded-md text-white font-semibold ${buttonClassName}`}
+            >
+              {isLoading ? (
+                <BeatLoader size={5} className="mr-2" color={"#fff"} />
+              ) : null}
+              Sauvegarder
+            </button>
+          );
+        })()}
       </ModalFooter>
     </Modal>
   );
