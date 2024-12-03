@@ -371,7 +371,7 @@ const Activity = () => {
                 />
                 <div className={`${subordinates.length > 0 ? "" : "hidden"}`}>
                   <CustomInputUserSpecifiedSearch
-                    label="Collaborateurs"
+                    label="Collaborateur"
                     rounded="medium"
                     placeholder="Nom"
                     user={availableSubordinate}

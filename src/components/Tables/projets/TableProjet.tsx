@@ -242,7 +242,7 @@ const TableProjet = ({
           <CustomInput
             type="text"
             value={search.member}
-            label="Membres"
+            label="Membre"
             placeholder="Rechercher"
             rounded="medium"
             onChange={(e) => {
