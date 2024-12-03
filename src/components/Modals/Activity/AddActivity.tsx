@@ -11,7 +11,7 @@ import {
   getProjectByUserId,
 } from "../../../services/Project";
 import { v4 as uuid4 } from "uuid";
-import { getMondayAndFriday } from "../../../services/Function/DateServices";
+// import { getMondayAndFriday } from "../../../services/Function/DateServices";
 import { intercontractType, transverseType } from "../../../constants/Activity";
 import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
@@ -43,7 +43,7 @@ const AddActivity = ({
     intercontractType: "",
   });
 
-  const { monday, friday } = getMondayAndFriday();
+  // const { monday, friday } = getMondayAndFriday();
   const [projectTitle, setProjectTitle] = useState<Array<string>>([]);
   const [phaseTitle, setPhaseTitle] = useState<Array<string>>([]);
   const [projectData, setProjectData] = useState<any>();
@@ -288,8 +288,8 @@ const AddActivity = ({
                 label="Au date du"
                 rounded="medium"
                 className="text-sm"
-                min={monday}
-                max={friday}
+                // min={monday}
+                // max={friday}
                 value={activityData?.startDate}
                 onChange={(e) => {
                   setActivityData({

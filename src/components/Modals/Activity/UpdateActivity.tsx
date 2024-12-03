@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Modal, ModalBody, ModalFooter } from "../Modal";
 import { IActivityAdd } from "../../../types/Project";
-import { getMondayAndFriday } from "../../../services/Function/DateServices";
+// import { getMondayAndFriday } from "../../../services/Function/DateServices";
 import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
 import { BeatLoader } from "react-spinners";
@@ -55,7 +55,7 @@ const UpdateActivity = ({
     projectId: "",
     phaseId: "",
   });
-  const { monday, friday } = getMondayAndFriday();
+  // const { monday, friday } = getMondayAndFriday();
 
   const fetchProjectData = async () => {
     try {
@@ -345,8 +345,8 @@ const UpdateActivity = ({
                 label="Au date du"
                 rounded="medium"
                 className="text-sm"
-                min={monday}
-                max={friday}
+                // min={monday}
+                // max={friday}
                 value={
                   activityData?.startDate
                     ? activityData?.startDate?.split("T")?.[0]
