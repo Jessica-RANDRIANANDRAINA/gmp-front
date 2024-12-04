@@ -95,7 +95,7 @@ const DetailsAndHistoricProject = () => {
                   : "hover:text-green-800 text-slate-600 "
               }
             >
-              Gérer
+              Activités
             </NavLink>
             <NavLink
               to={`/gmp/project/update/${projectId}`}
