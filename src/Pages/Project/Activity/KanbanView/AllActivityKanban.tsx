@@ -115,6 +115,10 @@ const AllActivityKanban = ({
     }
   }, [isAddActivity]);
 
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   // close delete pop up when click outside
   useEffect(() => {
     const clickHandler = ({ target }: MouseEvent) => {
@@ -157,6 +161,7 @@ const AllActivityKanban = ({
           selectedOptions,
           Ids
         );
+
         const { activityMap, columns } = organizeActivityByStatus(response);
 
         setData({
@@ -476,95 +481,253 @@ const AllActivityKanban = ({
                                     </div>
                                   )}
                                   {/* pop up menu delete */}
-
-                                  <div className="flex flex-col gap-1 dark:text-zinc-400 text-zinc-500">
-                                    <div
-                                      className={`border rounded w-fit px-1 cursor-pointer mb-2 ${
-                                        activity.content.type === "Projet"
-                                          ? "bg-green-100 text-green-600 border-green-300  dark:bg-green-900 dark:text-green-300 dark:border-green-700"
-                                          : activity?.content.type ===
-                                            "Transverse"
-                                          ? "bg-purple-100 text-purple-600 border-purple-300 dark:bg-purple-900 dark:text-purple-300 dark:border-purple-700"
-                                          : "bg-red-100 text-red-600 border-red-300  dark:bg-red-900 dark:text-red-300 dark:border-red-700"
-                                      }`}
-                                    >
-                                      {activity.content.type}
-                                    </div>
-                                    <div className="grid grid-flow-row gap-2 ">
-                                      <div className="flex gap-1">
-                                        <span
-                                          className={`${
-                                            activity.content.status === "Traité"
-                                              ? ""
-                                              : "hidden"
-                                          }`}
-                                        >
-                                          <svg
-                                            width="17"
-                                            height="17"
-                                            viewBox="0 0 24 24"
-                                            className="fill-green-500"
+                                  <div className="space-y-2">
+                                    <div className="flex flex-col dark:text-zinc-400 gap-1 text-zinc-500">
+                                      <div className="grid grid-cols-2">
+                                        <div className="flex gap-1 ">
+                                          <div
+                                            className={`border rounded w-fit px-1 cursor-pointer mb-2 ${
+                                              activity.content.type === "Projet"
+                                                ? "bg-green-100 text-green-600 border-green-300  dark:bg-green-900 dark:text-green-300 dark:border-green-700"
+                                                : activity?.content.type ===
+                                                  "Transverse"
+                                                ? "bg-purple-100 text-purple-600 border-purple-300 dark:bg-purple-900 dark:text-purple-300 dark:border-purple-700"
+                                                : "bg-red-100 text-red-600 border-red-300  dark:bg-red-900 dark:text-red-300 dark:border-red-700"
+                                            }`}
                                           >
-                                            <g
-                                              id="SVGRepo_bgCarrier"
-                                              strokeWidth="0"
-                                            ></g>
-                                            <g
-                                              id="SVGRepo_tracerCarrier"
-                                              strokeLinecap="round"
-                                              strokeLinejoin="round"
-                                            ></g>
-                                            <g id="SVGRepo_iconCarrier">
-                                              {" "}
-                                              <circle
-                                                cx="12"
-                                                cy="12"
-                                                r="10"
-                                                className="stroke-green-500"
-                                                strokeWidth="1.5"
-                                              ></circle>{" "}
-                                              <path
-                                                d="M8.5 12.5L10.5 14.5L15.5 9.5"
-                                                className="stroke-white"
-                                                strokeWidth="3"
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                              ></path>{" "}
-                                            </g>
-                                          </svg>
-                                        </span>
-                                        <div className="dark:text-whiten text-black">
-                                          {activity.content.title}
-                                        </div>
-                                      </div>
-                                      <div className="flex flex-wrap gap-1">
-                                        <div className="border   rounded-full w-7 h-5 flex justify-center items-center">
-                                          {activity.content.dailyEffort}h
+                                            {activity.content.type}
+                                          </div>
+                                          <div className="border   rounded-md w-7 h-4.5  flex justify-center items-center">
+                                            {activity.content.dailyEffort}h
+                                          </div>
                                         </div>
                                         <div
-                                          className={`border  rounded-full w-fit px-1 h-5 flex justify-center items-center whitespace-nowrap ${
-                                            activity?.content?.subType
-                                              ? ""
-                                              : "hidden"
+                                          className={` text-xs ${
+                                            activity.content.priority ===
+                                              "Moyen" ||
+                                            activity.content.priority === "Bas"
+                                              ? "hidden "
+                                              : "text-orange"
                                           }`}
                                         >
-                                          {activity.content.subType}
+                                          {activity.content.priority}
+                                        </div>
+                                      </div>
+
+                                      <div className="grid grid-flow-row gap-2  ">
+                                        <div className="flex gap-1">
+                                          {/* pince for task traité */}
+                                          <span
+                                            className={`${
+                                              activity.content.status ===
+                                              "Traité"
+                                                ? ""
+                                                : "hidden"
+                                            }`}
+                                          >
+                                            <svg
+                                              width="17"
+                                              height="17"
+                                              viewBox="0 0 24 24"
+                                              className="fill-green-500"
+                                            >
+                                              <g
+                                                id="SVGRepo_bgCarrier"
+                                                strokeWidth="0"
+                                              ></g>
+                                              <g
+                                                id="SVGRepo_tracerCarrier"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                              ></g>
+                                              <g id="SVGRepo_iconCarrier">
+                                                {" "}
+                                                <circle
+                                                  cx="12"
+                                                  cy="12"
+                                                  r="10"
+                                                  className="stroke-green-500"
+                                                  strokeWidth="1.5"
+                                                ></circle>{" "}
+                                                <path
+                                                  d="M8.5 12.5L10.5 14.5L15.5 9.5"
+                                                  className="stroke-white"
+                                                  strokeWidth="3"
+                                                  strokeLinecap="round"
+                                                  strokeLinejoin="round"
+                                                ></path>{" "}
+                                              </g>
+                                            </svg>
+                                          </span>
+                                          {/* pince for task traité */}
+                                          {/* pince for task en pause */}
+                                          <span
+                                            className={`${
+                                              activity.content.status ===
+                                              "En pause"
+                                                ? ""
+                                                : "hidden"
+                                            }`}
+                                          >
+                                            <svg
+                                              width="17"
+                                              height="17"
+                                              viewBox="0 0 24 24"
+                                              className="fill-orange"
+                                            >
+                                              <g id="SVGRepo_iconCarrier">
+                                                <circle
+                                                  cx="12"
+                                                  cy="12"
+                                                  r="10"
+                                                  className="stroke-orange-500"
+                                                  strokeWidth="1.5"
+                                                ></circle>
+                                                <rect
+                                                  x="9"
+                                                  y="8"
+                                                  width="2"
+                                                  height="8"
+                                                  className="fill-white"
+                                                  rx="1"
+                                                ></rect>
+                                                <rect
+                                                  x="13"
+                                                  y="8"
+                                                  width="2"
+                                                  height="8"
+                                                  className="fill-white"
+                                                  rx="1"
+                                                ></rect>
+                                              </g>
+                                            </svg>
+                                          </span>
+                                          {/* pince for task en pause */}
+                                          {/* pince for task en abandonnée */}
+                                          <span
+                                            className={`${
+                                              activity.content.status ===
+                                              "Abandonné"
+                                                ? ""
+                                                : "hidden"
+                                            }`}
+                                          >
+                                            <svg
+                                              width="17"
+                                              height="17"
+                                              viewBox="0 0 24 24"
+                                              className="fill-red-500"
+                                            >
+                                              <g id="SVGRepo_iconCarrier">
+                                                <circle
+                                                  cx="12"
+                                                  cy="12"
+                                                  r="10"
+                                                  className="stroke-red-500"
+                                                  strokeWidth="1.5"
+                                                ></circle>
+                                                <path
+                                                  d="M8 8L16 16M16 8L8 16"
+                                                  className="stroke-white"
+                                                  strokeWidth="2.5"
+                                                  strokeLinecap="round"
+                                                ></path>
+                                              </g>
+                                            </svg>
+                                          </span>
+                                          {/* pince for task en abandonnée */}
+                                          {/* pince for task en cours */}
+                                          <span
+                                            className={`${
+                                              activity.content.status ===
+                                              "En cours"
+                                                ? ""
+                                                : "hidden"
+                                            }`}
+                                          >
+                                            <svg
+                                              width="17"
+                                              height="17"
+                                              viewBox="0 0 24 24"
+                                              className="fill-blue-400"
+                                            >
+                                              <g id="SVGRepo_iconCarrier">
+                                                <circle
+                                                  cx="12"
+                                                  cy="12"
+                                                  r="10"
+                                                  className="stroke-blue-400"
+                                                  strokeWidth="1.5"
+                                                ></circle>
+                                                <path
+                                                  d="M12 8V12L14.5 14.5"
+                                                  className="stroke-white"
+                                                  strokeWidth="2.5"
+                                                  strokeLinecap="round"
+                                                  strokeLinejoin="round"
+                                                ></path>
+                                                <circle
+                                                  cx="12"
+                                                  cy="12"
+                                                  r="0.8"
+                                                  className="fill-white"
+                                                ></circle>
+                                              </g>
+                                            </svg>
+                                          </span>
+                                          {/* pince for task en cours */}
+                                          {/* pince for task en backlog */}
+                                          <span
+                                            className={`${
+                                              activity.content.status ===
+                                              "Backlog"
+                                                ? ""
+                                                : "hidden"
+                                            }`}
+                                          >
+                                            <svg
+                                              width="17"
+                                              height="17"
+                                              viewBox="0 0 24 24"
+                                              className="fill-blue-300"
+                                            >
+                                              <g id="SVGRepo_iconCarrier">
+                                                <circle
+                                                  cx="12"
+                                                  cy="12"
+                                                  r="10"
+                                                  className="stroke-blue-300"
+                                                  strokeWidth="1.5"
+                                                  strokeDasharray="3 2"
+                                                  fill="none"
+                                                ></circle>
+                                              </g>
+                                            </svg>
+                                          </span>
+                                          {/* pince for task en backlog */}
+                                          <div className="dark:text-whiten text-black">
+                                            {activity.content.title}
+                                          </div>
+                                        </div>
+                                        <div className="flex flex-wrap">
+                                          <div
+                                            className={`border  rounded-md  px-1 text-justify flex justify-center items-center  ${
+                                              activity?.content?.subType
+                                                ? ""
+                                                : "hidden"
+                                            }`}
+                                          >
+                                            {activity.content.subType}
+                                          </div>
                                         </div>
                                       </div>
                                     </div>
-                                  </div>
-                                  <div
-                                    className={` pt-1 mt-2 text-xs ${
-                                      activity.content.priority === "Moyen" ||
-                                      activity.content.priority === "Bas"
-                                        ? "hidden "
-                                        : "text-orange"
-                                    }`}
-                                  >
-                                    {activity.content.priority}
-                                  </div>
-                                  <div className="border-t dark:border-t-zinc-600 text-zinc-400  space-y-1 pt-1">
-                                    <div className={`text-xs `}>{endDate}</div>
+
+                                    <div className="border-t dark:border-t-zinc-600 text-zinc-400  space-y-1 pt-1">
+                                      <div className={`text-xs `}>
+                                        {endDate}
+                                      </div>
+                                    </div>
                                   </div>
                                 </div>
                               );

@@ -56,6 +56,10 @@ const AllActivityCalendar = ({
   const [data, setData] = useState<any>();
   const deletePopUp = useRef<any>(null);
 
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   // open add activity modal with parent props trigger
   useEffect(() => {
     if (isAddActivity) {
