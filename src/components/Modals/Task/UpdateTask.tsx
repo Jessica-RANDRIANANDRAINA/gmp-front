@@ -31,6 +31,7 @@ const UpdateTask = ({
     startDate: undefined,
     dueDate: undefined,
     dailyEffort: 1,
+    status: "Backlog",
   });
   const userPopUp = useRef<any>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -58,6 +59,7 @@ const UpdateTask = ({
         startDate: task?.content?.startDate || undefined,
         dueDate: task?.content?.dueDate || undefined,
         dailyEffort: task?.content?.dailyEffort,
+        status: task?.content?.status,
       });
 
       setAssignedPerson(task.content.userTasks);
@@ -86,6 +88,7 @@ const UpdateTask = ({
         listUsers: formatUser,
         dailyEffort: taskData?.dailyEffort,
         title: taskData?.title,
+        status: taskData?.status,
       };
       const taskId = task.content.id;
       await updateTaskProject(taskId, dataToSend);
@@ -205,7 +208,7 @@ const UpdateTask = ({
               </div>
             </div>
           </div>
-          <div>
+          <div className="grid md:grid-cols-2 gap-2">
             <CustomSelect
               label="Priorité"
               placeholder=""
@@ -215,6 +218,18 @@ const UpdateTask = ({
                 setTaskData({
                   ...taskData,
                   priority: e,
+                });
+              }}
+            />
+            <CustomSelect
+              label="Status"
+              placeholder=""
+              data={["Backlog", "En cours", "Traité", "En pause", "Abandonné"]}
+              value={taskData.status}
+              onValueChange={(e) => {
+                setTaskData({
+                  ...taskData,
+                  status: e,
                 });
               }}
             />
@@ -325,16 +340,16 @@ const UpdateTask = ({
           Annuler
         </button>
         {(() => {
-          const hasStartDate = taskData?.startDate !== ""
-          const hasPersonAssigned = assignedPerson.length > 0
-          const isDisabled = hasStartDate && hasPersonAssigned
+          const hasStartDate = taskData?.startDate !== "";
+          const hasPersonAssigned = assignedPerson.length > 0;
+          const isDisabled = hasStartDate && hasPersonAssigned;
           const buttonClassName = !isDisabled
             ? "cursor-not-allowed bg-graydark"
             : "cursor-pointer bg-green-700 hover:opacity-85";
 
           return (
             <button
-            disabled={!isDisabled}
+              disabled={!isDisabled}
               type="button"
               onClick={handleUpdateTask}
               className={`border flex justify-center items-center dark:border-boxdark text-xs p-2 rounded-md text-white font-semibold ${buttonClassName}`}

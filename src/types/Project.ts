@@ -112,6 +112,7 @@ export interface ITaskAdd {
   startDate?: string;
   dueDate?: string;
   dailyEffort?: number;
+  status?: string;
 }
 
 export interface IActivityAdd {

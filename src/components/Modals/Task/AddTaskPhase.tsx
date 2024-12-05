@@ -35,6 +35,7 @@ const AddTaskPhase = ({
     startDate: undefined,
     dueDate: undefined,
     dailyEffort: 1,
+    status: "Backlog",
   });
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -105,6 +106,7 @@ const AddTaskPhase = ({
         dueDate: taskData?.dueDate,
         listUsers: formatuser,
         DailyEffort: taskData?.dailyEffort,
+        status: taskData?.status,
       };
       await createTaskPhase(dataToSend);
       notyf.success("Création de la tâche réussie.");
@@ -200,7 +202,7 @@ const AddTaskPhase = ({
               }}
             />
           </div>
-          <div>
+          <div className="grid md:grid-cols-2 gap-2">
             <CustomSelect
               label="Priorité"
               placeholder=""
@@ -210,6 +212,18 @@ const AddTaskPhase = ({
                 setTaskData({
                   ...taskData,
                   priority: e,
+                });
+              }}
+            />
+            <CustomSelect
+              label="Status"
+              placeholder=""
+              data={["Backlog", "En cours", "Traité", "En pause", "Abandonné"]}
+              value={taskData.status}
+              onValueChange={(e) => {
+                setTaskData({
+                  ...taskData,
+                  status: e,
                 });
               }}
             />
