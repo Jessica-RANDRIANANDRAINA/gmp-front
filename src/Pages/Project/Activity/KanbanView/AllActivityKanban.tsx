@@ -226,6 +226,13 @@ const AllActivityKanban = ({
       newTaskIds.splice(source.index, 1);
       newTaskIds.splice(destination.index, 0, draggableId);
 
+      const aboveTaskId =
+        destination.index > 0 ? newTaskIds[destination.index - 1] : null;
+      const belowTaskId =
+        destination.index < newTaskIds.length - 1
+          ? newTaskIds[destination.index + 1]
+          : null;
+
       const newColumn = {
         ...startColumn,
         activityIds: newTaskIds,
@@ -241,16 +248,22 @@ const AllActivityKanban = ({
     } else {
       // Moving between columns
       const startTaskIds = Array.from(startColumn.activityIds);
+      const endTaskIds = Array.from(endColumn.activityIds);
+
       startTaskIds.splice(source.index, 1);
+      endTaskIds.splice(destination.index, 0, draggableId);
+
+      const aboveTaskId =
+        destination.index > 0 ? endTaskIds[destination.index - 1] : null;
+      const belowTaskId =
+        destination.index < endTaskIds.length - 1
+          ? endTaskIds[destination.index + 1]
+          : null;
 
       const newStart = {
         ...startColumn,
         activityIds: startTaskIds,
       };
-
-      const endTaskIds = Array.from(endColumn.activityIds);
-      endTaskIds.splice(destination.index, 0, draggableId);
-
       const newEnd = {
         ...endColumn,
         activityIds: endTaskIds,
