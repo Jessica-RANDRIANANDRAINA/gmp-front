@@ -190,6 +190,13 @@ const PhaseAdvancement = () => {
       newTaskIds.splice(source.index, 1);
       newTaskIds.splice(destination.index, 0, draggableId);
 
+      const aboveTaskId =
+        destination.index > 0 ? newTaskIds[destination.index - 1] : null;
+      const belowTaskId =
+        destination.index < newTaskIds.length - 1
+          ? newTaskIds[destination.index + 1]
+          : null;
+
       const newColumn = {
         ...startColumn,
         taskIds: newTaskIds,
@@ -202,19 +209,40 @@ const PhaseAdvancement = () => {
           [newColumn.id]: newColumn,
         },
       });
+      if (connection) {
+        try {
+          await connection.invoke(
+            "TaskMoved",
+            draggableId,
+            startColumn.title,
+            endColumn.title,
+            aboveTaskId,
+            belowTaskId
+          );
+          fetchData();
+        } catch (error) {
+          console.error(`Error at calling task moved: ${error}`);
+        }
+      }
     } else {
       // Moving between columns
       const startTaskIds = Array.from(startColumn.taskIds);
+      const endTaskIds = Array.from(endColumn.taskIds);
+
       startTaskIds.splice(source.index, 1);
+      endTaskIds.splice(destination.index, 0, draggableId);
+
+      const aboveTaskId =
+        destination.index > 0 ? endTaskIds[destination.index - 1] : null;
+      const belowTaskId =
+        destination.index < endTaskIds.length - 1
+          ? endTaskIds[destination.index + 1]
+          : null;
 
       const newStart = {
         ...startColumn,
         taskIds: startTaskIds,
       };
-
-      const endTaskIds = Array.from(endColumn.taskIds);
-      endTaskIds.splice(destination.index, 0, draggableId);
-
       const newEnd = {
         ...endColumn,
         taskIds: endTaskIds,
@@ -234,7 +262,9 @@ const PhaseAdvancement = () => {
             "TaskMoved",
             draggableId,
             startColumn.title,
-            endColumn.title
+            endColumn.title,
+            aboveTaskId,
+            belowTaskId
           );
           fetchData();
         } catch (error) {
