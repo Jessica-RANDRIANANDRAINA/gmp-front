@@ -245,6 +245,42 @@ const AllActivityKanban = ({
           [newColumn.id]: newColumn,
         },
       });
+      if (connection) {
+        try {
+          const taskDraggedId = draggableId?.split(".")?.[0];
+          if (activitype === "Transverse") {
+            await connection.invoke(
+              "TransverseMoved",
+              taskDraggedId,
+              startColumn.title,
+              endColumn.title,
+              aboveTaskId,
+              belowTaskId
+            );
+          } else if (activitype === "InterContract") {
+            await connection.invoke(
+              "IntercontractMoved",
+              taskDraggedId,
+              startColumn.title,
+              endColumn.title,
+              aboveTaskId,
+              belowTaskId
+            );
+          } else {
+            await connection.invoke(
+              "TaskActivityMoved",
+              taskDraggedId,
+              startColumn.title,
+              endColumn.title,
+              aboveTaskId,
+              belowTaskId
+            );
+          }
+          fetchData();
+        } catch (error) {
+          console.error(`Error at calling task moved: ${error}`);
+        }
+      }
     } else {
       // Moving between columns
       const startTaskIds = Array.from(startColumn.activityIds);
@@ -285,21 +321,27 @@ const AllActivityKanban = ({
               "TransverseMoved",
               taskDraggedId,
               startColumn.title,
-              endColumn.title
+              endColumn.title,
+              aboveTaskId,
+              belowTaskId
             );
           } else if (activitype === "InterContract") {
             await connection.invoke(
               "IntercontractMoved",
               taskDraggedId,
               startColumn.title,
-              endColumn.title
+              endColumn.title,
+              aboveTaskId,
+              belowTaskId
             );
           } else {
             await connection.invoke(
               "TaskActivityMoved",
               taskDraggedId,
               startColumn.title,
-              endColumn.title
+              endColumn.title,
+              aboveTaskId,
+              belowTaskId
             );
           }
           fetchData();
