@@ -101,19 +101,19 @@ const CustomSelect = ({
       </button>
       <div
         ref={dropdown}
-        className={`absolute z-999999  w-full bg-white dark:bg-black border border-stroke rounded-lg mt-1 transition-transform duration-200 ease-in-out transform ${
+        className={`absolute z-999999  w-full bg-white dark:bg-black border border-stroke max-h-52 overflow-y-scroll rounded-lg mt-1 transition-transform duration-200 ease-in-out transform ${
           isOpen
             ? "scale-y-100 scale-x-100 opacity-100 "
             : " scale-y-0 scale-x-0 opacity-0 "
         } ${isNearLeft ? "left-0" : "right-0"}  `}
-        style={{ transformOrigin: "top", overflow: "hidden" }}
+        style={{ transformOrigin: "top" }}
       >
         {data?.map((option, index) => (
           <div
             key={index}
             onClick={() => handleSelect(option)}
             className={`py-2 px-4 cursor-pointer text-sm  dark:text-bodydark hover:bg-gray-3 dark:hover:bg-boxdark2 rounded-md ${
-              value === option ? "bg-gray-3 dark:bg-boxdark2" :""
+              value === option ? "bg-gray-3 dark:bg-boxdark2" : ""
             }`}
             style={{
               height: "40px",
