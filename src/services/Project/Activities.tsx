@@ -191,3 +191,15 @@ export const deleteTaskActivity = async (taskActivityId: string) => {
     throw new Error(`Error at delete task activity project: ${error}`);
   }
 };
+
+// initialize space ranking
+export const initializeSpaceRanking = async () => {
+  try {
+    const response = await axios.put(
+      `${endPoint}/api/Activity/rank/initialize/`
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(`Error at initialize space ranking activity: ${error}`);
+  }
+};

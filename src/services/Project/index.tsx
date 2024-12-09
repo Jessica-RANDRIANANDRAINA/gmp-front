@@ -12,8 +12,8 @@ import {
   updateTeamProject,
   getPhaseById,
   updatePhaseSettings,
-  getCountProject, 
-  updateProjectState
+  getCountProject,
+  updateProjectState,
 } from "./ProjectServices";
 
 import {
@@ -37,6 +37,7 @@ import {
   createTaskActivity,
   updateTaskActicity,
   deleteTaskActivity,
+  initializeSpaceRanking,
 } from "./Activities";
 
 export {
@@ -70,6 +71,7 @@ export {
   createTaskActivity,
   updateTaskActicity,
   deleteTaskActivity,
-  getCountProject, 
-  updateProjectState
+  getCountProject,
+  updateProjectState,
+  initializeSpaceRanking,
 };

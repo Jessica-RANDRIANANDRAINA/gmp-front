@@ -6,6 +6,7 @@ import {
   actualiseUserData,
   getAllUserPaginated,
 } from "../../services/User";
+import { initializeSpaceRanking } from "../../services/Project";
 import { getAllMyHabilitation } from "../../services/Function/UserFunctionService";
 import { IMyHabilitation } from "../../types/Habilitation";
 import { PulseLoader } from "react-spinners";
@@ -30,6 +31,8 @@ const ManageUser = () => {
     habilitation: "",
   });
   const [isSearchButtonClicked, setIsSearchButtonClicked] = useState(false);
+  const [loadingInitializeSpaceRanking, setLoadingInitializeSpaceRanking] =
+    useState<boolean>(false);
 
   const getHab = async () => {
     const hab = await getAllMyHabilitation();
@@ -87,13 +90,24 @@ const ManageUser = () => {
       setLoadingActualise(false);
     }
   };
+  const handleInitializeSpaceRanking = async () => {
+    setLoadingInitializeSpaceRanking(true);
+    try {
+      await initializeSpaceRanking();
+      notyf.success("space ranking initialisé");
+    } catch (error) {
+      notyf.error("Une erreur s'est produite lors de l'initialisation");
+    } finally {
+      setLoadingInitializeSpaceRanking(false);
+    }
+  };
   return (
     <ProjectLayout>
       <div className="mx-2 p-4 md:mx-10">
         <>
           {/* ACTUALIZE START */}
           <div
-            className={`w-full mb-2 items-center ${
+            className={`w-full space-x-2 mb-2 items-center ${
               myHabilitation?.admin?.actualizeUserData ? "flex" : "hidden"
             }`}
           >
@@ -111,6 +125,21 @@ const ManageUser = () => {
                 <></>
               )}
               Actualiser
+            </button>
+            <button
+              type="button"
+              className={`md:w-fit gap-2 flex justify-center w-full cursor-pointer mt-2 py-2 lg:px-3 xl:px-2  text-center font-medium text-sm text-white hover:bg-opacity-90  border border-primaryGreen bg-primaryGreen rounded-lg dark:border-darkgreen dark:bg-darkgreen dark:hover:bg-opacity-90  md:ease-in md:duration-300 md:transform  
+                   `}
+              onClick={handleInitializeSpaceRanking}
+            >
+              {loadingInitializeSpaceRanking ? (
+                <div>
+                  <PulseLoader size={5} className="mr-2" color={"#fff"} />
+                </div>
+              ) : (
+                <></>
+              )}
+              Initialize space ranking
             </button>
           </div>
           {/* ACTUALIZE END */}
