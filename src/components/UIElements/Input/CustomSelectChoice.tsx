@@ -92,7 +92,7 @@ const CustomSelectChoice = ({
 
   return (
     <div className="relative inline-block" ref={dropdownRef}>
-      <label className="mb-2.5 min-w-20 leading-relaxed block font-semibold font-poppins text-sm text-black dark:text-white">
+      <label className="mb-1 min-w-20 leading-relaxed block font-semibold font-poppins text-sm text-black dark:text-white">
         {label}
       </label>
       <button

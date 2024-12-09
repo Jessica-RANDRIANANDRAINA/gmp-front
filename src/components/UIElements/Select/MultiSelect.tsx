@@ -126,7 +126,7 @@ const MultiSelect = ({
 
   return (
     <div className={`relative ${className} `}>
-      <label className="mb-2.5 min-w-20 block text-sm font-medium text-black dark:text-white">
+      <label className="mb-1 min-w-20 block text-sm font-medium text-black dark:text-white">
         {label}
         {required && <span className="text-red-500 ml-1">*</span>}
       </label>

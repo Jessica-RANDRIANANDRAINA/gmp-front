@@ -47,7 +47,7 @@ const CustomInputUserSpecifiedSearch = ({
   return (
     <div className="relative text-sm">
       <div>
-        <label className="mb-2.5 font-poppins font-semibold leading-relaxed block text-sm text-black dark:text-white">
+        <label className="mb-1 font-poppins font-semibold leading-relaxed block text-sm text-black dark:text-white">
           {label}
         </label>
         <input

@@ -33,7 +33,7 @@ const CustomInput = ({
   }, [error]);
   return (
     <div className={`${className} text-sm`}>
-      <label className="mb-2.5 font-poppins font-semibold leading-relaxed block text-sm text-black dark:text-white ">
+      <label className="mb-1 font-poppins font-semibold leading-relaxed block text-sm text-black dark:text-white ">
         <span className={`${help ? "cursor-help relative group" : ""} `}>
           {label}
           {required && <span className="text-red-500 ml-1">*</span>}
