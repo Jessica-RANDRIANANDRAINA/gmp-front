@@ -12,7 +12,7 @@ const Breadcrumb = ({ paths }: BreadcrumbProps) => {
   return (
     <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
       <nav>
-        <ol className="flex items-center gap-2">
+        <ol className="flex items-center gap-2 whitespace-nowrap">
           {paths.map((path, index) => (
             <React.Fragment key={index}>
               {path.to ? (

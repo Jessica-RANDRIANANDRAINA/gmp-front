@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ProjectLayout from "../../../layout/ProjectLayout";
+import Breadcrumb from "../../../components/BreadCrumbs/BreadCrumb";
 import { TableProjet } from "../../../components/Tables/projets";
 import ArchiveProject from "../../../components/Modals/Project/ArchiveProject";
 import {
@@ -117,32 +118,37 @@ const ManageProjects = () => {
     <ProjectLayout>
       <div className="mx-2 p-4 md:mx-10 ">
         <>
-          {/* ===== ADD PROJECT START =====*/}
-          <div className="w-full mb-2 flex justify-end  items-center">
-            <button
-              onClick={() => navigate("/gmp/project/add")}
-              className={`md:w-fit gap-2 flex justify-center w-full cursor-pointer mt-2 py-2 lg:px-3 xl:px-2  text-center font-medium text-sm text-white hover:bg-opacity-90  border border-primaryGreen bg-primaryGreen rounded-lg dark:border-darkgreen dark:bg-darkgreen dark:hover:bg-opacity-90  md:ease-in md:duration-300 md:transform  
+          <div className="flex flex-col md:flex-row">
+            <Breadcrumb
+              paths={[{ name: "Liste des Projets", to: "/gmp/project/list" }]}
+            />
+            {/* ===== ADD PROJECT START =====*/}
+            <div className="w-full mb-2 flex justify-end  items-center">
+              <button
+                onClick={() => navigate("/gmp/project/add")}
+                className={`md:w-fit gap-2 flex justify-center w-full cursor-pointer mt-2 py-2 lg:px-3 xl:px-2  text-center font-medium text-sm text-white hover:bg-opacity-90  border border-primaryGreen bg-primaryGreen rounded-lg dark:border-darkgreen dark:bg-darkgreen dark:hover:bg-opacity-90  md:ease-in md:duration-300 md:transform  
                    `}
-            >
-              <svg
-                width="15"
-                height="15"
-                viewBox="0 0 20 20"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
               >
-                <path
-                  d="M6 12H18M12 6V18"
-                  stroke="#fff"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                ></path>
-              </svg>
-              Ajouter un nouveau projet
-            </button>
+                <svg
+                  width="15"
+                  height="15"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M6 12H18M12 6V18"
+                    stroke="#fff"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  ></path>
+                </svg>
+                Ajouter un nouveau projet
+              </button>
+            </div>
+            {/* ===== ADD PROJECT END =====*/}
           </div>
-          {/* ===== ADD PROJECT END =====*/}
           {/* ===== TABLE PROJECT LIST START =====*/}
           <TableProjet
             setShowModalDelete={setShowModalDelete}
