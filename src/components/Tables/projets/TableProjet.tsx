@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react";
-import { CustomInput, CustomSelect } from "../../UIElements";
+import {
+  CustomInput,
+  CustomSelect,
+  CustomInputUserSpecifiedSearch,
+} from "../../UIElements";
+
 import { formatDate } from "../../../services/Function/DateServices";
-// import { decodeToken } from "../../../services/Function/TokenService";
+
 import Pagination from "../Pagination";
 import ListUsers from "../../UIElements/ListUsers";
 import { getAllMyHabilitation } from "../../../services/Function/UserFunctionService";
@@ -16,6 +21,9 @@ const TableProjet = ({
   setIdProjectForDetails,
   totalProjectCount,
   search,
+  availableUser,
+  selectedUserInput,
+  setSelecteduserInput,
   setSearch,
   setProjectsToDelete,
   setShowModalDelete,
@@ -40,6 +48,25 @@ const TableProjet = ({
     startDate: string | undefined;
     endDate: string | undefined;
   };
+  availableUser: {
+    id: string;
+    name: string;
+    email: string;
+  }[];
+  selectedUserInput: Array<{
+    id: string;
+    name: string;
+    email: string;
+  }>;
+  setSelecteduserInput: React.Dispatch<
+    React.SetStateAction<
+      Array<{
+        id: string;
+        name: string;
+        email: string;
+      }>
+    >
+  >;
   setProjectsToDelete: React.Dispatch<React.SetStateAction<Array<string>>>;
   setProjectsSelected: React.Dispatch<React.SetStateAction<Array<string>>>;
   setShowModalDelete: React.Dispatch<React.SetStateAction<boolean>>;
@@ -168,13 +195,13 @@ const TableProjet = ({
     setSearch({
       ...search,
       title: "",
-      member: "",
       priority: "Tous",
       criticity: "Tous",
       completionPercentage: "Tous",
       startDate: "",
       endDate: "",
     });
+    setSelecteduserInput([]);
     setIsSearchButtonClicked(true);
   };
 
@@ -228,10 +255,17 @@ const TableProjet = ({
     }
   };
 
+  const handleRemoveUserSelectedInput = (userId: string) => {
+    const updatedSelectedUsers = selectedUserInput.filter(
+      (user) => user.id !== userId
+    );
+    setSelecteduserInput(updatedSelectedUsers);
+  };
+
   return (
     <div className="bg-white  min-h-[80vh] pt-2 shadow-1 rounded-lg border border-zinc-200 dark:border-strokedark dark:bg-boxdark">
       {/* ===== FILTER START ===== */}
-      <div className="flex m-5 flex-wrap justify-between items-center">
+      <div className="flex gap-3 m-5 flex-wrap justify-between items-center">
         <div
           onKeyDown={handleKeyDown}
           className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-9 grid-cols-1 gap-3 w-full"
@@ -249,7 +283,15 @@ const TableProjet = ({
               });
             }}
           />
-          <CustomInput
+          <CustomInputUserSpecifiedSearch
+            label="Membre"
+            rounded="medium"
+            placeholder="Rechercher"
+            user={availableUser}
+            userSelected={selectedUserInput}
+            setUserSelected={setSelecteduserInput}
+          />
+          {/* <CustomInput
             type="text"
             value={search.member}
             label="Membre"
@@ -261,7 +303,7 @@ const TableProjet = ({
                 member: e.target.value,
               });
             }}
-          />
+          /> */}
           <CustomSelect
             label="Priorité"
             data={["Tous", "Elevée", "Moyenne", "Faible"]}
@@ -357,6 +399,24 @@ const TableProjet = ({
               </button>
             </div>
           </div>
+        </div>
+        <div className="grid grid-cols-8 gap-2">
+          {selectedUserInput.length > 0 &&
+            selectedUserInput?.map((user) => (
+              <div key={user.id}>
+                <div className="flex mt-2.5 justify-between items-center text-sm border   rounded-md shadow-sm  bg-gray-100 dark:bg-gray-800 transition hover:shadow-md">
+                  <span className="px-3 py-2 whitespace-nowrap overflow-hidden text-ellipsis text-gray-700 dark:text-gray-300 font-medium">
+                    {user?.name}
+                  </span>
+                  <button
+                    className="flex items-center justify-center px-3 py-2 text-red-500 dark:text-red-400 hover:text-white dark:hover:text-whiten hover:bg-red-500 transition rounded-r-md focus:outline-none focus:ring-2 focus:ring-red-500"
+                    onClick={() => handleRemoveUserSelectedInput(user.id)}
+                  >
+                    ✕
+                  </button>
+                </div>
+              </div>
+            ))}
         </div>
       </div>
       {/* ===== FILTER END ===== */}

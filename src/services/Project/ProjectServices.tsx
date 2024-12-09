@@ -9,7 +9,7 @@ export const getAllProject = async (
   pageNumber?: number,
   pageSize?: number,
   title?: string,
-  member?: string,
+  member?: string[],
   priority?: string,
   criticity?: string,
   completionPercentage?: string,
@@ -22,13 +22,18 @@ export const getAllProject = async (
       pageSize,
     };
     if (title) params.title = title;
-    if (member) params.member = member;
+    if (member) {
+      member.forEach((user, index) => {
+        params[`Members[${index}]`] = user;
+      });
+    }
     if (priority) params.priority = priority;
     if (criticity) params.criticity = criticity;
     if (completionPercentage)
       params.completionPercentage = completionPercentage;
     if (startDate) params.startDate = startDate;
     if (endDate) params.endDate = endDate;
+
     const response = await axios.get(`${endPoint}/api/Project/all`, { params });
     return response.data;
   } catch (error) {
@@ -51,7 +56,7 @@ export const getAllLevelProjectByUserId = async (
   pageNumber?: number,
   pageSize?: number,
   title?: string,
-  member?: string,
+  member?: string[],
   priority?: string,
   criticity?: string,
   completionPercentage?: string,
@@ -64,7 +69,11 @@ export const getAllLevelProjectByUserId = async (
       pageSize,
     };
     if (title) params.title = title;
-    if (member) params.member = member;
+    if (member) {
+      member.forEach((user, index) => {
+        params[`Members[${index}]`] = user;
+      });
+    }
     if (priority) params.priority = priority;
     if (criticity) params.criticity = criticity;
     if (completionPercentage)

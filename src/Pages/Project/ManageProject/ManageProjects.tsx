@@ -8,9 +8,14 @@ import {
   getAllLevelProjectByUserId,
   getAllProject,
 } from "../../../services/Project";
+import { getAllUsers } from "../../../services/User";
 import { getAllMyHabilitation } from "../../../services/Function/UserFunctionService";
 import { decodeToken } from "../../../services/Function/TokenService";
-
+type TSubordinate = {
+  id: string;
+  name: string;
+  email: string;
+};
 const ManageProjects = () => {
   const [projectData, setProjectData] = useState<Array<any> | null>(null);
   const [projectToModif, setProjectToModif] = useState([]);
@@ -39,6 +44,15 @@ const ManageProjects = () => {
     startDate: undefined as string | undefined,
     endDate: undefined as string | undefined,
   });
+  const [collaborator, setCollaborator] = useState<
+    Array<{ id: string; name: string; email: string }>
+  >([]);
+  const [selectedUserInput, setSelecteduserInput] = useState<
+    Array<{ id: string; name: string; email: string }>
+  >([]);
+  const availableUser = collaborator.filter(
+    (user) => !selectedUserInput.some((selected) => selected.id === user.id)
+  );
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -70,6 +84,20 @@ const ManageProjects = () => {
     }
   }, [projectToModif]);
 
+  // fetch user
+  const fetchuser = async () => {
+    const users: TSubordinate[] = await getAllUsers();
+    const transformedArray = users?.map(({ id, name, email }) => ({
+      id,
+      name,
+      email,
+    }));
+    setCollaborator(transformedArray);
+  };
+  useEffect(() => {
+    fetchuser();
+  }, []);
+
   // fetch all project related to the user connected
   const fetchProject = async () => {
     const decode = decodeToken("pr");
@@ -79,18 +107,21 @@ const ManageProjects = () => {
       search.completionPercentage === "Tous" ? "" : search.completionPercentage;
     const criticity = search?.criticity === "Tous" ? "" : search?.criticity;
     const priority = search?.priority === "Tous" ? "" : search?.priority;
+    const userSelectedName = selectedUserInput?.map((user) => user.name);
+
     if (hab?.project?.watchAllProject) {
       const project = await getAllProject(
         page?.pageNumber,
         page?.pageSize,
         search?.title,
-        search?.member,
+        userSelectedName,
         priority,
         criticity,
         completion,
         search?.startDate,
         search?.endDate
       );
+
       setProjectData(project?.project);
       setTotalProjectCount(project?.totalCount);
     } else {
@@ -100,7 +131,7 @@ const ManageProjects = () => {
         page?.pageNumber,
         page?.pageSize,
         search?.title,
-        search?.member,
+        userSelectedName,
         priority,
         criticity,
         completion,
@@ -170,6 +201,9 @@ const ManageProjects = () => {
             setIsSearchButtonClicked={setIsSearchButtonClicked}
             setSearch={setSearch}
             search={search}
+            availableUser={availableUser}
+            selectedUserInput={selectedUserInput}
+            setSelecteduserInput={setSelecteduserInput}
           />
           {/* ===== TABLE PROJECT LIST END =====*/}
           {/* ===== MODAL DELETE START ===== */}
