@@ -221,11 +221,21 @@ const TableProjet = ({
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      setIsSearchButtonClicked(true);
+    }
+  };
+
   return (
     <div className="bg-white  min-h-[80vh] pt-2 shadow-1 rounded-lg border border-zinc-200 dark:border-strokedark dark:bg-boxdark">
       {/* ===== FILTER START ===== */}
       <div className="flex m-5 flex-wrap justify-between items-center">
-        <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-9 grid-cols-1 gap-3 w-full">
+        <div
+          onKeyDown={handleKeyDown}
+          className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-9 grid-cols-1 gap-3 w-full"
+        >
           <CustomInput
             type="text"
             value={search.title}
