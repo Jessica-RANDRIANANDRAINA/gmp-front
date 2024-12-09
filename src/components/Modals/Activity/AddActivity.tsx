@@ -6,9 +6,9 @@ import { BeatLoader } from "react-spinners";
 import { IActivityAdd } from "../../../types/Project";
 import {
   createInterContract,
-  createTaskActivity,
   createTransverse,
   getProjectByUserId,
+  createTaskPhase,
 } from "../../../services/Project";
 import { v4 as uuid4 } from "uuid";
 // import { getMondayAndFriday } from "../../../services/Function/DateServices";
@@ -109,18 +109,25 @@ const AddActivity = ({
     try {
       const id = uuid4();
       if (activityData?.type === "Projet") {
+        const formatUser = [
+          {
+            userid: userid,
+            taskid: id,
+          },
+        ];
         const dataToSend = {
           id,
           title: activityData?.title,
           description: activityData?.description,
-          dailyEffort: activityData?.dailyEffort,
-          startDate: activityData?.startDate,
-          status: activityData?.status,
-          userid,
           phaseid: activityData?.phaseId,
           projectid: activityData?.projectId,
+          priority: "Moyen",
+          startDate: activityData?.startDate,
+          dailyEffort: activityData?.dailyEffort,
+          status: activityData?.status,
+          listUsers: formatUser,
         };
-        await createTaskActivity(dataToSend);
+        await createTaskPhase(dataToSend);
       } else if (activityData?.type === "Transverse") {
         const dataToSend = {
           id,
