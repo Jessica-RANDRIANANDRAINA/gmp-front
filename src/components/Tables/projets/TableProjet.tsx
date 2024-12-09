@@ -66,7 +66,7 @@ const TableProjet = ({
     }>
   >;
 }) => {
-  const [entriesPerPage, setEntriesPerPage] = useState(5);
+  const [entriesPerPage, setEntriesPerPage] = useState(10);
   const [actualPage, setActualPage] = useState(1);
   const [pageNumbers, setPageNumbers] = useState(1);
   const [dataSorted, setDataSorted] = useState({

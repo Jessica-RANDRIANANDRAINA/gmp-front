@@ -28,7 +28,7 @@ const ManageProjects = () => {
   const [totalProjectCount, setTotalProjectCount] = useState<number>(0);
   const [page, setPage] = useState({
     pageNumber: 1,
-    pageSize: 5,
+    pageSize: 10,
   });
   const [search, setSearch] = useState({
     title: "",
