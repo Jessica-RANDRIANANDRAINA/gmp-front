@@ -40,8 +40,8 @@ const UpdateActivity = ({
     phaseTitle: activity?.content?.phaseTitle,
     projectId: activity?.content?.projectId,
     phaseId: activity?.content?.phaseId,
-    transverseType: activity?.content?.subType,
-    intercontractType: activity?.content?.subType,
+    transverseType: activity?.content?.subtype,
+    intercontractType: activity?.content?.subtype,
     status: activity?.content?.status,
     priority: activity?.content?.priority,
   });
@@ -175,6 +175,7 @@ const UpdateActivity = ({
           description: activityData.description,
           status: activityData.status,
         };
+
         if (activityData.id) {
           await updateIntercontract(activityData.id, dataToSend);
         }
@@ -187,10 +188,7 @@ const UpdateActivity = ({
           priority: activityData?.priority,
         };
 
-
         if (activityData.id) {
-          console.log("77");
-          console.log(activityData)
           await updateTaskProject(activityData.id, dataToSend);
           console.log("88");
         }

@@ -148,6 +148,7 @@ const AllActivityCalendar = ({
               description: intercontract.description,
               status: intercontract.status,
               type: intercontract.type,
+              subType: intercontract.subType,
               dailyEffort: intercontract.dailyEffort,
               phaseid: intercontract?.phaseid,
               projectid: intercontract?.projectid,
@@ -218,6 +219,7 @@ const AllActivityCalendar = ({
         phaseId: task?.phaseid,
         projectId: task?.projectid,
         priority: task?.priority,
+        subtype: task?.subType,
       },
     };
     setTaskData(data);
