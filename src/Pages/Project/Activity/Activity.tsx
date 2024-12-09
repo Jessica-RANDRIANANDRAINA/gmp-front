@@ -411,8 +411,7 @@ const Activity = () => {
                       search?.startDate !== undefined ||
                       search?.endDate !== undefined ||
                       selectedOptions.length !== 3 ||
-                      (selectedUserInput.length > 0 &&
-                        selectedUserInput?.[0]?.id !== decodedToken?.jti)
+                      selectedUserInput.length > 0
                         ? ""
                         : "hidden"
                     }`}
