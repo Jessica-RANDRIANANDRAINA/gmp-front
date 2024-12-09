@@ -222,16 +222,21 @@ const AllActivityKanban = ({
 
     // Moving within the same column
     if (startColumn === endColumn) {
-      const newTaskIds = Array.from(startColumn.activityIds);
+      const newTaskIds = Array.from(startColumn.activityIds) as string[];
       newTaskIds.splice(source.index, 1);
       newTaskIds.splice(destination.index, 0, draggableId);
 
-      const aboveTaskId =
-        destination.index > 0 ? newTaskIds[destination.index - 1] : null;
-      const belowTaskId =
-        destination.index < newTaskIds.length - 1
-          ? newTaskIds[destination.index + 1]
+      const aboveTaskIdWithUser: string | null =
+        destination.index > 0
+          ? (newTaskIds[destination.index - 1] as string)
           : null;
+      const belowTaskIdWithUser: string | null =
+        destination.index < newTaskIds.length - 1
+          ? (newTaskIds[destination.index + 1] as string)
+          : null;
+
+      const aboveTaskId = aboveTaskIdWithUser?.split(".")?.[0];
+      const belowTaskId = belowTaskIdWithUser?.split(".")?.[0];
 
       const newColumn = {
         ...startColumn,
@@ -283,18 +288,23 @@ const AllActivityKanban = ({
       }
     } else {
       // Moving between columns
-      const startTaskIds = Array.from(startColumn.activityIds);
-      const endTaskIds = Array.from(endColumn.activityIds);
+      const startTaskIds = Array.from(startColumn.activityIds) as string[];
+      const endTaskIds = Array.from(endColumn.activityIds) as string[];
 
       startTaskIds.splice(source.index, 1);
       endTaskIds.splice(destination.index, 0, draggableId);
 
-      const aboveTaskId =
-        destination.index > 0 ? endTaskIds[destination.index - 1] : null;
-      const belowTaskId =
-        destination.index < endTaskIds.length - 1
-          ? endTaskIds[destination.index + 1]
+      const aboveTaskIdWithUser: string | null =
+        destination.index > 0
+          ? (endTaskIds[destination.index - 1] as string)
           : null;
+      const belowTaskIdWithUser: string | null =
+        destination.index < endTaskIds.length - 1
+          ? (endTaskIds[destination.index + 1] as string)
+          : null;
+
+      const aboveTaskId = aboveTaskIdWithUser?.split(".")?.[0];
+      const belowTaskId = belowTaskIdWithUser?.split(".")?.[0];
 
       const newStart = {
         ...startColumn,
