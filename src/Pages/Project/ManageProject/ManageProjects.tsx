@@ -33,9 +33,9 @@ const ManageProjects = () => {
   const [search, setSearch] = useState({
     title: "",
     member: "",
-    priority: "",
-    criticity: "",
-    completionPercentage: "",
+    priority: "Tous",
+    criticity: "Tous",
+    completionPercentage: "Tous",
     startDate: undefined as string | undefined,
     endDate: undefined as string | undefined,
   });
@@ -75,15 +75,19 @@ const ManageProjects = () => {
     const decode = decodeToken("pr");
 
     const hab = await getAllMyHabilitation();
+    const completion =
+      search.completionPercentage === "Tous" ? "" : search.completionPercentage;
+    const criticity = search?.criticity === "Tous" ? "" : search?.criticity;
+    const priority = search?.priority === "Tous" ? "" : search?.priority;
     if (hab?.project?.watchAllProject) {
       const project = await getAllProject(
         page?.pageNumber,
         page?.pageSize,
         search?.title,
         search?.member,
-        search?.priority,
-        search?.criticity,
-        search?.completionPercentage,
+        priority,
+        criticity,
+        completion,
         search?.startDate,
         search?.endDate
       );
@@ -97,9 +101,9 @@ const ManageProjects = () => {
         page?.pageSize,
         search?.title,
         search?.member,
-        search?.priority,
-        search?.criticity,
-        search?.completionPercentage,
+        priority,
+        criticity,
+        completion,
         search?.startDate,
         search?.endDate
       );

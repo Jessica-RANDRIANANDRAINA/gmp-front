@@ -169,9 +169,9 @@ const TableProjet = ({
       ...search,
       title: "",
       member: "",
-      priority: "",
-      criticity: "",
-      completionPercentage: "",
+      priority: "Tous",
+      criticity: "Tous",
+      completionPercentage: "Tous",
       startDate: "",
       endDate: "",
     });
@@ -254,7 +254,7 @@ const TableProjet = ({
           />
           <CustomSelect
             label="Priorité"
-            data={["Elevée", "Moyenne", "Faible"]}
+            data={["Tous", "Elevée", "Moyenne", "Faible"]}
             value={search.priority}
             onValueChange={(e) => {
               setSearch({
@@ -265,7 +265,7 @@ const TableProjet = ({
           />
           <CustomSelect
             label="Criticité"
-            data={["Urgente", "Normale"]}
+            data={["Tous", "Urgente", "Normale"]}
             value={search.criticity}
             onValueChange={(e) => {
               setSearch({
@@ -277,7 +277,7 @@ const TableProjet = ({
 
           <CustomSelect
             label="Avancement"
-            data={["0", "25", "50", "75", "100"]}
+            data={["Tous", "0", "25", "50", "75", "100"]}
             value={search.completionPercentage}
             onValueChange={(e) => {
               setSearch({
