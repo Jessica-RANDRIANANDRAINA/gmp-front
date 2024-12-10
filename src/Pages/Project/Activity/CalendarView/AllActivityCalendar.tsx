@@ -240,13 +240,14 @@ const AllActivityCalendar = ({
         dailyEffort: task?.dailyEffort,
         description: task?.description,
         id: task?.id,
-        startDate: task?.start,
+        startDate: task?.startDate,
         status: task?.status,
         title: task?.title,
         type: task?.type,
         phaseId: task?.phaseid,
         projectId: task?.projectid,
         priority: task?.priority,
+        subType: task?.subType,
       },
     };
     setTaskData(data);

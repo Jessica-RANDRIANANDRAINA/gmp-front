@@ -57,12 +57,6 @@ const UpdateActivity = ({
   });
   // const { monday, friday } = getMondayAndFriday();
 
-  useEffect(()=>{
-    console.log("********************")
-    console.log(activity)
-    console.log("********************")
-  }, [activity])
-
   const fetchProjectData = async () => {
     try {
       if (userid) {
@@ -196,7 +190,6 @@ const UpdateActivity = ({
 
         if (activityData.id) {
           await updateTaskProject(activityData.id, dataToSend);
-          console.log("88");
         }
       }
       setIsRefreshNeeded(true);
