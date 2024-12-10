@@ -433,7 +433,7 @@ const Activity = () => {
                     });
                   }}
                 />
-                <div className="flex items-end gap-2 ">
+                <div className="flex items-end gap-2  mb-0.5 ">
                   <div
                     className={`pb-2 ${
                       search?.startDate !== undefined ||
@@ -477,7 +477,7 @@ const Activity = () => {
                     </button>
                   </div>
                 </div>
-                <div className="flex items-end text-sm justify-center">
+                <div className="flex items-end text-sm mb-0.5 justify-center">
                   <span
                     onClick={() => {
                       setIsAddActivity(true);
