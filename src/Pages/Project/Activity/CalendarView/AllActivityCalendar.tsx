@@ -109,6 +109,7 @@ const AllActivityCalendar = ({
           selectedOptions,
           Ids.length > 0 ? Ids : [userid]
         );
+
         setData(response);
 
         const calendarEvents = response.reduce(
@@ -119,6 +120,7 @@ const AllActivityCalendar = ({
             let startDate = new Date(
               intercontract?.startDate || search?.startDate || new Date()
             );
+
             startDate.setHours(0, 0, 0, 0); // Début de la journée pour l'alignement initial
 
             if (index > 0) {
@@ -139,13 +141,18 @@ const AllActivityCalendar = ({
             }
 
             endDate.setHours(calculatedEndHour, 0, 0, 0);
-
+            let startDateLocalIsoString = new Date(
+              startDate.getTime() - startDate.getTimezoneOffset() * 60000
+            ).toISOString();
+            let endDateLocalIsoString = new Date(
+              endDate.getTime() - endDate.getTimezoneOffset() * 60000
+            ).toISOString();
             // Ajout de l'événement
             acc.push({
               id: `${intercontract.id}.${intercontract?.userid}`,
               title: intercontract.title,
-              start: startDate.toISOString(),
-              end: endDate.toISOString(),
+              start: startDateLocalIsoString,
+              end: endDateLocalIsoString,
               description: intercontract.description,
               status: intercontract.status,
               type: intercontract.type,
