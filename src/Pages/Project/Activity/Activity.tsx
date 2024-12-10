@@ -375,7 +375,6 @@ const Activity = () => {
                     rounded="medium"
                     placeholder="Nom"
                     user={availableSubordinate}
-                    className="text-xs"
                     userSelected={selectedUserInput}
                     setUserSelected={setSelecteduserInput}
                   />
