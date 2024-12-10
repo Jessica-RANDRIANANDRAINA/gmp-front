@@ -263,6 +263,7 @@ const UpdateActivity = ({
             >
               <CustomSelect
                 required={true}
+                disabled={true}
                 label="Titre du projet"
                 data={projectTitle}
                 value={

@@ -55,6 +55,7 @@ export interface InputSelectprops
   value?: string;
   onValueChange: (selectedValue: string) => void;
   required?: boolean;
+  disabled?: boolean;
   className?: string;
 }
 

@@ -9,6 +9,7 @@ const CustomSelect = ({
   label,
   className,
   required = false,
+  disabled = false,
 }: InputSelectprops) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isNearLeft, setIsNearLeft] = useState(false);
@@ -68,10 +69,14 @@ const CustomSelect = ({
       <button
         ref={trigger}
         type="button"
-        onClick={() => setIsOpen(!isOpen)}
-        className={`w-full text-sm py-2.5 px-6 md:h-10 border flex items-center justify-between border-stroke dark:border-formStrokedark rounded-lg bg-transparent text-left ${
+        onClick={() => {
+          if (!disabled) {
+            setIsOpen(!isOpen);
+          }
+        }}
+        className={`w-full text-sm py-2.5 px-6 md:h-10 border flex items-center justify-between border-stroke dark:border-formStrokedark rounded-lg  text-left ${
           value ? "dark:text-gray text-black" : "text-bodydark2"
-        }`}
+        } ${disabled ? "bg-slate-200 cursor-default dark:bg-slate-800":"bg-transparent"}`}
       >
         {value || placeholder}
 
