@@ -142,10 +142,10 @@ const AllActivityCalendar = ({
 
             endDate.setHours(calculatedEndHour, 0, 0, 0);
             let startDateLocalIsoString = new Date(
-              startDate.getTime() - startDate.getTimezoneOffset() * 60000
+              startDate.getTime() - startDate.getTimezoneOffset() *20000
             ).toISOString();
             let endDateLocalIsoString = new Date(
-              endDate.getTime() - endDate.getTimezoneOffset() * 60000
+              endDate.getTime() - endDate.getTimezoneOffset() *20000
             ).toISOString();
             // Ajout de l'événement
             acc.push({
