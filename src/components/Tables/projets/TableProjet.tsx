@@ -3,6 +3,7 @@ import {
   CustomInput,
   CustomSelect,
   CustomInputUserSpecifiedSearch,
+  // CustomSelectChoice,
 } from "../../UIElements";
 
 import { formatDate } from "../../../services/Function/DateServices";
@@ -108,6 +109,16 @@ const TableProjet = ({
   const [isAllSelected, setIsAllSelected] = useState(false);
   const [projectSelected, setProjectSelected] = useState<string[]>([]);
   const [myHabilitation, setMyHabilitation] = useState<IMyHabilitation>();
+
+  // const [statusSelectedOptions, setStatusSelectedOptions] = useState<string[]>(
+  //   []
+  // );
+  // const [resetStatusSelectedOptions, setResetStatusSelectedOptions] =
+  //   useState(false);
+  // const handleStatusChange = (selected: string[]) => {
+  //   setStatusSelectedOptions(selected);
+  // };
+
   // const userConnected = decodeToken("pr");
 
   const getHab = async () => {
@@ -118,6 +129,12 @@ const TableProjet = ({
   useEffect(() => {
     getHab();
   }, []);
+
+  // useEffect(()=>{
+  //   console.log("**************")
+  //   console.log(statusSelectedOptions)
+  //   console.log("**************")
+  // }, [statusSelectedOptions])
 
   const sortedData = data?.slice().sort((a: IProjectData, b: IProjectData) => {
     // sort by title
@@ -201,6 +218,11 @@ const TableProjet = ({
       startDate: "",
       endDate: "",
     });
+
+    // setStatusSelectedOptions([]);
+    // setResetStatusSelectedOptions(true);
+    // setTimeout(() => setResetStatusSelectedOptions(false), 0);
+
     setSelecteduserInput([]);
     setIsSearchButtonClicked(true);
   };
@@ -291,19 +313,20 @@ const TableProjet = ({
             userSelected={selectedUserInput}
             setUserSelected={setSelecteduserInput}
           />
-          {/* <CustomInput
-            type="text"
-            value={search.member}
-            label="Membre"
-            placeholder="Rechercher"
+          {/* <CustomSelectChoice
+            label="Status"
+            options={[
+              "En cours",
+              "En retard",
+              "Terminé",
+              "Stand by",
+              "Archivé",
+            ]}
+            onChange={handleStatusChange}
             rounded="medium"
-            onChange={(e) => {
-              setSearch({
-                ...search,
-                member: e.target.value,
-              });
-            }}
+            resetToAll={resetStatusSelectedOptions}
           /> */}
+
           <CustomSelect
             label="Priorité"
             data={["Tous", "Elevée", "Moyenne", "Faible"]}
