@@ -22,8 +22,11 @@ import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
 const notyf = new Notyf({ position: { x: "center", y: "top" } });
 
-const organizeActivityByStatus = (activities: any[]) => {
-  const columns: {
+const organizeActivityByStatus = (
+  activities: any[],
+  visibleColumns: string[] = []
+) => {
+  const allColumns: {
     [key: string]: { id: string; title: string; activityIds: string[] };
   } = {
     "column-1": { id: "column-1", title: "Backlog", activityIds: [] },
@@ -32,6 +35,15 @@ const organizeActivityByStatus = (activities: any[]) => {
     "column-4": { id: "column-4", title: "En pause", activityIds: [] },
     "column-5": { id: "column-5", title: "Abandonné", activityIds: [] },
   };
+
+  const columns =
+    visibleColumns.length > 0
+      ? Object.fromEntries(
+          Object.entries(allColumns).filter(([_, column]) =>
+            visibleColumns.includes(column.title)
+          )
+        )
+      : allColumns;
 
   const activityMap = activities.reduce((acc, activity) => {
     const uniqueKey = `${activity.id}.${activity.userid}`;
@@ -72,7 +84,8 @@ const organizeActivityByStatus = (activities: any[]) => {
     }
     return acc;
   }, {} as { [key: string]: { id: string; content: { title: string; id: string } } });
-  return { activityMap, columns };
+  const columnOrder = Object.keys(columns);
+  return { activityMap, columns, columnOrder };
 };
 
 const AllActivityKanban = ({
@@ -84,6 +97,7 @@ const AllActivityKanban = ({
   isAddActivity,
   setIsAddActivity,
   subordinates,
+  statusSelectedOptions,
 }: {
   selectedOptions: Array<string>;
   search: {
@@ -91,6 +105,7 @@ const AllActivityKanban = ({
     startDate: string | undefined;
     endDate: string | undefined;
   };
+  statusSelectedOptions: string[];
   setSearchClicked: React.Dispatch<React.SetStateAction<boolean>>;
   searchClicked: boolean;
   colors: Record<string, string>;
@@ -117,6 +132,12 @@ const AllActivityKanban = ({
   const [activityData, setActivityData] = useState<any>();
   const deletePopUp = useRef<any>(null);
   const [activeActivityId, setActiveActivityId] = useState<string | null>(null);
+
+  useEffect(()=>{
+    console.log("***************")
+    console.log(statusSelectedOptions)
+    console.log("***************")
+  }, [statusSelectedOptions])
 
   // open add activity modal with parent props trigger
   useEffect(() => {
@@ -172,18 +193,16 @@ const AllActivityKanban = ({
           Ids.length > 0 ? Ids : [userid]
         );
 
-        const { activityMap, columns } = organizeActivityByStatus(response);
+        const { activityMap, columns, columnOrder } = organizeActivityByStatus(
+          response,
+          statusSelectedOptions
+        );
 
         setData({
           acivities: activityMap,
           columns,
-          columnOrder: [
-            "column-1",
-            "column-2",
-            "column-3",
-            "column-4",
-            "column-5",
-          ],
+          columnOrder,
+          
         });
       }
     } catch (error) {

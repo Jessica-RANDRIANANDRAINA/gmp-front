@@ -31,8 +31,10 @@ const AllActivityCalendar = ({
   isAddActivity,
   setIsAddActivity,
   subordinates,
+  statusSelectedOptions,
 }: {
   selectedOptions: Array<string>;
+  statusSelectedOptions: Array<string>;
   search: any;
   setSearchClicked: React.Dispatch<React.SetStateAction<boolean>>;
   searchClicked: boolean;
@@ -101,18 +103,22 @@ const AllActivityCalendar = ({
       } else {
         Ids = search?.ids;
       }
+      
       // if (userid && Ids.length > 0) {
-      if (userid && Ids.length > 0) {
+      if (userid) {
         response = await getAllActivitiesOfUser(
           search?.startDate,
           search?.endDate,
           selectedOptions,
           Ids.length > 0 ? Ids : [userid]
         );
+        const filteredResponse = response.filter(
+          (activity: { status: string }) => statusSelectedOptions.includes(activity.status)
+        );
 
-        setData(response);
+        setData(filteredResponse);
 
-        const calendarEvents = response.reduce(
+        const calendarEvents = filteredResponse.reduce(
           (acc: any[], intercontract: any, index: number) => {
             const dailyEffort = intercontract.dailyEffort || 1;
 

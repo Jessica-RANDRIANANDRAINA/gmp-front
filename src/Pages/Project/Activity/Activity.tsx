@@ -56,8 +56,13 @@ const Activity = () => {
     endDate: undefined as string | undefined,
   });
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+  const [statusSelectedOptions, setStatusSelectedOptions] = useState<string[]>(
+    []
+  );
   const [searchClicked, setSearchClicked] = useState<boolean>(false);
   const [resetCustomSelectChoice, setResetCustomSelectChoice] =
+    useState<boolean>(false);
+  const [resetStatusSelectedOptions, setResetStatusSelectedOptions] =
     useState<boolean>(false);
 
   const [colors, setColors] = useState<Record<string, string>>({});
@@ -167,14 +172,25 @@ const Activity = () => {
     });
 
     setResetCustomSelectChoice(true);
+    setResetStatusSelectedOptions(true);
 
     setSelectedOptions(["Projet", "Transverse", "Intercontract"]);
     setSelecteduserInput([]);
+    setStatusSelectedOptions([
+      "Backlog",
+      "En cours",
+      "Traité",
+      "En pause",
+      "Abandonné",
+    ]);
 
     resetColorMap();
     setSearchClicked(true);
 
-    setTimeout(() => setResetCustomSelectChoice(false), 0);
+    setTimeout(() => {
+      setResetCustomSelectChoice(false);
+      setResetStatusSelectedOptions(false);
+    }, 0);
   };
 
   useEffect(() => {
@@ -361,13 +377,26 @@ const Activity = () => {
               </div>
 
               {/* FILTER BEGIN */}
-              <div className="grid place-content-center grid-cols-1  md:grid-cols-5 lg:grid-cols-6 gap-4 mt-3">
+              <div className="grid place-content-center grid-cols-1  md:grid-cols-6 lg:grid-cols-7  gap-4 mt-3">
                 <CustomSelectChoice
                   label="Type d'activité"
                   options={["Projet", "Transverse", "Intercontract"]}
                   onChange={(selected) => setSelectedOptions(selected)}
                   rounded="medium"
                   resetToAll={resetCustomSelectChoice}
+                />
+                <CustomSelectChoice
+                  label="Status"
+                  options={[
+                    "Backlog",
+                    "En cours",
+                    "Traité",
+                    "En pause",
+                    "Abandonné",
+                  ]}
+                  onChange={(selected) => setStatusSelectedOptions(selected)}
+                  rounded="medium"
+                  resetToAll={resetStatusSelectedOptions}
                 />
                 <div className={`${subordinates.length > 0 ? "" : "hidden"}`}>
                   <CustomInputUserSpecifiedSearch
@@ -404,12 +433,13 @@ const Activity = () => {
                     });
                   }}
                 />
-                <div className="flex items-end gap-2">
+                <div className="flex items-end gap-2 ">
                   <div
                     className={`pb-2 ${
                       search?.startDate !== undefined ||
                       search?.endDate !== undefined ||
                       selectedOptions.length !== 3 ||
+                      statusSelectedOptions.length !== 5 ||
                       selectedUserInput.length > 0
                         ? ""
                         : "hidden"
@@ -511,6 +541,7 @@ const Activity = () => {
                   isAddActivity={isAddActivity}
                   setIsAddActivity={setIsAddActivity}
                   subordinates={subordinates}
+                  statusSelectedOptions={statusSelectedOptions}
                 />
               ) : (
                 <AllActivityCalendar
@@ -522,6 +553,7 @@ const Activity = () => {
                   isAddActivity={isAddActivity}
                   setIsAddActivity={setIsAddActivity}
                   subordinates={subordinates}
+                  statusSelectedOptions={statusSelectedOptions}
                 />
               )}
             </div>
