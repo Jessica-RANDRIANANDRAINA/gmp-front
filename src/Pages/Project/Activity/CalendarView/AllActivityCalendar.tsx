@@ -561,6 +561,7 @@ const AllActivityCalendar = ({
                       handleModifClick(task);
                     }}
                     className="relative cursor-pointer p-4 bg-white dark:bg-boxdark rounded shadow-2 hover:shadow-md hover:shadow-slate-300 dark:hover:shadow-slate-500"
+                    key={task.id}
                   >
                     <div
                       className="absolute top-2 right-1 hover:bg-zinc-100 dark:hover:bg-boxdark2 px-1 h-4 cursor-pointer"
