@@ -463,9 +463,7 @@ const AllActivityKanban = ({
                         </div>
                       )}
                       {acivities?.map((activity: any, index: any) => {
-                        console.log("////////////////")
-                        console.log(activity)
-                        console.log("////////////////")
+                        
                         return (
                           <>
                             <Draggable

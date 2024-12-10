@@ -186,6 +186,7 @@ const UpdateActivity = ({
           dailyEffort: activityData?.dailyEffort,
           title: activityData?.title,
           priority: activityData?.priority,
+          status: activityData?.status,
         };
 
         if (activityData.id) {
@@ -262,7 +263,6 @@ const UpdateActivity = ({
               } `}
             >
               <CustomSelect
-                required={true}
                 disabled={true}
                 label="Titre du projet"
                 data={projectTitle}
@@ -281,7 +281,8 @@ const UpdateActivity = ({
                 }}
               />
               <CustomSelect
-                required={true}
+                
+                disabled
                 className={` ${
                   activityData?.projectTitle === "" ? "hidden" : ""
                 }`}
