@@ -101,12 +101,13 @@ const AllActivityCalendar = ({
       } else {
         Ids = search?.ids;
       }
+      // if (userid && Ids.length > 0) {
       if (userid && Ids.length > 0) {
         response = await getAllActivitiesOfUser(
           search?.startDate,
           search?.endDate,
           selectedOptions,
-          Ids
+          Ids.length > 0 ? Ids : [userid]
         );
         setData(response);
 

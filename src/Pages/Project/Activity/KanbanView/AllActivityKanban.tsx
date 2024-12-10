@@ -117,7 +117,7 @@ const AllActivityKanban = ({
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [search]);
 
   // close delete pop up when click outside
   useEffect(() => {
@@ -145,8 +145,6 @@ const AllActivityKanban = ({
       if (search?.ids.length === 1) {
         if (!search?.ids?.[0]) {
           Ids = subordinates?.map((sub) => sub?.id);
-
-          // Ids = [decodedToken?.jti];
         } else {
           Ids = search?.ids;
         }
@@ -154,12 +152,13 @@ const AllActivityKanban = ({
         Ids = search?.ids;
       }
 
-      if (userid && Ids.length > 0) {
+      // if (userid && Ids.length > 0) {
+      if (userid) {
         response = await getAllActivitiesOfUser(
           search?.startDate,
           search?.endDate,
           selectedOptions,
-          Ids
+          Ids.length > 0 ? Ids : [userid]
         );
 
         const { activityMap, columns } = organizeActivityByStatus(response);
