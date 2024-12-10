@@ -220,7 +220,7 @@ const AllActivityCalendar = ({
         phaseId: task?.phaseid,
         projectId: task?.projectid,
         priority: task?.priority,
-        subtype: task?.subType,
+        subType: task?.subType,
       },
     };
     setTaskData(data);

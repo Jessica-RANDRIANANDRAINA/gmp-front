@@ -40,8 +40,8 @@ const UpdateActivity = ({
     phaseTitle: activity?.content?.phaseTitle,
     projectId: activity?.content?.projectId,
     phaseId: activity?.content?.phaseId,
-    transverseType: activity?.content?.subtype,
-    intercontractType: activity?.content?.subtype,
+    transverseType: activity?.content?.subType,
+    intercontractType: activity?.content?.subType,
     status: activity?.content?.status,
     priority: activity?.content?.priority,
   });
@@ -56,6 +56,12 @@ const UpdateActivity = ({
     phaseId: "",
   });
   // const { monday, friday } = getMondayAndFriday();
+
+  useEffect(()=>{
+    console.log("********************")
+    console.log(activity)
+    console.log("********************")
+  }, [activity])
 
   const fetchProjectData = async () => {
     try {
