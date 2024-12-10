@@ -161,22 +161,17 @@ const AllActivityCalendar = ({
               phaseid: intercontract?.phaseid,
               projectid: intercontract?.projectid,
               user: intercontract?.userid,
+              userList: [
+                {
+                  user: {
+                    name: intercontract?.userName,
+                  },
+                  userid: intercontract?.userid,
+                },
+              ],
             });
 
             return acc;
-            // return {
-            //   id: `${intercontract.id}.${intercontract?.userid}`,
-            //   title: intercontract.title,
-            //   start: startDate.toISOString(),
-            //   end: endDate.toISOString(),
-            //   description: intercontract.description,
-            //   status: intercontract.status,
-            //   type: intercontract.type,
-            //   dailyEffort: intercontract.dailyEffort,
-            //   phaseid: intercontract?.phaseid,
-            //   projectid: intercontract?.projectid,
-            //   user: intercontract?.userid,
-            // };
           },
           []
         );
@@ -359,7 +354,7 @@ const AllActivityCalendar = ({
                     ? colors[extendedProps?.user]
                     : "",
                 }}
-                className={`z-99 grid grid-flow-col overflow-x-clip place-content-between border dark:border-2 border-transparent font-light w-full p-1 text-black dark:text-whiten cursor-pointer text-xs relative group`}
+                className={`z-99 min-h-full max-h-full flex flex-col items-center justify-center overflow-x-clip whitespace-nowrap border dark:border-2 border-transparent font-light w-full p-1 text-black dark:text-whiten cursor-pointer text-xs relative group`}
               >
                 <div>
                   <b>
@@ -371,19 +366,24 @@ const AllActivityCalendar = ({
                   </div>
                 </div>
                 <div
-                  className={`border w-4 flex justify-center items-center p-1 rounded-full ${
-                    extendedProps.type === "Projet"
-                      ? "bg-green-100 text-green-600 border-green-300  dark:bg-green-900 dark:text-green-300 dark:border-green-700"
-                      : extendedProps?.type === "Transverse"
-                      ? "bg-purple-100 text-purple-600 border-purple-300 dark:bg-purple-900 dark:text-purple-300 dark:border-purple-700"
-                      : "bg-red-100 text-red-600 border-red-300  dark:bg-red-900 dark:text-red-300 dark:border-red-700"
-                  }`}
+                  className={`border  flex justify-center items-center p-1 rounded-full 
+                    
+                    ${
+                      extendedProps.type === "Projet"
+                        ? "bg-green-100 text-green-600 border-green-300  dark:bg-green-900 dark:text-green-300 dark:border-green-700"
+                        : extendedProps?.type === "Transverse"
+                        ? "bg-purple-100 text-purple-600 border-purple-300 dark:bg-purple-900 dark:text-purple-300 dark:border-purple-700"
+                        : "bg-red-100 text-red-600 border-red-300  dark:bg-red-900 dark:text-red-300 dark:border-red-700"
+                    } 
+                  
+                  `}
                 >
                   {extendedProps?.type === "Projet"
                     ? "P"
                     : extendedProps?.type === "Transverse"
                     ? "T"
                     : "I"}
+                  {/* <ListUsers data={extendedProps?.userList ?? []} type="all" /> */}
                 </div>
               </div>
             );
