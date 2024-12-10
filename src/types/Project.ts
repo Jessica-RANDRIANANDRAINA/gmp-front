@@ -122,6 +122,7 @@ export interface IActivityAdd {
   type?: string;
   dailyEffort?: number;
   startDate?: string;
+  endDate?: string;
   projectTitle?: string;
   phaseTitle?: string;
   projectId?: string;

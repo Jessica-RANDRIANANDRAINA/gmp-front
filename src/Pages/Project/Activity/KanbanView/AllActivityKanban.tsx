@@ -44,6 +44,7 @@ const organizeActivityByStatus = (activities: any[]) => {
         description: activity.description,
         status: activity.status,
         startDate: activity.startDate,
+        endDate: activity.endDate,
         dailyEffort: activity.dailyEffort ?? 1,
         finished: activity.finished,
         type: activity.type,
@@ -463,7 +464,6 @@ const AllActivityKanban = ({
                         </div>
                       )}
                       {acivities?.map((activity: any, index: any) => {
-                        
                         return (
                           <>
                             <Draggable
@@ -807,7 +807,14 @@ const AllActivityKanban = ({
                                         <div className={`text-xs `}>
                                           {endDate}
                                         </div>
-                                        <div className={`${activity?.content?.user?.[0]?.user?.name ? "": "hidden"}`}>
+                                        <div
+                                          className={`${
+                                            activity?.content?.user?.[0]?.user
+                                              ?.name
+                                              ? ""
+                                              : "hidden"
+                                          }`}
+                                        >
                                           <ListUsers
                                             data={activity?.content?.user ?? []}
                                             type="all"

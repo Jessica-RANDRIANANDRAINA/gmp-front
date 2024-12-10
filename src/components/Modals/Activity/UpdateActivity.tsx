@@ -36,6 +36,7 @@ const UpdateActivity = ({
     type: activity?.content?.type,
     dailyEffort: activity?.content?.dailyEffort,
     startDate: activity?.content?.startDate,
+    endDate: activity?.content?.endDate,
     projectTitle: activity?.content?.projectTitle,
     phaseTitle: activity?.content?.phaseTitle,
     projectId: activity?.content?.projectId,
@@ -187,6 +188,7 @@ const UpdateActivity = ({
           title: activityData?.title,
           priority: activityData?.priority,
           status: activityData?.status,
+          dueDate: activityData?.endDate,
         };
 
         if (activityData.id) {
@@ -281,7 +283,6 @@ const UpdateActivity = ({
                 }}
               />
               <CustomSelect
-                
                 disabled
                 className={` ${
                   activityData?.projectTitle === "" ? "hidden" : ""

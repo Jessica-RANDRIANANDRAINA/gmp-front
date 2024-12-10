@@ -142,17 +142,19 @@ const AllActivityCalendar = ({
 
             endDate.setHours(calculatedEndHour, 0, 0, 0);
             let startDateLocalIsoString = new Date(
-              startDate.getTime() - startDate.getTimezoneOffset() *20000
+              startDate.getTime() - startDate.getTimezoneOffset() * 60000
             ).toISOString();
             let endDateLocalIsoString = new Date(
-              endDate.getTime() - endDate.getTimezoneOffset() *20000
+              endDate.getTime() - endDate.getTimezoneOffset() * 60000
             ).toISOString();
             // Ajout de l'événement
+
             acc.push({
               id: `${intercontract.id}.${intercontract?.userid}`,
               title: intercontract.title,
               start: startDateLocalIsoString,
               end: endDateLocalIsoString,
+              dueDate: intercontract?.endDate,
               description: intercontract.description,
               status: intercontract.status,
               type: intercontract.type,
@@ -216,6 +218,7 @@ const AllActivityCalendar = ({
         description: task?.description,
         id: task?.id?.split(".")?.[0],
         startDate: task?.start,
+        endDate: task.dueDate,
         status: task?.status,
         title: task?.title,
         type: task?.type,
