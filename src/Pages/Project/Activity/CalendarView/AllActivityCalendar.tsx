@@ -93,9 +93,10 @@ const AllActivityCalendar = ({
     try {
       var response;
       var Ids: (string | undefined)[] = [];
+      const subordinatesId = subordinates?.map((sub) => sub?.id)
       if (search?.ids.length === 1) {
         if (!search?.ids?.[0]) {
-          Ids = subordinates?.map((sub) => sub?.id);
+          Ids = subordinatesId
           // Ids = [decodedToken?.jti];
         } else {
           Ids = search?.ids;
@@ -103,14 +104,13 @@ const AllActivityCalendar = ({
       } else {
         Ids = search?.ids;
       }
-      
       // if (userid && Ids.length > 0) {
       if (userid) {
         response = await getAllActivitiesOfUser(
           search?.startDate,
           search?.endDate,
           selectedOptions,
-          Ids.length > 0 ? Ids : [userid]
+          Ids.length > 0 ? Ids : subordinatesId
         );
         const filteredResponse = response.filter(
           (activity: { status: string }) => statusSelectedOptions.includes(activity.status)
@@ -377,10 +377,9 @@ const AllActivityCalendar = ({
                 <div
                   className={`border  flex justify-center items-center p-1 rounded-full 
                     
-                    ${
-                      extendedProps.type === "Projet"
-                        ? "bg-green-100 text-green-600 border-green-300  dark:bg-green-900 dark:text-green-300 dark:border-green-700"
-                        : extendedProps?.type === "Transverse"
+                    ${extendedProps.type === "Projet"
+                      ? "bg-green-100 text-green-600 border-green-300  dark:bg-green-900 dark:text-green-300 dark:border-green-700"
+                      : extendedProps?.type === "Transverse"
                         ? "bg-purple-100 text-purple-600 border-purple-300 dark:bg-purple-900 dark:text-purple-300 dark:border-purple-700"
                         : "bg-red-100 text-red-600 border-red-300  dark:bg-red-900 dark:text-red-300 dark:border-red-700"
                     } 
@@ -390,8 +389,8 @@ const AllActivityCalendar = ({
                   {extendedProps?.type === "Projet"
                     ? "P"
                     : extendedProps?.type === "Transverse"
-                    ? "T"
-                    : "I"}
+                      ? "T"
+                      : "I"}
                   {/* <ListUsers data={extendedProps?.userList ?? []} type="all" /> */}
                 </div>
               </div>

@@ -23,7 +23,7 @@ export const SignalRContext = createContext<HubConnection | null>(null);
 // context for viex calendar and view table
 export const ViewContext = createContext({
   view: "table",
-  setView: (_view: string) => {},
+  setView: (_view: string) => { },
 });
 
 type TSubordinate = {
@@ -102,12 +102,12 @@ const Activity = () => {
 
   const handleSearchClicked = () => {
     const subIds = selectedUserInput?.map((user) => user.id);
-    const myId = [decodedToken?.jti];
+    // const myId = [decodedToken?.jti];
     var Ids = [];
     if (subIds.length > 0) {
       Ids = subIds;
     } else {
-      Ids = myId;
+      Ids = subordinates?.map((user) => user.id);
     }
     setSearch({
       ...search,
@@ -164,9 +164,10 @@ const Activity = () => {
 
   // clear filter
   const handleDeleteFilter = () => {
+    const Ids = subordinates?.map((user) => user?.id)
     setSearch({
       ...search,
-      ids: [decodedToken?.jti],
+      ids: Ids,
       startDate: undefined,
       endDate: undefined,
     });
@@ -236,11 +237,10 @@ const Activity = () => {
               <div className="flex gap-2">
                 <div
                   onClick={() => handleViewChange("table")}
-                  className={`flex gap-1 text-xs py-1 items-center font-semibold cursor-pointer rounded ${
-                    activityView === "table"
+                  className={`flex gap-1 text-xs py-1 items-center font-semibold cursor-pointer rounded ${activityView === "table"
                       ? "bg-green-50 text-green-700 dark:bg-green-100"
                       : ""
-                  }`}
+                    }`}
                 >
                   <svg
                     width="20"
@@ -265,9 +265,8 @@ const Activity = () => {
                     height="20"
                     viewBox="0 0 16 16"
                     xmlns="http://www.w3.org/2000/svg"
-                    className={`fill-green-700 ${
-                      activityView === "table" ? "" : "hidden"
-                    }`}
+                    className={`fill-green-700 ${activityView === "table" ? "" : "hidden"
+                      }`}
                   >
                     <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
                     <g
@@ -284,11 +283,10 @@ const Activity = () => {
                 </div>
                 <div
                   onClick={() => handleViewChange("calendar")}
-                  className={`flex gap-1 text-xs px-1 items-center font-semibold cursor-pointer rounded ${
-                    activityView === "calendar"
+                  className={`flex gap-1 text-xs px-1 items-center font-semibold cursor-pointer rounded ${activityView === "calendar"
                       ? "bg-green-50 text-green-700 dark:bg-green-100"
                       : ""
-                  }`}
+                    }`}
                 >
                   <svg
                     className={`${activityView === "calendar" ? "hidden" : ""}`}
@@ -377,7 +375,7 @@ const Activity = () => {
               </div>
 
               {/* FILTER BEGIN */}
-              <div className="grid place-content-center grid-cols-1  md:grid-cols-6 lg:grid-cols-7  gap-4 mt-3">
+              <div className="grid place-content-center grid-cols-1  md:grid-cols-6 lg:grid-cols-8  gap-5 mt-3">
                 <CustomSelectChoice
                   label="Type d'activité"
                   options={["Projet", "Transverse", "Intercontract"]}
@@ -435,15 +433,14 @@ const Activity = () => {
                 />
                 <div className="flex items-end gap-2  mb-0.5 ">
                   <div
-                    className={`pb-2 ${
-                      search?.startDate !== undefined ||
-                      search?.endDate !== undefined ||
-                      selectedOptions.length !== 3 ||
-                      statusSelectedOptions.length !== 5 ||
-                      selectedUserInput.length > 0
+                    className={`pb-2 ${search?.startDate !== undefined ||
+                        search?.endDate !== undefined ||
+                        selectedOptions.length !== 3 ||
+                        statusSelectedOptions.length !== 5 ||
+                        selectedUserInput.length > 0
                         ? ""
                         : "hidden"
-                    }`}
+                      }`}
                   >
                     <button
                       onClick={handleDeleteFilter}
@@ -477,12 +474,13 @@ const Activity = () => {
                     </button>
                   </div>
                 </div>
-                <div className="flex items-end text-sm mb-0.5 justify-center">
+                <div></div>
+                <div className="flex items-end  text-sm mb-0.5 justify-center">
                   <span
                     onClick={() => {
                       setIsAddActivity(true);
                     }}
-                    className="px-2 cursor-pointer py-2 lg:px-3 xl:px-2  text-center font-medium text-sm text-white hover:bg-opacity-90  border border-primaryGreen bg-primaryGreen rounded-lg dark:border-darkgreen dark:bg-darkgreen dark:hover:bg-opacity-90  md:ease-in md:duration-300 md:transform "
+                    className="px-2 cursor-pointer py-2 lg:px-3 xl:px-2  text-center font-medium whitespace-nowrap text-sm text-white hover:bg-opacity-90  border border-primaryGreen bg-primaryGreen rounded-lg dark:border-darkgreen dark:bg-darkgreen dark:hover:bg-opacity-90  md:ease-in md:duration-300 md:transform "
                   >
                     + ajouter une activité
                   </span>

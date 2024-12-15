@@ -39,10 +39,10 @@ const organizeActivityByStatus = (
   const columns =
     visibleColumns.length > 0
       ? Object.fromEntries(
-          Object.entries(allColumns).filter(([_, column]) =>
-            visibleColumns.includes(column.title)
-          )
+        Object.entries(allColumns).filter(([_, column]) =>
+          visibleColumns.includes(column.title)
         )
+      )
       : allColumns;
 
   const activityMap = activities.reduce((acc, activity) => {
@@ -133,11 +133,6 @@ const AllActivityKanban = ({
   const deletePopUp = useRef<any>(null);
   const [activeActivityId, setActiveActivityId] = useState<string | null>(null);
 
-  useEffect(()=>{
-    console.log("***************")
-    console.log(statusSelectedOptions)
-    console.log("***************")
-  }, [statusSelectedOptions])
 
   // open add activity modal with parent props trigger
   useEffect(() => {
@@ -147,9 +142,7 @@ const AllActivityKanban = ({
     }
   }, [isAddActivity]);
 
-  useEffect(() => {
-    fetchData();
-  }, [search]);
+
 
   // close delete pop up when click outside
   useEffect(() => {
@@ -174,9 +167,10 @@ const AllActivityKanban = ({
     try {
       var response;
       var Ids: (string | undefined)[] = [];
+      const subordinatesId = subordinates?.map((sub) => sub?.id)
       if (search?.ids.length === 1) {
         if (!search?.ids?.[0]) {
-          Ids = subordinates?.map((sub) => sub?.id);
+          Ids = subordinatesId
         } else {
           Ids = search?.ids;
         }
@@ -190,7 +184,7 @@ const AllActivityKanban = ({
           search?.startDate,
           search?.endDate,
           selectedOptions,
-          Ids.length > 0 ? Ids : [userid]
+          Ids.length > 0 ? Ids : subordinatesId
         );
 
         const { activityMap, columns, columnOrder } = organizeActivityByStatus(
@@ -202,7 +196,7 @@ const AllActivityKanban = ({
           acivities: activityMap,
           columns,
           columnOrder,
-          
+
         });
       }
     } catch (error) {
@@ -213,7 +207,7 @@ const AllActivityKanban = ({
   useEffect(() => {
     fetchData();
     setIsRefreshNeeded(false);
-  }, [connection, isRefreshNeeded]);
+  }, [connection, isRefreshNeeded, subordinates, search]);
 
   // when task deleted refetchData by using signal R
   useEffect(() => {
@@ -500,17 +494,15 @@ const AllActivityKanban = ({
                                     ref={provided.innerRef}
                                     {...provided.draggableProps}
                                     {...provided.dragHandleProps}
-                                    className={`p-4 mb-1 relative border border-gray-2 dark:border-2 dark:border-strokedark shadow-2 hover:shadow-md hover:shadow-slate-300 dark:hover:shadow-slate-500 text-xs rounded-md  ${
-                                      snapshot.isDragging
-                                        ? "bg-green-50 dark:bg-emerald-100"
-                                        : "bg-white dark:bg-boxdark"
-                                    }`}
+                                    className={`p-4 mb-1 relative border border-gray-2 dark:border-2 dark:border-strokedark shadow-2 hover:shadow-md hover:shadow-slate-300 dark:hover:shadow-slate-500 text-xs rounded-md  ${snapshot.isDragging
+                                      ? "bg-green-50 dark:bg-emerald-100"
+                                      : "bg-white dark:bg-boxdark"
+                                      }`}
                                     style={{
                                       ...provided.draggableProps.style,
                                       boxShadow: colors[activity.content.userid]
-                                        ? `0px 2px 8px 1px ${
-                                            colors[activity.content.userid]
-                                          }`
+                                        ? `0px 2px 8px 1px ${colors[activity.content.userid]
+                                        }`
                                         : "0px 2px 8px 1px rgba(0,0,0,0.1)",
                                       borderColor: colors[
                                         activity.content.userid
@@ -583,15 +575,14 @@ const AllActivityKanban = ({
                                         <div className="grid grid-cols-2">
                                           <div className="flex gap-1 ">
                                             <div
-                                              className={`border rounded w-fit px-1 cursor-pointer mb-2 ${
-                                                activity.content.type ===
+                                              className={`border rounded w-fit px-1 cursor-pointer mb-2 ${activity.content.type ===
                                                 "Projet"
-                                                  ? "bg-green-100 text-green-600 border-green-300  dark:bg-green-900 dark:text-green-300 dark:border-green-700"
-                                                  : activity?.content.type ===
-                                                    "Transverse"
+                                                ? "bg-green-100 text-green-600 border-green-300  dark:bg-green-900 dark:text-green-300 dark:border-green-700"
+                                                : activity?.content.type ===
+                                                  "Transverse"
                                                   ? "bg-purple-100 text-purple-600 border-purple-300 dark:bg-purple-900 dark:text-purple-300 dark:border-purple-700"
                                                   : "bg-red-100 text-red-600 border-red-300  dark:bg-red-900 dark:text-red-300 dark:border-red-700"
-                                              }`}
+                                                }`}
                                             >
                                               {activity.content.type}
                                             </div>
@@ -600,14 +591,13 @@ const AllActivityKanban = ({
                                             </div>
                                           </div>
                                           <div
-                                            className={` text-xs ${
+                                            className={` text-xs ${activity.content.priority ===
+                                              "Moyen" ||
                                               activity.content.priority ===
-                                                "Moyen" ||
-                                              activity.content.priority ===
-                                                "Bas"
-                                                ? "hidden "
-                                                : "text-orange"
-                                            }`}
+                                              "Bas"
+                                              ? "hidden "
+                                              : "text-orange"
+                                              }`}
                                           >
                                             {activity.content.priority}
                                           </div>
@@ -617,12 +607,11 @@ const AllActivityKanban = ({
                                           <div className="flex gap-1">
                                             {/* pince for task traité */}
                                             <span
-                                              className={`${
-                                                activity.content.status ===
+                                              className={`${activity.content.status ===
                                                 "Traité"
-                                                  ? ""
-                                                  : "hidden"
-                                              }`}
+                                                ? ""
+                                                : "hidden"
+                                                }`}
                                             >
                                               <svg
                                                 width="17"
@@ -661,12 +650,11 @@ const AllActivityKanban = ({
                                             {/* pince for task traité */}
                                             {/* pince for task en pause */}
                                             <span
-                                              className={`${
-                                                activity.content.status ===
+                                              className={`${activity.content.status ===
                                                 "En pause"
-                                                  ? ""
-                                                  : "hidden"
-                                              }`}
+                                                ? ""
+                                                : "hidden"
+                                                }`}
                                             >
                                               <svg
                                                 width="17"
@@ -704,12 +692,11 @@ const AllActivityKanban = ({
                                             {/* pince for task en pause */}
                                             {/* pince for task en abandonnée */}
                                             <span
-                                              className={`${
-                                                activity.content.status ===
+                                              className={`${activity.content.status ===
                                                 "Abandonné"
-                                                  ? ""
-                                                  : "hidden"
-                                              }`}
+                                                ? ""
+                                                : "hidden"
+                                                }`}
                                             >
                                               <svg
                                                 width="17"
@@ -737,12 +724,11 @@ const AllActivityKanban = ({
                                             {/* pince for task en abandonnée */}
                                             {/* pince for task en cours */}
                                             <span
-                                              className={`${
-                                                activity.content.status ===
+                                              className={`${activity.content.status ===
                                                 "En cours"
-                                                  ? ""
-                                                  : "hidden"
-                                              }`}
+                                                ? ""
+                                                : "hidden"
+                                                }`}
                                             >
                                               <svg
                                                 width="17"
@@ -777,12 +763,11 @@ const AllActivityKanban = ({
                                             {/* pince for task en cours */}
                                             {/* pince for task en backlog */}
                                             <span
-                                              className={`${
-                                                activity.content.status ===
+                                              className={`${activity.content.status ===
                                                 "Backlog"
-                                                  ? ""
-                                                  : "hidden"
-                                              }`}
+                                                ? ""
+                                                : "hidden"
+                                                }`}
                                             >
                                               <svg
                                                 width="17"
@@ -810,11 +795,10 @@ const AllActivityKanban = ({
                                           </div>
                                           <div className="flex flex-wrap">
                                             <div
-                                              className={`border  rounded-md  p-1 text-justify flex justify-center items-center  ${
-                                                activity?.content?.subType
-                                                  ? ""
-                                                  : "hidden"
-                                              }`}
+                                              className={`border  rounded-md  p-1 text-justify flex justify-center items-center  ${activity?.content?.subType
+                                                ? ""
+                                                : "hidden"
+                                                }`}
                                             >
                                               {activity.content.subType}
                                             </div>
@@ -827,12 +811,11 @@ const AllActivityKanban = ({
                                           {endDate}
                                         </div>
                                         <div
-                                          className={`${
-                                            activity?.content?.user?.[0]?.user
-                                              ?.name
-                                              ? ""
-                                              : "hidden"
-                                          }`}
+                                          className={`${activity?.content?.user?.[0]?.user
+                                            ?.name
+                                            ? ""
+                                            : "hidden"
+                                            }`}
                                         >
                                           <ListUsers
                                             data={activity?.content?.user ?? []}
