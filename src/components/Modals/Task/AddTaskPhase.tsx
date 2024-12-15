@@ -151,14 +151,14 @@ const AddTaskPhase = ({
                   onClick={() => {
                     setDropDownUserOpen(!isDropdownUserOpen);
                   }}
-                  className="w-5 h-5 p-3 border flex rounded-full justify-center items-center cursor-pointer bg-zinc-200 dark:bg-boxdark  hover:bg-zinc-300 border-zinc-200 dark:hover:bg-boxdark2 dark:border-formStrokedark"
+                  className={`w-5 h-5 p-3 border flex rounded-full justify-center items-center cursor-pointer bg-zinc-200 dark:bg-boxdark  hover:bg-zinc-300 border-zinc-200 dark:hover:bg-boxdark2 dark:border-formStrokedark ${assignedPerson.length > 0 ? "hidden" : ""
+                    }`}
                 >
                   +
                 </span>
                 <div
-                  className={`absolute top-14  left-0 border dark:border-formStrokedark border-zinc-300 bg-white dark:bg-boxdark2 shadow-lg rounded-md z-50 transition-transform duration-300 ease-in-out ${
-                    isDropdownUserOpen ? "scale-100" : "scale-0"
-                  }`}
+                  className={`absolute top-14  left-0 border dark:border-formStrokedark border-zinc-300 bg-white dark:bg-boxdark2 shadow-lg rounded-md z-50 transition-transform duration-300 ease-in-out ${isDropdownUserOpen ? "scale-100" : "scale-0"
+                    }`}
                   style={{ transformOrigin: "top left " }} // Définit l'origine de la transformation
                 >
                   {isDropdownUserOpen && (
