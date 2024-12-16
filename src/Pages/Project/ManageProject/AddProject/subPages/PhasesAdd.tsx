@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { IPhase, IProjectData } from "../../../../../types/Project";
 import {
   CustomInput,
