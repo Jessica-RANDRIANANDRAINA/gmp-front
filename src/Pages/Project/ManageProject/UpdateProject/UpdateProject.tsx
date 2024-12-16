@@ -141,7 +141,7 @@ const UpdateProject = () => {
             id: projectDataToModif.listUsers[i]?.userid,
             name: projectDataToModif.listUsers[i]?.user?.name,
             email: projectDataToModif.listUsers[i]?.user?.email,
-            role: projectDataToModif.listUsers[i]?.role,
+            role: projectDataToModif.listUsers[i]?.role ?? "",
           });
         }
         setUserTeam(team);
