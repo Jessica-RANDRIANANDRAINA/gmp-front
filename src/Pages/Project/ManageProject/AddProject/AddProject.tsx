@@ -58,10 +58,18 @@ const AddProject = () => {
   >([]);
   const [isCreateLoading, setIsCreateLoading] = useState(false);
   const [createProjectState, setCreateProjectState] = useState(false);
+  const [isAllowedToCreate, setIsAllowedToCreate] = useState<boolean>(false);
 
-  // useEffect(() => {
-  //   setIsLoaded(true);
-  // }, []);
+  useEffect(() => {
+    const allowdGeneral =
+      projectData?.title?.trim() !== "" &&
+      directionOwner?.join(", ") !== "" &&
+      projectData?.startDate !== "";
+    const allowedPhase = phaseAndLivrableList?.length > 0;
+    const allowedTeam = userTeam?.length > 0;
+    const allowedCreate = allowdGeneral && allowedPhase && allowedTeam;
+    setIsAllowedToCreate(allowedCreate);
+  }, [projectData, directionOwner, phaseAndLivrableList, userTeam]);
 
   // GET ALL DEPARTEMENTS
   useEffect(() => {
@@ -271,6 +279,7 @@ const AddProject = () => {
               setUserTeam={setUserTeam}
               setCreateProjectState={setCreateProjectState}
               isCreateLoading={isCreateLoading}
+              isAllowedToCreate={isAllowedToCreate}
             />
 
             {/* ===== CREATE PROJECT LEVEL FOUR: TEAM END ===== */}

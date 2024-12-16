@@ -19,6 +19,7 @@ const TeamAdd = ({
   setUserTeam,
   setCreateProjectState,
   isCreateLoading,
+  isAllowedToCreate,
 }: {
   setPageCreate: React.Dispatch<React.SetStateAction<number>>;
   setCreateProjectState: React.Dispatch<React.SetStateAction<boolean>>;
@@ -26,6 +27,7 @@ const TeamAdd = ({
   userTeam: Iteam[];
   setUserTeam: React.Dispatch<React.SetStateAction<Array<Iteam>>>;
   isCreateLoading: boolean;
+  isAllowedToCreate: boolean;
 }) => {
   // REMOVE A USER FROM TEAM LIST
   const handleRemoveTeamList = (id: string | undefined) => {
@@ -167,6 +169,7 @@ const TeamAdd = ({
             Précédent
           </button>
           <button
+            disabled={!isAllowedToCreate}
             onClick={() => {
               if (userTeam.length > 0) {
                 setCreateProjectState(true);
@@ -176,7 +179,11 @@ const TeamAdd = ({
                 );
               }
             }}
-            className="md:w-fit flex justify-center items-center max-h-10 gap-2 w-full cursor-pointer mt-2 py-2 px-5  text-center font-semibold text-white hover:bg-opacity-90 lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-darkgreen dark:bg-darkgreen dark:hover:bg-opacity-90"
+            className={`md:w-fit flex justify-center items-center max-h-10 gap-2 w-full  mt-2 py-2 px-5  text-center font-semibold text-white hover:bg-opacity-90 lg:px-8 xl:px-5 border  ${
+              isAllowedToCreate
+                ? "border-primaryGreen bg-primaryGreen rounded-lg dark:border-darkgreen dark:bg-darkgreen dark:hover:bg-opacity-90 cursor-pointer"
+                : "border-slate-400 bg-slate-300 text-slate-600 rounded-lg dark:border-slate-600 dark:bg-slate-700 dark:text-slate-400 cursor-not-allowed "
+            }`}
           >
             {isCreateLoading && (
               <span>
