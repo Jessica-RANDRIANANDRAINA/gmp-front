@@ -151,210 +151,71 @@ const AddProject = () => {
       <div className="text-sm mx-2 p-4 md:mx-5">
         {/* ===== LINK RETURN START ===== */}
         <div className={`w-full mb-2 flex text-base items-center `}>
-          <Breadcrumb paths={[
-            {name: "Projets", to:"/gmp/project/list"},
-            {name: "Ajout Projet"}
-          ]} />
+          <Breadcrumb
+            paths={[
+              { name: "Projets", to: "/gmp/project/list" },
+              { name: "Ajout Projet" },
+            ]}
+          />
         </div>
         {/* ===== LINK RETURN END ===== */}
         {/* ===== BLOC ADD PROJECT START ===== */}
         <div className=" relative bg-white  place-items-center  overflow-y-scroll overflow-x-clip hide-scrollbar p-4 shadow-1  rounded-md border border-zinc-200 dark:border-strokedark dark:bg-boxdark min-h-fit md:min-h-fit md:h-[72vh] lg:h-[75vh]">
           {/* ===== ADVANCEMENT STEP MENUE START ===== */}
-          <div className="absolute my-2 ml-2 top-0 left-0 space-y-3 md:block hidden">
+          <div className="absolute my-2 ml-2 text-xs top-0 left-0 space-y-3 md:block hidden">
             <div
-              // onClick={() => setPageCreate(1)}
-              className={`relative border border-dotted w-10 h-10 flex justify-center items-center rounded-full p-2 border-slate-500 tranform duration-500 ease-linear 
+              onClick={() => setPageCreate(1)}
+              className={`relative space-x-1 border border-dotted  flex justify-between items-center rounded-full p-2 border-slate-500 tranform duration-500 ease-linear cursor-pointer
                ${
                  pageCreate === 1
-                   ? "bg-amber-200 dark:bg-orange2 dark:text-black-2"
-                   : "bg-emerald-600"
-               }
-               
-               `}
-            >
-              <span
-                className={`absolute transition-transform duration-500 ease-in-out transform ${
-                  pageCreate !== 1 ? "scale-0" : "scale-100"
-                }`}
-              >
-                1
-              </span>
-              <svg
-                className={`transition-transform duration-500 ease-in-out transform stroke-current ${
-                  pageCreate !== 1 ? "scale-100" : "scale-0"
-                }`}
-                width="64px"
-                height="64px"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                stroke="#fff"
-              >
-                <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-                <g
-                  id="SVGRepo_tracerCarrier"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                ></g>
-                <g id="SVGRepo_iconCarrier">
-                  {" "}
-                  <path
-                    d="M4 12.6111L8.92308 17.5L20 6.5"
-                    stroke="#fff"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  ></path>{" "}
-                </g>
-              </svg>
-            </div>
-            <div
-              // onClick={() => setPageCreate(2)}
-              className={`relative border border-dotted w-10 h-10 flex justify-center items-center rounded-full p-2 border-slate-500 tranform duration-500 ease-linear cursor-pointer
-                ${pageCreate < 2 ? "bg-transparent" : ""}
-                ${
-                  pageCreate === 2
-                    ? "bg-amber-200 dark:bg-orange2 dark:text-black-2"
-                    : "bg-emerald-600"
-                }
-               
-               `}
-            >
-              <span
-                className={`absolute transition-transform duration-500 ease-in-out transform ${
-                  pageCreate > 2 ? "scale-0" : "scale-100"
-                }`}
-              >
-                2
-              </span>
-              <svg
-                className={`transition-transform duration-500 ease-in-out transform stroke-current ${
-                  pageCreate > 2 ? "scale-100" : "scale-0"
-                }`}
-                width="64px"
-                height="64px"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                stroke="#317f15"
-              >
-                <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-                <g
-                  id="SVGRepo_tracerCarrier"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                ></g>
-                <g id="SVGRepo_iconCarrier">
-                  {" "}
-                  <path
-                    d="M4 12.6111L8.92308 17.5L20 6.5"
-                    stroke="#fff"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  ></path>{" "}
-                </g>
-              </svg>
-            </div>
-            <div
-              // onClick={() => setPageCreate(2)}
-              className={`relative border border-dotted w-10 h-10 flex justify-center items-center rounded-full p-2 border-slate-500 tranform duration-500 ease-linear cursor-pointer
-                ${pageCreate < 3 ? "bg-transparent" : ""}
-                ${
-                  pageCreate === 3
-                    ? "bg-amber-200 dark:bg-orange2 dark:text-black-2"
-                    : "bg-emerald-600"
-                }
-               
-               `}
-            >
-              <span
-                className={`absolute transition-transform duration-500 ease-in-out transform ${
-                  pageCreate > 3 ? "scale-0" : "scale-100"
-                }`}
-              >
-                3
-              </span>
-              <svg
-                className={`transition-transform duration-500 ease-in-out transform stroke-current ${
-                  pageCreate > 3 ? "scale-100" : "scale-0"
-                }`}
-                width="64px"
-                height="64px"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                stroke="#317f15"
-              >
-                <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-                <g
-                  id="SVGRepo_tracerCarrier"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                ></g>
-                <g id="SVGRepo_iconCarrier">
-                  {" "}
-                  <path
-                    d="M4 12.6111L8.92308 17.5L20 6.5"
-                    stroke="#fff"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  ></path>{" "}
-                </g>
-              </svg>
-            </div>
-            <div
-              // onClick={() => setPageCreate(2)}
-              className={`relative border border-dotted w-10 h-10 flex justify-center items-center rounded-full p-2 border-slate-500 tranform duration-500 ease-linear cursor-pointer
-               ${
-                 pageCreate === 4
                    ? "bg-amber-200 dark:bg-orange2 dark:text-black-2"
                    : ""
                }
                
                `}
             >
-              <span
-                className={`absolute transition-transform duration-500 ease-in-out transform ${
-                  userTeam.length > 0 ? "scale-0" : "scale-100"
-                }`}
-              >
-                4
-              </span>
-              <svg
-                className={`transition-transform duration-500 ease-in-out transform stroke-current ${
-                  userTeam.length > 0 ? "scale-100" : "scale-0"
-                }`}
-                width="64px"
-                height="64px"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                stroke="#317f15"
-              >
-                <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-                <g
-                  id="SVGRepo_tracerCarrier"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                ></g>
-                <g id="SVGRepo_iconCarrier">
-                  {" "}
-                  <path
-                    d="M4 12.6111L8.92308 17.5L20 6.5"
-                    stroke="#317f15"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  ></path>{" "}
-                </g>
-              </svg>
+              <span className="mx-auto">Information générale</span>
             </div>
-            {/* <div className="text-sm font-semibold text-zinc-700">
-            <span className="text-red-500 font-bold">*</span>
-            <span> : Champ obligatoire</span>
-          </div> */}
+            <div
+              onClick={() => setPageCreate(2)}
+              className={`relative border border-dotted  flex justify-between items-center rounded-full p-2 border-slate-500 tranform duration-500 ease-linear cursor-pointer
+                ${pageCreate < 2 ? "bg-transparent" : ""}
+                ${
+                  pageCreate === 2
+                    ? "bg-amber-200 dark:bg-orange2 dark:text-black-2"
+                    : ""
+                }
+               
+               `}
+            >
+              <span className="mx-auto">Budget et ressources</span>
+            </div>
+            <div
+              onClick={() => setPageCreate(3)}
+              className={`relative border border-dotted  flex justify-between items-center rounded-full p-2 border-slate-500 tranform duration-500 ease-linear cursor-pointer
+                ${pageCreate < 3 ? "bg-transparent" : ""}
+                ${
+                  pageCreate === 3
+                    ? "bg-amber-200 dark:bg-orange2 dark:text-black-2"
+                    : ""
+                }
+               
+               `}
+            >
+              <span className="mx-auto">Phases et livrables</span>
+            </div>
+            <div
+              onClick={() => setPageCreate(4)}
+              className={`relative border border-dotted flex justify-between items-center rounded-full p-2 border-slate-500 transform duration-500 ease-linear cursor-pointer 
+                ${
+                  pageCreate === 4
+                    ? "bg-amber-200 dark:bg-orange2 dark:text-black-2"
+                    : ""
+                }
+                `}
+            >
+              <span className="mx-auto">Equipe</span>
+            </div>
           </div>
 
           {/* ===== ADVANCEMENT STEP MENUE END ===== */}
