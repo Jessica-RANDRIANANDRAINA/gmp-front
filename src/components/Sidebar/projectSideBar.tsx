@@ -4,13 +4,19 @@ import SidebarLinkGroup from "./SidebarLinkGroup";
 import { IDecodedToken } from "../../types/user";
 import { decodeToken } from "../../services/Function/TokenService";
 import Logo from "../../assets/ravinala.jpg";
+import { IMyHabilitation } from "../../types/Habilitation";
 
 interface SidebarProps {
   sidebarOpen: boolean;
   setSidebarOpen: (arg: boolean) => void;
+  myHabilitation: IMyHabilitation | undefined;
 }
 
-const ProjectSideBar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
+const ProjectSideBar = ({
+  sidebarOpen,
+  setSidebarOpen,
+  myHabilitation,
+}: SidebarProps) => {
   const [decodedToken, setDecodedToken] = useState<IDecodedToken>();
   const location = useLocation();
   const { pathname } = location;
@@ -505,7 +511,11 @@ const ProjectSideBar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                               Liste des projets
                             </NavLink>
                           </li>
-                          <li>
+                          <li
+                            className={`${
+                              myHabilitation?.project.create ? "" : "hidden"
+                            }`}
+                          >
                             <NavLink
                               to="/gmp/project/add"
                               className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-tertiaryGreen dark:hover:bg-meta-4  ${

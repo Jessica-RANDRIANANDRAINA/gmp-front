@@ -9,6 +9,7 @@ import {
 import Breadcrumb from "../../../../components/BreadCrumbs/BreadCrumb";
 import { getAllDepartments } from "../../../../services/User";
 import { createProject } from "../../../../services/Project";
+import { getAllMyHabilitation } from "../../../../services/Function/UserFunctionService";
 import { decodeToken } from "../../../../services/Function/TokenService";
 import ProjectLayout from "../../../../layout/ProjectLayout";
 import { v4 as uuid4 } from "uuid";
@@ -59,6 +60,17 @@ const AddProject = () => {
   const [isCreateLoading, setIsCreateLoading] = useState(false);
   const [createProjectState, setCreateProjectState] = useState(false);
   const [isAllowedToCreate, setIsAllowedToCreate] = useState<boolean>(false);
+
+  const getMyHabilitation = async () => {
+    const hab = await getAllMyHabilitation();
+
+    if (!hab?.project.create) {
+      navigate("/gmp/project/list");
+    }
+  };
+  useEffect(() => {
+    getMyHabilitation();
+  }, []);
 
   useEffect(() => {
     const allowdGeneral =

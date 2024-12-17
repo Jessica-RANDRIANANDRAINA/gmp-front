@@ -11,6 +11,7 @@ import {
 import { getAllUsers } from "../../../services/User";
 import { getAllMyHabilitation } from "../../../services/Function/UserFunctionService";
 import { decodeToken } from "../../../services/Function/TokenService";
+import { IMyHabilitation } from "../../../types/Habilitation";
 type TSubordinate = {
   id: string;
   name: string;
@@ -50,6 +51,18 @@ const ManageProjects = () => {
   const [selectedUserInput, setSelecteduserInput] = useState<
     Array<{ id: string; name: string; email: string }>
   >([]);
+  const [myHabilitation, setMyHabilitation] = useState<IMyHabilitation>();
+
+  //////////////////////////////////////////////////////////////////////////
+  const getMyHabilitation = async () => {
+    const hab = await getAllMyHabilitation();
+    
+    setMyHabilitation(hab);
+  };
+  useEffect(() => {
+    getMyHabilitation();
+  }, []);
+
   const availableUser = collaborator.filter(
     (user) => !selectedUserInput.some((selected) => selected.id === user.id)
   );
@@ -158,7 +171,11 @@ const ManageProjects = () => {
               paths={[{ name: "Liste des Projets", to: "/gmp/project/list" }]}
             />
             {/* ===== ADD PROJECT START =====*/}
-            <div className="w-full mb-2 flex justify-end  items-center">
+            <div
+              className={`w-full mb-2  justify-end   items-center ${
+                myHabilitation?.project.create ? "flex" : "hidden"
+              }`}
+            >
               <button
                 onClick={() => navigate("/gmp/project/add")}
                 className={`md:w-fit gap-2 flex justify-center w-full cursor-pointer mt-2 py-2 lg:px-3 xl:px-2  text-center font-medium text-sm text-white hover:bg-opacity-90  border border-primaryGreen bg-primaryGreen rounded-lg dark:border-darkgreen dark:bg-darkgreen dark:hover:bg-opacity-90  md:ease-in md:duration-300 md:transform  
@@ -179,7 +196,7 @@ const ManageProjects = () => {
                     strokeLinejoin="round"
                   ></path>
                 </svg>
-                Ajouter un nouveau projet
+                Ajouter un nouveau Projet
               </button>
             </div>
             {/* ===== ADD PROJECT END =====*/}

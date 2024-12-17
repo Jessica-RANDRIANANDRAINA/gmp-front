@@ -2,14 +2,25 @@ import { ReactNode, useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Header from "../components/Header";
 import ProjectSideBar from "../components/Sidebar/projectSideBar";
+import { getAllMyHabilitation } from "../services/Function/UserFunctionService";
 import { IDecodedToken } from "../types/user";
 import { decodeToken } from "../services/Function/TokenService";
+import { IMyHabilitation } from "../types/Habilitation";
 
 const ProjectLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [decodedToken, setDecodedToken] = useState<IDecodedToken>();
+  const [myHabilitation, setMyHabilitation] = useState<IMyHabilitation>();
   const navigate = useNavigate();
   const location = useLocation();
+
+  const getMyHabilitation = async () => {
+    const hab = await getAllMyHabilitation();
+    setMyHabilitation(hab);
+  };
+  useEffect(() => {
+    getMyHabilitation();
+  }, []);
 
   useEffect(() => {
     const token = localStorage.getItem("_au_pr");
@@ -36,6 +47,7 @@ const ProjectLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
         <ProjectSideBar
           sidebarOpen={sidebarOpen}
           setSidebarOpen={setSidebarOpen}
+          myHabilitation={myHabilitation}
         />
         {/* ===== SIDEBAR START END ===== */}
 
