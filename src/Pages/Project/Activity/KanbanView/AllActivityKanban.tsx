@@ -20,6 +20,7 @@ import ListUsers from "../../../../components/UIElements/ListUsers";
 
 import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
+import { IMyHabilitation } from "../../../../types/Habilitation";
 const notyf = new Notyf({ position: { x: "center", y: "top" } });
 
 const organizeActivityByStatus = (
@@ -98,6 +99,7 @@ const AllActivityKanban = ({
   setIsAddActivity,
   subordinates,
   statusSelectedOptions,
+  myHabilitation,
 }: {
   selectedOptions: Array<string>;
   search: {
@@ -116,6 +118,7 @@ const AllActivityKanban = ({
     name: string;
     email: string;
   }>;
+  myHabilitation: IMyHabilitation | undefined;
 }) => {
   const { userid } = useParams();
   const [data, setData] = useState<any>({
@@ -514,7 +517,16 @@ const AllActivityKanban = ({
                                     }}
                                   >
                                     <div
-                                      className="absolute top-2 right-1 hover:bg-zinc-100 dark:hover:bg-boxdark2 px-1 h-4 cursor-pointer"
+                                      className={`absolute top-2 right-1 hover:bg-zinc-100 dark:hover:bg-boxdark2 px-1 h-4 cursor-pointer ${
+                                        (activity.content.type ===
+                                          "Transverse" &&
+                                          !myHabilitation?.transverse.delete) ||
+                                        (activity.content.type ===
+                                          "InterContract" &&
+                                          !myHabilitation?.intercontract.delete)
+                                          ? "hidden"
+                                          : ""
+                                      }`}
                                       onClick={(e) => {
                                         handleToogleMenuDelete(activity.id, e);
                                       }}
@@ -551,7 +563,7 @@ const AllActivityKanban = ({
                                     {activeActivityId === activity.id && (
                                       <div
                                         ref={deletePopUp}
-                                        className="absolute z-20 right-0 top-5 bg-white dark:bg-boxdark dark:border-formStrokedark border-zinc-100 dark:hover:border-red-950 border shadow-lg rounded-md "
+                                        className={`absolute z-20 right-0 top-5 bg-white dark:bg-boxdark dark:border-formStrokedark border-zinc-100 dark:hover:border-red-950 border shadow-lg rounded-md `}
                                       >
                                         <button
                                           onClick={(e) => {
@@ -852,6 +864,7 @@ const AllActivityKanban = ({
           modalOpen={isModalAddActivityOpen}
           setModalOpen={setIsModalAddActivityOpen}
           setIsActivityFinished={setIsRefreshNeeded}
+          myHabilitation={myHabilitation}
         />
       )}
       {isModalUpdateActivityOpen && (
@@ -860,6 +873,7 @@ const AllActivityKanban = ({
           setModalUpdateOpen={setIsModalUpdateActivityOpen}
           setIsRefreshNeeded={setIsRefreshNeeded}
           activity={activityData}
+          myHabilitation={myHabilitation}
         />
       )}
     </div>

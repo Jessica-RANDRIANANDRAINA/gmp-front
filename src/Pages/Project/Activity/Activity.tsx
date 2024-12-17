@@ -14,16 +14,18 @@ import AllActivityKanban from "./KanbanView/AllActivityKanban";
 import AllActivityCalendar from "./CalendarView/AllActivityCalendar";
 // types
 import { IDecodedToken } from "../../../types/user";
+import { IMyHabilitation } from "../../../types/Habilitation";
 // services
 import { decodeToken } from "../../../services/Function/TokenService";
 import { getMySubordinatesNameAndId } from "../../../services/User";
+import { getAllMyHabilitation } from "../../../services/Function/UserFunctionService";
 
 export const SignalRContext = createContext<HubConnection | null>(null);
 
 // context for viex calendar and view table
 export const ViewContext = createContext({
   view: "table",
-  setView: (_view: string) => { },
+  setView: (_view: string) => {},
 });
 
 type TSubordinate = {
@@ -68,6 +70,16 @@ const Activity = () => {
   const [colors, setColors] = useState<Record<string, string>>({});
   const [activeUserId, setActiveUserId] = useState<string | null>(null);
   const [isAddActivity, setIsAddActivity] = useState<boolean>(false);
+  const [myHabilitation, setMyHabilitation] = useState<IMyHabilitation>();
+
+  const getMyHabilitation = async () => {
+    const hab = await getAllMyHabilitation();
+    setMyHabilitation(hab);
+  };
+
+  useEffect(() => {
+    getMyHabilitation();
+  }, []);
 
   const availableSubordinate = subordinates.filter(
     (sub) => !selectedUserInput.some((selected) => selected.id === sub.id)
@@ -164,7 +176,7 @@ const Activity = () => {
 
   // clear filter
   const handleDeleteFilter = () => {
-    const Ids = subordinates?.map((user) => user?.id)
+    const Ids = subordinates?.map((user) => user?.id);
     setSearch({
       ...search,
       ids: Ids,
@@ -237,10 +249,11 @@ const Activity = () => {
               <div className="flex gap-2">
                 <div
                   onClick={() => handleViewChange("table")}
-                  className={`flex gap-1 text-xs py-1 items-center font-semibold cursor-pointer rounded ${activityView === "table"
+                  className={`flex gap-1 text-xs py-1 items-center font-semibold cursor-pointer rounded ${
+                    activityView === "table"
                       ? "bg-green-50 text-green-700 dark:bg-green-100"
                       : ""
-                    }`}
+                  }`}
                 >
                   <svg
                     width="20"
@@ -265,8 +278,9 @@ const Activity = () => {
                     height="20"
                     viewBox="0 0 16 16"
                     xmlns="http://www.w3.org/2000/svg"
-                    className={`fill-green-700 ${activityView === "table" ? "" : "hidden"
-                      }`}
+                    className={`fill-green-700 ${
+                      activityView === "table" ? "" : "hidden"
+                    }`}
                   >
                     <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
                     <g
@@ -283,10 +297,11 @@ const Activity = () => {
                 </div>
                 <div
                   onClick={() => handleViewChange("calendar")}
-                  className={`flex gap-1 text-xs px-1 items-center font-semibold cursor-pointer rounded ${activityView === "calendar"
+                  className={`flex gap-1 text-xs px-1 items-center font-semibold cursor-pointer rounded ${
+                    activityView === "calendar"
                       ? "bg-green-50 text-green-700 dark:bg-green-100"
                       : ""
-                    }`}
+                  }`}
                 >
                   <svg
                     className={`${activityView === "calendar" ? "hidden" : ""}`}
@@ -433,14 +448,15 @@ const Activity = () => {
                 />
                 <div className="flex items-end gap-2  mb-0.5 ">
                   <div
-                    className={`pb-2 ${search?.startDate !== undefined ||
-                        search?.endDate !== undefined ||
-                        selectedOptions.length !== 3 ||
-                        statusSelectedOptions.length !== 5 ||
-                        selectedUserInput.length > 0
+                    className={`pb-2 ${
+                      search?.startDate !== undefined ||
+                      search?.endDate !== undefined ||
+                      selectedOptions.length !== 3 ||
+                      statusSelectedOptions.length !== 5 ||
+                      selectedUserInput.length > 0
                         ? ""
                         : "hidden"
-                      }`}
+                    }`}
                   >
                     <button
                       onClick={handleDeleteFilter}
@@ -540,6 +556,7 @@ const Activity = () => {
                   setIsAddActivity={setIsAddActivity}
                   subordinates={subordinates}
                   statusSelectedOptions={statusSelectedOptions}
+                  myHabilitation={myHabilitation}
                 />
               ) : (
                 <AllActivityCalendar
@@ -552,6 +569,7 @@ const Activity = () => {
                   setIsAddActivity={setIsAddActivity}
                   subordinates={subordinates}
                   statusSelectedOptions={statusSelectedOptions}
+                  myHabilitation={myHabilitation}
                 />
               )}
             </div>

@@ -18,6 +18,7 @@ import UpdateActivity from "../../../../components/Modals/Activity/UpdateActivit
 import CollapsibleSection from "../../../../components/UIElements/CollapsibleSection";
 import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
+import { IMyHabilitation } from "../../../../types/Habilitation";
 
 const notyf = new Notyf({ position: { x: "center", y: "top" } });
 
@@ -32,6 +33,7 @@ const AllActivityCalendar = ({
   setIsAddActivity,
   subordinates,
   statusSelectedOptions,
+  myHabilitation,
 }: {
   selectedOptions: Array<string>;
   statusSelectedOptions: Array<string>;
@@ -46,6 +48,7 @@ const AllActivityCalendar = ({
     name: string;
     email: string;
   }>;
+  myHabilitation: IMyHabilitation | undefined;
 }) => {
   const { userid } = useParams();
   const [events, setEvents] = useState<any[]>([]);
@@ -93,10 +96,10 @@ const AllActivityCalendar = ({
     try {
       var response;
       var Ids: (string | undefined)[] = [];
-      const subordinatesId = subordinates?.map((sub) => sub?.id)
+      const subordinatesId = subordinates?.map((sub) => sub?.id);
       if (search?.ids.length === 1) {
         if (!search?.ids?.[0]) {
-          Ids = subordinatesId
+          Ids = subordinatesId;
           // Ids = [decodedToken?.jti];
         } else {
           Ids = search?.ids;
@@ -113,7 +116,8 @@ const AllActivityCalendar = ({
           Ids.length > 0 ? Ids : subordinatesId
         );
         const filteredResponse = response.filter(
-          (activity: { status: string }) => statusSelectedOptions.includes(activity.status)
+          (activity: { status: string }) =>
+            statusSelectedOptions.includes(activity.status)
         );
 
         setData(filteredResponse);
@@ -377,9 +381,10 @@ const AllActivityCalendar = ({
                 <div
                   className={`border  flex justify-center items-center p-1 rounded-full 
                     
-                    ${extendedProps.type === "Projet"
-                      ? "bg-green-100 text-green-600 border-green-300  dark:bg-green-900 dark:text-green-300 dark:border-green-700"
-                      : extendedProps?.type === "Transverse"
+                    ${
+                      extendedProps.type === "Projet"
+                        ? "bg-green-100 text-green-600 border-green-300  dark:bg-green-900 dark:text-green-300 dark:border-green-700"
+                        : extendedProps?.type === "Transverse"
                         ? "bg-purple-100 text-purple-600 border-purple-300 dark:bg-purple-900 dark:text-purple-300 dark:border-purple-700"
                         : "bg-red-100 text-red-600 border-red-300  dark:bg-red-900 dark:text-red-300 dark:border-red-700"
                     } 
@@ -389,8 +394,8 @@ const AllActivityCalendar = ({
                   {extendedProps?.type === "Projet"
                     ? "P"
                     : extendedProps?.type === "Transverse"
-                      ? "T"
-                      : "I"}
+                    ? "T"
+                    : "I"}
                   {/* <ListUsers data={extendedProps?.userList ?? []} type="all" /> */}
                 </div>
               </div>
@@ -432,7 +437,14 @@ const AllActivityCalendar = ({
                     className="relative cursor-pointer p-4 bg-white dark:bg-boxdark rounded shadow-2 hover:shadow-md hover:shadow-slate-300 dark:hover:shadow-slate-500"
                   >
                     <div
-                      className="absolute top-2 right-1 hover:bg-zinc-100 dark:hover:bg-boxdark2 px-1 h-4 cursor-pointer"
+                      className={`absolute top-2 right-1 hover:bg-zinc-100 dark:hover:bg-boxdark2 px-1 h-4 cursor-pointer ${
+                        (task.type === "Transverse" &&
+                          !myHabilitation?.transverse.delete) ||
+                        (task.type === "InterContract" &&
+                          !myHabilitation?.intercontract?.delete)
+                          ? "hidden"
+                          : ""
+                      }`}
                       onClick={(e) => {
                         handleToogleMenuDelete(task.id, e);
                       }}
@@ -503,7 +515,14 @@ const AllActivityCalendar = ({
                     className="relative cursor-pointer p-4 bg-white dark:bg-boxdark rounded shadow-2 hover:shadow-md hover:shadow-slate-300 dark:hover:shadow-slate-500"
                   >
                     <div
-                      className="absolute top-2 right-1 hover:bg-zinc-100 dark:hover:bg-boxdark2 px-1 h-4 cursor-pointer"
+                      className={`absolute top-2 right-1 hover:bg-zinc-100 dark:hover:bg-boxdark2 px-1 h-4 cursor-pointer ${
+                        (task.type === "Transverse" &&
+                          !myHabilitation?.transverse.delete) ||
+                        (task.type === "InterContract" &&
+                          !myHabilitation?.intercontract?.delete)
+                          ? "hidden"
+                          : ""
+                      }`}
                       onClick={(e) => {
                         handleToogleMenuDelete(task.id, e);
                       }}
@@ -572,7 +591,14 @@ const AllActivityCalendar = ({
                     key={task.id}
                   >
                     <div
-                      className="absolute top-2 right-1 hover:bg-zinc-100 dark:hover:bg-boxdark2 px-1 h-4 cursor-pointer"
+                      className={`absolute top-2 right-1 hover:bg-zinc-100 dark:hover:bg-boxdark2 px-1 h-4 cursor-pointer ${
+                        (task.type === "Transverse" &&
+                          !myHabilitation?.transverse.delete) ||
+                        (task.type === "InterContract" &&
+                          !myHabilitation?.intercontract?.delete)
+                          ? "hidden"
+                          : ""
+                      }`}
                       onClick={(e) => {
                         handleToogleMenuDelete(task.id, e);
                       }}
@@ -643,7 +669,14 @@ const AllActivityCalendar = ({
                     className="relative cursor-pointer p-4 bg-white dark:bg-boxdark rounded shadow-2 hover:shadow-md hover:shadow-slate-300 dark:hover:shadow-slate-500"
                   >
                     <div
-                      className="absolute top-2 right-1 hover:bg-zinc-100 dark:hover:bg-boxdark2 px-1 h-4 cursor-pointer"
+                      className={`absolute top-2 right-1 hover:bg-zinc-100 dark:hover:bg-boxdark2 px-1 h-4 cursor-pointer ${
+                        (task.type === "Transverse" &&
+                          !myHabilitation?.transverse.delete) ||
+                        (task.type === "InterContract" &&
+                          !myHabilitation?.intercontract?.delete)
+                          ? "hidden"
+                          : ""
+                      }`}
                       onClick={(e) => {
                         handleToogleMenuDelete(task.id, e);
                       }}
@@ -714,7 +747,14 @@ const AllActivityCalendar = ({
                     className="relative cursor-pointer p-4 bg-white dark:bg-boxdark rounded shadow-2 hover:shadow-md hover:shadow-slate-300 dark:hover:shadow-slate-500"
                   >
                     <div
-                      className="absolute top-2 right-1 hover:bg-zinc-100 dark:hover:bg-boxdark2 px-1 h-4 cursor-pointer"
+                      className={`absolute top-2 right-1 hover:bg-zinc-100 dark:hover:bg-boxdark2 px-1 h-4 cursor-pointer ${
+                        (task.type === "Transverse" &&
+                          !myHabilitation?.transverse.delete) ||
+                        (task.type === "InterContract" &&
+                          !myHabilitation?.intercontract?.delete)
+                          ? "hidden"
+                          : ""
+                      }`}
                       onClick={(e) => {
                         handleToogleMenuDelete(task.id, e);
                       }}
@@ -779,6 +819,7 @@ const AllActivityCalendar = ({
           modalOpen={isModalAddOpen}
           setModalOpen={setIsModalAddOpen}
           setIsActivityFinished={setIsRefreshNeeded}
+          myHabilitation={myHabilitation}
         />
       )}
       {isModalUpdateOpen && (
@@ -787,6 +828,7 @@ const AllActivityCalendar = ({
           setModalUpdateOpen={setIsModalUpdateOpen}
           setIsRefreshNeeded={setIsRefreshNeeded}
           activity={taskData}
+          myHabilitation={myHabilitation}
         />
       )}
     </div>

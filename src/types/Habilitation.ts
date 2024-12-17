@@ -52,4 +52,14 @@ export interface IMyHabilitation {
     manageMySubordinatesProject: boolean;
     manage: boolean;
   };
+  transverse: {
+    create: boolean;
+    update: boolean;
+    delete: boolean;
+  };
+  intercontract: {
+    create: boolean;
+    update: boolean;
+    delete: boolean;
+  };
 }

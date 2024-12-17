@@ -14,6 +14,7 @@ import {
   updateTaskProject,
   updateTransverse,
 } from "../../../services/Project";
+import { IMyHabilitation } from "../../../types/Habilitation";
 
 const notyf = new Notyf({ position: { x: "center", y: "top" } });
 
@@ -22,9 +23,11 @@ const UpdateActivity = ({
   activity,
   setModalUpdateOpen,
   setIsRefreshNeeded,
+  myHabilitation,
 }: {
   modalUpdateOpen: boolean;
   activity: any;
+  myHabilitation?: IMyHabilitation;
   setModalUpdateOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setIsRefreshNeeded: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
@@ -394,6 +397,18 @@ const UpdateActivity = ({
         </>
       </ModalBody>
       <ModalFooter>
+        <p
+          className={`text-xs text-red-500 justify-center items-center ${
+            (!myHabilitation?.transverse?.update &&
+              activityData?.type === "Transverse") ||
+            (!myHabilitation?.intercontract?.update &&
+              activityData?.type === "InterContract")
+              ? "flex"
+              : "hidden"
+          }`}
+        >
+          * Vous n'avez pas accès à la modification
+        </p>
         <button
           className="border text-xs p-2 rounded-md  font-semibold bg-transparent border-transparent hover:bg-zinc-100 dark:hover:bg-boxdark2 "
           type="button"
@@ -419,11 +434,30 @@ const UpdateActivity = ({
             activityData?.type === "InterContract" &&
             activityData?.intercontractType !== "";
 
-          const isDisabled =
-            hasRequiredFields &&
-            (isProjectComplete ||
-              istransverseComplete ||
-              isIntercontractComplete);
+          var isDisabled;
+
+          // myHabilitation?.transverse?.update;
+          if (activityData?.type === "Transverse") {
+            isDisabled =
+              hasRequiredFields &&
+              (isProjectComplete ||
+                istransverseComplete ||
+                isIntercontractComplete) &&
+              myHabilitation?.transverse.update;
+          } else if (activityData?.type === "InterContract") {
+            isDisabled =
+              hasRequiredFields &&
+              (isProjectComplete ||
+                istransverseComplete ||
+                isIntercontractComplete) &&
+              myHabilitation?.intercontract.update;
+          } else {
+            isDisabled =
+              hasRequiredFields &&
+              (isProjectComplete ||
+                istransverseComplete ||
+                isIntercontractComplete);
+          }
           const buttonClassName = !isDisabled
             ? "cursor-not-allowed bg-graydark"
             : "cursor-pointer bg-green-700 hover:opacity-85";

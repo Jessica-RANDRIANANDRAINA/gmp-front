@@ -15,14 +15,17 @@ import { v4 as uuid4 } from "uuid";
 import { intercontractType, transverseType } from "../../../constants/Activity";
 import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
+import { IMyHabilitation } from "../../../types/Habilitation";
 const notyf = new Notyf({ position: { x: "center", y: "top" } });
 
 const AddActivity = ({
   modalOpen,
   setModalOpen,
   setIsActivityFinished,
+  myHabilitation,
 }: {
   modalOpen: boolean;
+  myHabilitation?: IMyHabilitation;
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setIsActivityFinished: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
@@ -47,6 +50,12 @@ const AddActivity = ({
   const [projectTitle, setProjectTitle] = useState<Array<string>>([]);
   const [phaseTitle, setPhaseTitle] = useState<Array<string>>([]);
   const [projectData, setProjectData] = useState<any>();
+
+  useEffect(() => {
+    console.log("******************");
+    console.log(myHabilitation);
+    console.log("******************");
+  }, []);
 
   const fetchProjectData = async () => {
     try {
@@ -192,7 +201,13 @@ const AddActivity = ({
               <CustomSelect
                 required={true}
                 label="Type"
-                data={["Projet", "Transverse", "Intercontract"]}
+                data={[
+                  "Projet",
+                  ...(myHabilitation?.transverse.create ? ["Transverse"] : []),
+                  ...(myHabilitation?.intercontract.create
+                    ? ["Intercontract"]
+                    : []),
+                ]}
                 value={activityData.type}
                 onValueChange={(e) => {
                   setActivityData({

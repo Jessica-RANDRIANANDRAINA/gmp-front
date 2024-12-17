@@ -54,42 +54,76 @@ const transformHabilitation = (habilitations: any[]) => {
       manageMySubordinatesProject: false,
       manage: false,
     },
+    transverse: {
+      create: false,
+      update: false,
+      delete: false,
+    },
+    intercontract: {
+      create: false,
+      update: false,
+      delete: false,
+    },
   };
-  habilitations.forEach(({ habilitationAdmins, habilitationProjects }) => {
-    const admin = habilitationAdmins?.[0];
-    const project = habilitationProjects?.[0];
+  habilitations.forEach(
+    ({
+      habilitationAdmins,
+      habilitationProjects,
+      habilitationTransverses,
+      habilitationIntercontract,
+    }) => {
+      const admin = habilitationAdmins?.[0];
+      const project = habilitationProjects?.[0];
+      const transverse = habilitationTransverses?.[0];
+      const intercontract = habilitationIntercontract?.[0];
 
-    // Admin habilitations: Only update if current value is false and new value is true (1)
-    if (admin) {
-      habilitation.admin.createHabilitation ||= admin.createHabilitation === 1;
-      habilitation.admin.deleteHabilitation ||= admin.deleteHabilitation === 1;
-      habilitation.admin.modifyHierarchy ||= admin.modifyHierarchy === 1;
-      habilitation.admin.restoreHierarchy ||= admin.restoreHierarchy === 1;
-      habilitation.admin.updateHabilitation ||= admin.updateHabilitation === 1;
-      habilitation.admin.actualizeUserData ||= admin.actualizeUserData === 1;
-      habilitation.admin.assignAccess ||= admin.assignAccess === 1;
-    }
+      // Admin habilitations: Only update if current value is false and new value is true (1)
+      if (admin) {
+        habilitation.admin.createHabilitation ||=
+          admin.createHabilitation === 1;
+        habilitation.admin.deleteHabilitation ||=
+          admin.deleteHabilitation === 1;
+        habilitation.admin.modifyHierarchy ||= admin.modifyHierarchy === 1;
+        habilitation.admin.restoreHierarchy ||= admin.restoreHierarchy === 1;
+        habilitation.admin.updateHabilitation ||=
+          admin.updateHabilitation === 1;
+        habilitation.admin.actualizeUserData ||= admin.actualizeUserData === 1;
+        habilitation.admin.assignAccess ||= admin.assignAccess === 1;
+      }
 
-    // Project habilitations: Same logic as admin
-    if (project) {
-      habilitation.project.watchMyProject ||= project.watchMyProject === 1;
-      habilitation.project.watchMySubordinatesProject ||=
-        project.watchMySubordinatesProject === 1;
-      habilitation.project.watchAllProject ||= project.watchAllProject === 1;
-      habilitation.project.create ||= project.create === 1;
-      habilitation.project.update ||= project.update === 1;
-      habilitation.project.updateAllProject ||= project.updateAllProject === 1;
-      habilitation.project.updateMySubordinatesProject ||=
-        project.updateMySubordinatesProject === 1;
-      habilitation.project.delete ||= project.delete === 1;
-      habilitation.project.deleteAllProject ||= project.deleteAllProject === 1;
-      habilitation.project.deleteMySubordinatesProject ||=
-        project.deleteMySubordinatesProject === 1;
-      habilitation.project.manageMySubordinatesProject ||=
-        project.manageMySubordinatesProject === 1;
-      habilitation.project.manage ||= project.manage === 1;
-      habilitation.project.assign ||= project.assign === 1;
+      // Project habilitations: Same logic as admin
+      if (project) {
+        habilitation.project.watchMyProject ||= project.watchMyProject === 1;
+        habilitation.project.watchMySubordinatesProject ||=
+          project.watchMySubordinatesProject === 1;
+        habilitation.project.watchAllProject ||= project.watchAllProject === 1;
+        habilitation.project.create ||= project.create === 1;
+        habilitation.project.update ||= project.update === 1;
+        habilitation.project.updateAllProject ||=
+          project.updateAllProject === 1;
+        habilitation.project.updateMySubordinatesProject ||=
+          project.updateMySubordinatesProject === 1;
+        habilitation.project.delete ||= project.delete === 1;
+        habilitation.project.deleteAllProject ||=
+          project.deleteAllProject === 1;
+        habilitation.project.deleteMySubordinatesProject ||=
+          project.deleteMySubordinatesProject === 1;
+        habilitation.project.manageMySubordinatesProject ||=
+          project.manageMySubordinatesProject === 1;
+        habilitation.project.manage ||= project.manage === 1;
+        habilitation.project.assign ||= project.assign === 1;
+      }
+      if (transverse) {
+        habilitation.transverse.create ||= transverse.create === 1;
+        habilitation.transverse.update ||= transverse.update === 1;
+        habilitation.transverse.delete ||= transverse.delete === 1;
+      }
+      if (intercontract) {
+        habilitation.intercontract.create ||= intercontract.create === 1;
+        habilitation.intercontract.update ||= intercontract.update === 1;
+        habilitation.intercontract.delete ||= intercontract.delete === 1;
+      }
     }
-  });
+  );
   return habilitation;
 };
