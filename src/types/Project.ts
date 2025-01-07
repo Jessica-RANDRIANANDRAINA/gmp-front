@@ -42,13 +42,19 @@ export interface IPhase {
   id?: string;
   rank?: number;
   phase1?: string | undefined;
-  expectedDeliverable?: string;
+  // expectedDeliverable?: string;
   startDate?: string;
   endDate?: string;
   dependantOf?: string;
   initiator?: string;
   status?: string;
-  deliverable?: string;
+  // deliverable?: string;
+  listDeliverables: {
+    id: string;
+    deliverableName: string;
+    expectedDeliverable?: string;
+    phaseid: string;
+  }[];
   userProject?: {
     name: string;
     projectid: string;
