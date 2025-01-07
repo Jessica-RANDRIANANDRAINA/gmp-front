@@ -392,11 +392,11 @@ const DetailsProject = () => {
                     <thead className="bg-gray-100 border-b border-b-zinc-300 dark:border-b-black text-gray-600 uppercase text-sm leading-normal">
                       <tr>
                         <th className="py-3 px-6 text-left">Titre</th>
+                        <th className="py-3 px-6 text-left">Date de début</th>
+                        <th className="py-3 px-6 text-left">Date de fin</th>
                         <th className="py-3 px-6 text-left">
                           Livrable attendu
                         </th>
-                        <th className="py-3 px-6 text-left">Date de début</th>
-                        <th className="py-3 px-6 text-left">Date de fin</th>
                         <th className="py-3 px-6 text-left">
                           Lien du livrable
                         </th>
@@ -415,91 +415,150 @@ const DetailsProject = () => {
                           const endDatePhase = phases?.endDate
                             ? formatDate(phases?.endDate)
                             : "";
-                          return (
+                          return phases?.listDeliverables?.length > 0 ? (
+                            phases?.listDeliverables?.map(
+                              (livrables, index) => (
+                                <tr
+                                  key={phases?.id}
+                                  className="border-b border-zinc-200 hover:bg-zinc-50 dark:hover:bg-black dark:border-black hover:bg-gray-50 transition-colors duration-300"
+                                >
+                                  {index === 0 && (
+                                    <>
+                                      <td
+                                        rowSpan={
+                                          phases?.listDeliverables?.length
+                                        }
+                                        className="py-3 px-6 text-left whitespace-nowrap"
+                                      >
+                                        <div className="flex items-center">
+                                          <span className="font-medium">
+                                            {phases?.phase1}
+                                          </span>
+                                        </div>
+                                      </td>
+
+                                      <td
+                                        rowSpan={
+                                          phases?.listDeliverables?.length
+                                        }
+                                        className="py-3 px-6 text-left"
+                                      >
+                                        <span className="text-gray-700 whitespace-nowrap">
+                                          {startDatePhase}
+                                        </span>
+                                      </td>
+                                      <td
+                                        rowSpan={
+                                          phases?.listDeliverables?.length
+                                        }
+                                        className="py-3 px-6 text-left"
+                                      >
+                                        <span className="text-gray-700 whitespace-nowrap">
+                                          {endDatePhase}
+                                        </span>
+                                      </td>
+                                    </>
+                                  )}
+                                  <td className="py-3 px-6 text-left">
+                                    <span className="text-gray-700">
+                                      {livrables?.deliverableName}
+                                    </span>
+                                  </td>
+
+                                  <td className="py-3 px-6 text-left">
+                                    <span className="text-gray-700 whitespace-nowrap">
+                                      {livrables?.expectedDeliverable && (
+                                        <a
+                                          href={livrables?.expectedDeliverable}
+                                          className="border p-1 rounded-md cursor-pointer bg-white border-zinc-200 hover:bg-zinc-100 dark:bg-boxdark dark:hover:bg-boxdark2 dark:border-formStrokedark "
+                                        >
+                                          Le lien
+                                        </a>
+                                      )}
+                                    </span>
+                                  </td>
+                                  <td className="text-left ">
+                                    <span
+                                      className={`inline-flex space-x-1 items-center px-3 py-1 rounded-full text-xs font-semibold   ${
+                                        phases?.status === "Terminé"
+                                          ? "bg-green-100 text-green-600 border-green-300  dark:bg-green-900 dark:text-green-300 dark:border-green-700"
+                                          : phases?.status === "En cours"
+                                          ? "bg-amber-100 text-amber-600 border-amber-300  dark:bg-amber-900 dark:text-amber-300 dark:border-amber-700"
+                                          : "bg-cyan-100 text-cyan-600 border-cyan-300  dark:bg-cyan-900 dark:text-cyan-300 dark:border-cyan-700"
+                                      }`}
+                                    >
+                                      <span
+                                        className={`${
+                                          phases?.status === "Terminé"
+                                            ? ""
+                                            : "hidden"
+                                        }`}
+                                      >
+                                        <svg
+                                          width="15"
+                                          height="15"
+                                          viewBox="0 0 24 24"
+                                          fill="none"
+                                          xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                          <g
+                                            id="SVGRepo_bgCarrier"
+                                            strokeWidth="0"
+                                          ></g>
+                                          <g
+                                            id="SVGRepo_tracerCarrier"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                          ></g>
+                                          <g id="SVGRepo_iconCarrier">
+                                            {" "}
+                                            <path
+                                              d="M4 12.6111L8.92308 17.5L20 6.5"
+                                              className="stroke-green-500"
+                                              strokeWidth="2"
+                                              strokeLinecap="round"
+                                              strokeLinejoin="round"
+                                            ></path>{" "}
+                                          </g>
+                                        </svg>
+                                      </span>
+                                      <span>{phases?.status ?? "A faire"}</span>
+                                    </span>
+                                  </td>
+                                </tr>
+                              )
+                            )
+                          ) : (
                             <tr
                               key={phases?.id}
                               className="border-b border-zinc-200 hover:bg-zinc-50 dark:hover:bg-black dark:border-black hover:bg-gray-50 transition-colors duration-300"
                             >
-                              <td className="py-3 px-6 text-left whitespace-nowrap">
+                              <td
+                                rowSpan={1}
+                                className="py-3 px-6 text-left whitespace-nowrap"
+                              >
                                 <div className="flex items-center">
                                   <span className="font-medium">
                                     {phases?.phase1}
                                   </span>
                                 </div>
                               </td>
-                              <td className="py-3 px-6 text-left">
-                                <span className="text-gray-700">
-                                  {phases?.expectedDeliverable}
-                                </span>
-                              </td>
-                              <td className="py-3 px-6 text-left">
+                              <td rowSpan={1} className="py-3 px-6 text-left">
                                 <span className="text-gray-700 whitespace-nowrap">
                                   {startDatePhase}
                                 </span>
                               </td>
-                              <td className="py-3 px-6 text-left">
+                              <td rowSpan={1} className="py-3 px-6 text-left">
                                 <span className="text-gray-700 whitespace-nowrap">
                                   {endDatePhase}
                                 </span>
                               </td>
-                              <td className="py-3 px-6 text-left">
-                                <span className="text-gray-700 whitespace-nowrap">
-                                  {phases?.deliverable && (
-                                    <a
-                                      href={phases?.deliverable}
-                                      className="border p-1 rounded-md cursor-pointer bg-white border-zinc-200 hover:bg-zinc-100 dark:bg-boxdark dark:hover:bg-boxdark2 dark:border-formStrokedark "
-                                    >
-                                      Le lien
-                                    </a>
-                                  )}
-                                </span>
+                              <td colSpan={2} className="py-3 px-6 text-left">
+                                Aucun livrable
                               </td>
-                              <td className="text-left ">
-                                <span
-                                  className={`inline-flex space-x-1 items-center px-3 py-1 rounded-full text-xs font-semibold   ${
-                                    phases?.status === "Terminé"
-                                      ? "bg-green-100 text-green-600 border-green-300  dark:bg-green-900 dark:text-green-300 dark:border-green-700"
-                                      : phases?.status === "En cours"
-                                      ? "bg-amber-100 text-amber-600 border-amber-300  dark:bg-amber-900 dark:text-amber-300 dark:border-amber-700"
-                                      : "bg-cyan-100 text-cyan-600 border-cyan-300  dark:bg-cyan-900 dark:text-cyan-300 dark:border-cyan-700"
-                                  }`}
-                                >
-                                  <span
-                                    className={`${
-                                      phases?.status === "Terminé"
-                                        ? ""
-                                        : "hidden"
-                                    }`}
-                                  >
-                                    <svg
-                                      width="15"
-                                      height="15"
-                                      viewBox="0 0 24 24"
-                                      fill="none"
-                                      xmlns="http://www.w3.org/2000/svg"
-                                    >
-                                      <g
-                                        id="SVGRepo_bgCarrier"
-                                        strokeWidth="0"
-                                      ></g>
-                                      <g
-                                        id="SVGRepo_tracerCarrier"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                      ></g>
-                                      <g id="SVGRepo_iconCarrier">
-                                        {" "}
-                                        <path
-                                          d="M4 12.6111L8.92308 17.5L20 6.5"
-                                          className="stroke-green-500"
-                                          strokeWidth="2"
-                                          strokeLinecap="round"
-                                          strokeLinejoin="round"
-                                        ></path>{" "}
-                                      </g>
-                                    </svg>
-                                  </span>
-                                  <span>{phases?.status ?? "A faire"}</span>
+                              <td className="py-3 px-6 text-left">
+                                <span className="text-gray-700">
+                                  {phases?.status}
                                 </span>
                               </td>
                             </tr>
@@ -538,9 +597,14 @@ const DetailsProject = () => {
                               <span className="text-emerald-500 font-semibold">
                                 Livrable attendu :{" "}
                               </span>
-                              <span className="text-gray-800">
-                                {phases?.expectedDeliverable}
-                              </span>
+                              {phases?.listDeliverables?.map((livrable) => (
+                                <span
+                                  key={livrable?.id}
+                                  className="text-gray-800"
+                                >
+                                  {livrable?.deliverableName},
+                                </span>
+                              ))}
                             </div>
                             <div className="mb-2">
                               <span className="text-emerald-500 font-semibold">
