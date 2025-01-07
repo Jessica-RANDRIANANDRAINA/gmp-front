@@ -477,54 +477,61 @@ const DetailsProject = () => {
                                       )}
                                     </span>
                                   </td>
-                                  <td className="text-left ">
-                                    <span
-                                      className={`inline-flex space-x-1 items-center px-3 py-1 rounded-full text-xs font-semibold   ${
-                                        phases?.status === "Terminé"
-                                          ? "bg-green-100 text-green-600 border-green-300  dark:bg-green-900 dark:text-green-300 dark:border-green-700"
-                                          : phases?.status === "En cours"
-                                          ? "bg-amber-100 text-amber-600 border-amber-300  dark:bg-amber-900 dark:text-amber-300 dark:border-amber-700"
-                                          : "bg-cyan-100 text-cyan-600 border-cyan-300  dark:bg-cyan-900 dark:text-cyan-300 dark:border-cyan-700"
-                                      }`}
+                                  {index === 0 && (
+                                    <td
+                                      rowSpan={phases?.listDeliverables?.length}
+                                      className="text-center"
                                     >
                                       <span
-                                        className={`${
+                                        className={`inline-flex space-x-1 items-center px-3 py-1 rounded-full text-xs font-semibold   ${
                                           phases?.status === "Terminé"
-                                            ? ""
-                                            : "hidden"
+                                            ? "bg-green-100 text-green-600 border-green-300  dark:bg-green-900 dark:text-green-300 dark:border-green-700"
+                                            : phases?.status === "En cours"
+                                            ? "bg-amber-100 text-amber-600 border-amber-300  dark:bg-amber-900 dark:text-amber-300 dark:border-amber-700"
+                                            : "bg-cyan-100 text-cyan-600 border-cyan-300  dark:bg-cyan-900 dark:text-cyan-300 dark:border-cyan-700"
                                         }`}
                                       >
-                                        <svg
-                                          width="15"
-                                          height="15"
-                                          viewBox="0 0 24 24"
-                                          fill="none"
-                                          xmlns="http://www.w3.org/2000/svg"
+                                        <span
+                                          className={`${
+                                            phases?.status === "Terminé"
+                                              ? ""
+                                              : "hidden"
+                                          }`}
                                         >
-                                          <g
-                                            id="SVGRepo_bgCarrier"
-                                            strokeWidth="0"
-                                          ></g>
-                                          <g
-                                            id="SVGRepo_tracerCarrier"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                          ></g>
-                                          <g id="SVGRepo_iconCarrier">
-                                            {" "}
-                                            <path
-                                              d="M4 12.6111L8.92308 17.5L20 6.5"
-                                              className="stroke-green-500"
-                                              strokeWidth="2"
+                                          <svg
+                                            width="15"
+                                            height="15"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                          >
+                                            <g
+                                              id="SVGRepo_bgCarrier"
+                                              strokeWidth="0"
+                                            ></g>
+                                            <g
+                                              id="SVGRepo_tracerCarrier"
                                               strokeLinecap="round"
                                               strokeLinejoin="round"
-                                            ></path>{" "}
-                                          </g>
-                                        </svg>
+                                            ></g>
+                                            <g id="SVGRepo_iconCarrier">
+                                              {" "}
+                                              <path
+                                                d="M4 12.6111L8.92308 17.5L20 6.5"
+                                                className="stroke-green-500"
+                                                strokeWidth="2"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                              ></path>{" "}
+                                            </g>
+                                          </svg>
+                                        </span>
+                                        <span>
+                                          {phases?.status ?? "A faire"}
+                                        </span>
                                       </span>
-                                      <span>{phases?.status ?? "A faire"}</span>
-                                    </span>
-                                  </td>
+                                    </td>
+                                  )}
                                 </tr>
                               )
                             )
