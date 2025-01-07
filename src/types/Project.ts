@@ -53,7 +53,7 @@ export interface IPhase {
     id: string;
     deliverableName: string;
     expectedDeliverable?: string;
-    phaseid: string;
+    phaseid?: string;
   }[];
   userProject?: {
     name: string;
