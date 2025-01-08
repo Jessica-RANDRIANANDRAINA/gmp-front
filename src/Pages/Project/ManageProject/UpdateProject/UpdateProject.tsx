@@ -64,19 +64,19 @@ const UpdateProject = () => {
   >([]);
   const [isCreateLoading, setIsCreateLoading] = useState(false);
   const [haveBudget, setHaveBudget] = useState(false);
-  const [isAllowedToUpdate, setIsAllowedToUpdate] = useState<boolean>(false)
+  const [isAllowedToUpdate, setIsAllowedToUpdate] = useState<boolean>(false);
 
   // ==========================================
   useEffect(() => {
-    const allowedGeneral = projectData?.title?.trim() !== "" &&
+    const allowedGeneral =
+      projectData?.title?.trim() !== "" &&
       directionOwner?.join(", ") !== "" &&
-      projectData?.startDate !== ""
-    const allowedPhase = phaseAndLivrableList?.length > 0
-    const allowedTeam = userTeam?.length > 0
-    const allowedUpdate = allowedGeneral && allowedPhase && allowedTeam
-    setIsAllowedToUpdate(allowedUpdate)
-  }, [projectData, directionOwner, phaseAndLivrableList, userTeam])
-
+      projectData?.startDate !== "";
+    const allowedPhase = phaseAndLivrableList?.length > 0;
+    const allowedTeam = userTeam?.length > 0;
+    const allowedUpdate = allowedGeneral && allowedPhase && allowedTeam;
+    setIsAllowedToUpdate(allowedUpdate);
+  }, [projectData, directionOwner, phaseAndLivrableList, userTeam]);
 
   const fetchDataProject = async () => {
     if (projectId) {
@@ -131,14 +131,15 @@ const UpdateProject = () => {
         }
         setRessourceList(ressourceData);
       }
+
       if (projectDataToModif?.listPhases?.length > 0) {
         for (let i = 0; i < projectDataToModif.listPhases.length; i++) {
           phaseData.push({
             id: projectDataToModif.listPhases[i]?.id,
             phase1: projectDataToModif.listPhases[i]?.phase1,
             rank: projectDataToModif.listPhases[i]?.rank,
-            expectedDeliverable:
-              projectDataToModif.listPhases[i]?.expectedDeliverable,
+            listDeliverables:
+              projectDataToModif.listPhases[i]?.listDeliverables,
             startDate: projectDataToModif.listPhases[i]?.startDate,
             endDate: projectDataToModif.listPhases[i]?.endDate,
             dependantOf: projectDataToModif.listPhases[i].dependantOf,
@@ -264,25 +265,28 @@ const UpdateProject = () => {
         <div className=" grid place-items-center bg-white relative  overflow-y-auto overflow-x-clip  p-4 shadow-3  rounded-md dark:border-strokedark dark:bg-boxdark  md:h-[72vh] lg:h-[75vh]">
           {/* ===== LOADING START ===== */}
           <div
-            className={`justify-center items-center h-full ${allDataIsLoaded ? "hidden" : "flex"
-              }`}
+            className={`justify-center items-center h-full ${
+              allDataIsLoaded ? "hidden" : "flex"
+            }`}
           >
             loading . . .
           </div>
           {/* ===== LOADING END ===== */}
           <div
-            className={`w-full h-full flex-col items-center ${allDataIsLoaded ? "flex" : "hidden"
-              }`}
+            className={`w-full h-full flex-col items-center ${
+              allDataIsLoaded ? "flex" : "hidden"
+            }`}
           >
             {/* ===== ADVANCEMENT STEP MENUE START ===== */}
             <div className="absolute my-2 ml-2 text-xs top-0 left-0 space-y-3 md:block hidden">
               <div
                 onClick={() => setPageCreate(1)}
                 className={`relative space-x-1 border border-dotted  flex justify-between items-center rounded-full p-2 border-slate-500 tranform duration-500 ease-linear cursor-pointer
-               ${pageCreate === 1
-                    ? "bg-amber-200 dark:bg-orange2 dark:text-black-2"
-                    : ""
-                  }
+               ${
+                 pageCreate === 1
+                   ? "bg-amber-200 dark:bg-orange2 dark:text-black-2"
+                   : ""
+               }
                
                `}
               >
@@ -292,10 +296,11 @@ const UpdateProject = () => {
                 onClick={() => setPageCreate(2)}
                 className={`relative border border-dotted  flex justify-between items-center rounded-full p-2 border-slate-500 tranform duration-500 ease-linear cursor-pointer
                 ${pageCreate < 2 ? "bg-transparent" : ""}
-                ${pageCreate === 2
+                ${
+                  pageCreate === 2
                     ? "bg-amber-200 dark:bg-orange2 dark:text-black-2"
                     : ""
-                  }
+                }
                
                `}
               >
@@ -305,10 +310,11 @@ const UpdateProject = () => {
                 onClick={() => setPageCreate(3)}
                 className={`relative border border-dotted  flex justify-between items-center rounded-full p-2 border-slate-500 tranform duration-500 ease-linear cursor-pointer
                 ${pageCreate < 3 ? "bg-transparent" : ""}
-                ${pageCreate === 3
+                ${
+                  pageCreate === 3
                     ? "bg-amber-200 dark:bg-orange2 dark:text-black-2"
                     : ""
-                  }
+                }
                
                `}
               >
@@ -317,10 +323,11 @@ const UpdateProject = () => {
               <div
                 onClick={() => setPageCreate(4)}
                 className={`relative border border-dotted flex justify-between items-center rounded-full p-2 border-slate-500 transform duration-500 ease-linear cursor-pointer 
-                ${pageCreate === 4
+                ${
+                  pageCreate === 4
                     ? "bg-amber-200 dark:bg-orange2 dark:text-black-2"
                     : ""
-                  }
+                }
                 `}
               >
                 <span className="mx-auto">Equipe</span>
