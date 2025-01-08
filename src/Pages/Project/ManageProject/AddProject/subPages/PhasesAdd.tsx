@@ -28,7 +28,7 @@ const PhasesAdd = ({
   const [inputErrors, setInputErrors] = useState<{
     [key: number]: { phase1?: string; expectedDeliverable?: string };
   }>({});
-  const [phasesNames, setPhasesNames] = useState<Array<string | undefined>>([]);
+  // const [phasesNames, setPhasesNames] = useState<Array<string | undefined>>([]);
   const [activePhaseId, setActivePhaseId] = useState<string | undefined>(
     undefined
   );
@@ -97,8 +97,8 @@ const PhasesAdd = ({
     setActivePhaseId(initialId);
 
     setPhaseAndLivrableList(phaseData);
-    const phasesNamesData = phaseData.map((phase) => phase.phase1);
-    setPhasesNames(phasesNamesData);
+    // const phasesNamesData = phaseData?.map((phase) => phase.phase1);
+    // setPhasesNames(phasesNamesData);
   };
 
   // REMOVE A PHASE TO THE LIST
@@ -125,9 +125,9 @@ const PhasesAdd = ({
     if (!previousPhase.phase1) {
       errors.phase1 = "Veuillez rempir ce champ";
     }
-    if (!previousPhase.expectedDeliverable) {
-      errors.expectedDeliverable = "Veuillez rempir ce champ";
-    }
+    // if (!previousPhase.expectedDeliverable) {
+    //   errors.expectedDeliverable = "Veuillez rempir ce champ";
+    // }
     setInputErrors((prevErrors) => ({
       ...prevErrors,
       [phaseAndLivrableList.length - 1]: errors,
@@ -172,20 +172,60 @@ const PhasesAdd = ({
     index: number
   ) => {
     setPhaseAndLivrableList((prevList) =>
-      prevList.map((phase, idx) =>
+      prevList?.map((phase, idx) =>
         idx === index
           ? {
               ...phase,
               rank: index,
               [label === "phase"
                 ? "phase1"
-                : label === "livrable"
-                ? "expectedDeliverable"
                 : label === "startDate"
                 ? "startDate"
                 : label === "depandantOf"
                 ? "dependantOf"
                 : "endDate"]: value,
+            }
+          : phase
+      )
+    );
+  };
+
+  const handleAddLivrable = (index: number) => {
+    phaseAndLivrableList?.[index]?.listDeliverables?.push({
+      id: uuid4(),
+      deliverableName: "",
+    });
+    setPhaseAndLivrableList([...phaseAndLivrableList]);
+  };
+
+  const handleRemoveLivrable = (phaseId: string, livrableId: string) => {
+    const updatedList = phaseAndLivrableList?.map((phase) =>
+      phase.id === phaseId
+        ? {
+            ...phase,
+            listDeliverables: phase.listDeliverables.filter(
+              (livrable) => livrable.id !== livrableId
+            ),
+          }
+        : phase
+    );
+    setPhaseAndLivrableList(updatedList);
+  };
+  const handleLivrableNameChange = (
+    phaseId: string,
+    livrableId: string,
+    livrableName: string
+  ) => {
+    setPhaseAndLivrableList((prevList) =>
+      prevList?.map((phase) =>
+        phase.id === phaseId
+          ? {
+              ...phase,
+              listDeliverables: phase.listDeliverables?.map((livrable) =>
+                livrable.id === livrableId
+                  ? { ...livrable, deliverableName: livrableName }
+                  : livrable
+              ),
             }
           : phase
       )
@@ -217,6 +257,7 @@ const PhasesAdd = ({
               }));
             }
 
+            // console.log(phaseAndLivrableList)
             setPageCreate(4);
           } else {
             notyf.error("Un projet doit contenir au moins une phase");
@@ -279,7 +320,7 @@ const PhasesAdd = ({
               </div>
               {phaseAndLivrableList?.map((phase, index) => (
                 <div
-                  key={phase?.id}
+                  key={phase.id}
                   className={`${activePhaseId === phase?.id ? "" : "hidden"}`}
                 >
                   <div className="grid md:grid-cols-3 gap-4  pb-2 mb-4">
@@ -341,39 +382,54 @@ const PhasesAdd = ({
                         handlePhaseDataChange("endDate", e.target.value, index);
                       }}
                     />
-                    {phase?.listDeliverables?.map((livrable) => (
-                      <CustomInput
-                        key={livrable?.id}
-                        label="Livrable(s)"
-                        type="text"
-                        rounded="medium"
-                        placeholder="Ex: dossier de conception"
-                        help="Document attendu pour valider la finalité de cette phase"
-                        value={livrable?.deliverableName}
-                        onChange={(e) => {
-                          handlePhaseDataChange(
-                            "livrable",
-                            e.target.value,
-                            index
-                          );
-                          setInputErrors((prev) => ({
-                            ...prev,
-                            [index]: {
-                              ...prev[index],
-                              expectedDeliverable: "",
-                            },
-                          }));
-                        }}
-                        required
-                        error={inputErrors[index]?.expectedDeliverable}
-                      />
+                    {phase?.listDeliverables?.map((livrable, index) => (
+                      <div key={livrable?.id} className="grid grid-flow-col">
+                        <CustomInput
+                          key={livrable?.id}
+                          label={`Livrable ${index+1}`}
+                          type="text"
+                          rounded="medium"
+                          placeholder="Ex: dossier de conception"
+                          help="Document attendu pour valider la finalité de cette phase"
+                          value={livrable?.deliverableName}
+                          onChange={(e) => {
+                            handleLivrableNameChange(
+                              phase?.id ?? "",
+                              livrable?.id,
+                              e.target.value
+                            );
+                            // setInputErrors((prev) => ({
+                            //   ...prev,
+                            //   [index]: {
+                            //     ...prev[index],
+                            //     expectedDeliverable: "",
+                            //   },
+                            // }));
+                          }}
+                          required
+                          // error={inputErrors[index]?.expectedDeliverable}
+                        />
+                        {phase?.listDeliverables?.length > 1 && (
+                          <span
+                            className="flex border  mt-7 items-center justify-center text-red-500 dark:text-red-400 hover:text-white dark:hover:text-whiten hover:bg-red-500 transition rounded-r-md focus:outline-none focus:ring-2 focus:ring-red-500 cursor-pointer "
+                            onClick={() => {
+                              handleRemoveLivrable(
+                                phase?.id ?? "",
+                                livrable?.id
+                              );
+                            }}
+                          >
+                            ✕
+                          </span>
+                        )}
+                      </div>
                     ))}
 
                     <button
                       type="button"
                       className="border mt-7 border-stroke rounded-md hover:bg-stroke dark:hover:bg-boxdark2"
-                      onClick={()=>{
-                        console.log(index)
+                      onClick={() => {
+                        handleAddLivrable(index);
                       }}
                     >
                       + Ajouter un livrable
