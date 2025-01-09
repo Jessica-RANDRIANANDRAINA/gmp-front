@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import {
   CustomInput,
-  CustomSelect,
+  // CustomSelect,
 } from "../../../../../components/UIElements";
 import { IPhase, IProjectData } from "../../../../../types/Project";
 import { v4 as uuid4 } from "uuid";
@@ -23,15 +23,21 @@ const PhasesUpdate = ({
   setPhaseAndLivrableList: React.Dispatch<React.SetStateAction<Array<IPhase>>>;
   projectData: IProjectData;
 }) => {
-  const [phasesNames, setPhasesNames] = useState<Array<string | undefined>>(
-    phaseAndLivrableList.map((phase) => phase.phase1)
-  );
+  // const [phasesNames, setPhasesNames] = useState<Array<string | undefined>>(
+  //   phaseAndLivrableList.map((phase) => phase.phase1)
+  // );
   const [activePhaseId, setActivePhaseId] = useState<string | undefined>(
     undefined
   );
 
   useEffect(() => {
-    setPhasesNames(phaseAndLivrableList.map((phase) => phase.phase1));
+    console.log("******************");
+    console.log(projectData);
+    console.log("******************");
+  }, [projectData]);
+
+  useEffect(() => {
+    // setPhasesNames(phaseAndLivrableList.map((phase) => phase.phase1));
     if (!activePhaseId) {
       const initialId = phaseAndLivrableList
         ?.slice()
@@ -48,7 +54,12 @@ const PhasesUpdate = ({
         id: uuid4(),
         rank: 0,
         phase1: "Conception",
-        expectedDeliverable: "Document de cadrage",
+        listDeliverables: [
+          {
+            id: uuid4(),
+            deliverableName: "Document de cadrage",
+          },
+        ],
         startDate: projectData?.startDate,
         endDate: undefined,
         dependantOf: undefined,
@@ -57,7 +68,12 @@ const PhasesUpdate = ({
         id: uuid4(),
         rank: 1,
         phase1: "Réalisation",
-        expectedDeliverable: "Signature de mise en production",
+        listDeliverables: [
+          {
+            id: uuid4(),
+            deliverableName: "Signature de mise en production",
+          },
+        ],
         startDate: undefined,
         endDate: undefined,
         dependantOf: undefined,
@@ -66,7 +82,12 @@ const PhasesUpdate = ({
         id: uuid4(),
         rank: 2,
         phase1: "Mise en production",
-        expectedDeliverable: "Plan de déploiement",
+        listDeliverables: [
+          {
+            id: uuid4(),
+            deliverableName: "Plan de déploiement",
+          },
+        ],
         startDate: undefined,
         endDate: undefined,
         dependantOf: undefined,
@@ -75,7 +96,12 @@ const PhasesUpdate = ({
         id: uuid4(),
         rank: 3,
         phase1: "Clôture et maintenance",
-        expectedDeliverable: "PV de recette",
+        listDeliverables: [
+          {
+            id: uuid4(),
+            deliverableName: "PV de recette",
+          },
+        ],
         startDate: undefined,
         endDate: undefined,
         dependantOf: undefined,
@@ -84,8 +110,8 @@ const PhasesUpdate = ({
     setPhaseAndLivrableList(phaseData);
     const initialId = phaseData?.[0]?.id;
     setActivePhaseId(initialId);
-    const phasesNamesData = phaseData.map((phase) => phase.phase1);
-    setPhasesNames(phasesNamesData);
+    // const phasesNamesData = phaseData.map((phase) => phase.phase1);
+    // setPhasesNames(phasesNamesData);
   };
   // REMOVE A PHASE TO THE LIST
   const handleRemovePhaseList = (phaseId: string, index: number) => {
@@ -111,8 +137,6 @@ const PhasesUpdate = ({
               ...phase,
               [label === "phase"
                 ? "phase1"
-                : label === "livrable"
-                ? "expectedDeliverable"
                 : label === "startDate"
                 ? "startDate"
                 : label === "depandantOf"
@@ -134,7 +158,12 @@ const PhasesUpdate = ({
     let phaseData: IPhase = {
       id: id,
       phase1: "",
-      expectedDeliverable: "",
+      listDeliverables: [
+        {
+          id: uuid4(),
+          deliverableName: "",
+        },
+      ],
       startDate: undefined,
       endDate: undefined,
       rank,
@@ -143,6 +172,62 @@ const PhasesUpdate = ({
 
     const newPhaseList = [...phaseAndLivrableList, phaseData];
     setPhaseAndLivrableList(newPhaseList);
+  };
+
+  // add another deliverable
+  const handleAddLivrable = (index: number) => {
+    const updatedList = phaseAndLivrableList?.map((phase) => {
+      if (phase?.rank === index) {
+        return {
+          ...phase,
+          listDeliverables: [
+            ...(phase.listDeliverables || []),
+            {
+              id: uuid4(),
+              deliverableName: "",
+            },
+          ],
+        };
+      }
+      return phase;
+    });
+    setPhaseAndLivrableList(updatedList);
+  };
+
+  // delete one deliverable
+  const handleRemoveLivrable = (phaseId: string, livrableId: string) => {
+    const updatedList = phaseAndLivrableList?.map((phase) =>
+      phase.id === phaseId
+        ? {
+            ...phase,
+            listDeliverables: phase.listDeliverables.filter(
+              (livrable) => livrable.id !== livrableId
+            ),
+          }
+        : phase
+    );
+    setPhaseAndLivrableList(updatedList);
+  };
+
+  const handleLivrableNameChange = (
+    phaseId: string,
+    livrableId: string,
+    livrableName: string
+  ) => {
+    setPhaseAndLivrableList((prevList) =>
+      prevList?.map((phase) =>
+        phase.id === phaseId
+          ? {
+              ...phase,
+              listDeliverables: phase.listDeliverables?.map((livrable) =>
+                livrable.id === livrableId
+                  ? { ...livrable, deliverableName: livrableName }
+                  : livrable
+              ),
+            }
+          : phase
+      )
+    );
   };
   return (
     <form
@@ -230,7 +315,7 @@ const PhasesUpdate = ({
                         activePhaseId === phase?.id ? "" : "hidden"
                       }`}
                     >
-                      <div className="grid md:grid-cols-2 gap-4 pb-2 mb-4">
+                      <div className="grid md:grid-cols-3 gap-4 pb-2 mb-4">
                         <CustomInput
                           label="Phase"
                           type="text"
@@ -247,46 +332,6 @@ const PhasesUpdate = ({
                               );
                           }}
                           required
-                        />
-                        <CustomInput
-                          label="Livrable(s)"
-                          type="text"
-                          rounded="medium"
-                          placeholder="Ex: dossier de conception"
-                          value={phase?.expectedDeliverable}
-                          onChange={(e) => {
-                            if (phase?.id)
-                              handlePhaseDataChange(
-                                "livrable",
-                                e.target.value,
-                                phase.rank ?? 0
-                              );
-                          }}
-                          required
-                        />
-                        <CustomSelect
-                          className={`md:col-span-2 ${
-                            index === 0 ? "hidden" : ""
-                          }`}
-                          label="Dépendante de"
-                          placeholder="Une phase obligatoire avant celle-ci"
-                          data={phasesNames
-                            ?.slice()
-                            ?.reverse()
-                            ?.filter((p) => p != phase?.phase1)}
-                          value={phaseAndLivrableList[index].dependantOf}
-                          onValueChange={(e) => {
-                            const phaseAssociated = phaseAndLivrableList.filter(
-                              (phase) => {
-                                return phase.phase1 === e;
-                              }
-                            );
-                            handlePhaseDataChange(
-                              "depandantOf",
-                              phaseAssociated?.[0]?.id,
-                              phase.rank ?? 0
-                            );
-                          }}
                         />
                         <CustomInput
                           label="Date début"
@@ -328,6 +373,77 @@ const PhasesUpdate = ({
                               );
                           }}
                         />
+                        {phase?.listDeliverables?.map((livrable, index) => (
+                          <div
+                            key={livrable?.id}
+                            className="grid grid-flow-col"
+                          >
+                            <CustomInput
+                              label={`Livrable ${index + 1}`}
+                              type="text"
+                              rounded="medium"
+                              placeholder="Ex: dossier de conception"
+                              value={livrable?.deliverableName}
+                              onChange={(e) => {
+                                if (phase?.id)
+                                  handleLivrableNameChange(
+                                    phase?.id,
+                                    livrable?.id,
+                                    e.target.value
+                                  );
+                              }}
+                              required
+                            />
+                            {phase?.listDeliverables?.length > 1 && (
+                              <span
+                                className="flex border  mt-7 items-center justify-center text-red-500 dark:text-red-400 hover:text-white dark:hover:text-whiten hover:bg-red-500 transition rounded-r-md focus:outline-none focus:ring-2 focus:ring-red-500 cursor-pointer "
+                                onClick={() => {
+                                  handleRemoveLivrable(
+                                    phase?.id ?? "",
+                                    livrable?.id
+                                  );
+                                  console.log("first");
+                                }}
+                              >
+                                ✕
+                              </span>
+                            )}
+                          </div>
+                        ))}
+
+                        <button
+                          type="button"
+                          className="border mt-7 border-stroke rounded-md hover:bg-stroke dark:hover:bg-boxdark2"
+                          onClick={() => {
+                            handleAddLivrable(index);
+                          }}
+                        >
+                          + Ajouter un livrable
+                        </button>
+                        {/* <CustomSelect
+                          className={`md:col-span-2 ${
+                            index === 0 ? "hidden" : ""
+                          }`}
+                          label="Dépendante de"
+                          placeholder="Une phase obligatoire avant celle-ci"
+                          data={phasesNames
+                            ?.slice()
+                            ?.reverse()
+                            ?.filter((p) => p != phase?.phase1)}
+                          value={phaseAndLivrableList[index].dependantOf}
+                          onValueChange={(e) => {
+                            const phaseAssociated = phaseAndLivrableList.filter(
+                              (phase) => {
+                                return phase.phase1 === e;
+                              }
+                            );
+                            handlePhaseDataChange(
+                              "depandantOf",
+                              phaseAssociated?.[0]?.id,
+                              phase.rank ?? 0
+                            );
+                          }}
+                        /> */}
                       </div>
                     </div>
                   );
