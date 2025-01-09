@@ -140,7 +140,7 @@ const DetailsProject = () => {
                   </div>
                   <div className="grid md:grid-cols-2 grid-cols-1 whitespace-nowrap gap-1">
                     {projectData?.listUsers?.map((user) => (
-                      <div className="">
+                      <div key={user?.user?.name} className="">
                         <p className="text-xs">{user?.user?.name}</p>
                       </div>
                     ))}
@@ -419,7 +419,7 @@ const DetailsProject = () => {
                             phases?.listDeliverables?.map(
                               (livrables, index) => (
                                 <tr
-                                  key={phases?.id}
+                                  key={phases?.id + "" + index}
                                   className="border-b border-zinc-200 hover:bg-zinc-50 dark:hover:bg-black dark:border-black hover:bg-gray-50 transition-colors duration-300"
                                 >
                                   {index === 0 && (
