@@ -190,6 +190,7 @@ const PhasesAdd = ({
     );
   };
 
+  // add another deliverable
   const handleAddLivrable = (index: number) => {
     phaseAndLivrableList?.[index]?.listDeliverables?.push({
       id: uuid4(),
@@ -198,6 +199,7 @@ const PhasesAdd = ({
     setPhaseAndLivrableList([...phaseAndLivrableList]);
   };
 
+  // delete one deliverable
   const handleRemoveLivrable = (phaseId: string, livrableId: string) => {
     const updatedList = phaseAndLivrableList?.map((phase) =>
       phase.id === phaseId
@@ -385,7 +387,6 @@ const PhasesAdd = ({
                     {phase?.listDeliverables?.map((livrable, index) => (
                       <div key={livrable?.id} className="grid grid-flow-col">
                         <CustomInput
-                          key={livrable?.id}
                           label={`Livrable ${index+1}`}
                           type="text"
                           rounded="medium"
