@@ -470,6 +470,7 @@ const DetailsProject = () => {
                                       {livrables?.expectedDeliverable && (
                                         <a
                                           href={livrables?.expectedDeliverable}
+                                          target="_blank"
                                           className="border p-1 rounded-md cursor-pointer bg-white border-zinc-200 hover:bg-zinc-100 dark:bg-boxdark dark:hover:bg-boxdark2 dark:border-formStrokedark "
                                         >
                                           Le lien
