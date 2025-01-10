@@ -24,7 +24,7 @@ const PhaseSettings = ({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [dataToModif, setDataToModif] = useState({
     status: "A faire",
-    deliverable: "",
+    listDeliverables: [],
   });
   const [ableToEnd, setAbleToEnd] = useState<boolean>(false);
   const [datePhase, setDatePhase] = useState({
@@ -55,16 +55,17 @@ const PhaseSettings = ({
         const hasIncompleteTask = data?.tasks?.some(
           (task: { status: string }) => statusArray.includes(task.status)
         );
-        if (hasIncompleteTask) {
-          setAbleToEnd(false);
-        } else {
-          setAbleToEnd(true);
-        }
-        setPhaseData(data);
+
+        setAbleToEnd(!hasIncompleteTask);
+
+        setPhaseData({
+          ...data,
+          listDeliverables: data.listDeliverables ?? [],
+        });
         setDataToModif({
           ...dataToModif,
           status: data?.status ?? "A faire",
-          deliverable: data?.deliverable,
+          listDeliverables: data.listDeliverables ?? [],
         });
       }
     } catch (error) {
@@ -74,6 +75,24 @@ const PhaseSettings = ({
   useEffect(() => {
     fetchDataPhase();
   }, []);
+
+  const handleLinkChange = (livrableId: string, link: string) => {
+    const userConnected = decodeToken("pr");
+    setPhaseData((prevData) => {
+      if (!prevData) {
+        return prevData;
+      }
+      return {
+        ...prevData,
+        initiator: userConnected?.name,
+        listDeliverables: prevData.listDeliverables.map((livrable) =>
+          livrable.id === livrableId
+            ? { ...livrable, expectedDeliverable: link }
+            : livrable
+        ),
+      };
+    });
+  };
 
   const handleConfirm = async () => {
     setIsLoading(true);
@@ -122,30 +141,26 @@ const PhaseSettings = ({
                   ...phaseData,
                   status: e,
                   initiator: userConnected?.name,
-                });
-                // setDataToModif({
-                //   ...dataToModif,
-                //   status: e,
-                // });
-              }}
-            />
-            <CustomInput
-              label="Lien vers le livrable"
-              type="text"
-              placeholder="ex:https://lien-vers-le-livrable"
-              rounded="medium"
-              className={`w-full ${ableToEnd ? "" : "hidden"}`}
-              help="Quand la phase est terminée veuillez mettre ici le lien vers le livrable attendu"
-              value={phaseData?.deliverable ?? ""}
-              onChange={(e) => {
-                const userConnected = decodeToken("pr");
-                setPhaseData({
-                  ...phaseData,
-                  deliverable: e.target.value,
-                  initiator: userConnected?.name,
+                  listDeliverables: phaseData?.listDeliverables ?? [],
                 });
               }}
             />
+            {phaseData?.listDeliverables?.map((livrable) => (
+              <>
+                <CustomInput
+                  label={`Lien vers le livrable : ${livrable.deliverableName}`}
+                  type="text"
+                  placeholder="ex : https://lien-vers-le-livrable"
+                  rounded="medium"
+                  className={`w-full ${ableToEnd ? "" : "hidden"}`}
+                  help="Quand la phase est terminée veuillez mettre ici le lien vers le livrable attendu"
+                  value={livrable?.expectedDeliverable ?? ""}
+                  onChange={(e) => {
+                    handleLinkChange(livrable.id, e.target.value);
+                  }}
+                />
+              </>
+            ))}
           </div>
         </div>
       </ModalBody>
