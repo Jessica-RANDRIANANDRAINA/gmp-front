@@ -1,30 +1,75 @@
-# React + TypeScript + Vite
+# G.M.P Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Gestion et Management de Projet**
 
-Currently, two official plugins are available:
+This repository contains the frontend code for the GMP project.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## About GMP
 
-## Expanding the ESLint configuration
+GMP is a web application designed to help manage projects and activities for Ravinala personnel.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+### Key Features
 
-- Configure the top-level `parserOptions` property like this:
+- **Budget Management**:  
+  Manage project budgets, including their amounts, unique codes, and the department sources.
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json', './tsconfig.app.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+- **Resource Management**:  
+  Track and organize all the materials required for a project, such as cameras, chairs, and other equipment.
+
+- **Project Phases**:  
+  Define and manage the phases of a project. Each project consists of one or multiple phases, which outline the project's progress.
+
+- **Team Management**:  
+  Assign roles and manage project teams, including:
+  - Project Owners: Responsible for overseeing the project.
+  - Team Members: Individuals tasked with executing the project.
+  - Observers: Users who can monitor the project's progress.
+
+### Authentication
+
+Access to GMP requires Active Directory credentials. Use your Ravinala account in the format `your-matricule@ravinala-airports.aero` along with your Active Directory password to log in.
+
+### Activity Tracking
+
+With GMP, you can also manage individual activities, such as:
+
+- **Intercontract**: Non-project-related activities or idle periods where no project work is performed.
+- **Transverse Activities**: Tasks that may or may not be project-related, such as meetings, onboarding sessions, or training.
+
+These features help track the time spent on various activities and ensure efficient management of resources and personnel.
+
+## Table of Contents
+
+- [About GMP](#about-gmp)
+  - [Key Features](#key-features)
+  - [Authentication](#authentication)
+  - [Activity tracking](#activity-tracking)
+- [Table of contents](#table-of-contents)
+- [Installation](#installation)
+- [Usage](#usage)
+
+## Installation
+
+To set up the project, follow these steps:
+
+1. Install the required dependencies by running the following command
+
+```bash
+npm install
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+2. Copy the content of the `.env.example` file into a new file named `.env` and configure the link `VITE_API_ENDPOINT` to match your ip.
+
+## Usage
+
+To start the development server, run:
+
+```bash
+npm run dev
+```
+
+To build the project for production, run:
+
+```bash
+npm run build
+```
