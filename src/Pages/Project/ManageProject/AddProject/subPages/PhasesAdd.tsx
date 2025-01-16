@@ -305,7 +305,7 @@ const PhasesAdd = ({
                             setActivePhaseId(phase?.id);
                           }}
                         >
-                          Phase {index + 1}
+                          {phase.phase1 ? phase.phase1 : `Phase ${index + 1}`}
                         </span>
                         <button
                           className="flex items-center justify-center px-3 py-2 text-red-500 dark:text-red-400 hover:text-white dark:hover:text-whiten hover:bg-red-500 transition rounded-r-md focus:outline-none focus:ring-2 focus:ring-red-500"
@@ -387,7 +387,7 @@ const PhasesAdd = ({
                     {phase?.listDeliverables?.map((livrable, index) => (
                       <div key={livrable?.id} className="grid grid-flow-col">
                         <CustomInput
-                          label={`Livrable ${index+1}`}
+                          label={`Livrable ${index + 1}`}
                           type="text"
                           rounded="medium"
                           placeholder="Ex: dossier de conception"

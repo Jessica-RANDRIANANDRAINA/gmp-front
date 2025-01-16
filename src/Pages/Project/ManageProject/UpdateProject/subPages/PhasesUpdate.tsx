@@ -31,12 +31,6 @@ const PhasesUpdate = ({
   );
 
   useEffect(() => {
-    console.log("******************");
-    console.log(projectData);
-    console.log("******************");
-  }, [projectData]);
-
-  useEffect(() => {
     // setPhasesNames(phaseAndLivrableList.map((phase) => phase.phase1));
     if (!activePhaseId) {
       const initialId = phaseAndLivrableList
@@ -48,71 +42,71 @@ const PhasesUpdate = ({
   }, [phaseAndLivrableList]);
 
   // ADD DEFAULT VALUE IN PHASE LIST
-  const handleAddDefaultPhaseList = () => {
-    let phaseData: IPhase[] = [
-      {
-        id: uuid4(),
-        rank: 0,
-        phase1: "Conception",
-        listDeliverables: [
-          {
-            id: uuid4(),
-            deliverableName: "Document de cadrage",
-          },
-        ],
-        startDate: projectData?.startDate,
-        endDate: undefined,
-        dependantOf: undefined,
-      },
-      {
-        id: uuid4(),
-        rank: 1,
-        phase1: "Réalisation",
-        listDeliverables: [
-          {
-            id: uuid4(),
-            deliverableName: "Signature de mise en production",
-          },
-        ],
-        startDate: undefined,
-        endDate: undefined,
-        dependantOf: undefined,
-      },
-      {
-        id: uuid4(),
-        rank: 2,
-        phase1: "Mise en production",
-        listDeliverables: [
-          {
-            id: uuid4(),
-            deliverableName: "Plan de déploiement",
-          },
-        ],
-        startDate: undefined,
-        endDate: undefined,
-        dependantOf: undefined,
-      },
-      {
-        id: uuid4(),
-        rank: 3,
-        phase1: "Clôture et maintenance",
-        listDeliverables: [
-          {
-            id: uuid4(),
-            deliverableName: "PV de recette",
-          },
-        ],
-        startDate: undefined,
-        endDate: undefined,
-        dependantOf: undefined,
-      },
-    ];
-    setPhaseAndLivrableList(phaseData);
-    const initialId = phaseData?.[0]?.id;
-    setActivePhaseId(initialId);
-    // const phasesNamesData = phaseData.map((phase) => phase.phase1);
-    // setPhasesNames(phasesNamesData);
-  };
+  // const handleAddDefaultPhaseList = () => {
+  //   let phaseData: IPhase[] = [
+  //     {
+  //       id: uuid4(),
+  //       rank: 0,
+  //       phase1: "Conception",
+  //       listDeliverables: [
+  //         {
+  //           id: uuid4(),
+  //           deliverableName: "Document de cadrage",
+  //         },
+  //       ],
+  //       startDate: projectData?.startDate,
+  //       endDate: undefined,
+  //       dependantOf: undefined,
+  //     },
+  //     {
+  //       id: uuid4(),
+  //       rank: 1,
+  //       phase1: "Réalisation",
+  //       listDeliverables: [
+  //         {
+  //           id: uuid4(),
+  //           deliverableName: "Signature de mise en production",
+  //         },
+  //       ],
+  //       startDate: undefined,
+  //       endDate: undefined,
+  //       dependantOf: undefined,
+  //     },
+  //     {
+  //       id: uuid4(),
+  //       rank: 2,
+  //       phase1: "Mise en production",
+  //       listDeliverables: [
+  //         {
+  //           id: uuid4(),
+  //           deliverableName: "Plan de déploiement",
+  //         },
+  //       ],
+  //       startDate: undefined,
+  //       endDate: undefined,
+  //       dependantOf: undefined,
+  //     },
+  //     {
+  //       id: uuid4(),
+  //       rank: 3,
+  //       phase1: "Clôture et maintenance",
+  //       listDeliverables: [
+  //         {
+  //           id: uuid4(),
+  //           deliverableName: "PV de recette",
+  //         },
+  //       ],
+  //       startDate: undefined,
+  //       endDate: undefined,
+  //       dependantOf: undefined,
+  //     },
+  //   ];
+  //   setPhaseAndLivrableList(phaseData);
+  //   const initialId = phaseData?.[0]?.id;
+  //   setActivePhaseId(initialId);
+  //   // const phasesNamesData = phaseData.map((phase) => phase.phase1);
+  //   // setPhasesNames(phasesNamesData);
+  // };
   // REMOVE A PHASE TO THE LIST
   const handleRemovePhaseList = (phaseId: string, index: number) => {
     let filteredList = phaseAndLivrableList.filter(
@@ -252,13 +246,13 @@ const PhasesUpdate = ({
             PHASES ET LIVRABLES
           </span>
           <div className="hide-scrollbar overflow-y-scroll xl:max-h-125 max-h-100">
-            <button
+            {/* <button
               onClick={handleAddDefaultPhaseList}
               type="button"
               className={`py-2 w-full mt-2 text-center border border-dashed border-stroke rounded-md hover:bg-stroke dark:hover:bg-boxdark2`}
             >
               Utiliser les valeurs par défaut
-            </button>
+            </button> */}
             <button
               type="button"
               onClick={handleAddPhaseList}
@@ -288,7 +282,7 @@ const PhasesUpdate = ({
                               setActivePhaseId(phase?.id);
                             }}
                           >
-                            Phase {index + 1}
+                            {phase.phase1 ? phase.phase1 : `Phase ${index + 1}`}
                           </span>
                           <button
                             className="flex items-center justify-center px-3 py-2 text-red-500 dark:text-red-400 hover:text-white dark:hover:text-whiten hover:bg-red-500 transition rounded-r-md focus:outline-none focus:ring-2 focus:ring-red-500"
