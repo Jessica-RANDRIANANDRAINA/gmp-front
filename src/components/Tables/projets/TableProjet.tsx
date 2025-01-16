@@ -1179,24 +1179,32 @@ const TableProjet = ({
                       </td>
                       <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
                         <div className="w-full bg-zinc-100 rounded-full dark:bg-strokedark h-6 relative">
-                          <div
-                            className={`h-6 rounded-full ${
-                              project?.completionPercentage === 0
-                                ? "bg-red-500"
-                                : project?.completionPercentage === 25
-                                ? "bg-orange"
-                                : project?.completionPercentage === 50
-                                ? "bg-yellow-500"
-                                : project?.completionPercentage === 75
-                                ? "bg-lime-500"
-                                : "bg-green-500"
-                            }`}
-                            style={{
-                              width: `${project?.completionPercentage}%`,
-                            }}
-                          ></div>
-                          <span className="absolute inset-0 flex justify-center items-center text-black dark:text-white text-xs font-semibold">
-                            {project?.completionPercentage}%
+                          {project?.state === "Stand by" ? (
+                            <div className="h-6 rounded-full bg-[length:14px_14px] bg-[repeating-linear-gradient(45deg,#FFCD59_0,#FFCD59_3px,transparent_3px,transparent_5px)] w-full"></div>
+                          ) : (
+                            <div
+                              className={`h-6 rounded-full ${
+                                project?.completionPercentage === 0
+                                  ? "bg-red-500"
+                                  : project?.completionPercentage === 25
+                                  ? "bg-orange"
+                                  : project?.completionPercentage === 50
+                                  ? "bg-yellow-500"
+                                  : project?.completionPercentage === 75
+                                  ? "bg-lime-500"
+                                  : "bg-green-500"
+                              }`}
+                              style={{
+                                width: `${project?.completionPercentage}%`,
+                              }}
+                            ></div>
+                          )}
+                          <span className={`absolute rounded-full inset-0 flex justify-center items-center text-xs font-semibold text-black dark:text-white ${
+                            project?.state ==="Stand by" ? "dark:bg-black/40":""
+                          }`}>
+                            {project?.state === "Stand by"
+                              ? project?.state
+                              : project?.completionPercentage + "%"}
                           </span>
                         </div>
                       </td>
