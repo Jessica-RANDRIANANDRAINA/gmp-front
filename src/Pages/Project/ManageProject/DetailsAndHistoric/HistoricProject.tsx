@@ -52,6 +52,14 @@ const HistoricProject = () => {
             <tbody className="text-gray-600 text-xs font-light">
               {historicData?.map((historic) => {
                 const modifiedAd = formatDate(historic?.modifiedAt, true);
+                var oldValueTime = "";
+                var newValueTime = "";
+                if (historic?.oldValue.includes("00.0000000")) {
+                  oldValueTime = formatDate(historic.oldValue, false);
+                }
+                if (historic?.newValue.includes("00.0000000")) {
+                  newValueTime = formatDate(historic.newValue, false);
+                }
 
                 return (
                   <tr
@@ -89,20 +97,27 @@ const HistoricProject = () => {
                       <span className="text-gray-700">{historic?.table}</span>
                     </td>
                     <td className="py-3 px-6 text-left">
-                      <span className="text-gray-700">{historic?.column}</span>
+                      <span className="text-gray-700">
+                        {historic?.column === "Role"
+                          ? "Utilisateur"
+                          : historic.column}
+                      </span>
                     </td>
                     <td className="py-3 px-6 text-center ">
                       <span className="text-gray-700">
-                        {historic?.oldValue === ""
+                        {historic?.oldValue.includes("00.0000000")
+                          ? oldValueTime
+                          : historic?.oldValue === ""
                           ? "vide"
                           : historic?.oldValue}
+
                         {historic?.column === "Avancement" ? "%" : ""}
                       </span>
                     </td>
                     <td className="py-3 px-6 text-left">
                       <span className="text-gray-700">
                         {historic?.newValue.includes("00.0000000")
-                          ? historic?.newValue?.split("T")?.[0]
+                          ? newValueTime
                           : historic?.newValue}
                         {historic?.column === "Avancement" ? "%" : ""}
                       </span>
@@ -120,10 +135,18 @@ const HistoricProject = () => {
           <div className="block md:hidden">
             {historicData?.map((historic) => {
               const modifiedAt = formatDate(historic?.modifiedAt, true);
+              var oldValueTime = "";
+              var newValueTime = "";
+              if (historic?.oldValue.includes("00.0000000")) {
+                oldValueTime = formatDate(historic.oldValue, false);
+              }
+              if (historic?.newValue.includes("00.0000000")) {
+                newValueTime = formatDate(historic.newValue, false);
+              }
               return (
                 <div
                   key={historic?.id}
-                  className="bg-white *:grid *:grid-cols-2 dark:bg-boxdark shadow-lg rounded-lg mb-4 p-4 border border-zinc-200 dark:border-black"
+                  className="*:grid *:grid-cols-2 overflow-x-auto bg-white  dark:bg-boxdark shadow-lg rounded-lg mb-4 p-4 border border-zinc-200 dark:border-black"
                 >
                   <div className="mb-2">
                     <span className="text-emerald-500 font-semibold">
@@ -176,7 +199,13 @@ const HistoricProject = () => {
                       Ancienne valeur :{" "}
                     </span>
                     <span className="text-gray-800">
-                      {historic?.oldValue === "" ? "vide" : historic?.oldValue}
+                      {historic?.oldValue.includes("00.0000000")
+                        ? oldValueTime
+                        : historic?.oldValue === ""
+                        ? "vide"
+                        : historic?.oldValue}
+
+                      {historic?.column === "Avancement" ? "%" : ""}
                     </span>
                   </div>
                   <div>
@@ -185,8 +214,9 @@ const HistoricProject = () => {
                     </span>
                     <span className="text-gray-800">
                       {historic?.newValue.includes("00.0000000")
-                        ? historic?.newValue?.split("T")?.[0]
+                        ? newValueTime
                         : historic?.newValue}
+                      {historic?.column === "Avancement" ? "%" : ""}
                     </span>
                   </div>
                   <div>
