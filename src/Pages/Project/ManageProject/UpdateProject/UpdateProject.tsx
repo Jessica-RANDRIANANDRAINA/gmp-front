@@ -215,6 +215,7 @@ const UpdateProject = () => {
       userid: team.id,
       projectid: projectid,
       role: team?.role,
+      name: team?.name,
     }));
 
     // trenasform all the data to a single object
