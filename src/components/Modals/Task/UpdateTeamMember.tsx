@@ -58,6 +58,7 @@ const UpdateTeamMember = ({
         userId: item.id,
         role: item.role,
         projectId: projectId,
+        name: item.name,
       }));
       const userConnected = decodeToken("pr");
       const data = {
