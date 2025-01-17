@@ -30,6 +30,7 @@ const Modal = ({
   children,
   heightSize,
   widthSize = "medium",
+  overflow= "overflow-y-auto",
 }: {
   header: string;
   modalOpen: Boolean;
@@ -37,6 +38,7 @@ const Modal = ({
   children: ReactNode;
   heightSize: string;
   widthSize?: "large" | "medium" | "small" | "xs";
+  overflow?: "overflow-y-auto" | "",
   triggerCloseFromParent?: (closeModal: () => void) => void;
 }) => {
   const trigger = useRef<any>(null);
@@ -90,7 +92,7 @@ const Modal = ({
       <div
         ref={trigger}
         style={{ maxHeight: heightSize }}
-        className={`bg-white overflow-y-auto h-fit  my-20 dark:bg-[#24303F] rounded-md ${
+        className={`bg-white ${overflow} h-fit  my-20 dark:bg-[#24303F] rounded-md ${
           size[widthSize]
         } p-4 transfrom transition-all duration-300 ease-out ${
           showModal && !closingModal

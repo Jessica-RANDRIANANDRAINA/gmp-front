@@ -118,6 +118,7 @@ const PhaseSettings = ({
       header={`Phase ${phaseData?.phase1}`}
       heightSize="80vh"
       widthSize="medium"
+      overflow=""
     >
       <ModalBody>
         <div className="space-y-2">
