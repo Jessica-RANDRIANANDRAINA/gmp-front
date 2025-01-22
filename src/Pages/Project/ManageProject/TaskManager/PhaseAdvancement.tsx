@@ -300,7 +300,7 @@ const PhaseAdvancement = () => {
   return (
     <div className={`p-5`}>
       <div
-        className={`absolute t-0 left-0 w-full h-full opacity-80 dark:opacity-85 bg-green-50 dark:bg-green-200 z-40 ${
+        className={`absolute t-0 left-0 w-full h-full opacity-25 dark:opacity-85 bg-green-50 dark:bg-green-200 z-40 pointer-events-none ${
           phaseData?.status === "Terminé" ? "" : "hidden"
         }`}
       >
@@ -335,7 +335,9 @@ const PhaseAdvancement = () => {
               ></path>{" "}
             </g>
           </svg>
-          <span className="uppercase font-bold dark:text-black">Terminé</span>
+          <span className="uppercase font-bold dark:text-black">
+            Phase Terminée
+          </span>
         </div>
       </div>
       <DragDropContext onDragEnd={handleOnDragEnd}>
@@ -358,7 +360,11 @@ const PhaseAdvancement = () => {
                       <h3 className="mb-3 text-sm">{column.title}</h3>
                       {columnId === "column-1" && (
                         <div
-                          className="border mb-4 p-1 cursor-pointer border-slate-300 hover:bg-slate-100 dark:hover:bg-boxdark2 flex justify-center text-xs"
+                          className={`border mb-4 p-1 cursor-pointer border-slate-300 hover:bg-slate-100 dark:hover:bg-boxdark2  text-xs ${
+                            phaseData?.status === "Terminé"
+                              ? "hidden"
+                              : "flex justify-center"
+                          }`}
                           onClick={() => {
                             setModalOpen(true);
                           }}
@@ -371,6 +377,7 @@ const PhaseAdvancement = () => {
                           key={task.id}
                           draggableId={task.id}
                           index={index}
+                          isDragDisabled={phaseData?.status === "Terminé"}
                         >
                           {(provided, snapshot) => {
                             const endDate = formatDate(task.content.dueDate);
@@ -393,7 +400,11 @@ const PhaseAdvancement = () => {
                                 }}
                               >
                                 <div
-                                  className="absolute top-2 right-1 hover:bg-zinc-100 dark:hover:bg-boxdark2 px-1 h-4 cursor-pointer"
+                                  className={`absolute top-2 right-1 hover:bg-zinc-100 dark:hover:bg-boxdark2 px-1 h-4 cursor-pointer ${
+                                    phaseData?.status === "Terminé"
+                                      ? "hidden"
+                                      : ""
+                                  }`}
                                   onClick={(e) => {
                                     handleToogleMenuDelete(task.id, e);
                                   }}

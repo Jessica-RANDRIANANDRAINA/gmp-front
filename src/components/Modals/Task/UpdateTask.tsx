@@ -171,15 +171,17 @@ const UpdateTask = ({
                     onClick={() => {
                       setDropDownUserOpen(!isDropdownUserOpen);
                     }}
-                    className={`w-5 h-5 p-3 border flex rounded-full justify-center items-center cursor-pointer bg-zinc-200 dark:bg-boxdark  hover:bg-zinc-300 border-zinc-200 dark:hover:bg-boxdark2 dark:border-formStrokedark ${assignedPerson.length > 0 ? "hidden" : ""
-                      }`}
+                    className={`w-5 h-5 p-3 border flex rounded-full justify-center items-center cursor-pointer bg-zinc-200 dark:bg-boxdark  hover:bg-zinc-300 border-zinc-200 dark:hover:bg-boxdark2 dark:border-formStrokedark ${
+                      assignedPerson.length > 0 ? "hidden" : ""
+                    }`}
                   >
                     +
                   </div>
                 </div>
                 <div
-                  className={`absolute top-14 max-h-100 overflow-auto left-0 border dark:border-formStrokedark border-zinc-300 bg-white dark:bg-boxdark2 shadow-lg rounded-md z-50 transition-transform duration-300 ease-in-out ${isDropdownUserOpen ? "scale-100" : "scale-0"
-                    }`}
+                  className={`absolute top-14 max-h-100 overflow-auto left-0 border dark:border-formStrokedark border-zinc-300 bg-white dark:bg-boxdark2 shadow-lg rounded-md z-50 transition-transform duration-300 ease-in-out ${
+                    isDropdownUserOpen ? "scale-100" : "scale-0"
+                  }`}
                   style={{ transformOrigin: "top left " }} // Définit l'origine de la transformation
                 >
                   {isDropdownUserOpen && (
@@ -332,35 +334,37 @@ const UpdateTask = ({
         </div>
       </ModalBody>
       <ModalFooter>
-        <button
-          className="border text-xs p-2 rounded-md  font-semibold bg-transparent border-transparent hover:bg-zinc-100 dark:hover:bg-boxdark2 "
-          type="button"
-          onClick={handleCloseModal}
-        >
-          Annuler
-        </button>
-        {(() => {
-          const hasStartDate = taskData?.startDate !== "";
-          const hasPersonAssigned = assignedPerson.length > 0;
-          const isDisabled = hasStartDate && hasPersonAssigned;
-          const buttonClassName = !isDisabled
-            ? "cursor-not-allowed bg-graydark"
-            : "cursor-pointer bg-green-700 hover:opacity-85";
+        <div className={`${phaseData?.status ==="Terminé" ? "hidden":"flex"}`}>
+          <button
+            className="border text-xs p-2 rounded-md  font-semibold bg-transparent border-transparent hover:bg-zinc-100 dark:hover:bg-boxdark2 "
+            type="button"
+            onClick={handleCloseModal}
+          >
+            Annuler
+          </button>
+          {(() => {
+            const hasStartDate = taskData?.startDate !== "";
+            const hasPersonAssigned = assignedPerson.length > 0;
+            const isDisabled = hasStartDate && hasPersonAssigned;
+            const buttonClassName = !isDisabled
+              ? "cursor-not-allowed bg-graydark"
+              : "cursor-pointer bg-green-700 hover:opacity-85";
 
-          return (
-            <button
-              disabled={!isDisabled}
-              type="button"
-              onClick={handleUpdateTask}
-              className={`border flex justify-center items-center dark:border-boxdark text-xs p-2 rounded-md text-white font-semibold ${buttonClassName}`}
-            >
-              {isLoading ? (
-                <BeatLoader size={5} className="mr-2" color={"#fff"} />
-              ) : null}
-              Sauvegarder
-            </button>
-          );
-        })()}
+            return (
+              <button
+                disabled={!isDisabled}
+                type="button"
+                onClick={handleUpdateTask}
+                className={`border flex justify-center items-center dark:border-boxdark text-xs p-2 rounded-md text-white font-semibold ${buttonClassName}`}
+              >
+                {isLoading ? (
+                  <BeatLoader size={5} className="mr-2" color={"#fff"} />
+                ) : null}
+                Sauvegarder
+              </button>
+            );
+          })()}
+        </div>
       </ModalFooter>
     </Modal>
   );
