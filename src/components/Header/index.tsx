@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import DarkModeSwitcher from "./DarkModeSwitcher";
-import NotificationDropDown from "./NotificationDropDown";
+// import NotificationDropDown from "./NotificationDropDown";
 import DropdownUser from "./DropdownUser";
 import pattern from "../../../src/assets/pattern.png";
 
@@ -76,7 +76,7 @@ const Header = (props: {
       <div className="flex items-center gap-3 2xsm:gap-7">
         <ul className="flex items-center gap-2 2xsm:gap-4">
           <DarkModeSwitcher />
-          <NotificationDropDown />
+          {/* <NotificationDropDown /> */}
           <DropdownUser userConnected={userConnected} />
         </ul>
       </div>

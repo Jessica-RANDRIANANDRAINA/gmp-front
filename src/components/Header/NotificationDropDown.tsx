@@ -1,8 +1,8 @@
-import React, { useEffect, useState, useRef } from "react";
+// import React, { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 
 const NotificationDropDown = () => {
-  const [dropDownOpen, setDropDownOpen] = useState<boolean>(false);
+  // const [dropDownOpen, setDropDownOpen] = useState<boolean>(false);
   return (
     <li className="relative">
       <Link
