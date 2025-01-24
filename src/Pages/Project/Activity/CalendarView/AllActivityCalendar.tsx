@@ -367,10 +367,10 @@ const AllActivityCalendar = ({
                     ? colors[extendedProps?.user]
                     : "",
                 }}
-                className={`z-99 min-h-full max-h-full flex flex-col items-center justify-center overflow-x-clip whitespace-nowrap border dark:border-2 border-transparent font-light w-full p-1 text-black dark:text-whiten cursor-pointer text-xs relative group`}
+                className={` min-h-full max-h-full flex flex-col items-center justify-center whitespace-nowrap border dark:border-2 border-transparent font-light w-full p-1 text-black dark:text-whiten cursor-pointer text-xs relative group`}
               >
                 <div>
-                  <b>
+                  <b className="overflow-x-clip whitespace-nowrap">
                     {dailyEffort}h -{" "}
                     {title.length > 15 ? `${title.slice(0, 15)}...` : title}
                   </b>
