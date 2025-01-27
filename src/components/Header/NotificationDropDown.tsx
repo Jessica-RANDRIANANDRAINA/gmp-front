@@ -1,12 +1,59 @@
-// import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
 
 const NotificationDropDown = () => {
-  // const [dropDownOpen, setDropDownOpen] = useState<boolean>(false);
+  const [dropDownOpen, setDropDownOpen] = useState<boolean>(false);
+
+  const trigger = useRef<HTMLAnchorElement>(null);
+  const dropdown = useRef<HTMLDivElement>(null);
+
+  const handleOutsideClick = useCallback(
+    (event: MouseEvent) => {
+      if (
+        dropDownOpen &&
+        dropdown.current &&
+        !dropdown.current.contains(event.target as Node) &&
+        trigger.current &&
+        !trigger.current.contains(event.target as Node)
+      ) {
+        setDropDownOpen(false);
+      }
+    },
+    [dropDownOpen]
+  );
+
+  const handleKeyDown = useCallback(
+    (event: KeyboardEvent) => {
+      if (dropDownOpen && event.key === "Escape") {
+        setDropDownOpen(false);
+      }
+    },
+    [dropDownOpen]
+  );
+
+  useEffect(() => {
+    if (dropDownOpen) {
+      document.addEventListener("click", handleOutsideClick);
+      document.addEventListener("keydown", handleKeyDown);
+    } else {
+      document.removeEventListener("click", handleOutsideClick);
+      document.removeEventListener("keydown", handleKeyDown);
+    }
+
+    return () => {
+      document.removeEventListener("click", handleOutsideClick);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [dropDownOpen, handleOutsideClick, handleKeyDown]);
   return (
     <li className="relative">
       <Link
         to="#"
+        ref={trigger}
+        onClick={(e) => {
+          e.preventDefault();
+          setDropDownOpen((prev) => !prev);
+        }}
         className={`flex h-8.5 w-8.5 items-center justify-center rounded-full border-[0.5px] border-stroke bg-gray hover:text-primary dark:border-secondaryGreen dark:bg-secondaryGreen dark:text-white`}
       >
         {/* <span
@@ -29,6 +76,18 @@ const NotificationDropDown = () => {
           />
         </svg>
       </Link>
+      <div
+        ref={dropdown}
+        onFocus={() => setDropDownOpen(true)}
+        onBlur={() => setDropDownOpen(false)}
+        className={`absolute -right-27 mt-2.5 flex h-90 w-75 flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark sm:right-0 sm:w-80 ${
+          dropDownOpen === true ? "block" : "hidden"
+        }`}
+      >
+        <div className="px-4.5 py-3">
+          <h5 className="text-sm font-medium text-bodydark2">Notifications</h5>
+        </div>
+      </div>
     </li>
   );
 };
