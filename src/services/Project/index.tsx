@@ -39,6 +39,7 @@ import {
   deleteTaskActivity,
   initializeSpaceRanking,
 } from "./Activities";
+import { getAllMyNotification, updateNotifRead } from "./NotificationServices";
 
 export {
   getAllProject,
@@ -74,4 +75,6 @@ export {
   getCountProject,
   updateProjectState,
   initializeSpaceRanking,
+  getAllMyNotification,
+  updateNotifRead,
 };
