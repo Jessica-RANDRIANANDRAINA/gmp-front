@@ -6,7 +6,6 @@ import UserOne from "../../assets/user.png";
 
 const DropdownUser = (userConnected: any) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  // const [typeConnected, setTypeConnected] = useState("");
 
   const trigger = useRef<any>(null);
   const dropdown = useRef<any>(null);
