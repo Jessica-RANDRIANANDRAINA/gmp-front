@@ -12,6 +12,7 @@ const Header = (props: {
   const [userConnected, setUserConnected] = useState({
     name: "",
     email: "",
+    userid: "",
   });
 
   useEffect(() => {
@@ -19,6 +20,7 @@ const Header = (props: {
       ...userConnected,
       name: props?.userConnected?.name,
       email: props?.userConnected?.sub,
+      userid: props?.userConnected?.jti,
     });
   }, [props.userConnected]);
 
@@ -76,7 +78,7 @@ const Header = (props: {
       <div className="flex items-center gap-3 2xsm:gap-7">
         <ul className="flex items-center gap-2 2xsm:gap-4">
           <DarkModeSwitcher />
-          <NotificationDropDown />
+          <NotificationDropDown userConnected={userConnected}/>
           <DropdownUser userConnected={userConnected} />
         </ul>
       </div>
