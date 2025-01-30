@@ -4,6 +4,7 @@ import { getAllMyNotification, updateNotifRead } from "../../services/Project";
 import { formatDate } from "../../services/Function/DateServices";
 import { INotification, IListNotification } from "../../types/Notification";
 import { getNotificationCreateProject } from "../../constants/NotificationMessage";
+import { HubConnectionBuilder } from "@microsoft/signalr";
 
 const NotificationDropDown = ({ userConnected }: { userConnected: any }) => {
   const [dropDownOpen, setDropDownOpen] = useState<boolean>(false);
@@ -50,6 +51,35 @@ const NotificationDropDown = ({ userConnected }: { userConnected: any }) => {
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, [dropDownOpen, handleOutsideClick, handleKeyDown]);
+
+  useEffect(() => {
+    if (!userConnected?.userid) {
+      console.warn(
+        "User ID is not available. Skipping SignalR connection setup."
+      );
+      return;
+    }
+    const connection = new HubConnectionBuilder()
+      .withUrl(`${import.meta.env.VITE_API_ENDPOINT}/notificationHub`)
+      .withAutomaticReconnect()
+      .build();
+
+    connection
+      .start()
+      .then(() => {
+        console.log("connecté à signalR");
+      })
+      .catch((err) => {
+        console.error("Erreur de connextion signalR : ", err);
+      });
+
+    connection.on(`ReceiveNotification-${userConnected?.userid}`, () => {
+      fetchMyNotification(userConnected?.userid);
+    });
+    return () => {
+      connection.stop();
+    };
+  }, [userConnected?.userid]);
 
   const fetchMyNotification = async (userid: string) => {
     try {
