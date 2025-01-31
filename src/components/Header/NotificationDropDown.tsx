@@ -190,7 +190,7 @@ const NotificationDropDown = ({ userConnected }: { userConnected: any }) => {
                             | "member"
                             | "observator",
                           notif?.projectid ?? "",
-                          notif.type as "Create" | "Update" | "Delete" | "Add",
+                          notif.type as "Create" | "Update" | "Delete" | "Add" | "Archive",
                           notif.table ?? "",
                           notif.subTable ?? "",
                           notif.oldValue,
