@@ -2,7 +2,7 @@ export const getNotificationCreateProject = (
   projectName: string,
   role: "director" | "member" | "observator",
   projectid: string,
-  type: "Create" | "Update" | "Delete" | "Add",
+  type: "Create" | "Update" | "Delete" | "Add" | "Archive",
   table: string,
   subTable: string,
   oldValue: string,
@@ -75,40 +75,61 @@ export const getNotificationCreateProject = (
           </>
         );
       }
-      if (table === "Project" && subTable === "Advancement") {
-        const isCompleted = newValue === "100";
-        const link = `${
-          import.meta.env.VITE_API_FRONT
-        }/gmp/project/details/${projectid}/${
-          isCompleted ? "details" : "historic"
-        }`;
-        return (
-          <>
-            {isCompleted ? (
-              <>
-                Le projet '<strong>{projectName}</strong>' a été{" "}
-                <strong>cloturé</strong>🎉 .
-                <a
-                  href={link}
-                  className="italic text-xs text-blue-400 hover:text-blue-600"
-                >
-                  Cliquez ici pour voir les détails.
-                </a>
-              </>
-            ) : (
-              <>
-                L'avancement du projet '<strong>{projectName}</strong>' a été
-                mis à jour.{" "}
-                <a
-                  href={link}
-                  className="italic text-xs text-blue-400 hover:text-blue-600"
-                >
-                  Consulter l'historique des modifications.
-                </a>
-              </>
-            )}
-          </>
-        );
+      if (table === "Project") {
+        if (subTable === "Advancement") {
+          const isCompleted = newValue === "100";
+          const link = `${
+            import.meta.env.VITE_API_FRONT
+          }/gmp/project/details/${projectid}/${
+            isCompleted ? "details" : "historic"
+          }`;
+          return (
+            <>
+              {isCompleted ? (
+                <>
+                  Le projet '<strong>{projectName}</strong>' a été{" "}
+                  <strong>cloturé</strong>🎉 .
+                  <a
+                    href={link}
+                    className="italic text-xs text-blue-400 hover:text-blue-600"
+                  >
+                    Cliquez ici pour voir les détails.
+                  </a>
+                </>
+              ) : (
+                <>
+                  L'avancement du projet '<strong>{projectName}</strong>' a été
+                  mis à jour.{" "}
+                  <a
+                    href={link}
+                    className="italic text-xs text-blue-400 hover:text-blue-600"
+                  >
+                    Consulter l'historique des modifications.
+                  </a>
+                </>
+              )}
+            </>
+          );
+        }
+        if (subTable === "Status") {
+          const state =
+            newValue === "Stand by" ? "Mis en stand by" : "Débloquer";
+          return (
+            <>
+              Le projet <strong>{projectName}</strong> a été{" "}
+              <strong>{state}</strong>.{" "}
+              <a
+                href={`${
+                  import.meta.env.VITE_API_FRONT
+                }/gmp/project/details/${projectid}/details
+              `}
+                className="italic text-xs text-blue-400 hover:text-blue-600"
+              >
+                Voir les détails.
+              </a>
+            </>
+          );
+        }
       }
       return <></>;
 
@@ -118,6 +139,24 @@ export const getNotificationCreateProject = (
           <>
             Vous avez été retiré du projet <strong>{projectName}</strong>. Si
             vous avez des questions, contactez le chef de projet.
+          </>
+        );
+      }
+      return <></>;
+    case "Archive":
+      if (table === "Project") {
+        return (
+          <>
+            Le projet <strong>{projectName}</strong> a été archivé.
+            <a
+              href={`${
+                import.meta.env.VITE_API_FRONT
+              }/gmp/project/details/${projectid}/historic
+              `}
+              className="italic text-xs text-blue-400 hover:text-blue-600"
+            >
+              Consulter l'historique des modifications.
+            </a>
           </>
         );
       }
