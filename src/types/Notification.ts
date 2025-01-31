@@ -4,6 +4,8 @@ export interface INotification {
   totalNotifications: number;
   userRole?: string;
   notificationid?: string;
+  oldValue: string;
+  newValue: string;
   listNotification: IListNotification[];
 }
 

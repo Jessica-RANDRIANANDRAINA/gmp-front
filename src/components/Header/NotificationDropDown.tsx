@@ -163,6 +163,7 @@ const NotificationDropDown = ({ userConnected }: { userConnected: any }) => {
         <ul className="flex h-auto flex-col overflow-y-auto">
           {myNotification?.listNotification?.map((notif: IListNotification) => {
             const date = formatDate(notif?.modifiedAt, true);
+
             return (
               <li
                 key={notif?.id}
@@ -188,7 +189,10 @@ const NotificationDropDown = ({ userConnected }: { userConnected: any }) => {
                             | "director"
                             | "member"
                             | "observator",
-                          notif?.projectid ?? ""
+                          notif?.projectid ?? "",
+                          notif.type as "Create" | "Update" | "Delete" | "Add",
+                          notif.table ?? "",
+                          notif.subTable ?? ""
                         )}
                       </span>
                     </p>

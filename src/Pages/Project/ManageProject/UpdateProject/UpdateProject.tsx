@@ -237,7 +237,7 @@ const UpdateProject = () => {
       navigate("/gmp/project/list");
     } catch (error) {
       notyf.error(`Une erreur s'est produite, veuillez réessayer plus tard`);
-      console.log(`Error at create project: ${error}`);
+      console.log(`Error at update project: ${error}`);
     } finally {
       // stop loading
       setIsCreateLoading(false);

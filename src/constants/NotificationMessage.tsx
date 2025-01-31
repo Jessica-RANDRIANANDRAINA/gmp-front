@@ -1,7 +1,10 @@
 export const getNotificationCreateProject = (
   projectName: string,
   role: "director" | "member" | "observator",
-  projectid: string
+  projectid: string,
+  type: "Create" | "Update" | "Delete" | "Add",
+  table: string,
+  subTable: string
 ): JSX.Element => {
   const actions: { [key in "director" | "member" | "observator"]: string } = {
     director: "le gérer",
@@ -9,35 +12,106 @@ export const getNotificationCreateProject = (
     observator: "suivre son avancement",
   };
 
-  return (
-    <>
-      Vous avez été ajouté au projet <strong>"{projectName}"</strong> en tant{" "}
-      {role === "director" ? (
-        <strong>que Chef de projet</strong>
-      ) : role === "member" ? (
-        <strong>que Membre</strong>
-      ) : (
-        <strong>qu'Observateur</strong>
-      )}
-      .{" "}
-      <a
-        href={` ${
-          role === "director"
-            ? `${
+  // Générer l'URL en fonction du rôle
+  const generateUrl = (
+    role: "director" | "member" | "observator",
+    projectid: string
+  ) => {
+    const baseUrl = import.meta.env.VITE_API_FRONT + "/gmp/project";
+    if (role === "director") {
+      return `${baseUrl}/update/${projectid}`;
+    } else {
+      return `${baseUrl}/details/${projectid}/details`;
+    }
+  };
+
+  switch (type) {
+    case "Create":
+      return (
+        <>
+          Vous avez été ajouté au nouveau projet <strong>"{projectName}"</strong> en
+          tant{" "}
+          {role === "director" ? (
+            <strong>que Chef de projet</strong>
+          ) : role === "member" ? (
+            <strong>que Membre</strong>
+          ) : (
+            <strong>qu'Observateur</strong>
+          )}
+          .{" "}
+          <a
+            href={generateUrl(role, projectid)}
+            className="italic text-xs text-blue-400 hover:text-blue-600"
+          >
+            Cliquez ici pour {actions[role]}!
+          </a>
+        </>
+      );
+
+    case "Update":
+      if (table === "UserProject") {
+        return (
+          <>
+            Votre rôle dans le projet <strong>{projectName}</strong> a été
+            modifié, vous êtes désormais{" "}
+            <strong>
+              {role === "director"
+                ? "Le Chef de projet"
+                : role === "observator"
+                ? "un Observateur"
+                : "un Membre"}
+            </strong>
+            .{" "}
+            <a
+              href={`${
                 import.meta.env.VITE_API_FRONT
-              }/gmp/project/update/${projectid}`
-            : role === "member"
-            ? `${
-                import.meta.env.VITE_API_FRONT
-              }/gmp/project/details/${projectid}/details`
-            : `${
-                import.meta.env.VITE_API_FRONT
-              }/gmp/project/details/${projectid}/details`
-        }  `}
-        className="italic text-xs text-blue-400 hover:text-blue-600"
-      >
-        Cliquez ici pour {actions[role]}!
-      </a>
-    </>
-  );
+              }/gmp/project/details/${projectid}/historic`}
+              className="italic text-xs text-blue-400 hover:text-blue-600"
+            >
+              Cliquez ici pour voir l'historique des modifications!
+            </a>
+          </>
+        );
+      }
+      return <></>;
+
+    case "Delete":
+      if (table === "UserProject") {
+        return (
+          <>
+            Vous avez été retiré du projet <strong>{projectName}</strong>. Si
+            vous avez des questions, contactez le chef de projet.
+          </>
+        );
+      }
+      return <></>;
+
+    case "Add":
+      if (table === "UserProject") {
+        return (
+          <>
+            Vous avez été ajouté au projet <strong>"{projectName}"</strong> en
+            tant{" "}
+            {role === "director" ? (
+              <strong>que Chef de projet</strong>
+            ) : role === "member" ? (
+              <strong>que Membre</strong>
+            ) : (
+              <strong>qu'Observateur</strong>
+            )}
+            .{" "}
+            <a
+              href={generateUrl(role, projectid)}
+              className="italic text-xs text-blue-400 hover:text-blue-600"
+            >
+              Cliquez ici pour {actions[role]}!
+            </a>
+          </>
+        );
+      }
+      return <></>;
+
+    default:
+      return <></>;
+  }
 };
