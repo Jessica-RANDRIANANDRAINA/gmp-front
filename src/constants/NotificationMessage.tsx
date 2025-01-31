@@ -5,8 +5,8 @@ export const getNotificationCreateProject = (
   type: "Create" | "Update" | "Delete" | "Add" | "Archive",
   table: string,
   subTable: string,
-  oldValue: string,
-  newValue: string
+  newValue: string,
+  activityid: string
 ): JSX.Element => {
   const actions: { [key in "director" | "member" | "observator"]: string } = {
     director: "le gérer",
@@ -74,8 +74,7 @@ export const getNotificationCreateProject = (
             </a>
           </>
         );
-      }
-      if (table === "Project") {
+      } else if (table === "Project") {
         if (subTable === "Advancement") {
           const isCompleted = newValue === "100";
           const link = `${
@@ -110,8 +109,7 @@ export const getNotificationCreateProject = (
               )}
             </>
           );
-        }
-        if (subTable === "Status") {
+        } else if (subTable === "Status") {
           const state =
             newValue === "Stand by" ? "Mis en stand by" : "Débloquer";
           return (
@@ -122,6 +120,30 @@ export const getNotificationCreateProject = (
                 href={`${
                   import.meta.env.VITE_API_FRONT
                 }/gmp/project/details/${projectid}/details
+              `}
+                className="italic text-xs text-blue-400 hover:text-blue-600"
+              >
+                Voir les détails.
+              </a>
+            </>
+          );
+        } else if (subTable === "Phase") {
+          const projectTitle = projectName.split("/")?.[0];
+          const phaseTitle = projectName.split("/")?.[1];
+          const state =
+            newValue === "Terminé"
+              ? "terminée"
+              : newValue === "En cours"
+              ? "maintenant en cours"
+              : "en attente de démarrage";
+          return (
+            <>
+              La phase <strong>{phaseTitle}</strong> du projet{" "}
+              <strong>{projectTitle}</strong> est <strong>{state}</strong>.{" "}
+              <a
+                href={`${
+                  import.meta.env.VITE_API_FRONT
+                }/gmp/project/task/${projectid}/${activityid}
               `}
                 className="italic text-xs text-blue-400 hover:text-blue-600"
               >
