@@ -4,7 +4,9 @@ export const getNotificationCreateProject = (
   projectid: string,
   type: "Create" | "Update" | "Delete" | "Add",
   table: string,
-  subTable: string
+  subTable: string,
+  oldValue: string,
+  newValue: string
 ): JSX.Element => {
   const actions: { [key in "director" | "member" | "observator"]: string } = {
     director: "le gérer",
@@ -29,8 +31,8 @@ export const getNotificationCreateProject = (
     case "Create":
       return (
         <>
-          Vous avez été ajouté au nouveau projet <strong>"{projectName}"</strong> en
-          tant{" "}
+          Vous avez été ajouté au nouveau projet{" "}
+          <strong>"{projectName}"</strong> en tant{" "}
           {role === "director" ? (
             <strong>que Chef de projet</strong>
           ) : role === "member" ? (
@@ -70,6 +72,41 @@ export const getNotificationCreateProject = (
             >
               Cliquez ici pour voir l'historique des modifications!
             </a>
+          </>
+        );
+      }
+      if (table === "Project" && subTable === "Advancement") {
+        const isCompleted = newValue === "100";
+        const link = `${
+          import.meta.env.VITE_API_FRONT
+        }/gmp/project/details/${projectid}/${
+          isCompleted ? "details" : "historic"
+        }`;
+        return (
+          <>
+            {isCompleted ? (
+              <>
+                Le projet '<strong>{projectName}</strong>' a été{" "}
+                <strong>cloturé</strong>🎉 .
+                <a
+                  href={link}
+                  className="italic text-xs text-blue-400 hover:text-blue-600"
+                >
+                  Cliquez ici pour voir les détails.
+                </a>
+              </>
+            ) : (
+              <>
+                L'avancement du projet '<strong>{projectName}</strong>' a été
+                mis à jour.{" "}
+                <a
+                  href={link}
+                  className="italic text-xs text-blue-400 hover:text-blue-600"
+                >
+                  Consulter l'historique des modifications.
+                </a>
+              </>
+            )}
           </>
         );
       }

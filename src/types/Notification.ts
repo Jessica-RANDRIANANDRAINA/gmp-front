@@ -23,4 +23,6 @@ export interface IListNotification {
   userName?: string;
   userRole?: string;
   userRoleInProject?: string;
+  oldValue: string;
+  newValue: string;
 }
