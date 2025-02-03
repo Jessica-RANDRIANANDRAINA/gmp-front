@@ -5,6 +5,7 @@ export const getNotificationCreateProject = (
   type: "Create" | "Update" | "Delete" | "Add" | "Archive",
   table: string,
   subTable: string,
+  oldValue: string,
   newValue: string,
   activityid: string,
   modifiedBy: string
@@ -55,8 +56,11 @@ export const getNotificationCreateProject = (
         if (subTable === "Task") {
           return (
             <>
-              La tâche <i><strong>{newValue}</strong></i> vous a été confiée par{" "}
-              <strong>{modifiedBy}</strong> sur le projet{" "}
+              La tâche{" "}
+              <i>
+                <strong>{newValue}</strong>
+              </i>{" "}
+              vous a été confiée par <strong>{modifiedBy}</strong> sur le projet{" "}
               <strong>{projectName}</strong>.{" "}
               <a
                 href={`${
@@ -134,7 +138,13 @@ export const getNotificationCreateProject = (
           );
         } else if (subTable === "Status") {
           const state =
-            newValue === "Stand by" ? "Mis en stand by" : "Débloquer";
+            newValue === "Stand by"
+              ? "Mis en stand by"
+              : newValue !== "Stand by" &&
+                newValue !== "Archived" &&
+                oldValue === "Stand by"
+              ? "Débloqué"
+              : "Restauré";
           return (
             <>
               Le projet <strong>{projectName}</strong> a été{" "}
