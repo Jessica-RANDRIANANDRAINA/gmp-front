@@ -219,6 +219,12 @@ const UpdateActivity = ({
     >
       <ModalBody>
         <>
+          <div className="flex flex-col mb-2">
+            <span className=" text-sm font-semibold font-poppins text-black dark:text-white">
+              Attribuée à :
+            </span>{" "}
+            <span className="italic">{activity.content.userName}</span>
+          </div>
           <div>
             <CustomInput
               required={true}
