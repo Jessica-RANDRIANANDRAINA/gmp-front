@@ -199,7 +199,8 @@ const NotificationDropDown = ({ userConnected }: { userConnected: any }) => {
                           notif.table ?? "",
                           notif.subTable ?? "",
                           notif.newValue,
-                          notif.activityid ?? ""
+                          notif.activityid ?? "", 
+                          notif?.modifiedBy
                         )}
                       </span>
                     </p>

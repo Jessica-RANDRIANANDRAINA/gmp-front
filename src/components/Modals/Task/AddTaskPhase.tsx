@@ -5,7 +5,9 @@ import { CustomInput, CustomSelect } from "../../UIElements";
 import ListUsers from "../../UIElements/ListUsers";
 import { getPhaseById } from "../../../services/Project";
 import { IPhase, IUserProject, ITaskAdd } from "../../../types/Project";
+import { IDecodedToken } from "../../../types/user";
 import { createTaskPhase } from "../../../services/Project";
+import { decodeToken } from "../../../services/Function/TokenService";
 import { v4 as uuid4 } from "uuid";
 import { BeatLoader } from "react-spinners";
 
@@ -38,6 +40,19 @@ const AddTaskPhase = ({
     status: "Backlog",
   });
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [decodedToken, setDecodedToken] = useState<IDecodedToken>();
+
+  useEffect(() => {
+    const token = localStorage.getItem("_au_pr");
+    if (token) {
+      try {
+        const decoded = decodeToken("pr");
+        setDecodedToken(decoded);
+      } catch (error) {
+        console.error(`Invalid token ${error}`);
+      }
+    }
+  }, []);
 
   // close user pop up if click outside
   useEffect(() => {
@@ -88,6 +103,8 @@ const AddTaskPhase = ({
     setIsLoading(true);
     try {
       const id = uuid4();
+      const initiatorId = decodedToken?.jti;
+      const initiatorName = decodedToken?.name;
       const formatuser = assignedPerson.map((u) => ({
         userid: u.userid,
         taskid: id,
@@ -95,6 +112,7 @@ const AddTaskPhase = ({
           name: u?.user?.name,
         },
       }));
+
       const dataToSend = {
         id,
         title: taskData?.title,
@@ -107,6 +125,8 @@ const AddTaskPhase = ({
         listUsers: formatuser,
         DailyEffort: taskData?.dailyEffort,
         status: taskData?.status,
+        initiatorId,
+        initiatorName,
       };
       await createTaskPhase(dataToSend);
       notyf.success("Création de la tâche réussie.");
@@ -151,14 +171,16 @@ const AddTaskPhase = ({
                   onClick={() => {
                     setDropDownUserOpen(!isDropdownUserOpen);
                   }}
-                  className={`w-5 h-5 p-3 border flex rounded-full justify-center items-center cursor-pointer bg-zinc-200 dark:bg-boxdark  hover:bg-zinc-300 border-zinc-200 dark:hover:bg-boxdark2 dark:border-formStrokedark ${assignedPerson.length > 0 ? "hidden" : ""
-                    }`}
+                  className={`w-5 h-5 p-3 border flex rounded-full justify-center items-center cursor-pointer bg-zinc-200 dark:bg-boxdark  hover:bg-zinc-300 border-zinc-200 dark:hover:bg-boxdark2 dark:border-formStrokedark ${
+                    assignedPerson.length > 0 ? "hidden" : ""
+                  }`}
                 >
                   +
                 </span>
                 <div
-                  className={`absolute top-14  left-0 border dark:border-formStrokedark border-zinc-300 bg-white dark:bg-boxdark2 shadow-lg rounded-md z-50 transition-transform duration-300 ease-in-out ${isDropdownUserOpen ? "scale-100" : "scale-0"
-                    }`}
+                  className={`absolute top-14  left-0 border dark:border-formStrokedark border-zinc-300 bg-white dark:bg-boxdark2 shadow-lg rounded-md z-50 transition-transform duration-300 ease-in-out ${
+                    isDropdownUserOpen ? "scale-100" : "scale-0"
+                  }`}
                   style={{ transformOrigin: "top left " }} // Définit l'origine de la transformation
                 >
                   {isDropdownUserOpen && (

@@ -6,7 +6,8 @@ export const getNotificationCreateProject = (
   table: string,
   subTable: string,
   newValue: string,
-  activityid: string
+  activityid: string,
+  modifiedBy: string
 ): JSX.Element => {
   const actions: { [key in "director" | "member" | "observator"]: string } = {
     director: "le gérer",
@@ -29,26 +30,48 @@ export const getNotificationCreateProject = (
 
   switch (type) {
     case "Create":
-      return (
-        <>
-          Vous avez été ajouté au nouveau projet{" "}
-          <strong>"{projectName}"</strong> en tant{" "}
-          {role === "director" ? (
-            <strong>que Chef de projet</strong>
-          ) : role === "member" ? (
-            <strong>que Membre</strong>
-          ) : (
-            <strong>qu'Observateur</strong>
-          )}
-          .{" "}
-          <a
-            href={generateUrl(role, projectid)}
-            className="italic text-xs text-blue-400 hover:text-blue-600"
-          >
-            Cliquez ici pour {actions[role]}!
-          </a>
-        </>
-      );
+      if (table === "Project") {
+        return (
+          <>
+            Vous avez été ajouté au nouveau projet{" "}
+            <strong>"{projectName}"</strong> en tant{" "}
+            {role === "director" ? (
+              <strong>que Chef de projet</strong>
+            ) : role === "member" ? (
+              <strong>que Membre</strong>
+            ) : (
+              <strong>qu'Observateur</strong>
+            )}
+            .{" "}
+            <a
+              href={generateUrl(role, projectid)}
+              className="italic text-xs text-blue-400 hover:text-blue-600"
+            >
+              Cliquez ici pour {actions[role]}!
+            </a>
+          </>
+        );
+      } else if (table === "Activity") {
+        if (subTable === "Task") {
+          return (
+            <>
+              La tâche <i><strong>{newValue}</strong></i> vous a été confiée par{" "}
+              <strong>{modifiedBy}</strong> sur le projet{" "}
+              <strong>{projectName}</strong>.{" "}
+              <a
+                href={`${
+                  import.meta.env.VITE_API_FRONT
+                }/gmp/project/task/${projectid}/${activityid}
+              `}
+                className="italic text-xs text-blue-400 hover:text-blue-600"
+              >
+                Voir les détails.
+              </a>
+            </>
+          );
+        }
+      }
+      return <></>;
 
     case "Update":
       if (table === "UserProject") {
