@@ -14,11 +14,13 @@ const ToogleStateProject = ({
   projectId,
   type,
   setShowModal,
+  setIsArchiveFinished,
 }: {
   showModal: boolean;
   projectId: string;
   type: string;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsArchiveFinished: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const [decodedToken, setDecodedToken] = useState<IDecodedToken>();
   const [loading, setLoading] = useState<boolean>(false);
@@ -42,6 +44,7 @@ const ToogleStateProject = ({
       const projectType =
         type === "Débloquer" || type === "Restaurer" ? "En cours" : type;
       await updateProjectState(projectId, projectType, decodedToken?.name);
+      setIsArchiveFinished(true);
       notyf.success("Modification réussie");
     } catch (error) {
       console.error(`Error while toogle state project : ${error}`);

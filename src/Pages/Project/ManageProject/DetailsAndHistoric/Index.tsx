@@ -22,6 +22,7 @@ const DetailsAndHistoricProject = () => {
     if (projectId) {
       const project = await getProjectById(projectId);
       setProjectData(project);
+      setIsArchiveFinished(false)
     }
   };
 
@@ -164,6 +165,7 @@ const DetailsAndHistoricProject = () => {
                   : showModalStandBy
               }
               projectId={projectId ?? ""}
+              setIsArchiveFinished={setIsArchiveFinished}
               type={
                 showModalRestore
                   ? "Restaurer"
@@ -186,6 +188,7 @@ const DetailsAndHistoricProject = () => {
             projectId={projectId ?? ""}
             type={"Restaurer"}
             setShowModal={setShowModalRestore}
+            setIsArchiveFinished={setIsArchiveFinished}
           />
         )}
         {showModalDeblock && (
@@ -194,6 +197,7 @@ const DetailsAndHistoricProject = () => {
             projectId={projectId ?? ""}
             type={"Débloquer"}
             setShowModal={setShowModalDeblock}
+            setIsArchiveFinished={setIsArchiveFinished}
           />
         )}
         {showModalStandBy && (
@@ -202,6 +206,7 @@ const DetailsAndHistoricProject = () => {
             projectId={projectId ?? ""}
             type={"Stand by"}
             setShowModal={setShowModalStandBy}
+            setIsArchiveFinished={setIsArchiveFinished}
           />
         )}
       </div>
