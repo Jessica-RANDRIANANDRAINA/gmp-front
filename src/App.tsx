@@ -18,6 +18,7 @@ import HistoricProject from "./Pages/Project/ManageProject/DetailsAndHistoric/Hi
 import UpdateAdvancement from "./Pages/Project/ManageProject/UpdateProject/UpdateAdvancement";
 import Activity from "./Pages/Project/Activity/Activity";
 import AllActivity from "./Pages/Project/Activity/AllActivity";
+import AllNotifications from "./Pages/Notifications/AllNotifications";
 // *******************//
 import Chronogramme from "./Pages/Waiting/Chronogramme";
 
@@ -183,6 +184,15 @@ const App = () => {
             <>
               <PageTitle title="G.M.P" />
               <UpdateProject />
+            </>
+          }
+        />
+        <Route
+          path="/gmp/project/notification/:userId"
+          element={
+            <>
+              <PageTitle title="G.M.P" />
+              <AllNotifications />
             </>
           }
         />

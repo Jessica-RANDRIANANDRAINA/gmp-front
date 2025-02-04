@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { getAllMyNotification, updateNotifRead } from "../../services/Project";
 import { formatDate } from "../../services/Function/DateServices";
@@ -9,6 +10,7 @@ import { HubConnectionBuilder } from "@microsoft/signalr";
 const NotificationDropDown = ({ userConnected }: { userConnected: any }) => {
   const [dropDownOpen, setDropDownOpen] = useState<boolean>(false);
   const [myNotification, setMyNotification] = useState<INotification>();
+  const navigate = useNavigate();
 
   const trigger = useRef<HTMLAnchorElement>(null);
   const dropdown = useRef<HTMLDivElement>(null);
@@ -115,6 +117,12 @@ const NotificationDropDown = ({ userConnected }: { userConnected: any }) => {
     },
     []
   );
+
+  const navigateToAllNotifications = () => {
+    if (userConnected?.userid) {
+      navigate(`/gmp/project/notification/${userConnected?.userid}`);
+    }
+  };
   return (
     <li className="relative">
       <Link
@@ -212,6 +220,12 @@ const NotificationDropDown = ({ userConnected }: { userConnected: any }) => {
             );
           })}
         </ul>
+        <div
+          className="text-sm p-2 bg-transparent hover:bg-gray-2 hover:text-black dark:hover:text-white transition-colors duration-300 flex justify-center border-t border-stroke dark:border-strokedark dark:hover:bg-meta-4 cursor-pointer"
+          onClick={navigateToAllNotifications}
+        >
+          Voir toutes les notifications
+        </div>
       </div>
     </li>
   );
