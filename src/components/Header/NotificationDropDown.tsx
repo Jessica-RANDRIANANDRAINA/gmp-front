@@ -203,7 +203,8 @@ const NotificationDropDown = ({ userConnected }: { userConnected: any }) => {
                             | "Update"
                             | "Delete"
                             | "Add"
-                            | "Archive",
+                            | "Archive"
+                            | "Warning",
                           notif.table ?? "",
                           notif.subTable ?? "",
                           notif.oldValue,

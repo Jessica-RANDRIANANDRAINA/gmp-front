@@ -2,7 +2,7 @@ export const getNotificationCreateProject = (
   projectName: string,
   role: "director" | "member" | "observator",
   projectid: string,
-  type: "Create" | "Update" | "Delete" | "Add" | "Archive",
+  type: "Create" | "Update" | "Delete" | "Add" | "Archive" | "Warning",
   table: string,
   subTable: string,
   oldValue: string,
@@ -216,7 +216,25 @@ export const getNotificationCreateProject = (
         );
       }
       return <></>;
-
+    case "Warning":
+      if (table === "Project") {
+        return (
+          <>
+            🔔Rappel : La date de fin prévue pour le projet{" "}
+            <strong>{projectName}</strong> est demain. Assurez-vous que toutes
+            les tâches et les phases sont bien finalisées.
+            <a
+              href={`${
+                import.meta.env.VITE_API_FRONT
+              }/gmp/project/details/${projectid}/details`}
+              className="italic text-xs text-blue-400 hover:text-blue-600"
+            >
+              Voir détails
+            </a>
+          </>
+        );
+      }
+      return <></>;
     case "Add":
       if (table === "UserProject") {
         return (
