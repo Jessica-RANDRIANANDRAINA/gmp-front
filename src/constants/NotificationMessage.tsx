@@ -218,21 +218,42 @@ export const getNotificationCreateProject = (
       return <></>;
     case "Warning":
       if (table === "Project") {
-        return (
-          <>
-            🔔Rappel : La date de fin prévue pour le projet{" "}
-            <strong>{projectName}</strong> est demain. Assurez-vous que toutes
-            les tâches et les phases sont bien finalisées.
-            <a
-              href={`${
-                import.meta.env.VITE_API_FRONT
-              }/gmp/project/details/${projectid}/details`}
-              className="italic text-xs text-blue-400 hover:text-blue-600"
-            >
-              Voir détails
-            </a>
-          </>
-        );
+        if (subTable === "Phase") {
+          const projectTitle = projectName?.split("/")?.[0];
+          const phaseTitle = projectName?.split("/")?.[1];
+          return (
+            <>
+              🔔Rappel : La date de fin de la phase{" "}
+              <strong>{phaseTitle}</strong> dans le projet{" "}
+              <strong>{projectTitle}</strong> est pour demain. Assurez-vous que
+              toutes les tâches sont finalisées à temps.
+              <a
+                href={`${
+                  import.meta.env.VITE_API_FRONT
+                }/gmp/project/task/${projectid}/${activityid}`}
+                className="italic text-xs text-blue-400 hover:text-blue-600"
+              >
+                Voir détails.
+              </a>
+            </>
+          );
+        } else {
+          return (
+            <>
+              🔔Rappel : La date de fin prévue pour le projet{" "}
+              <strong>{projectName}</strong> est demain. Assurez-vous que toutes
+              les tâches et les phases sont finalisées à temps.
+              <a
+                href={`${
+                  import.meta.env.VITE_API_FRONT
+                }/gmp/project/details/${projectid}/details`}
+                className="italic text-xs text-blue-400 hover:text-blue-600"
+              >
+                Voir détails
+              </a>
+            </>
+          );
+        }
       }
       return <></>;
     case "Add":
