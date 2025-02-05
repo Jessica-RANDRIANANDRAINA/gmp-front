@@ -2,7 +2,14 @@ export const getNotificationCreateProject = (
   projectName: string,
   role: "director" | "member" | "observator",
   projectid: string,
-  type: "Create" | "Update" | "Delete" | "Add" | "Archive" | "Warning",
+  type:
+    | "Create"
+    | "Update"
+    | "Delete"
+    | "Add"
+    | "Archive"
+    | "Warning"
+    | "Overdue",
   table: string,
   subTable: string,
   oldValue: string,
@@ -243,6 +250,47 @@ export const getNotificationCreateProject = (
               🔔Rappel : La date de fin prévue pour le projet{" "}
               <strong>{projectName}</strong> est demain. Assurez-vous que toutes
               les tâches et les phases sont finalisées à temps.
+              <a
+                href={`${
+                  import.meta.env.VITE_API_FRONT
+                }/gmp/project/details/${projectid}/details`}
+                className="italic text-xs text-blue-400 hover:text-blue-600"
+              >
+                Voir détails
+              </a>
+            </>
+          );
+        }
+      }
+      return <></>;
+    case "Overdue":
+      if (table == "Project") {
+        if (subTable === "Phase") {
+          const projectTitle = projectName?.split("/")?.[0];
+          const phaseTitle = projectName?.split("/")?.[1];
+
+          return (
+            <>
+              ⏳Rappel : la phase <strong>{phaseTitle}</strong> du projet{" "}
+              <strong>{projectTitle}</strong> est en retard de{" "}
+              <strong>{newValue} jours</strong>.Pensez à terminer les actions en
+              cours rapidement !.{" "}
+              <a
+                href={`${
+                  import.meta.env.VITE_API_FRONT
+                }/gmp/project/task/${projectid}/${activityid}`}
+                className="italic text-xs text-blue-400 hover:text-blue-600"
+              >
+                Voir détails.
+              </a>
+            </>
+          );
+        } else {
+          return (
+            <>
+              ⛔Rappel : Le projet <strong>{projectName}</strong> est en retard
+              de <strong>{newValue} jours</strong>.Vérifiez la progression et
+              ajustez le planning au plus vite.
               <a
                 href={`${
                   import.meta.env.VITE_API_FRONT
