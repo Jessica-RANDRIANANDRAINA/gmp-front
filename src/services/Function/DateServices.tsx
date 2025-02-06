@@ -26,6 +26,36 @@ export function formatDate(
   return formatedDate;
 }
 
+export const formatDateToText: any = (sqlDate: string | number | Date) => {
+  // Vérification si la date est valide
+  if (!sqlDate) {
+    return "--";
+  }
+
+  const dateObj = new Date(sqlDate);
+
+  // Vérification si la date est valide
+  if (isNaN(dateObj.getTime())) {
+    return "--"; // Si la date n'est pas valide, on retourne "--"
+  }
+
+  // Options pour afficher le jour de la semaine, le jour, le mois et l'année
+  const options: Intl.DateTimeFormatOptions = {
+    weekday: "long", // Jour de la semaine (ex: Lundi, Mardi)
+    day: "2-digit", // Jour avec 2 chiffres (ex: 06)
+    month: "long", // Mois avec son nom complet (ex: janvier, février)
+    year: "numeric", // Année avec 4 chiffres
+  };
+
+  // Format de la date avec le jour, mois, année, etc.
+  const formattedDate = dateObj.toLocaleDateString("fr-FR", options);
+
+  const capitalizedDate = formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
+
+  return capitalizedDate; // Retourne la date formatée
+};
+
+
 export const getMondayAndFriday = () => {
   const today = new Date();
   const day = today.getDay();
