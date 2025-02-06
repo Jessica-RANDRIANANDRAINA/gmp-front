@@ -101,16 +101,28 @@ const NotificationDropDown = ({ userConnected }: { userConnected: any }) => {
     async (userid: string, notifid: string) => {
       try {
         await updateNotifRead(userid, notifid);
-        setMyNotification((prev) =>
-          prev
-            ? {
-                ...prev,
-                listNotification: prev.listNotification.map((notif) =>
-                  notif.id === notifid ? { ...notif, isRead: true } : notif
-                ),
-              }
-            : prev
-        );
+
+        setMyNotification((prev) => {
+          if (!prev) return prev;
+
+          const notification = prev.listNotification.find(
+            (notif) => notif.id === notifid
+          );
+
+          if (!notification || notification.isRead) {
+            return prev;
+          }
+          return {
+            ...prev,
+            listNotification: prev.listNotification.map((notif) =>
+              notif.id === notifid ? { ...notif, isRead: true } : notif
+            ),
+            numberOfNotificationNotRead: Math.max(
+              prev.numberOfNotificationNotRead - 1,
+              0
+            ),
+          };
+        });
       } catch (error) {
         console.error("Error at update read state message : ", error);
       }
@@ -134,14 +146,12 @@ const NotificationDropDown = ({ userConnected }: { userConnected: any }) => {
         }}
         className={`flex h-8.5 w-8.5 items-center justify-center rounded-full border-[0.5px] border-stroke bg-gray hover:text-primary dark:border-secondaryGreen dark:bg-secondaryGreen dark:text-white`}
       >
-        {myNotification?.listNotification?.some((notif) => !notif.isRead) && (
-          <span className="absolute -top-1.5 -right-1 z-1 flex items-center justify-center h-5 w-5 rounded-full bg-meta-1 text-white text-xs font-semibold">
-            {
-              myNotification?.listNotification?.filter((notif) => !notif.isRead)
-                .length
-            }
-          </span>
-        )}
+        {myNotification?.numberOfNotificationNotRead != undefined &&
+          myNotification?.numberOfNotificationNotRead > 0 && (
+            <span className="absolute -top-1.5 -right-1 z-1 flex items-center justify-center h-5 w-5 rounded-full bg-meta-1 text-white text-xs font-semibold">
+              {myNotification?.numberOfNotificationNotRead}
+            </span>
+          )}
 
         <svg
           className="fill-current duration-300 ease-in-out"

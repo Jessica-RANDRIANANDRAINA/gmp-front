@@ -2,6 +2,7 @@ export interface INotification {
   userid: string;
   isRead: boolean;
   totalNotifications: number;
+  numberOfNotificationNotRead: number;
   userRole?: string;
   notificationid?: string;
   oldValue: string;
