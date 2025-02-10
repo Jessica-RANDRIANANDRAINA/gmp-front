@@ -4,9 +4,19 @@ const endPoint = import.meta.env.VITE_API_ENDPOINT;
 
 // ======GET========
 // get all notification of one user
-export const getAllMyNotification = async (userid: string) => {
+export const getAllMyNotification = async (
+  userid: string,
+  pageNumber?: number,
+  pageSize?: number
+) => {
   try {
-    const response = await axios.get(`${endPoint}/api/Notification/${userid}`);
+    const params: any = {
+      pageNumber,
+      pageSize,
+    };
+    const response = await axios.get(`${endPoint}/api/Notification/${userid}`, {
+      params,
+    });
     return response.data;
   } catch (error) {
     throw new Error(

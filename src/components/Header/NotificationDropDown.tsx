@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { getAllMyNotification, updateNotifRead } from "../../services/Project";
 import { formatDate } from "../../services/Function/DateServices";
 import { INotification, IListNotification } from "../../types/Notification";
-import { getNotificationCreateProject } from "../../constants/NotificationMessage";
+import { getNotificationMessage } from "../../constants/NotificationMessage";
 import { HubConnectionBuilder } from "@microsoft/signalr";
 
 const NotificationDropDown = ({ userConnected }: { userConnected: any }) => {
@@ -85,7 +85,7 @@ const NotificationDropDown = ({ userConnected }: { userConnected: any }) => {
 
   const fetchMyNotification = async (userid: string) => {
     try {
-      const notifs = await getAllMyNotification(userid);
+      const notifs = await getAllMyNotification(userid, 1, 5);
       setMyNotification(notifs);
     } catch (error) {
       console.error("Error at fetching notification : ", error);
@@ -201,7 +201,7 @@ const NotificationDropDown = ({ userConnected }: { userConnected: any }) => {
                     )}
                     <p className="text-sm">
                       <span className="text-black dark:text-white">
-                        {getNotificationCreateProject(
+                        {getNotificationMessage(
                           notif?.title ?? "",
                           notif?.userRoleInProject as
                             | "director"

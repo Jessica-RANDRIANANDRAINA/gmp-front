@@ -1,4 +1,4 @@
-export const getNotificationCreateProject = (
+export const getNotificationMessage = (
   projectName: string,
   role: "director" | "member" | "observator",
   projectid: string,
