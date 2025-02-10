@@ -15,6 +15,8 @@ import { IProjectData } from "../../../types/Project";
 import { IMyHabilitation } from "../../../types/Habilitation";
 import { SyncLoader } from "react-spinners";
 import PerPageInput from "../../UIElements/Input/PerPageInput";
+import { IDecodedToken } from "../../../types/user";
+import { decodeToken } from "../../../services/Function/TokenService";
 
 const TableProjet = ({
   data,
@@ -110,6 +112,30 @@ const TableProjet = ({
   const [projectSelected, setProjectSelected] = useState<string[]>([]);
   const [myHabilitation, setMyHabilitation] = useState<IMyHabilitation>();
 
+  const [decodedToken, setDecodedToken] = useState<IDecodedToken>();
+
+  useEffect(() => {
+    const token = localStorage.getItem("_au_pr");
+    if (token) {
+      try {
+        const decoded = decodeToken("pr");
+        setDecodedToken(decoded);
+      } catch (error) {
+        console.error(`Invalid token ${error}`);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    console.log("**********************");
+    console.log(data);
+    console.log("**********************");
+  }, [data]);
+  useEffect(() => {
+    console.log("//////////////////////");
+    console.log(projectSelected);
+    console.log("//////////////////////");
+  }, [projectSelected]);
   // const [statusSelectedOptions, setStatusSelectedOptions] = useState<string[]>(
   //   []
   // );
@@ -549,6 +575,22 @@ const TableProjet = ({
                       action === "Modifier"
                     ) {
                       return false;
+                    }
+                    // only chef de project can change avancement
+                    if (action === "Avancement") {
+                      const projectId = projectSelected?.[0];
+                      const selectedProject = data?.find(
+                        (project) => project.id === projectId
+                      );
+                      const isDirector = selectedProject?.listUsers.some(
+                        (userObj: {
+                          userid: string | undefined;
+                          role: string;
+                        }) =>
+                          userObj.userid === decodedToken?.jti &&
+                          userObj.role === "director"
+                      );
+                      return isDirector;
                     }
                     return true;
                   })
@@ -1199,9 +1241,13 @@ const TableProjet = ({
                               }}
                             ></div>
                           )}
-                          <span className={`absolute rounded-full inset-0 flex justify-center items-center text-xs font-semibold text-black dark:text-white ${
-                            project?.state ==="Stand by" ? "dark:bg-black/40":""
-                          }`}>
+                          <span
+                            className={`absolute rounded-full inset-0 flex justify-center items-center text-xs font-semibold text-black dark:text-white ${
+                              project?.state === "Stand by"
+                                ? "dark:bg-black/40"
+                                : ""
+                            }`}
+                          >
                             {project?.state === "Stand by"
                               ? project?.state
                               : project?.completionPercentage + "%"}
