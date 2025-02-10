@@ -126,16 +126,6 @@ const TableProjet = ({
     }
   }, []);
 
-  useEffect(() => {
-    console.log("**********************");
-    console.log(data);
-    console.log("**********************");
-  }, [data]);
-  useEffect(() => {
-    console.log("//////////////////////");
-    console.log(projectSelected);
-    console.log("//////////////////////");
-  }, [projectSelected]);
   // const [statusSelectedOptions, setStatusSelectedOptions] = useState<string[]>(
   //   []
   // );
