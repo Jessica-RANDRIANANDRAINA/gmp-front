@@ -236,6 +236,7 @@ const AllActivityCalendar = ({
         projectId: task?.projectid,
         priority: task?.priority,
         subType: task?.subType,
+        userName: task?.userList?.[0]?.user?.name,
       },
     };
     setTaskData(data);
