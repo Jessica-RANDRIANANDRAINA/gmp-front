@@ -9,11 +9,28 @@ import {
 } from "../../services/Function/DateServices"; // Assurez-vous que cette fonction ne retourne que la date
 import { decodeToken } from "../../services/Function/TokenService";
 import { IDecodedToken } from "../../types/user";
-import { getNotificationCreateProject } from "../../constants/NotificationMessage";
+import { getNotificationMessage } from "../../constants/NotificationMessage";
+import Pagination from "../../components/Tables/Pagination";
 
 const AllNotifications = () => {
   const [activityData, setActivityData] = useState<INotification>();
   const [decodedToken, setDecodedToken] = useState<IDecodedToken>();
+  const [actualPage, setActualPage] = useState(1);
+  const [pageNumbers, setPageNumbers] = useState(1);
+
+  const getPageNumber = (dataLength: number | undefined) => {
+    if (dataLength) {
+      return Math.ceil(dataLength / 20);
+    } else {
+      return 1;
+    }
+  };
+
+  useEffect(() => {
+    const totalNotification = activityData?.totalNotifications;
+
+    setPageNumbers(getPageNumber(totalNotification));
+  }, [activityData]);
 
   useEffect(() => {
     const token = localStorage.getItem("_au_pr");
@@ -33,7 +50,7 @@ const AllNotifications = () => {
   const fetchNotifications = async (userid: string) => {
     if (userid) {
       try {
-        const notifs = await getAllMyNotification(userid);
+        const notifs = await getAllMyNotification(userid, actualPage, 20);
         setActivityData(notifs);
       } catch (error) {
         console.error("Error fetching notifications:", error);
@@ -95,79 +112,100 @@ const AllNotifications = () => {
     ? groupNotificationsByDate(activityData.listNotification)
     : {};
 
-    return (
-      <ProjectLayout>
-        <div className="mx-4 p-6 md:mx-10 bg-gray-50 dark:bg-gray-900 min-h-screen transition-colors duration-300">
-          {/* Breadcrumb */}
-          <div className="w-full mb-6 flex justify-between items-center">
-            <Breadcrumb
-              paths={[{ name: "Projets", to: "/gmp/project/list" }, { name: "Notifications" }]}
-            />
-          </div>
-    
-          {/* Notifications Timeline */}
-          <div className="space-y-6">
-            {Object.keys(groupedNotifications).map((dateKey) => {
-              return (
-                <div key={dateKey}>
-                  {/* Afficher le titre de la journée */}
-                  <h2 className="text-xl font-semibold dark:text-gray-2 mb-4">
-                    {/* {dateKey} */}
-                    {formatDateToText(dateKey)}
-                  </h2>
-    
-                  {/* Afficher les notifications de cette journée */}
-                  {groupedNotifications[dateKey].map((notif, index) => (
-                    <div
-                      key={index}
-                      className="flex cursor-pointer mb-2 items-center justify-between space-x-4 bg-white dark:bg-formStrokedark p-4 rounded-lg shadow-sm"
-                      onClick={() => {
-                        if (decodedToken?.jti) {
-                          handleChangeReadStateMessage(decodedToken?.jti, notif.id);
-                        }
-                      }}
-                    >
-                      {/* Notification Read Status (Déplacer ici si besoin) */}
-                      <div className="flex-shrink-0">
-                        <span
-                          className={`inline-block w-2.5 h-2.5 rounded-full ${
-                            notif.isRead
-                              ? "bg-gray-400" // Gris pour "Lu"
-                              : "bg-red-500 animate-pulse" // Rouge clignotant pour "Non lu"
-                          }`}
-                        ></span>
-                      </div>
-    
-                      {/* Notification Content */}
-                      <div className="flex-grow">
-                        <div className="text-sm dark:text-gray-3">
-                          {getNotificationCreateProject(
-                            notif?.title ?? "",
-                            notif?.userRoleInProject as "director" | "member" | "observator",
-                            notif?.projectid ?? "",
-                            notif.type as "Create" | "Update" | "Delete" | "Add" | "Archive" | "Warning",
-                            notif.table ?? "",
-                            notif.subTable ?? "",
-                            notif.oldValue,
-                            notif.newValue,
-                            notif.activityid ?? "",
-                            notif?.modifiedBy
-                          )}
-                        </div>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">
-                          {formatDate(notif.modifiedAt, true)}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              );
-            })}
-          </div>
+  return (
+    <ProjectLayout>
+      <div className="mx-4 p-6 md:mx-10 bg-gray-50 dark:bg-gray-900 min-h-screen transition-colors duration-300">
+        {/* Breadcrumb */}
+        <div className="w-full mb-6 flex justify-between items-center">
+          <Breadcrumb
+            paths={[
+              { name: "Projets", to: "/gmp/project/list" },
+              { name: "Notifications" },
+            ]}
+          />
         </div>
-      </ProjectLayout>
-    );
-    
+
+        {/* Notifications Timeline */}
+        <div className="space-y-6">
+          {Object.keys(groupedNotifications).map((dateKey) => {
+            return (
+              <div key={dateKey}>
+                {/* Afficher le titre de la journée */}
+                <h2 className="text-xl font-semibold dark:text-gray-2 mb-4">
+                  {/* {dateKey} */}
+                  {formatDateToText(dateKey)}
+                </h2>
+
+                {/* Afficher les notifications de cette journée */}
+                {groupedNotifications[dateKey].map((notif, index) => (
+                  <div
+                    key={index}
+                    className="flex cursor-pointer mb-2 items-center justify-between space-x-4 bg-white dark:bg-formStrokedark p-4 rounded-lg shadow-sm"
+                    onClick={() => {
+                      if (decodedToken?.jti) {
+                        handleChangeReadStateMessage(
+                          decodedToken?.jti,
+                          notif.id
+                        );
+                      }
+                    }}
+                  >
+                    {/* Notification Read Status (Déplacer ici si besoin) */}
+                    <div className="flex-shrink-0">
+                      <span
+                        className={`inline-block w-2.5 h-2.5 rounded-full ${
+                          notif.isRead
+                            ? "bg-gray-400" // Gris pour "Lu"
+                            : "bg-red-500 animate-pulse" // Rouge clignotant pour "Non lu"
+                        }`}
+                      ></span>
+                    </div>
+
+                    {/* Notification Content */}
+                    <div className="flex-grow">
+                      <div className="text-sm dark:text-gray-3">
+                        {getNotificationMessage(
+                          notif?.title ?? "",
+                          notif?.userRoleInProject as
+                            | "director"
+                            | "member"
+                            | "observator",
+                          notif?.projectid ?? "",
+                          notif.type as
+                            | "Create"
+                            | "Update"
+                            | "Delete"
+                            | "Add"
+                            | "Archive"
+                            | "Warning",
+                          notif.table ?? "",
+                          notif.subTable ?? "",
+                          notif.oldValue,
+                          notif.newValue,
+                          notif.activityid ?? "",
+                          notif?.modifiedBy
+                        )}
+                      </div>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                        {formatDate(notif.modifiedAt, true)}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            );
+          })}
+        </div>
+        <div>
+          <Pagination
+            actualPage={actualPage}
+            setActualPage={setActualPage}
+            pageNumbers={pageNumbers}
+          />
+        </div>
+      </div>
+    </ProjectLayout>
+  );
 };
 
 export default AllNotifications;
