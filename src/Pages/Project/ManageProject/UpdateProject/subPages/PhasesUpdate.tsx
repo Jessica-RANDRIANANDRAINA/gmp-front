@@ -341,7 +341,9 @@ const PhasesUpdate = ({
                             if (phase?.id)
                               handlePhaseDataChange(
                                 "startDate",
-                                e.target.value,
+                                e.target.value === ""
+                                  ? undefined
+                                  : e.target.value,
                                 phase.rank ?? 0
                               );
                           }}
@@ -362,7 +364,9 @@ const PhasesUpdate = ({
                             if (phase?.id)
                               handlePhaseDataChange(
                                 "endDate",
-                                e.target.value,
+                                e.target.value === ""
+                                  ? undefined
+                                  : e.target.value,
                                 phase.rank ?? 0
                               );
                           }}
