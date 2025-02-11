@@ -236,7 +236,9 @@ const UpdateProject = () => {
       notyf.success(`Projet modifié avec succès !`);
       navigate("/gmp/project/list");
     } catch (error) {
-      notyf.error(`Une erreur s'est produite, veuillez réessayer plus tard`);
+      notyf.error(
+        `Veuillez remplir tous les champs correctement. Si l'erreur persiste, veuillez contacter l'administrateur.`
+      );
       console.log(`Error at update project: ${error}`);
     } finally {
       // stop loading

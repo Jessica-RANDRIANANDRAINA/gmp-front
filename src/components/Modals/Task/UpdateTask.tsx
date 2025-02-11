@@ -98,7 +98,7 @@ const UpdateTask = ({
       handleCloseModal();
     } catch (error) {
       notyf.error(
-        "Une erreur s'est produite lors de la modification, veuillez réessayer plus tard"
+        "Veuillez remplir tous les champs correctement. Si l'erreur persiste, veuillez contacter l'administrateur."
       );
       console.error(`Error at update task:${error}`);
     } finally {
