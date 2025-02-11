@@ -22,3 +22,7 @@
   padding: 10px;
 }
 
+
+.notyf {
+  z-index: 999999 !important;
+}
