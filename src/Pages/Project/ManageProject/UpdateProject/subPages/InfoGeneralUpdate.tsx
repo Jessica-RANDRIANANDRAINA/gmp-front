@@ -44,23 +44,23 @@ const InfoGeneralUpdate = ({
         }
       }}
     >
-        <CustomInput
-          label="Titre"
-          type="text"
-          rounded="medium"
-          help="Le titre du projet est obligatoire"
-          placeholder="Titre du projet"
-          value={projectData?.title?.slice(0, 1000)}
-          maxLength={1000}
-          required={true}
-          onChange={(e) => {
-            setProjectData({
-              ...projectData,
-              title: e.target.value.slice(0, 1000),
-            });
-          }}
-        />
-      
+      <CustomInput
+        label="Titre"
+        type="text"
+        rounded="medium"
+        help="Le titre du projet est obligatoire"
+        placeholder="Titre du projet"
+        value={projectData?.title?.slice(0, 1000)}
+        maxLength={1000}
+        required={true}
+        onChange={(e) => {
+          setProjectData({
+            ...projectData,
+            title: e.target.value.slice(0, 1000),
+          });
+        }}
+      />
+
       <CustomInput
         label="Description"
         type="textarea"
@@ -147,7 +147,7 @@ const InfoGeneralUpdate = ({
             onChange={(e) => {
               setProjectData({
                 ...projectData,
-                endDate: e.target.value,
+                endDate: e.target.value === "" ? undefined : e.target.value,
               });
             }}
             min={
