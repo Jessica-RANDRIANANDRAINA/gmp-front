@@ -92,7 +92,7 @@ const Modal = ({
       <div
         ref={trigger}
         style={{ maxHeight: heightSize }}
-        className={`bg-white ${overflow} h-fit  my-20 dark:bg-[#24303F] rounded-md ${
+        className={`bg-white ${overflow} h-fit my-20 dark:bg-[#24303F] rounded-md ${
           size[widthSize]
         } p-4 transfrom transition-all duration-300 ease-out ${
           showModal && !closingModal
@@ -101,7 +101,7 @@ const Modal = ({
         } flex flex-col`}
       >
         {/* ===== HEADER START ====== */}
-        <header className="flex justify-between w-full h-12 overflow-hidden">
+        <header className="flex justify-between w-full min-h-7 overflow-hidden">
           <div
             className={`font-semibold text-sm sticky whitespace-nowrap  cursor-pointer hide-scrollbar ${
               isTitleExpanded ? "overflow-x-auto" : "overflow-hidden"
