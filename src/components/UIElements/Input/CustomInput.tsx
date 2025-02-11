@@ -58,7 +58,7 @@ const CustomInput = ({
           onChange={onChange}
           ref={inputRef}
           type={type}
-          className={` w-full border   md:h-10 bg-transparent  py-3 pl-6 pr-10 text-black dark:text-gray  outline-none focus:border-primaryGreen focus-visible:shadow-none dark:border dark:border-formStrokedark dark:focus:border-primaryGreen  ${
+          className={` w-full border md:h-10 bg-transparent py-3 px-3 text-black dark:text-gray  outline-none focus:border-primaryGreen focus-visible:shadow-none dark:border dark:border-formStrokedark dark:focus:border-primaryGreen  ${
             round[rounded]
           }  ${
             error
