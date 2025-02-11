@@ -210,6 +210,22 @@ const UpdateTask = ({
               </div>
             </div>
           </div>
+          <div>
+            <CustomInput
+              required={true}
+              type="text"
+              label="Titre"
+              rounded="medium"
+              className="text-sm"
+              value={taskData.title}
+              onChange={(e) => {
+                setTaskData({
+                  ...taskData,
+                  title: e.target.value,
+                });
+              }}
+            />
+          </div>
           <div className="grid md:grid-cols-2 gap-2">
             <CustomSelect
               label="Priorité"
@@ -334,7 +350,9 @@ const UpdateTask = ({
         </div>
       </ModalBody>
       <ModalFooter>
-        <div className={`${phaseData?.status ==="Terminé" ? "hidden":"flex"}`}>
+        <div
+          className={`${phaseData?.status === "Terminé" ? "hidden" : "flex"}`}
+        >
           <button
             className="border text-xs p-2 rounded-md  font-semibold bg-transparent border-transparent hover:bg-zinc-100 dark:hover:bg-boxdark2 "
             type="button"
