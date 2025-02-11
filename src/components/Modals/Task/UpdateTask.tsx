@@ -83,13 +83,14 @@ const UpdateTask = ({
       const dataToSend = {
         priority: taskData?.priority,
         startDate: taskData?.startDate,
-        dueDate: taskData?.dueDate,
+        dueDate: taskData?.dueDate === "" ? undefined : taskData?.dueDate,
         description: taskData?.description,
         listUsers: formatUser,
         dailyEffort: taskData?.dailyEffort,
         title: taskData?.title,
         status: taskData?.status,
       };
+
       const taskId = task.content.id;
       await updateTaskProject(taskId, dataToSend);
       setIsRefreshTaskNeeded(true);
