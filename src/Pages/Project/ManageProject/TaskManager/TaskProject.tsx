@@ -36,7 +36,7 @@ const TaskProject = () => {
   return (
     <ProjectLayout>
       <div className="">
-        <div className="bg-white dark:bg-boxdark pt-4 pb-3 px-9 shadow-sm">
+        <div className="bg-white dark:bg-boxdark pt-4 pb-3 px-10 shadow-sm">
           <Breadcrumb
             paths={[
               { name: "Projets", to: "/gmp/project/list" },

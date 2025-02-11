@@ -164,7 +164,7 @@ const ManageProjects = () => {
 
   return (
     <ProjectLayout>
-      <div className="mx-2 p-4 md:mx-10 ">
+      <div className="mx-2 py-4 md:mx-10 ">
         <>
           <div className="flex flex-col md:flex-row">
             <Breadcrumb

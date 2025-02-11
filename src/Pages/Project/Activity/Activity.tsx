@@ -245,7 +245,7 @@ const Activity = () => {
       <SignalRContext.Provider value={connection}>
         <ProjectLayout>
           <div>
-            <div className="bg-white dark:bg-boxdark pt-4 pb-3 px-9 shadow-sm">
+            <div className="bg-white dark:bg-boxdark pt-4 pb-3 px-10 shadow-sm">
               <div className="flex gap-2">
                 <div
                   onClick={() => handleViewChange("table")}
