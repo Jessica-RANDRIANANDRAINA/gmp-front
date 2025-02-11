@@ -138,7 +138,7 @@ const UpdateTask = ({
       <ModalBody>
         <div className="space-y-5">
           <div className="space-y-2">
-            <div className="font-semibold text-xs">
+            <div className="font-semibold text-sm">
               Assigné à : <span className="text-red-500 ml-1 text-sm">*</span>
             </div>
             <div className="">
