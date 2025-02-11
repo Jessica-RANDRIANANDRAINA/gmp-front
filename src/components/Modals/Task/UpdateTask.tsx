@@ -361,7 +361,8 @@ const UpdateTask = ({
             Annuler
           </button>
           {(() => {
-            const hasStartDate = taskData?.startDate !== "";
+            const hasStartDate =
+              taskData?.startDate !== "" && taskData?.startDate !== undefined;
             const hasPersonAssigned = assignedPerson.length > 0;
             const isDisabled = hasStartDate && hasPersonAssigned;
             const buttonClassName = !isDisabled

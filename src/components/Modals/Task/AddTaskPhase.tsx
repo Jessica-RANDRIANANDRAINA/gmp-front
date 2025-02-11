@@ -324,7 +324,8 @@ const AddTaskPhase = ({
         </button>
         {(() => {
           const hasTitle = taskData?.title?.trim() !== "";
-          const hasStartDate = taskData?.startDate !== "";
+          const hasStartDate =
+            taskData?.startDate !== "" && taskData?.startDate !== undefined;
           const hasPersonAssigned = assignedPerson.length > 0;
           const isDisabled = hasTitle && hasStartDate && hasPersonAssigned;
           const buttonClassName = !isDisabled
