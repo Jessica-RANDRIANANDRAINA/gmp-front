@@ -74,7 +74,7 @@ const CustomSelect = ({
             setIsOpen(!isOpen);
           }
         }}
-        className={`w-full text-sm py-2.5 px-6 md:h-10 border flex items-center justify-between border-stroke dark:border-formStrokedark rounded-lg  text-left ${
+        className={`w-full text-sm py-2.5 px-3 md:h-10 border flex items-center justify-between border-stroke dark:border-formStrokedark rounded-lg  text-left ${
           value ? "dark:text-gray text-black" : "text-bodydark2"
         } ${disabled ? "bg-slate-200 cursor-default dark:bg-slate-800":"bg-transparent"}`}
       >

@@ -145,7 +145,7 @@ const MultiSelect = ({
             <div className="relative flex flex-col items-center  ">
               <div ref={trigger} onClick={open} className="w-full ">
                 <div
-                  className={`mb-2 flex ${round[rounded]} border overflow-x-auto  border-stroke dark:border-formStrokedark md:py-1 pl-3 pr-3 outline-none transition focus:border-primary active:border-primary dark:text-gray dark:border-form-strokedark dark:bg-form-input`}
+                  className={`mb-2 flex ${round[rounded]} border overflow-x-auto  border-stroke dark:border-formStrokedark md:py-1 px-3 outline-none transition focus:border-primary active:border-primary dark:text-gray dark:border-form-strokedark dark:bg-form-input`}
                 >
                   <div className="flex flex-auto  gap-3 ">
                     {selected.map((index) => (
@@ -186,7 +186,7 @@ const MultiSelect = ({
                         <input
                           required={required}
                           placeholder={placeholder}
-                          className="h-full w-full appearance-none bg-transparent p-1 px-2 outline-none"
+                          className="h-full w-full appearance-none bg-transparent  outline-none"
                           defaultValue={selectedValues()}
                         />
                       </div>

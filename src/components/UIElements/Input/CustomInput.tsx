@@ -46,7 +46,7 @@ const CustomInput = ({
         <textarea
           rows={rows}
           cols={cols}
-          className={`w-full border  border-stroke bg-transparent py-3 pl-6 pr-10 text-black dark:text-gray outline-none focus:border-primaryGreen focus-visible:shadow-none dark:border-formStrokedark dark:focus:border-primaryGreen  ${round[rounded]}`}
+          className={`w-full border  border-stroke bg-transparent py-3 px-3 text-black dark:text-gray outline-none focus:border-primaryGreen focus-visible:shadow-none dark:border-formStrokedark dark:focus:border-primaryGreen  ${round[rounded]}`}
           placeholder={placeholder}
           autoFocus={!!error}
           onChange={onChange}
