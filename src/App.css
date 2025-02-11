@@ -1,18 +1,17 @@
 .hide-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
-  
-  /* Hide scrollbar for IE, Edge and Firefox */
-  .hide-scrollbar {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
-  }
+  display: none;
+}
 
-  /* title in the header toolbar  */
+/* Hide scrollbar for IE, Edge and Firefox */
+.hide-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+/* title in the header toolbar  */
 .fc .fc-toolbar-title {
-  font-size: 1rem; 
-  font-weight: bold; 
-  
+  font-size: 1rem;
+  font-weight: bold;
 }
 
 .fc .fc-list-day-cushion {
@@ -22,7 +21,14 @@
   padding: 10px;
 }
 
-
 .notyf {
   z-index: 999999 !important;
+}
+
+.tooltip {
+  z-index: 999999 !important;
+}
+
+.card {
+  z-index: 50 !important;
 }

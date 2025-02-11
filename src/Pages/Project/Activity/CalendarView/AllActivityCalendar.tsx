@@ -335,11 +335,11 @@ const AllActivityCalendar = ({
           eventClick={handleEventClick}
           eventClassNames={(eventInfo) => {
             if (eventInfo.event.extendedProps.type === "Projet") {
-              return "!bg-green-100 !border-green-300 !text-green-800 dark:!bg-green-900 dark:!border-green-700 dark:!text-green-300"; // Couleurs pour Projet
+              return "!bg-green-100 !border-green-300  !text-green-800 dark:!bg-green-900 dark:!border-green-700 dark:!text-green-300"; // Couleurs pour Projet
             } else if (eventInfo.event.extendedProps.type === "Transverse") {
-              return "!bg-purple-100 !border-purple-300 !text-purple-800 dark:!bg-purple-900 dark:!border-purple-700 dark:!text-purple-300"; // Couleurs pour Transverse
+              return "!bg-purple-100 !border-purple-300  !text-purple-800 dark:!bg-purple-900 dark:!border-purple-700 dark:!text-purple-300"; // Couleurs pour Transverse
             } else {
-              return "!bg-red-100 !border-red-300 !text-red-800 dark:!bg-red-900 dark:!border-red-700 dark:!text-red-300"; // Couleurs par défaut
+              return "!bg-red-100 !border-red-300  !text-red-800 dark:!bg-red-900 dark:!border-red-700 dark:!text-red-300"; // Couleurs par défaut
             }
           }}
           headerToolbar={{
@@ -375,7 +375,7 @@ const AllActivityCalendar = ({
                     {dailyEffort}h -{" "}
                     {title.length > 15 ? `${title.slice(0, 15)}...` : title}
                   </b>
-                  <div className="absolute z-999999 bottom-full left-0 mt-1 dark:bg-whiten dark:text-black bg-black text-white text-xs rounded p-1 hidden group-hover:block  whitespace-nowrap ">
+                  <div className="absolute tooltip bottom-full left-0 dark:bg-whiten dark:text-black bg-black text-white text-xs rounded p-1 hidden group-hover:block  whitespace-nowrap ">
                     {title}
                   </div>
                 </div>
