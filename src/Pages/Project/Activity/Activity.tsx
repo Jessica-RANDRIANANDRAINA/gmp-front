@@ -399,7 +399,7 @@ const Activity = () => {
                   resetToAll={resetCustomSelectChoice}
                 />
                 <CustomSelectChoice
-                  label="Status"
+                  label="Statut"
                   options={[
                     "Backlog",
                     "En cours",

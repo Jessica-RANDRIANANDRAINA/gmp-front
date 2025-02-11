@@ -128,7 +128,7 @@ const PhaseSettings = ({
           </div>
           <div className=" space-y-2 ">
             <CustomSelect
-              label="Status"
+              label="Statut"
               placeholder=""
               data={
                 ableToEnd

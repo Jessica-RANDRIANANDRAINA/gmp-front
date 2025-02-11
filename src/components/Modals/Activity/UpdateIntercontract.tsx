@@ -115,7 +115,7 @@ const UpdateIntercontract = ({
                 }}
               />
               <CustomSelect
-                label="Status"
+                label="Statut"
                 data={[
                   "Backlog",
                   "En cours",

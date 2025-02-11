@@ -200,7 +200,7 @@ const UpdateTaskActivity = ({
               }}
             />
             <CustomSelect
-              label="Status"
+              label="Statut"
               data={["Backlog", "En cours", "Traité", "En pause", "Abandonné"]}
               value={taskData.status}
               onValueChange={(e) => {

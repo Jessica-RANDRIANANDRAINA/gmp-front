@@ -330,7 +330,7 @@ const TableProjet = ({
             setUserSelected={setSelecteduserInput}
           />
           {/* <CustomSelectChoice
-            label="Status"
+            label="Statut"
             options={[
               "En cours",
               "En retard",

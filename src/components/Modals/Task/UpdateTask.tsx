@@ -224,7 +224,7 @@ const UpdateTask = ({
               }}
             />
             <CustomSelect
-              label="Status"
+              label="Statut"
               placeholder=""
               data={["Backlog", "En cours", "Traité", "En pause", "Abandonné"]}
               value={taskData.status}

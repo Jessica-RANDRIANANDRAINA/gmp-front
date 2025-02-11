@@ -251,7 +251,7 @@ const UpdateActivity = ({
                 disabled={true}
               />
               <CustomSelect
-                label="Status"
+                label="Statut"
                 data={[
                   "Backlog",
                   "En cours",

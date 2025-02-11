@@ -400,7 +400,7 @@ const DetailsProject = () => {
                         <th className="py-3 px-6 text-left">
                           Lien du livrable
                         </th>
-                        <th className="py-3 px-6 text-left">Status</th>
+                        <th className="py-3 px-6 text-left">Statut</th>
                       </tr>
                     </thead>
                     <tbody className="text-gray-600 text-xs font-light">
@@ -633,7 +633,7 @@ const DetailsProject = () => {
                             </div>
                             <div>
                               <span className="text-emerald-500 font-semibold">
-                                Status :{" "}
+                                Statut :{" "}
                               </span>
                               <span
                                 className={`inline-flex space-x-1 w-fit whitespace-nowrap items-center px-3 py-1 rounded-full text-xs font-semibold 
