@@ -472,7 +472,7 @@ const AllActivityKanban = ({
                             setIsModalAddActivityOpen(true);
                           }}
                         >
-                          <span>+ ajouter une activité</span>
+                          <span>+ Ajouter une activité</span>
                         </div>
                       )}
                       {acivities?.map((activity: any, index: any) => {

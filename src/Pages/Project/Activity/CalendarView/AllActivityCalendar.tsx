@@ -420,7 +420,7 @@ const AllActivityCalendar = ({
             setIsModalAddOpen(true);
           }}
         >
-          <span>+ ajouter une activité</span>
+          <span>+ Ajouter une activité</span>
         </div>
         <div className="">
           <CollapsibleSection title="Backlog">

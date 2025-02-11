@@ -369,7 +369,7 @@ const PhaseAdvancement = () => {
                             setModalOpen(true);
                           }}
                         >
-                          <span>+ ajouter une tâche</span>
+                          <span>+ Ajouter une tâche</span>
                         </div>
                       )}
                       {tasks.map((task: any, index: any) => (

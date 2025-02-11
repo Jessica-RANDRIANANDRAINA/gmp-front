@@ -498,7 +498,7 @@ const Activity = () => {
                     }}
                     className="px-2 cursor-pointer py-2 lg:px-3 xl:px-2  text-center font-medium whitespace-nowrap text-sm text-white hover:bg-opacity-90  border border-primaryGreen bg-primaryGreen rounded-lg dark:border-darkgreen dark:bg-darkgreen dark:hover:bg-opacity-90  md:ease-in md:duration-300 md:transform "
                   >
-                    + ajouter une activité
+                    + Ajouter une activité
                   </span>
                 </div>
               </div>
