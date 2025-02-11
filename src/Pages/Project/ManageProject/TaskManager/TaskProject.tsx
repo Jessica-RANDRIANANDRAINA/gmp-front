@@ -61,7 +61,7 @@ const TaskProject = () => {
                 )}
                 <span
                   className={`${
-                    projectData?.title && projectData?.title?.length > 20
+                    projectData?.title && projectData?.title?.length > 40
                       ? ""
                       : "hidden"
                   }`}
