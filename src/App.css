@@ -32,3 +32,28 @@
 .card {
   z-index: 50 !important;
 }
+
+
+/* ✅ Style du scrollbar pour Chrome, Edge et Safari */
+::-webkit-scrollbar {
+  width: 8px; /* Largeur de la scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: transparent; /* Fond transparent */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c4c4c4; /* Couleur de la poignée */
+  border-radius: 10px; /* Bords arrondis */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a0a0a0; /* Couleur au survol */
+}
+
+/* ✅ Pour Firefox */
+* {
+  scrollbar-width: thin; /* Scroll fin */
+  scrollbar-color: #c4c4c4 transparent; /* Couleurs */
+}
