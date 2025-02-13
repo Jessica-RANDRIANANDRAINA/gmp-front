@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useRef, useContext } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useContext,
+  useCallback,
+} from "react";
 import { useParams } from "react-router-dom";
 import { SignalRContext } from "../Activity";
 import {
@@ -100,7 +106,9 @@ const AllActivityKanban = ({
   subordinates,
   statusSelectedOptions,
   myHabilitation,
+  isSubordinatesFetched,
 }: {
+  isSubordinatesFetched: boolean;
   selectedOptions: Array<string>;
   search: {
     ids: (string | undefined)[];
@@ -163,7 +171,10 @@ const AllActivityKanban = ({
     setSearchClicked(false);
   }, [searchClicked]);
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
+    if (!userid || !isSubordinatesFetched) {
+      return;
+    }
     try {
       var response;
       var Ids: (string | undefined)[] = [];
@@ -201,12 +212,27 @@ const AllActivityKanban = ({
     } catch (error) {
       console.error(`Error at fetch task data: ${error}`);
     }
-  };
+  }, [
+    userid,
+    search,
+    selectedOptions,
+    statusSelectedOptions,
+    subordinates,
+    isSubordinatesFetched,
+  ]);
 
   useEffect(() => {
-    fetchData();
-    setIsRefreshNeeded(false);
-  }, [connection, isRefreshNeeded, subordinates, search]);
+    if (isSubordinatesFetched) {
+      fetchData();
+      setIsRefreshNeeded(false);
+    }
+  }, [
+    connection,
+    isRefreshNeeded,
+    subordinates,
+    search,
+    isSubordinatesFetched,
+  ]);
 
   // when task deleted refetchData by using signal R
   useEffect(() => {

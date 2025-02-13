@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React, {
+  useState,
+  useEffect,
+  useContext,
+  useRef,
+  useCallback,
+} from "react";
 import { useParams } from "react-router-dom";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -34,7 +40,9 @@ const AllActivityCalendar = ({
   subordinates,
   statusSelectedOptions,
   myHabilitation,
+  isSubordinatesFetched,
 }: {
+  isSubordinatesFetched: boolean;
   selectedOptions: Array<string>;
   statusSelectedOptions: Array<string>;
   search: any;
@@ -51,19 +59,20 @@ const AllActivityCalendar = ({
   myHabilitation: IMyHabilitation | undefined;
 }) => {
   const { userid } = useParams();
-  const [events, setEvents] = useState<any[]>([]);
   const connection = useContext(SignalRContext);
+  const deletePopUp = useRef<any>(null);
+
+  const [events, setEvents] = useState<any[]>([]);
   const [isModalAddOpen, setIsModalAddOpen] = useState<boolean>(false);
-  const [isRefreshNeeded, setIsRefreshNeeded] = useState<boolean>(false);
   const [isModalUpdateOpen, setIsModalUpdateOpen] = useState<boolean>(false);
+  const [isRefreshNeeded, setIsRefreshNeeded] = useState<boolean>(false);
   const [taskData, setTaskData] = useState<any>();
   const [activeTaskId, setActiveTaskId] = useState<string | null>(null);
   const [data, setData] = useState<any>();
-  const deletePopUp = useRef<any>(null);
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  // useEffect(() => {
+  //   fetchData();
+  // }, []);
 
   // open add activity modal with parent props trigger
   useEffect(() => {
@@ -92,7 +101,10 @@ const AllActivityCalendar = ({
     setSearchClicked(false);
   }, [searchClicked]);
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
+    if (!userid || !isSubordinatesFetched) {
+      return;
+    }
     try {
       var response;
       var Ids: (string | undefined)[] = [];
@@ -107,7 +119,7 @@ const AllActivityCalendar = ({
       } else {
         Ids = search?.ids;
       }
-      // if (userid && Ids.length > 0) {
+
       if (userid) {
         response = await getAllActivitiesOfUser(
           search?.startDate,
@@ -115,6 +127,7 @@ const AllActivityCalendar = ({
           selectedOptions,
           Ids.length > 0 ? Ids : subordinatesId
         );
+
         const filteredResponse = response.filter(
           (activity: { status: string }) =>
             statusSelectedOptions.includes(activity.status)
@@ -193,12 +206,21 @@ const AllActivityCalendar = ({
     } catch (error) {
       console.error(`Error fetching TASK ACTIVITY data: ${error}`);
     }
-  };
+  }, [
+    userid,
+    search,
+    selectedOptions,
+    statusSelectedOptions,
+    subordinates,
+    isSubordinatesFetched,
+  ]);
 
   useEffect(() => {
-    fetchData();
-    setIsRefreshNeeded(false);
-  }, [connection, isRefreshNeeded]);
+    if (isSubordinatesFetched) {
+      fetchData();
+      setIsRefreshNeeded(false);
+    }
+  }, [connection, isRefreshNeeded, isSubordinatesFetched]);
 
   // when task deleted refetchData by using signal R
   useEffect(() => {

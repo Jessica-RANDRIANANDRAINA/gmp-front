@@ -71,6 +71,8 @@ const Activity = () => {
   const [activeUserId, setActiveUserId] = useState<string | null>(null);
   const [isAddActivity, setIsAddActivity] = useState<boolean>(false);
   const [myHabilitation, setMyHabilitation] = useState<IMyHabilitation>();
+  const [isSubordinatesFetched, setIsSubordinatesFetched] =
+    useState<boolean>(false);
 
   const getMyHabilitation = async () => {
     const hab = await getAllMyHabilitation();
@@ -148,6 +150,7 @@ const Activity = () => {
         const subordinatesAndMe = [...transformedArray, me];
 
         setSubordinates(subordinatesAndMe);
+        setIsSubordinatesFetched(true);
       }
     } catch (error) {
       console.error(`Error at fetch subordinates :${error}`);
@@ -557,6 +560,7 @@ const Activity = () => {
                   subordinates={subordinates}
                   statusSelectedOptions={statusSelectedOptions}
                   myHabilitation={myHabilitation}
+                  isSubordinatesFetched={isSubordinatesFetched}
                 />
               ) : (
                 <AllActivityCalendar
@@ -570,6 +574,7 @@ const Activity = () => {
                   subordinates={subordinates}
                   statusSelectedOptions={statusSelectedOptions}
                   myHabilitation={myHabilitation}
+                  isSubordinatesFetched={isSubordinatesFetched}
                 />
               )}
             </div>
