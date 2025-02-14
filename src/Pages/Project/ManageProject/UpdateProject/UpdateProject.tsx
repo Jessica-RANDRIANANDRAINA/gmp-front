@@ -73,7 +73,8 @@ const UpdateProject = () => {
       directionOwner?.join(", ") !== "" &&
       projectData?.startDate !== "";
     const allowedPhase = phaseAndLivrableList?.length > 0;
-    const allowedTeam = userTeam?.length > 0;
+    const allowedTeam =
+      userTeam?.length > 0 && userTeam.some((user) => user.role === "director");
     const allowedUpdate = allowedGeneral && allowedPhase && allowedTeam;
     setIsAllowedToUpdate(allowedUpdate);
   }, [projectData, directionOwner, phaseAndLivrableList, userTeam]);
@@ -396,6 +397,7 @@ const UpdateProject = () => {
                 isCreateLoading={isCreateLoading}
                 setUpdateProjectState={setUpdateProjectState}
                 isAllowedToUpdate={isAllowedToUpdate}
+                phaseAndLivrableList={phaseAndLivrableList}
               />
               {/* ===== CREATE PROJECT LEVEL FOUR: TEAM END ===== */}
             </div>

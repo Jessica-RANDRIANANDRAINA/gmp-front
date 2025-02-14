@@ -1,6 +1,6 @@
 import { PuffLoader } from "react-spinners";
 import { CutomInputUserSearch } from "../../../../../components/UIElements";
-import { Iteam } from "../../../../../types/Project";
+import { Iteam, IPhase } from "../../../../../types/Project";
 import { getInitials } from "../../../../../services/Function/UserFunctionService";
 import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
@@ -9,14 +9,16 @@ const notyf = new Notyf({ position: { x: "center", y: "top" } });
 
 const TeamProjectUpdate = ({
   pageCreate,
+  phaseAndLivrableList,
   setPageCreate,
   userTeam,
   setUserTeam,
   isCreateLoading,
   setUpdateProjectState,
-  isAllowedToUpdate
+  isAllowedToUpdate,
 }: {
   pageCreate: number;
+  phaseAndLivrableList: IPhase[];
   setPageCreate: React.Dispatch<React.SetStateAction<number>>;
   userTeam: Array<Iteam>;
   setUserTeam: React.Dispatch<React.SetStateAction<Array<Iteam>>>;
@@ -31,8 +33,9 @@ const TeamProjectUpdate = ({
   };
   return (
     <div
-      className={`space-y-2 transition-all duration-300 ease-in-out ${pageCreate === 4 ? "opacity-100" : "opacity-0 h-0 overflow-hidden"
-        }`}
+      className={`space-y-2 transition-all duration-300 ease-in-out ${
+        pageCreate === 4 ? "opacity-100" : "opacity-0 h-0 overflow-hidden"
+      }`}
     >
       <div className="space-y-4 grid md:max-h-125 md:min-h-150 ">
         <div>
@@ -40,18 +43,20 @@ const TeamProjectUpdate = ({
           <div className="space-y-2">
             {/* ===== PROJECT DIRECTOR START ===== */}
             <div>
-              <div>Chef de projet</div>
+              <div>
+                Chef de projet <span className="text-red-500 ml-1">*</span>
+              </div>
               <div className="hide-scrollbar">
                 {userTeam?.filter((team) => team.role === "director").length ===
                   0 && (
-                    <CutomInputUserSearch
-                      placeholder="Recherche"
-                      label="Assigner"
-                      userSelected={userTeam}
-                      setUserSelected={setUserTeam}
-                      role="director"
-                    />
-                  )}
+                  <CutomInputUserSearch
+                    placeholder="Recherche"
+                    label="Assigner"
+                    userSelected={userTeam}
+                    setUserSelected={setUserTeam}
+                    role="director"
+                  />
+                )}
                 <div className="flex gap-4 mt-2 flex-wrap">
                   {userTeam
                     ?.filter((team) => team.role === "director")
@@ -154,6 +159,16 @@ const TeamProjectUpdate = ({
             {/* ===== PROJECT OBSERVATOR END ===== */}
           </div>
         </div>
+        <div className="text-red-500 flex flex-col">
+          <span className={`${isAllowedToUpdate ? "hidden" : ""}`}>
+            ** Veuillez remplir tous les champs obligatoire marqué d'un '*'
+          </span>
+          <span
+            className={`${phaseAndLivrableList.length > 0 ? "hidden" : ""}`}
+          >
+            ** Un projet doit contenir au moins une phase pour pouvoir la créer.
+          </span>
+        </div>
         <div className="md:flex md:justify-end md:gap-3 grid">
           <button
             onClick={() => setPageCreate(3)}
@@ -172,10 +187,12 @@ const TeamProjectUpdate = ({
                 );
               }
             }}
-            className={`md:w-fit flex justify-center items-center max-h-10 gap-2 w-full  mt-2 py-2 px-5  text-center font-semibold text-white hover:bg-opacity-90 lg:px-8 xl:px-5 border  ${isAllowedToUpdate
+            className={`md:w-fit flex justify-center items-center max-h-10 gap-2 w-full  mt-2 py-2 px-5  text-center font-semibold text-white hover:bg-opacity-90 lg:px-8 xl:px-5 border  ${
+              isAllowedToUpdate
                 ? "border-primaryGreen bg-primaryGreen rounded-lg dark:border-darkgreen dark:bg-darkgreen dark:hover:bg-opacity-90 cursor-pointer"
                 : "border-slate-400 bg-slate-300 text-slate-600 rounded-lg dark:border-slate-600 dark:bg-slate-700 dark:text-slate-400 cursor-not-allowed "
-              }`} >
+            }`}
+          >
             {isCreateLoading && (
               <span>
                 <PuffLoader size={20} />

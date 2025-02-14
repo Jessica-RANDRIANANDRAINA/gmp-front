@@ -78,7 +78,9 @@ const AddProject = () => {
       directionOwner?.join(", ") !== "" &&
       projectData?.startDate !== "";
     const allowedPhase = phaseAndLivrableList?.length > 0;
-    const allowedTeam = userTeam?.length > 0;
+    const allowedTeam =
+      userTeam?.length > 0 && userTeam.some((user) => user.role === "director");
+
     const allowedCreate = allowdGeneral && allowedPhase && allowedTeam;
     setIsAllowedToCreate(allowedCreate);
   }, [projectData, directionOwner, phaseAndLivrableList, userTeam]);
@@ -292,6 +294,7 @@ const AddProject = () => {
               setCreateProjectState={setCreateProjectState}
               isCreateLoading={isCreateLoading}
               isAllowedToCreate={isAllowedToCreate}
+              phaseAndLivrableList={phaseAndLivrableList}
             />
 
             {/* ===== CREATE PROJECT LEVEL FOUR: TEAM END ===== */}

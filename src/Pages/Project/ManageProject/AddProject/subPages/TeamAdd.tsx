@@ -1,33 +1,30 @@
 import { PuffLoader } from "react-spinners";
 import { CutomInputUserSearch } from "../../../../../components/UIElements";
+import { IPhase, Iteam } from "../../../../../types/Project";
 import { getInitials } from "../../../../../services/Function/UserFunctionService";
 import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
 
 const notyf = new Notyf({ position: { x: "center", y: "top" } });
-interface Iteam {
-  id: string | undefined;
-  name: string;
-  email: string;
-  role: string;
-}
 
 const TeamAdd = ({
-  pageCreate,
-  setPageCreate,
-  userTeam,
-  setUserTeam,
-  setCreateProjectState,
   isCreateLoading,
   isAllowedToCreate,
+  pageCreate,
+  userTeam,
+  phaseAndLivrableList,
+  setPageCreate,
+  setUserTeam,
+  setCreateProjectState,
 }: {
-  setPageCreate: React.Dispatch<React.SetStateAction<number>>;
-  setCreateProjectState: React.Dispatch<React.SetStateAction<boolean>>;
-  pageCreate: number;
-  userTeam: Iteam[];
-  setUserTeam: React.Dispatch<React.SetStateAction<Array<Iteam>>>;
   isCreateLoading: boolean;
   isAllowedToCreate: boolean;
+  pageCreate: number;
+  userTeam: Iteam[];
+  phaseAndLivrableList: IPhase[];
+  setUserTeam: React.Dispatch<React.SetStateAction<Array<Iteam>>>;
+  setPageCreate: React.Dispatch<React.SetStateAction<number>>;
+  setCreateProjectState: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   // REMOVE A USER FROM TEAM LIST
   const handleRemoveTeamList = (id: string | undefined) => {
@@ -47,7 +44,9 @@ const TeamAdd = ({
           <div className="space-y-2 ">
             {/* ===== PROJECT DIRECTOR START ===== */}
             <div>
-              <div>Chef de projet</div>
+              <div>
+                Chef de projet <span className="text-red-500 ml-1">*</span>
+              </div>
               <div className="hide-scrollbar  ">
                 {userTeam?.filter((team) => team.role === "director").length ===
                   0 && (
@@ -160,6 +159,16 @@ const TeamAdd = ({
             </div>
             {/* ===== PROJECT TEAM END ===== */}
           </div>
+        </div>
+        <div className="text-red-500 flex flex-col">
+          <span className={`${isAllowedToCreate ? "hidden" : ""}`}>
+            ** Veuillez remplir tous les champs obligatoire marqué d'un '*'
+          </span>
+          <span
+            className={`${phaseAndLivrableList.length > 0 ? "hidden" : ""}`}
+          >
+            ** Un projet doit contenir au moins une phase pour pouvoir la créer.
+          </span>
         </div>
         <div className="md:flex md:justify-end md:gap-3 grid">
           <button
