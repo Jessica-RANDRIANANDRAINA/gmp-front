@@ -1167,13 +1167,13 @@ const TableProjet = ({
                           type="no-director"
                         />
                       </td>
-                      <td className="border-b text-right   border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                      <td className="border-b    border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
                         <p className="text-black  pr-4 dark:text-white">
                           {dateStart}
                         </p>
                       </td>
                       <td className="border-b  border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                        <p className="text-black flex justify-end pr-4 gap-1 dark:text-white">
+                        <p className="text-black flex  pr-4 gap-1 dark:text-white">
                           {isDateEndPassed ? (
                             <svg
                               width="20"
