@@ -1080,7 +1080,7 @@ const TableProjet = ({
                           : "hover:bg-whiten dark:hover:bg-boxdark2"
                       }`}
                     >
-                      <td className="pl-2">
+                      <td className="pl-2 border-b border-[#eee]">
                         <button
                           className="cursor-pointer border w-5 h-5"
                           onClick={() => {
@@ -1115,13 +1115,13 @@ const TableProjet = ({
                           </svg>
                         </button>
                       </td>
-                      <td className="border-b max-w-90 min-w-50 border-[#eee] pl-9  py-5 dark:border-strokedark ">
-                        <p
-                          className="text-black text-justify  dark:text-white font-bold cursor-pointer"
-                          onClick={() => {
-                            setIdProjectForDetails(project.id);
-                          }}
-                        >
+                      <td
+                        className="border-b max-w-90 min-w-50 border-[#eee] pl-9  py-5 dark:border-strokedark cursor-pointer"
+                        onClick={() => {
+                          setIdProjectForDetails(project.id);
+                        }}
+                      >
+                        <p className="text-black text-justify  dark:text-white font-bold ">
                           {project?.title}
                           {/* {project?.title.length > 40
                             ? `${project?.title?.slice(0, 40)}...`
