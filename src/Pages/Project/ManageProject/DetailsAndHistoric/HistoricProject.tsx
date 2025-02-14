@@ -22,7 +22,7 @@ const HistoricProject = () => {
 
   return (
     <div className=" ">
-      <h1 className="font-bold  text-center  text-zinc-400 text-2xl ">
+      <h1 className="font-bold  text-center  text-zinc-400 text-xl md:text-2xl ">
         HISTORIQUE
       </h1>
       <div
@@ -32,19 +32,19 @@ const HistoricProject = () => {
       >
         <SyncLoader size={18} className="mr-2" color={"teal"} />
       </div>
-      <div className={`justify-center ${historicData ? "flex" : "hidden"}`}>
-        <div className="overflow-x-auto">
-          <table className="overflow-x-auto table-auto bg-white dark:bg-boxdark shadow-lg rounded-lg hidden md:table">
+      <div className={` ${historicData ? "flex" : "hidden"}`}>
+        <div className="overflow-x-auto w-full">
+          <table className="overflow-x-auto table-auto  w-full bg-white dark:bg-boxdark shadow-lg rounded-lg hidden md:table">
             <thead className="bg-gray-100 border-b border-b-zinc-300 dark:border-b-black text-gray-600 uppercase text-sm leading-normal">
               <tr className="*:whitespace-nowrap">
                 <th className="py-3 px-6 text-left">Type</th>
                 <th className="py-3 px-6 text-left">Modifié par</th>
-                <th className="py-3 px-6 text-center">Modifié le</th>
-                <th className="py-3 px-6 text-center">Table modifiée</th>
-                <th className="py-3 px-6 text-center">Rubrique</th>
-                <th className="py-3 px-6 text-center">Ancienne valeur</th>
-                <th className="py-3 px-6 text-center">Nouvelle valeur</th>
-                <th className="py-3 px-6 text-center">
+                <th className="py-3 px-6 text-left">Modifié le</th>
+                <th className="py-3 px-6 text-left">Table modifiée</th>
+                <th className="py-3 px-6 text-left">Rubrique</th>
+                <th className="py-3 px-6 text-left">Ancienne valeur</th>
+                <th className="py-3 px-6 text-left">Nouvelle valeur</th>
+                <th className="py-3 px-6 text-left">
                   Raison de la modification
                 </th>
               </tr>
@@ -103,7 +103,7 @@ const HistoricProject = () => {
                           : historic.column}
                       </span>
                     </td>
-                    <td className="py-3 px-6 text-center ">
+                    <td className="py-3 px-6 text-left ">
                       <span className="text-gray-700">
                         {historic?.oldValue.includes("00.0000000")
                           ? oldValueTime

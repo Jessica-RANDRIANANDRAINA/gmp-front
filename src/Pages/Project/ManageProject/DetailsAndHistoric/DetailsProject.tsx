@@ -27,17 +27,17 @@ const DetailsProject = () => {
   }, []);
 
   return (
-    <div className="grid place-items-center">
-      DU : {new Date().toLocaleString()}
-      <div className="space-y-10  md:w-2/3  ">
+    <div className="grid px-7">
+      <div className="text-center">DU : {new Date().toLocaleString()}</div>
+      <div className="space-y-10    ">
         {/* ===== LEFT PART START */}
         <div className="space-y-8">
           {/* ===== INFO GENERAL START =====*/}
-          <div className="space-y-2">
-            <h1 className="font-bold  text-zinc-400 text-2xl ">
+          <div className="space-y-2 ">
+            <h1 className="font-bold  text-zinc-400 text-xl md:text-2xl ">
               INFORMATION GENERALE
             </h1>
-            <div className="text-sm">
+            <div className="text-sm ">
               <div className="flex flex-col space-y-3">
                 <div className="font-semibold  text-lg flex flex-wrap mb-3">
                   <div className="mr-3">
@@ -141,7 +141,7 @@ const DetailsProject = () => {
                   <div className="grid md:grid-cols-2 grid-cols-1 whitespace-nowrap gap-1">
                     {projectData?.listUsers?.map((user) => (
                       <div key={user?.user?.name} className="">
-                        <p className="text-xs">{user?.user?.name}</p>
+                        <p className="text-sm">{user?.user?.name}</p>
                       </div>
                     ))}
                   </div>
@@ -160,7 +160,9 @@ const DetailsProject = () => {
                   </div>
                   <div
                     className={`${
-                      projectData?.endDate ? "flex gap-2" : "hidden"
+                      projectData?.endDate
+                        ? "flex gap-2 items-center"
+                        : "hidden"
                     }`}
                   >
                     <span className="text-base">
@@ -282,7 +284,7 @@ const DetailsProject = () => {
           {projectData?.listRessources &&
           projectData?.listRessources?.length > 0 ? (
             <div className="space-y-2">
-              <h1 className="font-bold  text-zinc-400 text-2xl ">
+              <h1 className="font-bold  text-zinc-400 text-xl md:text-2xl ">
                 RESSOURCES{" "}
               </h1>
               <div className="md:border border-zinc-200 dark:border-black rounded-md">
@@ -383,7 +385,9 @@ const DetailsProject = () => {
         <div className="space-y-2">
           {/* ---- phase start ---- */}
           <div className="space-y-2">
-            <h1 className="font-bold  text-zinc-400 text-2xl ">PHASES</h1>
+            <h1 className="font-bold  text-zinc-400 text-xl md:text-2xl ">
+              PHASES
+            </h1>
             <div className="text-sm">
               {/* ----- table phase start ----- */}
               <div className="md:border border-zinc-200 dark:border-black rounded-md">
