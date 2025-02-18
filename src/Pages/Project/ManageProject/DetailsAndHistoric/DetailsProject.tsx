@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { IProjectData } from "../../../../types/Project";
 import { getProjectById } from "../../../../services/Project";
 import { formatDate } from "../../../../services/Function/DateServices";
+import TeamSection from "../../../../components/TeamSection";
 
 const DetailsProject = () => {
   const { projectId } = useParams();
@@ -82,72 +83,6 @@ const DetailsProject = () => {
                     </div>
                   </div>
                 </div>
-                <div className="grid md:grid-cols-2">
-                  <div className="flex gap-2">
-                    <span className="text-base">
-                      <u>Priorité</u> :{" "}
-                    </span>
-                    <div
-                      className={`text-sm flex justify-center items-center gap-1 ${
-                        projectData?.priority === "Faible"
-                          ? "text-cyan-500"
-                          : projectData?.priority === "Moyenne"
-                          ? "text-orange"
-                          : "text-rose-600"
-                      }`}
-                    >
-                      <span
-                        className={`w-2 flex h-2 border rounded-full ${
-                          projectData?.priority === "Faible"
-                            ? "bg-cyan-500"
-                            : projectData?.priority === "Moyenne"
-                            ? "bg-orange"
-                            : "bg-rose-600"
-                        }`}
-                      ></span>
-                      {projectData?.priority}
-                    </div>
-                  </div>
-                  <div className="flex gap-2">
-                    <span className="text-base">
-                      <u>Criticité</u> :{" "}
-                    </span>
-                    <div
-                      className={`text-sm flex justify-center items-center gap-1 ${
-                        projectData?.criticality === "Normale"
-                          ? "text-cyan-500"
-                          : "text-orange"
-                      }`}
-                    >
-                      <span
-                        className={`w-2 flex h-2 border rounded-full ${
-                          projectData?.criticality === "Normale"
-                            ? "bg-cyan-500"
-                            : "bg-orange"
-                        }`}
-                      ></span>
-                      {projectData?.criticality}
-                    </div>
-                  </div>
-                </div>
-                {/* ----- team start ----- */}
-                <div className="">
-                  <div className="text-base">
-                    <u>
-                      <span className="uppercase">é</span>quipe
-                    </u>{" "}
-                    :
-                  </div>
-                  <div className="grid md:grid-cols-2 grid-cols-1 whitespace-nowrap gap-1">
-                    {projectData?.listUsers?.map((user) => (
-                      <div key={user?.user?.name} className="">
-                        <p className="text-sm">{user?.user?.name}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                {/* ----- team start ----- */}
-
                 {/* ----- DATE START ----- */}
                 <div className="grid md:grid-cols-2">
                   <div>
@@ -208,6 +143,58 @@ const DetailsProject = () => {
                   </div>
                 </div>
                 {/* ----- DATE END ----- */}
+                <div className="grid md:grid-cols-2">
+                  <div className="flex gap-2">
+                    <span className="text-base">
+                      <u>Priorité</u> :{" "}
+                    </span>
+                    <div
+                      className={`text-sm flex justify-center items-center gap-1 ${
+                        projectData?.priority === "Faible"
+                          ? "text-cyan-500"
+                          : projectData?.priority === "Moyenne"
+                          ? "text-orange"
+                          : "text-rose-600"
+                      }`}
+                    >
+                      <span
+                        className={`w-2 flex h-2 border rounded-full ${
+                          projectData?.priority === "Faible"
+                            ? "bg-cyan-500"
+                            : projectData?.priority === "Moyenne"
+                            ? "bg-orange"
+                            : "bg-rose-600"
+                        }`}
+                      ></span>
+                      {projectData?.priority}
+                    </div>
+                  </div>
+                  <div className="flex gap-2">
+                    <span className="text-base">
+                      <u>Criticité</u> :{" "}
+                    </span>
+                    <div
+                      className={`text-sm flex justify-center items-center gap-1 ${
+                        projectData?.criticality === "Normale"
+                          ? "text-cyan-500"
+                          : "text-orange"
+                      }`}
+                    >
+                      <span
+                        className={`w-2 flex h-2 border rounded-full ${
+                          projectData?.criticality === "Normale"
+                            ? "bg-cyan-500"
+                            : "bg-orange"
+                        }`}
+                      ></span>
+                      {projectData?.criticality}
+                    </div>
+                  </div>
+                </div>
+                {/* ----- team start ----- */}
+                <TeamSection listUsers={projectData?.listUsers} />
+                {/* ----- team start ----- */}
+
                 {/* ----- BUDGET START ----- */}
                 <div
                   className={` md:grid-cols-2 ${
