@@ -192,6 +192,13 @@ export const getNotificationMessage = (
             </>
           );
         }
+      } else if (table === "User") {
+        return (
+          <>
+            Vos habilitations sur G.M.P ont été modifié. Vous avez maintenant
+            les habilitations en tant que : <strong>{newValue}</strong>.
+          </>
+        );
       }
       return <></>;
 
