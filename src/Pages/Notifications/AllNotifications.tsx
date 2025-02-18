@@ -46,6 +46,11 @@ const AllNotifications = () => {
       }
     }
   }, []);
+  useEffect(() => {
+    if (decodedToken?.jti) {
+      fetchNotifications(decodedToken?.jti);
+    }
+  }, [actualPage]);
 
   const fetchNotifications = async (userid: string) => {
     if (userid) {
