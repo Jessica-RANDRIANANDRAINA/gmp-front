@@ -212,7 +212,7 @@ const AddAccessModal = ({
                   }
                 />
                 <Checkbox
-                  label="Restorer la hiérarchie à la valeur d'Active directory"
+                  label="Restaurer la hiérarchie à la valeur d'Active directory"
                   onStateCheckChange={(isChecked) =>
                     isChecked
                       ? handleCheckBoxChange("admin", "restoreHierarchy", 1)

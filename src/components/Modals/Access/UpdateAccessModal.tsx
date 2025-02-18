@@ -319,7 +319,7 @@ const UpdateAccessModal = ({
                   }
                 />
                 <Checkbox
-                  label="Restorer la hiérarchie à la valeur d'Active directory"
+                  label="Restaurer la hiérarchie à la valeur d'Active directory"
                   active={
                     habilitationToModifData?.habilitationAdmins?.[0]
                       ?.restoreHierarchy
