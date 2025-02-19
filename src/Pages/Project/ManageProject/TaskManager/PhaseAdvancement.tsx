@@ -308,7 +308,7 @@ const PhaseAdvancement = () => {
   };
 
   return (
-    <div className={`p-5 `}>
+    <div className={``}>
       <div
         className={`absolute t-0 left-0 w-full h-full opacity-25 dark:opacity-85 bg-green-50 dark:bg-green-200 z-40 pointer-events-none ${
           phaseData?.status === "Terminé" ? "" : "hidden"
@@ -351,7 +351,7 @@ const PhaseAdvancement = () => {
         </div>
       </div>
       <DragDropContext onDragEnd={handleOnDragEnd}>
-        <div style={{ display: "flex" }}>
+        <div className="flex p-5 overflow-x-auto">
           {data.columnOrder.map((columnId: string) => {
             const column = data.columns[columnId];
             const tasks = column.taskIds.map(
@@ -359,7 +359,7 @@ const PhaseAdvancement = () => {
             );
 
             return (
-              <div className="w-full" key={column.id}>
+              <div className="w-full min-w-[240px]" key={column.id}>
                 <Droppable key={column.id} droppableId={column.id}>
                   {(provided) => (
                     <div

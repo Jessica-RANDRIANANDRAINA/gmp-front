@@ -466,7 +466,7 @@ const AllActivityKanban = ({
   };
 
   return (
-    <div className={`py-5`}>
+    <div className={``}>
       <DragDropContext
         onDragEnd={(result) => {
           const draggableId = result.draggableId;
@@ -474,7 +474,7 @@ const AllActivityKanban = ({
           handleOnDragEnd(result, activitype);
         }}
       >
-        <div style={{ display: "flex" }}>
+        <div className="flex p-5 overflow-x-auto">
           {data?.columnOrder?.map((columnId: string) => {
             const column = data?.columns[columnId];
             const acivities = column?.activityIds?.map(
@@ -482,7 +482,7 @@ const AllActivityKanban = ({
             );
 
             return (
-              <div className="w-full" key={column.id}>
+              <div className="w-full min-w-[240px]" key={column.id}>
                 <Droppable key={column.id} droppableId={column.id}>
                   {(provided) => (
                     <div
