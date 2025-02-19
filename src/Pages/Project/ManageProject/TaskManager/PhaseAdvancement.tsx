@@ -9,6 +9,7 @@ import {
   getPhaseById,
   deletetaskProject,
 } from "../../../../services/Project";
+import ListUsers from "../../../../components/UIElements/ListUsers";
 import { IPhase } from "../../../../types/Project";
 import { formatDate } from "../../../../services/Function/DateServices";
 import { Notyf } from "notyf";
@@ -41,6 +42,15 @@ const organizeTaskByStatus = (tasks: any[]) => {
         userTasks: task.userTasks,
         status: task.status,
         dailyEffort: task.dailyEffort,
+        userName: task.userTasks?.[0]?.name,
+        user: [
+          {
+            user: {
+              name: task.userTasks?.[0]?.name,
+            },
+            userid: task.userTasks?.[0]?.userid,
+          },
+        ],
       },
     };
     const columnKey = Object.keys(columns).find(
@@ -461,6 +471,22 @@ const PhaseAdvancement = () => {
                                       </button>
                                     </div>
                                   )}
+                                  <div className="flex justify-between mb-2">
+                                    <div className="dark:text-zinc-400 text-zinc-500  border   rounded-md p-1 max-w-7 h-4.5  flex justify-center items-center">
+                                      {task.content.dailyEffort}h
+                                    </div>
+                                    <div
+                                      className={`text-center mb-1 text-xs ${
+                                        task.content.priority === "Moyen" ||
+                                        task.content.priority === "Bas"
+                                          ? "hidden "
+                                          : "text-orange"
+                                      }`}
+                                    >
+                                      {task.content.priority}
+                                    </div>
+                                    <div></div>
+                                  </div>
                                   {/* pop up menu delete */}
                                   <div className="flex gap-1">
                                     <span
@@ -506,22 +532,15 @@ const PhaseAdvancement = () => {
                                     </span>
                                     {task.content.title}
                                   </div>
-                                  <div
-                                    className={` pt-1 mt-2 text-xs ${
-                                      task.content.priority === "Moyen" ||
-                                      task.content.priority === "Bas"
-                                        ? "hidden "
-                                        : "text-orange"
-                                    }`}
-                                  >
-                                    {task.content.priority}
-                                  </div>
-                                  <div
-                                    className={`border-t border-t-zinc-200 pt-1 mt-2 text-xs ${
-                                      endDate === "--" ? "hidden" : ""
-                                    }`}
-                                  >
-                                    {endDate}
+
+                                  <div className="border-t mt-2 flex items-center justify-between dark:border-t-zinc-600 text-zinc-400 pt-1">
+                                    <div className={`text-xs`}>{endDate}</div>
+                                    <div className="">
+                                      <ListUsers
+                                        data={task?.content?.user ?? []}
+                                        type="all"
+                                      />
+                                    </div>
                                   </div>
                                 </div>
                               );
