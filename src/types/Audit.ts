@@ -1,4 +1,10 @@
 export interface IAudit {
+  pageNumber: number;
+  pageSize: number;
+  totalHistoric: number;
+  historic: IHistoric[];
+}
+interface IHistoric {
   id: string;
   table: string;
   projectId: string;

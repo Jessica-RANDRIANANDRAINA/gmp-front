@@ -4,21 +4,36 @@ import { getHistoricByProjectId } from "../../../../services/Project";
 import { IAudit } from "../../../../types/Audit";
 import { formatDate } from "../../../../services/Function/DateServices";
 import { SyncLoader } from "react-spinners";
+import Pagination from "../../../../components/Tables/Pagination";
 
 const HistoricProject = () => {
   const { projectId } = useParams();
-  const [historicData, setHistoricData] = useState<Array<IAudit>>([]);
+  const [historicData, setHistoricData] = useState<IAudit>();
+  const [actualPage, setActualPage] = useState(1);
+  const [pageNumbers, setPageNumbers] = useState(20);
+
+  const getPageNumber = (dataLength: number | undefined) => {
+    if (dataLength) {
+      return Math.ceil(dataLength / 20);
+    } else {
+      return 1;
+    }
+  };
+  useEffect(() => {
+    const totalHistoric = historicData?.totalHistoric;
+    setPageNumbers(getPageNumber(totalHistoric));
+  }, [historicData]);
 
   const fetchHistoricData = async () => {
     if (projectId) {
-      const data = await getHistoricByProjectId(projectId);
+      const data = await getHistoricByProjectId(projectId, actualPage, 20);
       setHistoricData(data);
     }
   };
 
   useEffect(() => {
     fetchHistoricData();
-  }, []);
+  }, [actualPage]);
 
   return (
     <div className=" ">
@@ -50,7 +65,7 @@ const HistoricProject = () => {
               </tr>
             </thead>
             <tbody className="text-gray-600 text-xs font-light">
-              {historicData?.map((historic) => {
+              {historicData?.historic?.map((historic) => {
                 const modifiedAd = formatDate(historic?.modifiedAt, true);
                 var oldValueTime = "";
                 var newValueTime = "";
@@ -133,7 +148,7 @@ const HistoricProject = () => {
 
           {/* Mobile view */}
           <div className="block md:hidden">
-            {historicData?.map((historic) => {
+            {historicData?.historic?.map((historic) => {
               const modifiedAt = formatDate(historic?.modifiedAt, true);
               var oldValueTime = "";
               var newValueTime = "";
@@ -231,6 +246,13 @@ const HistoricProject = () => {
           </div>
         </div>
       </div>
+        <div>
+          <Pagination
+            actualPage={actualPage}
+            setActualPage={setActualPage}
+            pageNumbers={pageNumbers}
+          />
+        </div>
     </div>
   );
 };
