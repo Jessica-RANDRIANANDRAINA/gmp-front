@@ -58,7 +58,7 @@ const DetailsProject = () => {
                 <div>
                   <div className="flex items-center gap-2">
                     <div className="text-base flex">
-                      <u>Avancement</u> :
+                      Avancement :
                     </div>
                     <div className="w-1/3 bg-zinc-100 rounded-full dark:bg-strokedark h-4 relative ml-4">
                       <div
@@ -87,7 +87,7 @@ const DetailsProject = () => {
                 <div className="grid md:grid-cols-2">
                   <div>
                     <span className="text-base">
-                      <u>Début</u> :
+                      Début :
                     </span>{" "}
                     {projectData?.startDate
                       ? formatDate(projectData?.startDate)
@@ -101,7 +101,7 @@ const DetailsProject = () => {
                     }`}
                   >
                     <span className="text-base">
-                      <u>Fin</u> :{" "}
+                      Fin :{" "}
                     </span>
                     <span className="flex gap-1 text-red-500">
                       {isDateEndPassed ? (
@@ -146,7 +146,7 @@ const DetailsProject = () => {
                 <div className="grid md:grid-cols-2">
                   <div className="flex gap-2">
                     <span className="text-base">
-                      <u>Priorité</u> :{" "}
+                      Priorité :{" "}
                     </span>
                     <div
                       className={`text-sm flex justify-center items-center gap-1 ${
@@ -171,7 +171,7 @@ const DetailsProject = () => {
                   </div>
                   <div className="flex gap-2">
                     <span className="text-base">
-                      <u>Criticité</u> :{" "}
+                      Criticité :{" "}
                     </span>
                     <div
                       className={`text-sm flex justify-center items-center gap-1 ${
@@ -204,7 +204,7 @@ const DetailsProject = () => {
                   <div className="flex items-center gap-2">
                     <span className="text-base">
                       {" "}
-                      <u>Budget</u> :{" "}
+                      Budget :{" "}
                     </span>
                     <span className="text-sm font-light border p-1 rounded-md text-zinc-400 ">
                       {projectData?.listBudgets?.[0]?.direction}
@@ -230,7 +230,7 @@ const DetailsProject = () => {
                   }`}
                 >
                   <span className="text-base">
-                    <u>Description</u> :{" "}
+                    Description :{" "}
                   </span>
                   <div className="text-justify text-sm">
                     <p>
@@ -383,15 +383,15 @@ const DetailsProject = () => {
                     <thead className="bg-gray-100 border-b border-b-zinc-300 dark:border-b-black text-gray-600 uppercase text-sm leading-normal">
                       <tr>
                         <th className="py-3 px-6 text-left">Titre</th>
-                        <th className="py-3 px-6 text-left">Date de début</th>
-                        <th className="py-3 px-6 text-left">Date de fin</th>
+                        <th className="py-3 px-6 text-left">Début</th>
+                        <th className="py-3 px-6 text-left">Fin</th>
                         <th className="py-3 px-6 text-left">
                           Livrable attendu
                         </th>
                         <th className="py-3 px-6 text-left">
                           Lien du livrable
                         </th>
-                        <th className="py-3 px-6 text-left">Statut</th>
+                        <th className="py-3 px-6 text-center">Statut</th>
                       </tr>
                     </thead>
                     <tbody className="text-gray-600 text-xs font-light">
@@ -607,7 +607,7 @@ const DetailsProject = () => {
                             </div>
                             <div className="mb-2">
                               <span className="text-emerald-500 font-semibold">
-                                Date de début :{" "}
+                                Début :{" "}
                               </span>
                               <span className="text-gray-800">
                                 {/* {phases?.startDate?.split("T"?.[0])} */}
@@ -616,7 +616,7 @@ const DetailsProject = () => {
                             </div>
                             <div className="mb-2">
                               <span className="text-emerald-500 font-semibold">
-                                Date de fin :{" "}
+                                Fin :{" "}
                               </span>
                               <span className="text-gray-800">
                                 {endDatePhase}
