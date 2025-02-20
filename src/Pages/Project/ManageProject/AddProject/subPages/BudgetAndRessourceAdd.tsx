@@ -68,7 +68,7 @@ const BudgetAndRessourceAdd = ({
     >
       <div className="space-y-4 ">
         <div>
-          <span className="font-semibold tracking-wide underline">BUDGET</span>
+          <span className="font-semibold tracking-wide">BUDGET</span>
           <button
             onClick={() => {
               setHaveBudget(true);
@@ -161,7 +161,7 @@ const BudgetAndRessourceAdd = ({
         </div>
         <div>
           {/* ===== RESSOURCES START ===== */}
-          <span className="font-semibold tracking-wide underline">
+          <span className="font-semibold tracking-wide">
             RESSOURCES
           </span>
           <div
