@@ -841,7 +841,7 @@ const TableProjet = ({
               </th>
               <th className="py-4 px-4 font-bold text-white dark:text-white xl:pl-11">
                 <div className="flex items-center">
-                  <span>Equipes</span>
+                  <span>Équipes</span>
                 </div>
               </th>
               <th className="py-4 px-4 font-bold text-white dark:text-white xl:pl-11">
@@ -1351,7 +1351,7 @@ const TableProjet = ({
                   </div>
                   <div className="mb-2">
                     <span className="text-emerald-500 font-semibold">
-                      Equipe :{" "}
+                      Équipe :{" "}
                     </span>
                     <span className="text-gray-800">
                       <ListUsers data={project?.listUsers} type="no-director" />

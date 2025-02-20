@@ -335,7 +335,7 @@ const UpdateProject = () => {
                 }
                 `}
               >
-                <span className="mx-auto">Equipe</span>
+                <span className="mx-auto">Équipe </span>
               </div>
               {/* <div className="text-sm font-semibold text-zinc-700">
             <span className="text-red-500 font-bold">*</span>

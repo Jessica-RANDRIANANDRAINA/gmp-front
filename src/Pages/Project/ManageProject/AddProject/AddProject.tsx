@@ -237,7 +237,7 @@ const AddProject = () => {
                 }
                 `}
             >
-              <span className="mx-auto">Equipe</span>
+              <span className="mx-auto">Équipe </span>
             </div>
           </div>
 
