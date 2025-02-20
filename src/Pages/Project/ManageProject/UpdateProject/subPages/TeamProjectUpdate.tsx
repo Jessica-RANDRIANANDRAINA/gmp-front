@@ -39,8 +39,8 @@ const TeamProjectUpdate = ({
     >
       <div className="space-y-4 grid md:max-h-125 md:min-h-150 ">
         <div>
-          <span className="font-semibold tracking-wide underline">EQUIPE</span>
-          <div className="space-y-2">
+          <span className="font-semibold tracking-wide">ASSIGNATION ÉQUIPE</span>
+          <div className="space-y-4">
             {/* ===== PROJECT DIRECTOR START ===== */}
             <div>
               <div>
@@ -50,8 +50,8 @@ const TeamProjectUpdate = ({
                 {userTeam?.filter((team) => team.role === "director").length ===
                   0 && (
                   <CutomInputUserSearch
-                    placeholder="Recherche"
-                    label="Assigner"
+                    placeholder="Recherche par nom, prénom, ou mail "
+                    label=""
                     userSelected={userTeam}
                     setUserSelected={setUserTeam}
                     role="director"
@@ -88,8 +88,8 @@ const TeamProjectUpdate = ({
               <div>Membre</div>
               <div className="hide-scrollbar">
                 <CutomInputUserSearch
-                  placeholder="Recherche"
-                  label="Assigner"
+                  placeholder="Recherche par nom, prénom, ou mail "
+                  label=""
                   userSelected={userTeam}
                   setUserSelected={setUserTeam}
                   role="member"
@@ -125,8 +125,8 @@ const TeamProjectUpdate = ({
               <div>Observateur</div>
               <div className="hide-scrollbar">
                 <CutomInputUserSearch
-                  placeholder="Recherche"
-                  label="Assigner"
+                  placeholder="Recherche par nom, prénom, ou mail "
+                  label=""
                   userSelected={userTeam}
                   setUserSelected={setUserTeam}
                   role="observator"

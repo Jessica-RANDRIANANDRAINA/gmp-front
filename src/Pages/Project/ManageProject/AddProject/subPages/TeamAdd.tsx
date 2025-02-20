@@ -40,8 +40,8 @@ const TeamAdd = ({
     >
       <div className="space-y-4 grid md:max-h-125 md:min-h-150 ">
         <div>
-          <span className="font-semibold tracking-wide underline">EQUIPE</span>
-          <div className="space-y-2 ">
+          <span className="font-semibold tracking-wide">ASSIGNATION ÉQUIPE</span>
+          <div className="space-y-4 ">
             {/* ===== PROJECT DIRECTOR START ===== */}
             <div>
               <div>
@@ -51,8 +51,8 @@ const TeamAdd = ({
                 {userTeam?.filter((team) => team.role === "director").length ===
                   0 && (
                   <CutomInputUserSearch
-                    placeholder="Recherche"
-                    label="Assigner"
+                    placeholder="Recherche par nom, prénom, ou mail "
+                    label=""
                     userSelected={userTeam}
                     setUserSelected={setUserTeam}
                     role="director"
@@ -89,8 +89,8 @@ const TeamAdd = ({
               <div>Membre</div>
               <div className="hide-scrollbar ">
                 <CutomInputUserSearch
-                  placeholder="Recherche"
-                  label="Assigner"
+                  placeholder="Recherche par nom, prénom, ou mail "
+                  label=""
                   userSelected={userTeam}
                   setUserSelected={setUserTeam}
                   role="member"
@@ -126,8 +126,8 @@ const TeamAdd = ({
               <div>Observateur</div>
               <div className="hide-scrollbar ">
                 <CutomInputUserSearch
-                  placeholder="Recherche"
-                  label="Assigner"
+                  placeholder="Recherche par nom, prénom, ou mail "
+                  label=""
                   userSelected={userTeam}
                   setUserSelected={setUserTeam}
                   role="observator"
