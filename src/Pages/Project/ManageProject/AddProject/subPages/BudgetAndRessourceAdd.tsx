@@ -78,7 +78,7 @@ const BudgetAndRessourceAdd = ({
               haveBudget ? "hidden" : ""
             }`}
           >
-            Est-ce que ce projet a un budget ?
+            + Ajouter un budget
           </button>
           {haveBudget && (
             <>
@@ -87,7 +87,7 @@ const BudgetAndRessourceAdd = ({
                 <button
                   type="button"
                   className={`
-                      text-red-500 decoration-red-500 font-bold hover:font-black
+                      text-red-500 decoration-red-500 border-rose-200 rounded-md hover:bg-rose-100 dark:border-rose-300 dark:hover:bg-rose-400 dark:hover:text-rose-100 border p-2 font-bold hover:font-black
                       `}
                   onClick={() => {
                     setHaveBudget(false);
@@ -177,9 +177,9 @@ const BudgetAndRessourceAdd = ({
                   <div className={"underline"}>Ressource {index + 1}</div>
                   <button
                     type="button"
-                    className={
-                      "text-red-500 decoration-red-500 font-bold hover:font-black"
-                    }
+                    className={`
+                      text-red-500 decoration-red-500 border-rose-200 rounded-md hover:bg-rose-100 dark:border-rose-300 dark:hover:bg-rose-400 dark:hover:text-rose-100 border p-2 font-bold hover:font-black
+                      `}
                     onClick={() => {
                       handleRemoveRessourceToList(ressouce.id);
                     }}
@@ -233,7 +233,7 @@ const BudgetAndRessourceAdd = ({
               onClick={handleAddRessourceToList}
               className={`py-2 w-full mt-2 text-center border border-dashed border-stroke rounded-md hover:bg-stroke dark:hover:bg-boxdark2 `}
             >
-              Ajouter une ressource
+              + Ajouter une ressource
             </button>
           </div>
           {/* ===== RESSOURCES END ===== */}

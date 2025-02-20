@@ -77,7 +77,7 @@ const BudgetAndRessourcesUpdate = ({
               haveBudget ? "hidden" : ""
             }`}
           >
-            Est-ce que ce projet a un budget ?
+            + Ajouter un budget ?
           </button>
           {haveBudget && (
             <>
@@ -86,8 +86,8 @@ const BudgetAndRessourcesUpdate = ({
                 <button
                   type="button"
                   className={`
-                      text-red-500 decoration-red-500 font-bold hover:font-black
-                      `}
+                    text-red-500 decoration-red-500 border-rose-200 rounded-md hover:bg-rose-100 dark:border-rose-300 dark:hover:bg-rose-400 dark:hover:text-rose-100 border p-2 font-bold hover:font-black
+                    `}
                   onClick={() => {
                     setHaveBudget(false);
                   }}
@@ -173,9 +173,9 @@ const BudgetAndRessourcesUpdate = ({
                   <div className={"flex justify-between"}>
                     <div className={"underline"}>Ressource {index + 1}</div>
                     <button
-                      className={
-                        "text-red-500 decoration-red-500 font-bold hover:font-black"
-                      }
+                      className={`
+                        text-red-500 decoration-red-500 border-rose-200 rounded-md hover:bg-rose-100 dark:border-rose-300 dark:hover:bg-rose-400 dark:hover:text-rose-100 border p-2 font-bold hover:font-black
+                        `}
                       onClick={() => {
                         handleRemoveRessourceToList(ressource.id);
                       }}
@@ -232,7 +232,7 @@ const BudgetAndRessourcesUpdate = ({
               type="button"
               className={`py-2 w-full mt-2 text-center border border-dashed border-stroke rounded-md hover:bg-stroke dark:hover:bg-boxdark2`}
             >
-              Ajouter une ressource
+              + Ajouter une ressource
             </button>
           </div>
           {/* ===== RESSOURCES END ===== */}
