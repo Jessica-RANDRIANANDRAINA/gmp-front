@@ -269,8 +269,8 @@ const PhasesAdd = ({
     >
       <div className="space-y-4">
         <div>
-          <span className="font-semibold tracking-wide underline">
-            PHASES ET LIVRABLES
+          <span className="font-semibold tracking-wide ">
+            PHASES ET LIVRABLES <span className="text-red-500 ml-1">*</span>
           </span>
           <div>
             <button
@@ -459,6 +459,13 @@ const PhasesAdd = ({
               ))}
             </div>
           </div>
+        </div>
+        <div className="text-red-500 flex flex-col">
+          <span
+            className={`${phaseAndLivrableList.length > 0 ? "hidden" : ""}`}
+          >
+            ** Un projet doit contenir au moins une phase pour pouvoir la créer.
+          </span>
         </div>
         <div className="flex justify-end gap-3">
           <button
