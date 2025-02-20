@@ -171,7 +171,8 @@ const UpdateProject = () => {
   useEffect(() => {
     const fetchDepartment = async () => {
       const depart = await getAllDepartments();
-      setDepartments(depart);
+      const allDepart = depart?.filter((d: string) => d !== "Vide");
+      setDepartments(allDepart);
     };
     fetchDepartment();
   }, []);
