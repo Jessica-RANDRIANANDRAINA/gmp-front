@@ -16,6 +16,8 @@ import { intercontractType, transverseType } from "../../../constants/Activity";
 import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
 import { IMyHabilitation } from "../../../types/Habilitation";
+import { IDecodedToken } from "../../../types/user";
+import { decodeToken } from "../../../services/Function/TokenService";
 const notyf = new Notyf({ position: { x: "center", y: "top" } });
 
 const AddActivity = ({
@@ -31,6 +33,7 @@ const AddActivity = ({
 }) => {
   const { userid } = useParams();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [decodedToken, setDecodedToken] = useState<IDecodedToken>();
   const [activityData, setActivityData] = useState<IActivityAdd>({
     title: "",
     description: "",
@@ -52,9 +55,15 @@ const AddActivity = ({
   const [projectData, setProjectData] = useState<any>();
 
   useEffect(() => {
-    console.log("******************");
-    console.log(myHabilitation);
-    console.log("******************");
+    const token = localStorage.getItem("_au_pr");
+    if (token) {
+      try {
+        const decoded = decodeToken("pr");
+        setDecodedToken(decoded);
+      } catch (error) {
+        console.error(`Invalid token ${error}`);
+      }
+    }
   }, []);
 
   const fetchProjectData = async () => {
@@ -124,6 +133,8 @@ const AddActivity = ({
             taskid: id,
           },
         ];
+        const initiatorId = decodedToken?.jti;
+        const initiatorName = decodedToken?.name;
         const dataToSend = {
           id,
           title: activityData?.title,
@@ -135,6 +146,8 @@ const AddActivity = ({
           dailyEffort: activityData?.dailyEffort,
           status: activityData?.status,
           listUsers: formatUser,
+          initiatorId,
+          initiatorName,
         };
         await createTaskPhase(dataToSend);
       } else if (activityData?.type === "Transverse") {
