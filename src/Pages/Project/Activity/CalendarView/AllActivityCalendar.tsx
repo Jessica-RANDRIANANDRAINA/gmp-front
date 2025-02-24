@@ -180,17 +180,17 @@ const AllActivityCalendar = ({
                 (task: {
                   dailyEffort: number;
                   startDate: string | number | Date;
-                  id: any;
-                  userid: any;
-                  title: any;
-                  endDate: any;
-                  description: any;
-                  status: any;
-                  type: any;
-                  subType: any;
-                  phaseid: any;
-                  projectid: any;
-                  userName: any;
+                  id: string;
+                  userid: string;
+                  title: string;
+                  endDate: Date | string;
+                  description: string;
+                  status: string;
+                  type: string;
+                  subType: string;
+                  phaseid: string;
+                  projectid: string;
+                  userName: string;
                 }) => {
                   const dailyEffort = task.dailyEffort || 1;
 
@@ -238,8 +238,6 @@ const AllActivityCalendar = ({
               );
             })
         );
-
-        
 
         setEvents(calendarEvents);
       }
@@ -384,16 +382,14 @@ const AllActivityCalendar = ({
     <div className="p-5 flex flex-col-reverse md:grid md:grid-cols-5">
       <div className="md:col-span-4">
         <FullCalendar
-        timeZone="UTC"
+          timeZone="UTC"
           plugins={[
             dayGridPlugin,
             interactionPlugin,
             listPlugin,
             timeGridPlugin,
           ]}
-          initialView={
-            window.innerWidth < 768 ? "timeGridDay" : "dayGridMonth"
-          }
+          initialView={window.innerWidth < 768 ? "timeGridDay" : "dayGridMonth"}
           events={events}
           eventClick={handleEventClick}
           eventClassNames={(eventInfo) => {
