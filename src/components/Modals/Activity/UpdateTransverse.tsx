@@ -29,7 +29,7 @@ const UpdateTransverse = ({
     description: "",
     startDate: undefined,
     dailyEffort: 1,
-    status:'Backlog'
+    status: "Backlog",
   });
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { monday, friday } = getMondayAndFriday();
@@ -61,7 +61,6 @@ const UpdateTransverse = ({
         type: transverseData.type,
         description: transverseData.description,
         status: transverseData.status,
-
       };
       if (transverseData.id) {
         await updateTransverse(transverseData.id, dataToSend);
@@ -164,9 +163,12 @@ const UpdateTransverse = ({
                 className="text-sm"
                 value={transverseData.dailyEffort}
                 onChange={(e) => {
+                  let value = parseInt(e.target.value);
+                  if (value > 8) value = 8;
+                  if (value < 1) value = 1;
                   setTransverseData({
                     ...transverseData,
-                    dailyEffort: parseInt(e.target.value),
+                    dailyEffort: value,
                   });
                 }}
               />

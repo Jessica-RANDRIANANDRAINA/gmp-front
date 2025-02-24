@@ -125,9 +125,12 @@ const AddIntercontract = ({
                 className="text-sm"
                 value={intercontractData.dailyEffort}
                 onChange={(e) => {
+                  let value = parseInt(e.target.value);
+                  if (value > 8) value = 8;
+                  if (value < 1) value = 1;
                   setIntercontractData({
                     ...intercontractData,
-                    dailyEffort: parseInt(e.target.value),
+                    dailyEffort: value,
                   });
                 }}
               />

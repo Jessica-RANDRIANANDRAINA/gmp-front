@@ -324,9 +324,12 @@ const UpdateTask = ({
             className="text-sm"
             value={taskData?.dailyEffort}
             onChange={(e) => {
+              let value = parseInt(e.target.value);
+              if (value > 8) value = 8;
+              if (value < 1) value = 1;
               setTaskData({
                 ...taskData,
-                dailyEffort: parseInt(e.target.value),
+                dailyEffort: value,
               });
             }}
           />

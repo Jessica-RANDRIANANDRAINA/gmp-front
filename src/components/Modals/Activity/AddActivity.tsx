@@ -342,9 +342,12 @@ const AddActivity = ({
                 className="text-sm"
                 value={activityData.dailyEffort}
                 onChange={(e) => {
+                  let value = parseInt(e.target.value);
+                  if (value > 8) value = 8;
+                  if (value < 1) value = 1;
                   setActivityData({
                     ...activityData,
-                    dailyEffort: parseInt(e.target.value),
+                    dailyEffort: value,
                   });
                 }}
               />
