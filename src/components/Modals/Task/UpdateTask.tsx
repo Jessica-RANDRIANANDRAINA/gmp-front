@@ -282,7 +282,7 @@ const UpdateTask = ({
                 }
               }}
             />
-            <CustomInput
+            {/* <CustomInput
               type="date"
               label="Date d'échéance"
               className="text-sm"
@@ -313,7 +313,7 @@ const UpdateTask = ({
                   });
                 }
               }}
-            />
+            /> */}
           </div>
           <CustomInput
             type="number"

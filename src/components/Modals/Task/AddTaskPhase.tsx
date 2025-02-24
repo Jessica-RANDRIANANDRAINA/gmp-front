@@ -265,7 +265,7 @@ const AddTaskPhase = ({
                 });
               }}
             />
-            <CustomInput
+            {/* <CustomInput
               type="date"
               label="Date d'échéance"
               className="text-sm"
@@ -278,7 +278,7 @@ const AddTaskPhase = ({
                   dueDate: e.target.value,
                 });
               }}
-            />
+            /> */}
           </div>
           <CustomInput
             type="number"
