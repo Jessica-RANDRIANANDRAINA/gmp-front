@@ -135,70 +135,109 @@ const AllActivityCalendar = ({
 
         setData(filteredResponse);
 
-        const calendarEvents = filteredResponse.reduce(
-          (acc: any[], intercontract: any, index: number) => {
-            const dailyEffort = intercontract.dailyEffort || 1;
-
-            // Utiliser la date de début initiale si fournie
-            let startDate = new Date(
-              intercontract?.startDate || search?.startDate || new Date()
-            );
-
-            startDate.setHours(0, 0, 0, 0); // Début de la journée pour l'alignement initial
-
-            if (index > 0) {
-              const previousTaskEnd = new Date(acc[index - 1].end);
-              if (previousTaskEnd.toDateString() === startDate.toDateString()) {
-                startDate = previousTaskEnd; // La tâche commence après la précédente si elles sont dans le même jour
-              }
-            }
-
-            // Calcul de la fin de la tâche
-            const endDate = new Date(startDate);
-            let calculatedEndHour = startDate.getHours() + dailyEffort;
-
-            if (calculatedEndHour > 24) {
-              // Si la tâche dépasse 24h, la garder dans le même jour et ajuster les heures
-              startDate.setHours(24 - dailyEffort, 0, 0, 0);
-              calculatedEndHour = 24;
-            }
-
-            endDate.setHours(calculatedEndHour, 0, 0, 0);
-            let startDateLocalIsoString = new Date(
+        // Grouper les tâches par userid et par date
+        const groupedByUserAndDate = filteredResponse.reduce(
+          (acc: any, task: any) => {
+            const userid = task.userid;
+            const startDate = new Date(task.startDate);
+            startDate.setHours(1, 0, 0, 0);
+            const localStartDate = new Date(
               startDate.getTime() - startDate.getTimezoneOffset() * 60000
-            ).toISOString();
-            let endDateLocalIsoString = new Date(
-              endDate.getTime() - endDate.getTimezoneOffset() * 60000
-            ).toISOString();
-            // Ajout de l'événement
+            ); // Convertir en fuseau horaire local
+            const dateKey = localStartDate.toISOString().split("T")[0]; // Utiliser la date locale comme clé
 
-            acc.push({
-              id: `${intercontract.id}.${intercontract?.userid}`,
-              title: intercontract.title,
-              start: startDateLocalIsoString,
-              end: endDateLocalIsoString,
-              dueDate: intercontract?.endDate,
-              description: intercontract.description,
-              status: intercontract.status,
-              type: intercontract.type,
-              subType: intercontract.subType,
-              dailyEffort: intercontract.dailyEffort,
-              phaseid: intercontract?.phaseid,
-              projectid: intercontract?.projectid,
-              user: intercontract?.userid,
-              userList: [
-                {
-                  user: {
-                    name: intercontract?.userName,
-                  },
-                  userid: intercontract?.userid,
-                },
-              ],
-            });
+            if (!acc[userid]) {
+              acc[userid] = {};
+            }
+            if (!acc[userid][dateKey]) {
+              acc[userid][dateKey] = [];
+            }
 
+            acc[userid][dateKey].push(task);
             return acc;
           },
-          []
+          {}
+        );
+
+        // Convertir l'objet groupé en un tableau d'événements pour le calendrier
+        const calendarEvents = Object.keys(groupedByUserAndDate).flatMap(
+          (userid) =>
+            Object.keys(groupedByUserAndDate[userid]).flatMap((date) => {
+              const tasks = groupedByUserAndDate[userid][date];
+
+              // Trier les tâches par heure de début
+              tasks.sort(
+                (
+                  a: { startDate: string | number | Date },
+                  b: { startDate: string | number | Date }
+                ) =>
+                  new Date(a.startDate).getTime() -
+                  new Date(b.startDate).getTime()
+              );
+
+              let previousTaskEnd: string | number | Date | null = null; // Garder une trace de l'heure de fin de la tâche précédente
+
+              return tasks.map(
+                (task: {
+                  dailyEffort: number;
+                  startDate: string | number | Date;
+                  id: any;
+                  userid: any;
+                  title: any;
+                  endDate: any;
+                  description: any;
+                  status: any;
+                  type: any;
+                  subType: any;
+                  phaseid: any;
+                  projectid: any;
+                  userName: any;
+                }) => {
+                  const dailyEffort = task.dailyEffort || 1;
+
+                  // Définir l'heure de début
+                  let startDate = new Date(task.startDate);
+                  startDate = new Date(
+                    startDate.getTime() - startDate.getTimezoneOffset() * 60000
+                  ); // Convertir en fuseau horaire local
+
+                  if (previousTaskEnd) {
+                    startDate = new Date(previousTaskEnd); // Commencer après la fin de la tâche précédente
+                  }
+
+                  // Définir l'heure de fin
+                  const endDate = new Date(startDate);
+                  endDate.setHours(startDate.getHours() + dailyEffort);
+
+                  // Mettre à jour l'heure de fin pour la tâche suivante
+                  previousTaskEnd = endDate;
+
+                  return {
+                    id: `${task.id}.${task.userid}`,
+                    title: task.title,
+                    start: startDate.toISOString(),
+                    end: endDate.toISOString(),
+                    dueDate: task.endDate,
+                    description: task.description,
+                    status: task.status,
+                    type: task.type,
+                    subType: task.subType,
+                    dailyEffort: task.dailyEffort,
+                    phaseid: task.phaseid,
+                    projectid: task.projectid,
+                    user: task.userid,
+                    userList: [
+                      {
+                        user: {
+                          name: task.userName,
+                        },
+                        userid: task.userid,
+                      },
+                    ],
+                  };
+                }
+              );
+            })
         );
 
         setEvents(calendarEvents);
