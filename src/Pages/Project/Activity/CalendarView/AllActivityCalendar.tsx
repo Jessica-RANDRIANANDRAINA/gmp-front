@@ -139,8 +139,7 @@ const AllActivityCalendar = ({
         const groupedByUserAndDate = filteredResponse.reduce(
           (acc: any, task: any) => {
             const userid = task.userid;
-            const startDate = new Date(task.startDate);
-            startDate.setHours(1, 0, 0, 0);
+            let startDate = new Date(task.startDate);
             const localStartDate = new Date(
               startDate.getTime() - startDate.getTimezoneOffset() * 60000
             ); // Convertir en fuseau horaire local
@@ -239,6 +238,8 @@ const AllActivityCalendar = ({
               );
             })
         );
+
+        
 
         setEvents(calendarEvents);
       }
@@ -383,6 +384,7 @@ const AllActivityCalendar = ({
     <div className="p-5 flex flex-col-reverse md:grid md:grid-cols-5">
       <div className="md:col-span-4">
         <FullCalendar
+        timeZone="UTC"
           plugins={[
             dayGridPlugin,
             interactionPlugin,
@@ -390,7 +392,7 @@ const AllActivityCalendar = ({
             timeGridPlugin,
           ]}
           initialView={
-            window.innerWidth < 768 ? "timeGridWeek" : "dayGridMonth"
+            window.innerWidth < 768 ? "timeGridDay" : "dayGridMonth"
           }
           events={events}
           eventClick={handleEventClick}
@@ -408,7 +410,7 @@ const AllActivityCalendar = ({
             center: "title",
             right:
               window.innerWidth < 768
-                ? "timeGridWeek,timeGridDay"
+                ? "timeGridDay"
                 : "dayGridMonth,timeGridWeek,timeGridDay",
           }}
           noEventsText="Pas d'activité prévues pour cette période"
