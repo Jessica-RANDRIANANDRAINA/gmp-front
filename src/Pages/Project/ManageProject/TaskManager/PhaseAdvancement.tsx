@@ -393,7 +393,7 @@ const PhaseAdvancement = () => {
                             isDragDisabled={phaseData?.status === "Terminé"}
                           >
                             {(provided, snapshot) => {
-                              const endDate = formatDate(task.content.dueDate);
+                              const startDate = formatDate(task.content.startDate);
                               return (
                                 <div
                                   ref={provided.innerRef}
@@ -534,7 +534,7 @@ const PhaseAdvancement = () => {
                                   </div>
 
                                   <div className="border-t mt-2 flex items-center justify-between dark:border-t-zinc-600 text-zinc-400 pt-1">
-                                    <div className={`text-xs`}>{endDate}</div>
+                                    <div className={`text-xs`}>{startDate}</div>
                                     <div className="">
                                       <ListUsers
                                         data={task?.content?.user ?? []}
