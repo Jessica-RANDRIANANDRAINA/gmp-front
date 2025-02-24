@@ -19,6 +19,7 @@ import UpdateAdvancement from "./Pages/Project/ManageProject/UpdateProject/Updat
 import Activity from "./Pages/Project/Activity/Activity";
 import AllActivity from "./Pages/Project/Activity/AllActivity";
 import AllNotifications from "./Pages/Notifications/AllNotifications";
+import PageNotFound from "./components/PageNotFound";
 // *******************//
 import Chronogramme from "./Pages/Waiting/Chronogramme";
 
@@ -232,6 +233,7 @@ const App = () => {
             </>
           }
         />
+        <Route path="*" element={<PageNotFound />} />
       </Routes>
     </>
   );
