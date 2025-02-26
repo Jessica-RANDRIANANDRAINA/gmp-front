@@ -7,6 +7,7 @@ const CardDropDown: React.FC<CardDropDownProps> = ({
   title,
   primaryColor,
   activity,
+  value,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -43,7 +44,14 @@ const CardDropDown: React.FC<CardDropDownProps> = ({
             {title}
           </div>
           <div className="text-2xl font-bold text-slate-900 dark:text-slate-300 mt-1">
-            50h
+            {value ?? 0}h
+          </div>
+          <div className="text-xs text-slate-400">
+            {new Date()
+              .toLocaleString("fr-FR", { month: "long" })
+              .charAt(0)
+              .toUpperCase() +
+              new Date().toLocaleString("fr-FR", { month: "long" }).slice(1)}
           </div>
         </div>
 
@@ -65,15 +73,15 @@ const CardDropDown: React.FC<CardDropDownProps> = ({
             transition={{ duration: 0.2, ease: "easeInOut" }}
             className="absolute z-999 left-0 right-0 mt-2 bg-white dark:bg-strokedark shadow-xl rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden"
           >
-            <div className="max-h-60 overflow-auto scrollbar-thin scrollbar-thumb-slate-400 dark:scrollbar-thumb-slate-600 scrollbar-track-slate-100 dark:scrollbar-track-slate-800 rounded-lg">
+            <div className="max-h-60 overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-slate-400 dark:scrollbar-thumb-slate-600 scrollbar-track-slate-100 dark:scrollbar-track-slate-800 rounded-lg">
               {activity?.map((item, index) => (
                 <div
                   key={index}
                   className="px-6 py-3 flex justify-between items-center border-b last:border-none border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-300 transition-all cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800 hover:scale-[1.02]"
                 >
-                  <span className="text-base font-medium">{item.label}</span>
+                  <span className="text-base font-medium">{item.title}</span>
                   <span className="text-lg font-semibold text-slate-900 dark:text-white">
-                    {item.value}h
+                    {item.totalDailyEffort}h
                   </span>
                 </div>
               ))}

@@ -148,3 +148,16 @@ export interface ITransverseAdd {
   startDate?: string;
   status?: string;
 }
+
+export interface IActivityStat {
+  totalDailyEffortTask: number;
+  totalDailyEffortTransverse: number;
+  totalDailyEffortIntercontract: number;
+  task: ITitleEffort[];
+  transverse: ITitleEffort[];
+  intercontract: ITitleEffort[];
+}
+export interface ITitleEffort {
+  title?: string;
+  totalDailyEffort: number;
+}

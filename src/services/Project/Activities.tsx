@@ -71,6 +71,34 @@ export const getTaskActivityByUserId = async (userid: string) => {
   }
 };
 
+// get all activities stat
+export const getActivitiesStat = async (
+  startDate?: string,
+  endDate?: string,
+  ids?: (string | undefined)[]
+) => {
+  try {
+    
+    const params: any = {};
+    if (startDate) params.startDate = startDate;
+    if (endDate) params.endDate = endDate;
+    if (ids) {
+      ids.forEach((id, index)=>{
+        params[`Ids[${index}]`] = id;
+      })
+    }
+  
+    const response = await axios.get(`${endPoint}/api/Activity/stat`, {
+      params
+    })
+    return response.data
+  } catch (error) {
+    throw new Error(
+      `Error at get STAT of a given user services: ${error}`
+    );
+  }
+};
+
 // POST
 // create a new transverse task
 export const createTransverse = async (transverseData: any) => {

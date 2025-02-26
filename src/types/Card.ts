@@ -1,5 +1,7 @@
+import { ITitleEffort } from "./Project";
 export interface CardDropDownProps {
   title: string;
   primaryColor?: string;
-  activity?: { label: string; value: string }[];
+  value?: number;
+  activity?: ITitleEffort[];
 }
