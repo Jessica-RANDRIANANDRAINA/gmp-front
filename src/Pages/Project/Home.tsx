@@ -6,11 +6,29 @@ import { IActivityStat } from "../../types/Project";
 // import { decodeToken } from "../../services/Function/TokenService";
 import CardDropDown from "../../components/card/CardDropDown";
 import StackedColumn from "../../components/chart/StackedColumn";
+import DonutCharts from "../../components/chart/DonutCharts";
 import { getActivitiesStat } from "../../services/Project";
 
 const Home = () => {
   const [statActivities, setStatActivities] = useState<IActivityStat>();
   // const [decodedToken, setDecodedToken] = useState<IDecodedToken>();
+
+  const chartData = [
+    {
+      name: "Tâche projet",
+      data: [80, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120],
+    },
+    {
+      name: "Transverse",
+      data: [8, 100, 25, 35, 45, 55, 65, 75, 85, 95, 105, 115],
+    },
+    {
+      name: "Intercontrat",
+      data: [90, 18, 28, 38, 48, 58, 13, 78, 88, 98, 108, 30],
+    },
+  ];
+  const categories = ["Projets", "Transverses", "Intercontrats"];
+  const stats = [43, 23, 34];
 
   useEffect(() => {
     fetchStatActivities();
@@ -18,7 +36,7 @@ const Home = () => {
   const fetchStatActivities = async () => {
     try {
       const stats = await getActivitiesStat();
-      console.log(stats)
+      console.log(stats);
       setStatActivities(stats);
     } catch (error) {
       console.error(`Error at fetch stat activities: ${error}`);
@@ -73,11 +91,16 @@ const Home = () => {
             activity={statActivities?.intercontract}
           />
         </div>
-        <div className="border border-stroke dark:border-strokedark p-4 rounded-lg">
-          <div className="font-sans font-semibold text-slate-800 dark:text-white">
-            Activités
+        <div className="grid grid-cols-3 gap-5">
+          <div className="border col-span-2 border-stroke dark:border-strokedark p-4 rounded-lg">
+            <div className="font-sans font-semibold text-slate-800 dark:text-white">
+              Activités
+            </div>
+            <StackedColumn data={chartData} />
           </div>
-          <StackedColumn />
+          <div className="border col-span-1 border-stroke dark:border-strokedark p-4 rounded-lg">
+          <DonutCharts labels={categories} values={stats} />
+          </div>
         </div>
       </div>
     </ProjectLayout>
