@@ -78,25 +78,45 @@ export const getActivitiesStat = async (
   ids?: (string | undefined)[]
 ) => {
   try {
-    
     const params: any = {};
     if (startDate) params.startDate = startDate;
     if (endDate) params.endDate = endDate;
     if (ids) {
-      ids.forEach((id, index)=>{
+      ids.forEach((id, index) => {
         params[`Ids[${index}]`] = id;
-      })
+      });
     }
-  
+
     const response = await axios.get(`${endPoint}/api/Activity/stat`, {
-      params
-    })
-    return response.data
+      params,
+    });
+    return response.data;
   } catch (error) {
-    throw new Error(
-      `Error at get STAT of a given user services: ${error}`
-    );
+    throw new Error(`Error at get STAT of a given user services: ${error}`);
   }
+};
+
+// get activities 12 months
+export const getActivitiesStatInAYear = async (
+  startDate?: string,
+  endDate?: string,
+  ids?: (string | undefined)[]
+) => {
+  const params: any = {};
+  if (startDate) params.startDate = startDate;
+  if (endDate) params.endDate = endDate;
+  if (ids) {
+    ids.forEach((id, index) => {
+      params[`Ids[${index}]`] = id;
+    });
+  }
+  const response = await axios.get(
+    `${endPoint}/api/Activity/filtered-efforts`,
+    {
+      params,
+    }
+  );
+  return response.data;
 };
 
 // POST
