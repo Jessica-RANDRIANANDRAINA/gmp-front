@@ -8,31 +8,40 @@ interface SimpleDonutProps {
 }
 
 const DonutCharts = ({ labels, values }: SimpleDonutProps) => {
-  const options = useMemo(() => ({
-    chart: {
-      type: "donut" as "donut",
-      animations: {
-        enabled: true,
-        easing: "easeinout",
-        speed: 500,
-      },
-    },
-    colors: COLORS,
-    labels: labels,
-    legend: {
-      position: "bottom" as "bottom",
-      fontSize: "14px",
-    },
-    responsive: [
-      {
-        breakpoint: 480,
-        options: {
-          chart: { width: 250 },
-          legend: { position: "bottom" as "bottom" },
+  const options = useMemo(
+    () => ({
+      chart: {
+        type: "donut" as "donut",
+        animations: {
+          enabled: true,
+          speed: 800,
         },
       },
-    ],
-  }), [labels]);
+      colors: COLORS,
+      labels: labels,
+      legend: {
+        position: "bottom" as "bottom",
+        fontSize: "14px",
+      },
+      tooltip: {
+        y: {
+          formatter: (val: number) => {
+            return `${val.toFixed(2)}%`;
+          },
+        },
+      },
+      responsive: [
+        {
+          breakpoint: 480,
+          options: {
+            chart: { width: 250 },
+            legend: { position: "bottom"},
+          },
+        },
+      ],
+    }),
+    [labels]
+  );
 
   return <Chart options={options} series={values} height={300} type="donut" />;
 };
