@@ -38,7 +38,9 @@ import {
   updateTaskActicity,
   deleteTaskActivity,
   initializeSpaceRanking,
-  getActivitiesStat
+  getActivitiesStat,
+  getActivitiesStatInAYear,
+  getActivitiesPercentage,
 } from "./Activities";
 import { getAllMyNotification, updateNotifRead } from "./NotificationServices";
 
@@ -78,5 +80,7 @@ export {
   initializeSpaceRanking,
   getAllMyNotification,
   updateNotifRead,
-  getActivitiesStat
+  getActivitiesStat,
+  getActivitiesStatInAYear,
+  getActivitiesPercentage,
 };

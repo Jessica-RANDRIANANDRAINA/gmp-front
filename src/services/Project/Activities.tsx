@@ -119,6 +119,25 @@ export const getActivitiesStatInAYear = async (
   return response.data;
 };
 
+export const getActivitiesPercentage = async (
+  startDate?: string,
+  endDate?: string,
+  ids?: (string | undefined)[]
+) => {
+  const params: any = {};
+  if (startDate) params.startDate = startDate;
+  if (endDate) params.endDate = endDate;
+  if (ids) {
+    ids.forEach((id, index) => {
+      params[`Ids[${index}]`] = id;
+    });
+  }
+  const response = await axios.get(`${endPoint}/api/Activity/percentage`, {
+    params,
+  });
+  return response.data;
+};
+
 // POST
 // create a new transverse task
 export const createTransverse = async (transverseData: any) => {
