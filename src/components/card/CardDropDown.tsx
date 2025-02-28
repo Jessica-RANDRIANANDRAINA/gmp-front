@@ -2,12 +2,15 @@ import React, { useState, useRef, useEffect } from "react";
 import { CardDropDownProps } from "../../types/Card";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
+import { formatDate } from "../../services/Function/DateServices";
 
 const CardDropDown: React.FC<CardDropDownProps> = ({
   title,
   primaryColor,
   activity,
   value,
+  startDate,
+  endDate,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -47,11 +50,23 @@ const CardDropDown: React.FC<CardDropDownProps> = ({
             {value ?? 0}h
           </div>
           <div className="text-xs text-slate-400">
-            {new Date()
-              .toLocaleString("fr-FR", { month: "long" })
-              .charAt(0)
-              .toUpperCase() +
-              new Date().toLocaleString("fr-FR", { month: "long" }).slice(1)}
+            <span
+              className={`${
+                startDate === undefined && endDate === undefined ? "" : "hidden"
+              }`}
+            >
+              {new Date()
+                .toLocaleString("fr-FR", { month: "long" })
+                .charAt(0)
+                .toUpperCase() +
+                new Date().toLocaleString("fr-FR", { month: "long" }).slice(1)}
+            </span>
+            <span>
+              {startDate && endDate
+                ? `${formatDate(startDate)} au ${formatDate(endDate)}`
+                : formatDate(startDate ?? "", false, false) ||
+                  formatDate(endDate ?? "", false, false)}
+            </span>
           </div>
         </div>
 
