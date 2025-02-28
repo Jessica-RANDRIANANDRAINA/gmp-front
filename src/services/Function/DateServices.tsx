@@ -1,9 +1,13 @@
 export function formatDate(
   sqlDate: string | number | Date,
-  time: boolean = false
+  time: boolean = false,
+  tail: boolean = true
 ) {
   // if the date from db is null or undefined return --
-  if (!sqlDate) {
+  if (!sqlDate && !tail) {
+    return "";
+  }
+  if (!sqlDate && tail) {
     return "--";
   }
   // convert into js date
@@ -50,11 +54,11 @@ export const formatDateToText: any = (sqlDate: string | number | Date) => {
   // Format de la date avec le jour, mois, année, etc.
   const formattedDate = dateObj.toLocaleDateString("fr-FR", options);
 
-  const capitalizedDate = formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
+  const capitalizedDate =
+    formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
 
   return capitalizedDate; // Retourne la date formatée
 };
-
 
 export const getMondayAndFriday = () => {
   const today = new Date();
