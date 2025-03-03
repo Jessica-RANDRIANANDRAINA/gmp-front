@@ -14,6 +14,7 @@ import {
   updatePhaseSettings,
   getCountProject,
   updateProjectState,
+  getProjectStat,
 } from "./ProjectServices";
 
 import {
@@ -83,4 +84,5 @@ export {
   getActivitiesStat,
   getActivitiesStatInAYear,
   getActivitiesPercentage,
+  getProjectStat,
 };

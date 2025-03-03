@@ -10,6 +10,7 @@ import {
   getActivitiesStat,
   getActivitiesStatInAYear,
   getActivitiesPercentage,
+  getProjectStat,
 } from "../../services/Project";
 import {
   CustomInput,
@@ -17,11 +18,26 @@ import {
 } from "../../components/UIElements";
 import { getMySubordinatesNameAndId } from "../../services/User";
 import { formatDate } from "../../services/Function/DateServices";
+import ProjectStatsCard from "../../components/card/ProjectStatsCard";
 
 type TSubordinate = {
   id: string;
   name: string;
   email: string;
+};
+type Project = {
+  id: string;
+  name: string;
+  startDate: string;
+  endDate?: string;
+  title: string;
+};
+type StatsProjectData = {
+  enCours: { count: number; projects: Project[] };
+  archived: { count: number; projects: Project[] };
+  standBy: { count: number; projects: Project[] };
+  initiés: { count: number; projects: Project[] };
+  enRetard: { count: number; projects: Project[] };
 };
 
 const Home = () => {
@@ -48,6 +64,9 @@ const Home = () => {
   const [subordinates, setSubordinates] = useState<TSubordinate[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
+  const [statsProject, setStatsProject] = useState<StatsProjectData | null>(
+    null
+  );
 
   const categories = ["Projets", "Transverses", "Intercontrats"];
 
@@ -100,8 +119,8 @@ const Home = () => {
         }
 
         // Fetch subordinates data
-        // const myId = decoded.jti;
-        const myId = "c894ab8a-7e91-41c9-8102-5eef8d8e99a0";
+        const myId = decoded.jti;
+        // const myId = "c894ab8a-7e91-41c9-8102-5eef8d8e99a0";
         const subData: TSubordinate[] = await getMySubordinatesNameAndId(myId);
 
         const me: TSubordinate = {
@@ -137,16 +156,19 @@ const Home = () => {
     setIsLoading(true);
     try {
       // Fetch all required data in parallel
-      const [stats, statsInAYear, activitiesPercentages] = await Promise.all([
-        getActivitiesStat(search.startDate, search.endDate, userIds),
-        getActivitiesStatInAYear(search.startDate, search.endDate, userIds),
-        getActivitiesPercentage(search.startDate, search.endDate, userIds),
-      ]);
+      const [stats, statsInAYear, activitiesPercentages, projectStat] =
+        await Promise.all([
+          getActivitiesStat(search.startDate, search.endDate, userIds),
+          getActivitiesStatInAYear(search.startDate, search.endDate, userIds),
+          getActivitiesPercentage(search.startDate, search.endDate, userIds),
+          getProjectStat(search.startDate, search.endDate, userIds),
+        ]);
 
       // Transform and update state
       setChartData(transformDataForChart(statsInAYear));
       setDataPercentage(activitiesPercentages);
       setStatActivities(stats);
+      setStatsProject(projectStat);
 
       return true;
     } catch (error) {
@@ -241,7 +263,7 @@ const Home = () => {
         {/* Filters */}
         <div className="filter-section">
           <div className="grid grid-cols-1 md:grid-cols-6 lg:grid-cols-8 gap-5">
-            {subordinates.length > 0 && (
+            {subordinates.length > 1 && (
               <div>
                 <CustomInputUserSpecifiedSearch
                   label="Collaborateur"
@@ -438,6 +460,43 @@ const Home = () => {
             </div>
           </>
         )}
+        <div className="space-y-7">
+          <ProjectStatsCard
+            category={{
+              title: "En cours",
+              count: statsProject?.enCours.count,
+              projects: statsProject?.enCours.projects,
+            }}
+          />
+          <ProjectStatsCard
+            category={{
+              title: "Initié",
+              count: statsProject?.initiés.count,
+              projects: statsProject?.initiés.projects,
+            }}
+          />
+          <ProjectStatsCard
+            category={{
+              title: "En retard",
+              count: statsProject?.enRetard.count,
+              projects: statsProject?.enRetard.projects,
+            }}
+          />
+          <ProjectStatsCard
+            category={{
+              title: "Archivés",
+              count: statsProject?.archived.count,
+              projects: statsProject?.archived.projects,
+            }}
+          />
+          <ProjectStatsCard
+            category={{
+              title: "Stand by",
+              count: statsProject?.standBy.count,
+              projects: statsProject?.standBy.projects,
+            }}
+          />
+        </div>
       </div>
     </ProjectLayout>
   );

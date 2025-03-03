@@ -138,6 +138,25 @@ export const getPhaseById = async (phaseId: string) => {
   }
 };
 
+export const getProjectStat = async (
+  startDate?: string,
+  endDate?: string,
+  ids?: (string | undefined)[]
+) => {
+  const params: any = {};
+  if (startDate) params.startDate = startDate;
+  if (endDate) params.endDate = endDate;
+  if (ids) {
+    ids.forEach((id, index) => {
+      params[`Ids[${index}]`] = id;
+    });
+  }
+  const response = await axios.get(`${endPoint}/api/Project/stat`, {
+    params,
+  });
+  return response.data;
+};
+
 // ===== POST =======
 // create a new project
 export const createProject = async (projectData: IProjectDto) => {
