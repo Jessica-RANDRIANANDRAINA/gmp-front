@@ -21,6 +21,8 @@
     "@microsoft/signalr": "^8.0.7",
     "apexcharts": "^4.5.0",
     "axios": "^1.7.3",
+    "date-fns": "^4.1.0",
+    "dhtmlx-gantt": "^9.0.5",
     "dotenv": "^16.4.5",
     "framer-motion": "^12.4.7",
     "jwt-decode": "^4.0.0",
