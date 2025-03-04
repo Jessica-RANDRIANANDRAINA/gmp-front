@@ -21,7 +21,8 @@ import AllActivity from "./Pages/Project/Activity/AllActivity";
 import AllNotifications from "./Pages/Notifications/AllNotifications";
 import PageNotFound from "./components/PageNotFound";
 // *******************//
-import Chronogramme from "./Pages/Waiting/Chronogramme";
+// import Chronogramme from "./Pages/Waiting/Chronogramme";
+import GanttView from "./Pages/Project/GanttView";
 
 import "./App.css";
 
@@ -229,7 +230,7 @@ const App = () => {
           element={
             <>
               <PageTitle title="G.M.P" />
-              <Chronogramme />
+              <GanttView />
             </>
           }
         />

@@ -33,7 +33,6 @@
   z-index: 50 !important;
 }
 
-
 /* ✅ Style du scrollbar pour Chrome, Edge et Safari */
 ::-webkit-scrollbar {
   width: 8px; /* Largeur de la scrollbar */
@@ -56,4 +55,65 @@
 * {
   scrollbar-width: thin; /* Scroll fin */
   scrollbar-color: #c4c4c4 transparent; /* Couleurs */
+}
+
+.gantt_grid_data .gantt_row {
+  background: #fcf8f8;
+}
+
+.gantt_task_row.gantt_selected {
+  background: rgba(59, 130, 246, 0.2) !important; /* Bleu clair */
+}
+.gantt_task {
+  font-family: "Arial", sans-serif;
+  font-weight: 500;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.gantt_container {
+  border-radius: 10px;
+}
+
+.gantt_task_line {
+  border-radius: 8px;
+  box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+.gantt_task_progress {
+  background: linear-gradient(
+    135deg,
+    #34c759,
+    #28a745
+  ) !important; /* Vert dégradé */
+}
+
+.gantt_task_progress:hover {
+  background: linear-gradient(
+    135deg,
+    #28a745,
+    #34c759
+  ) !important; /* Effet hover pour la progression */
+}
+
+.gantt_task_line {
+  transition: transform 0.2s ease-in-out;
+}
+
+.gantt_task_progress {
+  transition: background-color 0.3s ease;
+}
+
+.gantt_task_line:hover {
+  transform: translateX(5px); /* Effet léger au survol */
+}
+
+/* Mode sombre pour Gantt */
+.dark-mode .gantt-task-content {
+  background-color: #333;
+  color: #fff;
+}
+
+.gantt-dark .gantt-task-content {
+  background-color: #444;
+  color: #fff;
 }
