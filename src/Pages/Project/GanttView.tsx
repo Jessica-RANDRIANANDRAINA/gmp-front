@@ -8,53 +8,46 @@ const GanttView = () => {
 
   const fetchProject = async () => {
     const fetchedProject = await getAllProject(1, 50);
-    const project = fetchedProject?.project?.map((pr: any) => {
-      const startDate = new Date(pr.startDate);
-      const endDate = pr.endDate ? new Date(pr.endDate) : new Date();
 
-      return {
+
+    // Applatir les données du projet et des phases
+    const project = fetchedProject?.project?.flatMap((pr: any) => [
+      {
         id: pr.id,
         text: pr.title,
-        start_date: startDate.toLocaleString("fr-FR"),
-        end_date: pr.endDate ? endDate.toLocaleDateString("fr-FR") : undefined,
-        progress: pr.completionPercentage,
-      };
-    });
-    setTasks(project);
+        start_date: new Date(pr.startDate),
+        end_date:
+          pr.endDate === null ? new Date(pr.startDate) : new Date(pr.endDate),
+        progress: pr.completionPercentage / 100,
+      },
+      // Ajouter les phases comme objets séparés avec un champ 'parent'
+      ...pr.listPhases.map((phase: any) => ({
+        id: phase.id,
+        text: phase.phase1, // phase name
+        start_date:
+          phase.startDate === null
+            ? new Date(pr.startDate)
+            : new Date(phase.startDate),
+        // end_date: phase.endDate ? new Date(phase.endDate) : undefined,
+        end_date:
+          phase.endDate === null
+            ? new Date(phase.startDate)
+            : new Date(phase.endDate),
+        parent: pr.id,
+      })),
+    ]);
+
+
+    const sortedProject = project.sort(
+      (a: { start_date: number }, b: { start_date: number }) =>
+        a.start_date - b.start_date
+    );
+
+    setTasks(sortedProject || []);
   };
 
   useEffect(() => {
     fetchProject();
-    // const fetchTasks = async () => {
-    //   const fetchedTasks = [
-    //     {
-    //       id: 1,
-    //       text: "Gestion de projet GMP",
-    //       start_date: "01-03-2025",
-    //       duration: 10,
-    //       progress: 100,
-    //     },
-    //     {
-    //       id: 2,
-    //       text: "Projet B",
-    //       start_date: "02-04-2025",
-    //       end_date: "30-10-2025",
-    //       duration: 15,
-    //       progress: 50,
-    //     },
-    //     {
-    //       id: 3,
-    //       text: "Projet C",
-    //       start_date: "03-03-2025",
-    //       end_date: "13-03-2025",
-    //       duration: 12,
-    //       progress: 75,
-    //     },
-    //   ];
-    //   setTasks(fetchedTasks); // Mettre à jour les données
-    // };
-
-    // fetchTasks();
   }, []);
 
   return (

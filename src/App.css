@@ -71,7 +71,10 @@
 }
 
 .gantt_container {
-  border-radius: 10px;
+  /* border-radius: 10px; */
+  border-left: none;
+  border-right: none;
+  border-bottom: none;
 }
 
 .gantt_task_line {

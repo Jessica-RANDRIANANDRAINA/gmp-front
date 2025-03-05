@@ -56,7 +56,7 @@ const ManageProjects = () => {
   //////////////////////////////////////////////////////////////////////////
   const getMyHabilitation = async () => {
     const hab = await getAllMyHabilitation();
-    
+
     setMyHabilitation(hab);
   };
   useEffect(() => {
@@ -170,6 +170,7 @@ const ManageProjects = () => {
             <Breadcrumb
               paths={[{ name: "Liste des Projets", to: "/gmp/project/list" }]}
             />
+
             {/* ===== ADD PROJECT START =====*/}
             <div
               className={`w-full mb-2  justify-end   items-center ${
@@ -201,6 +202,7 @@ const ManageProjects = () => {
             </div>
             {/* ===== ADD PROJECT END =====*/}
           </div>
+
           {/* ===== TABLE PROJECT LIST START =====*/}
           <TableProjet
             setShowModalDelete={setShowModalDelete}

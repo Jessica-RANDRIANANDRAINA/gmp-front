@@ -8,6 +8,7 @@ interface Task {
   text: string;
   start_date: string;
   end_date?: string;
+  duration?: number;
 }
 interface GanttChartProps {
   tasks: Task[];
@@ -22,22 +23,35 @@ const GanttChart: React.FC<GanttChartProps> = ({ tasks }) => {
       gantt.init(ganttRef.current);
       gantt.config.date_format = "%d-%m-%Y";
 
+      gantt.config.subtask = true;
       gantt.config.drag_resize = true; // Modifier la durée
       gantt.config.drag_move = true; // Déplacer les tâches
       gantt.config.drag_progress = false; // Modifier la progression
       gantt.config.details_on_dblclick = false;
       gantt.config.drag_links = false;
 
-      gantt.attachEvent("onTaskDblClick", (id) => {
-        navigate(`/gmp/project/details/${id}/details`);
-        return false;
-      });
+      // gantt.attachEvent("onTaskDblClick", (id) => {
+      //   navigate(`/gmp/project/details/${id}/details`);
+      //   return false;
+      // });
 
       gantt.config.columns = [
         { name: "text", label: "Projet", width: "*", tree: true },
         { name: "start_date", label: "Début", align: "center" },
-        { name: "duration", label: "Durée (jours)", align: "center" },
-        // { name: "add", label: "", width: 44 },
+        {
+          name: "duration",
+          label: "Durée (jours)",
+          align: "center",
+          template: function (task) {
+            return (task.duration && task.duration <= 0) ||
+              (task.end_date &&
+                task.start_date &&
+                new Date(task.start_date).getTime() ===
+                  new Date(task.end_date).getTime())
+              ? "non défini"
+              : task.duration;
+          },
+        },
       ];
       gantt.locale = {
         date: {
@@ -131,6 +145,7 @@ const GanttChart: React.FC<GanttChartProps> = ({ tasks }) => {
         },
       };
 
+      gantt.clearAll();
       gantt.parse({
         data: tasks,
       });
@@ -146,13 +161,13 @@ const GanttChart: React.FC<GanttChartProps> = ({ tasks }) => {
       <button
         type="button"
         onClick={goToToday}
-        className="mb-2 px-4 py-2  text-white  transition border-primaryGreen bg-primaryGreen rounded-lg dark:border-darkgreen dark:bg-darkgreen dark:hover:bg-opacity-90"
+        className="mb-2 ml-4 px-4 py-2  text-white  transition border-primaryGreen bg-primaryGreen rounded-lg dark:border-darkgreen dark:bg-darkgreen dark:hover:bg-opacity-90"
       >
         Aller à aujourd'hui
       </button>
       <div
         ref={ganttRef}
-        className="h-[500px] md:h-[700px] w-full border border-slate-300 rounded-lg "
+        className="h-[500px] md:h-[700px] w-full rounded-lg"
       />
     </div>
   );
