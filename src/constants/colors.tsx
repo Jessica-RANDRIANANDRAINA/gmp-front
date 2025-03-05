@@ -1,3 +1,3 @@
+export const COLORS = ["#16a34a", "#6d28d9", "#dc2626"]
 
-export const COLORS = ["#16a34a", "#6d28d9", "#d97706"]
   
