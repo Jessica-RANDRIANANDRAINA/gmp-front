@@ -82,21 +82,7 @@
   box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.1);
 }
 
-.gantt_task_progress {
-  background: linear-gradient(
-    135deg,
-    #34c759,
-    #28a745
-  ) !important; /* Vert dégradé */
-}
 
-.gantt_task_progress:hover {
-  background: linear-gradient(
-    135deg,
-    #28a745,
-    #34c759
-  ) !important; /* Effet hover pour la progression */
-}
 
 .gantt_task_line {
   transition: transform 0.2s ease-in-out;
@@ -121,6 +107,18 @@
   color: #fff;
 }
 
+.gantt_task_progress {
+  background: linear-gradient(135deg, #34c759, #28a745);
+}
+
+.gantt_task_progress:hover {
+  background: linear-gradient(135deg, #28a745, #34c759);
+}
 .task-late {
-  border: 2px dashed red
+  background-color: #d32f2f !important;
+}
+
+.task-late > .gantt_task_progress_wrapper > .gantt_task_progress {
+  background: linear-gradient(135deg, #d32f2f, #d32f2f) !important;
+ /* Applique un dégradé rouge */
 }
