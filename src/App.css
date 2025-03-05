@@ -120,3 +120,7 @@
   background-color: #444;
   color: #fff;
 }
+
+.task-late {
+  border: 2px dashed red
+}

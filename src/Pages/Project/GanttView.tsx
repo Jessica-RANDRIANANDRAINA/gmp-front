@@ -9,7 +9,6 @@ const GanttView = () => {
   const fetchProject = async () => {
     const fetchedProject = await getAllProject(1, 50);
 
-
     // Applatir les données du projet et des phases
     const project = fetchedProject?.project?.flatMap((pr: any) => [
       {
@@ -34,9 +33,9 @@ const GanttView = () => {
             ? new Date(phase.startDate)
             : new Date(phase.endDate),
         parent: pr.id,
+        progress: phase.status === "Terminé" ? 1 : 0,
       })),
     ]);
-
 
     const sortedProject = project.sort(
       (a: { start_date: number }, b: { start_date: number }) =>

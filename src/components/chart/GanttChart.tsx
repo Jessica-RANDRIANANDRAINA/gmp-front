@@ -34,6 +34,20 @@ const GanttChart: React.FC<GanttChartProps> = ({ tasks }) => {
       //   navigate(`/gmp/project/details/${id}/details`);
       //   return false;
       // });
+      
+
+      gantt.templates.task_class = (_start, _end, task) => {
+        const currentDate = new Date();
+        if (
+          (task.duration && task.duration > 0) ||
+          (task.start_date && task.end_date && new Date(task.start_date).getTime() !== new Date(task.end_date).getTime())
+        ) {
+          if (task.end_date && new Date(task.end_date) < currentDate && task.progress !==1) {
+            return "task-late"; // Marquer la tâche en retard si sa date de fin est passée
+          }
+        }
+        return ""; 
+      };
 
       gantt.config.columns = [
         { name: "text", label: "Projet", width: "*", tree: true },

@@ -250,6 +250,7 @@ const TableProjet = ({
             ? new Date(phase.startDate)
             : new Date(phase.endDate),
         parent: pr.id, // Lier la phase au projet parent
+        progress: phase.status === "Terminé" ? 1 : 0
       })),
     ]);
   }, [data]);
