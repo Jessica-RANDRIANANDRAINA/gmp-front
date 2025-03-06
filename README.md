@@ -16,6 +16,8 @@ This repository contains the frontend code for the GMP project.
 - [Installation](#installation)
 - [Usage](#usage)
 - [How To Deploy](#how-to-deploy)
+- [Code Backup](#code-backup)
+- [Document](#document)
 
 ## About GMP
 
@@ -147,3 +149,15 @@ npm run build
 </configuration>
 
 ```
+
+## Code Backup
+
+- Remember to always save a backup after each modification. There must be `6 version `of the code from `v5` to `v0`.
+- The V0 is the version that is actually in production and the V1 is the version before it.
+- A backup folder contain both the `publish` compressed folder from backend and `dist` compressed folder from frontend.
+- Actually all V0 to V5 is stored on the front end but it need another ftp to store it later.
+
+## Document
+
+- All document related to GMP are stored in the `data` folder.
+- The document include the early Needs Study Document, Feasibility Study Document, Constraints documents, notifications documents. 
