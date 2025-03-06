@@ -5,6 +5,7 @@
 This repository contains the frontend code for the GMP project.
 
 ## Table of Contents
+
 - [About GMP](#about-gmp)
   - [Key Features](#key-features)
   - [Authentication](#authentication)
@@ -37,6 +38,7 @@ Access to GMP requires Active Directory credentials. Use your Ravinala account i
 ### Activity Tracking
 
 With GMP, you can also manage individual activities, such as:
+
 - **Intercontract**: Non-project-related activities or idle periods where no project work is performed.
 - **Transverse Activities**: Tasks that may or may not be project-related, such as meetings, onboarding sessions, or training.
 
@@ -57,20 +59,22 @@ To run the application locally, you need:
 For deployment to production environments, if you use IIS server, ensure you have:
 
 - **Node.js**: Version `v20.15.1` or compatible
-- **Url rewrite iis**		[Download here](https://www.iis.net/downloads/microsoft/url-rewrite)
--	**IIS Cors**  [Download here](https://www.iis.net/downloads/microsoft/iis-cors-module)
+- **Url rewrite iis** [Download here](https://www.iis.net/downloads/microsoft/url-rewrite)
+- **IIS Cors** [Download here](https://www.iis.net/downloads/microsoft/iis-cors-module)
 
 ## Installation
 
 To set up the project, follow these steps:
 
 1. Clone the repository:
+
    ```bash
    git clone [repository-url]
    cd gmp-frontend
    ```
 
 2. Install the required dependencies:
+
    ```bash
    npm install
    ```
@@ -85,32 +89,60 @@ To set up the project, follow these steps:
 ## Usage
 
 To start the development server:
+
 ```bash
 npm run dev
 ```
 
 To build the project for production:
+
 ```bash
 npm run build
 ```
 
 To preview the production build locally:
+
 ```bash
 npm run preview
 ```
 
 ## How To Deploy
 
-- Make sure that your environnement variables in `.env` match the IP in production. Change if that's not the case. 
-- run the command 
+- Make sure that your environnement variables in `.env` match the IP in production. Change if that's not the case.
+- run the command
+
 ```bash
 npm run build
 ```
+
 - copy the dist file in the gmp-front via ftp
+
 * The identifiants for FTP are :
   - Protocole de fichier : FTP
   - Nom d'hôte : 10.0.180.37
   - Port : 21
   - Nom d'utilisateur : gmpfront
   - Mot de passe : gmp
+    **NB** DON'T ERASE THE `web.config` file
 
+- If you erase the `web.config` file just create the `web.config` file and put this inside
+
+```xml
+<configuration>
+    <system.webServer>
+        <rewrite>
+            <rules>
+                <rule name="React Routes" stopProcessing="true">
+                    <match url=".*" />
+                    <conditions logicalGrouping="MatchAll">
+                        <add input="{REQUEST_FILENAME}" matchType="IsFile" negate="true" />
+                        <add input="{REQUEST_FILENAME}" matchType="IsDirectory" negate="true" />
+                    </conditions>
+                    <action type="Rewrite" url="/index.html" />
+                </rule>
+            </rules>
+        </rewrite>
+    </system.webServer>
+</configuration>
+
+```
