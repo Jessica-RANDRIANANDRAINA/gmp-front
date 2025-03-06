@@ -4,23 +4,28 @@
 
 This repository contains the frontend code for the GMP project.
 
+## Table of Contents
+- [About GMP](#about-gmp)
+  - [Key Features](#key-features)
+  - [Authentication](#authentication)
+  - [Activity Tracking](#activity-tracking)
+- [Prerequisites](#prerequisites)
+  - [Local Development](#local-development)
+  - [Deployment](#deployment)
+- [Installation](#installation)
+- [Usage](#usage)
+- [How To Deploy](#how-to-deploy)
+
 ## About GMP
 
 GMP is a web application designed to help manage projects and activities for Ravinala personnel.
 
 ### Key Features
 
-- **Budget Management**:  
-  Manage project budgets, including their amounts, unique codes, and the department sources.
-
-- **Resource Management**:  
-  Track and organize all the materials required for a project, such as cameras, chairs, and other equipment.
-
-- **Project Phases**:  
-  Define and manage the phases of a project. Each project consists of one or multiple phases, which outline the project's progress.
-
-- **Team Management**:  
-  Assign roles and manage project teams, including:
+- **Budget Management**: Manage project budgets, including their amounts, unique codes, and the department sources.
+- **Resource Management**: Track and organize all the materials required for a project, such as cameras, chairs, and other equipment.
+- **Project Phases**: Define and manage the phases of a project. Each project consists of one or multiple phases, which outline the project's progress.
+- **Team Management**: Assign roles and manage project teams, including:
   - Project Owners: Responsible for overseeing the project.
   - Team Members: Individuals tasked with executing the project.
   - Observers: Users who can monitor the project's progress.
@@ -32,44 +37,80 @@ Access to GMP requires Active Directory credentials. Use your Ravinala account i
 ### Activity Tracking
 
 With GMP, you can also manage individual activities, such as:
-
 - **Intercontract**: Non-project-related activities or idle periods where no project work is performed.
 - **Transverse Activities**: Tasks that may or may not be project-related, such as meetings, onboarding sessions, or training.
 
 These features help track the time spent on various activities and ensure efficient management of resources and personnel.
 
-## Table of Contents
+## Prerequisites
 
-- [About GMP](#about-gmp)
-  - [Key Features](#key-features)
-  - [Authentication](#authentication)
-  - [Activity tracking](#activity-tracking)
-- [Table of contents](#table-of-contents)
-- [Installation](#installation)
-- [Usage](#usage)
+### Local Development
+
+To run the application locally, you need:
+
+- **Node.js**: Version `v20.15.1` or compatible
+- **npm**: Usually comes with Node.js installation
+- **Modern web browser**: Chrome, Firefox, Edge, or Safari
+
+### Deployment
+
+For deployment to production environments, if you use IIS server, ensure you have:
+
+- **Node.js**: Version `v20.15.1` or compatible
+- **Url rewrite iis**		[Download here](https://www.iis.net/downloads/microsoft/url-rewrite)
+-	**IIS Cors**  [Download here](https://www.iis.net/downloads/microsoft/iis-cors-module)
 
 ## Installation
 
 To set up the project, follow these steps:
 
-1. Install the required dependencies by running the following command
+1. Clone the repository:
+   ```bash
+   git clone [repository-url]
+   cd gmp-frontend
+   ```
 
-```bash
-npm install
-```
+2. Install the required dependencies:
+   ```bash
+   npm install
+   ```
 
-2. Copy the content of the `.env.example` file into a new file named `.env` and configure the link `VITE_API_ENDPOINT` to match your ip.
+3. Configure environment variables:
+   ```bash
+   cp .env.example .env
+   ```
+   Edit the `.env` file and set `VITE_API_ENDPOINT` to match your backend API endpoint.
+   it will copy what inside .env.example file to your .env file
 
 ## Usage
 
-To start the development server, run:
-
+To start the development server:
 ```bash
 npm run dev
 ```
 
-To build the project for production, run:
-
+To build the project for production:
 ```bash
 npm run build
 ```
+
+To preview the production build locally:
+```bash
+npm run preview
+```
+
+## How To Deploy
+
+- Make sure that your environnement variables in `.env` match the IP in production. Change if that's not the case. 
+- run the command 
+```bash
+npm run build
+```
+- copy the dist file in the gmp-front via ftp
+* The identifiants for FTP are :
+  - Protocole de fichier : FTP
+  - Nom d'hôte : 10.0.180.37
+  - Port : 21
+  - Nom d'utilisateur : gmpfront
+  - Mot de passe : gmp
+
