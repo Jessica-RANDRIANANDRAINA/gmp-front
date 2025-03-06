@@ -123,7 +123,8 @@ npm run build
   - Port : 21
   - Nom d'utilisateur : gmpfront
   - Mot de passe : gmp
-    **NB** DON'T ERASE THE `web.config` file
+
+**NB** DON'T ERASE THE `web.config` file
 
 - If you erase the `web.config` file just create the `web.config` file and put this inside
 
