@@ -30,10 +30,10 @@ const GanttChart: React.FC<GanttChartProps> = ({ tasks }) => {
       gantt.config.details_on_dblclick = false;
       gantt.config.drag_links = false;
 
-      // gantt.attachEvent("onTaskDblClick", (id) => {
-      //   navigate(`/gmp/project/details/${id}/details`);
-      //   return false;
-      // });
+      gantt.attachEvent("onTaskDblClick", (id) => {
+        navigate(`/gmp/project/details/${id}/details`);
+        return false;
+      });
       
 
       gantt.templates.task_class = (_start, _end, task) => {
@@ -175,7 +175,7 @@ const GanttChart: React.FC<GanttChartProps> = ({ tasks }) => {
       <button
         type="button"
         onClick={goToToday}
-        className="mb-2 ml-4 px-4 py-2  text-white  transition border-primaryGreen bg-primaryGreen rounded-lg dark:border-darkgreen dark:bg-darkgreen dark:hover:bg-opacity-90"
+        className="mb-2 px-4 py-2  text-white  transition border-primaryGreen bg-primaryGreen rounded-lg dark:border-darkgreen dark:bg-darkgreen dark:hover:bg-opacity-90"
       >
         Aller à aujourd'hui
       </button>
