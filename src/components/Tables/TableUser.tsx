@@ -120,8 +120,9 @@ const TableUser = ({
     const fetchDepartmentAndHabilitation = async () => {
       const depart = await getAllDepartments();
       const habilit = await getAllHabilitationLabels();
+      const updatedHabilit = [...habilit, "Vide"];
       setDepartments(depart);
-      setHabilitations(habilit);
+      setHabilitations(updatedHabilit);
     };
 
     fetchDepartmentAndHabilitation();
