@@ -37,3 +37,14 @@ export const updateNotifRead = async (userid: string, notifid: string) => {
     throw new Error(`Error at update notif read state service: ${error}`);
   }
 };
+// make all notif readed
+export const MakeAllNotifReaded = async (userid: string) => {
+  try {
+    const response = await axios.put(
+      `${endPoint}/api/Notification/read-all/${userid}`
+    )
+    return response.data
+  } catch (error) {
+    throw new Error(`Error at update all notif read state service: ${error}`);
+  }
+}

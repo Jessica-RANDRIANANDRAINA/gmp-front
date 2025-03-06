@@ -1,7 +1,11 @@
 import Breadcrumb from "../../components/BreadCrumbs/BreadCrumb";
 import ProjectLayout from "../../layout/ProjectLayout";
 import { useCallback, useEffect, useState } from "react";
-import { getAllMyNotification, updateNotifRead } from "../../services/Project";
+import {
+  getAllMyNotification,
+  updateNotifRead,
+  MakeAllNotifReaded,
+} from "../../services/Project";
 import { INotification, IListNotification } from "../../types/Notification";
 import {
   formatDate,
@@ -60,6 +64,13 @@ const AllNotifications = () => {
       } catch (error) {
         console.error("Error fetching notifications:", error);
       }
+    }
+  };
+  const handleMarkAllAsRead = async () => {
+    if (decodedToken?.jti) {
+      const userid = decodedToken?.jti;
+      await MakeAllNotifReaded(userid);
+      await fetchNotifications(userid);
     }
   };
 
@@ -121,7 +132,7 @@ const AllNotifications = () => {
     <ProjectLayout>
       <div className="mx-4 p-6 md:mx-10 bg-gray-50 dark:bg-gray-900 min-h-screen transition-colors duration-300">
         {/* Breadcrumb */}
-        <div className="w-full mb-6 flex justify-between items-center">
+        <div className="w-full  flex justify-between items-center">
           <Breadcrumb
             paths={[
               { name: "Projets", to: "/gmp/project/list" },
@@ -129,6 +140,17 @@ const AllNotifications = () => {
             ]}
           />
         </div>
+
+        {decodedToken?.jti && (
+          <div>
+            <button
+              onClick={handleMarkAllAsRead}
+              className="mb-4 px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
+            >
+              Tout marquer comme lu
+            </button>
+          </div>
+        )}
 
         {/* Notifications Timeline */}
         <div className="space-y-6">

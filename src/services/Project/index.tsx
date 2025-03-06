@@ -43,7 +43,11 @@ import {
   getActivitiesStatInAYear,
   getActivitiesPercentage,
 } from "./Activities";
-import { getAllMyNotification, updateNotifRead } from "./NotificationServices";
+import {
+  getAllMyNotification,
+  updateNotifRead,
+  MakeAllNotifReaded,
+} from "./NotificationServices";
 
 export {
   getAllProject,
@@ -85,4 +89,5 @@ export {
   getActivitiesStatInAYear,
   getActivitiesPercentage,
   getProjectStat,
+  MakeAllNotifReaded,
 };
