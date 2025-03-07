@@ -17,9 +17,7 @@ export const getAllMyHabilitation = async () => {
 
       if (decoded?.jti) {
         const habilitation = await getUserHabilitations(decoded?.jti);
-        console.log("OOOOOOOOOOOOOOOOO")
-        console.log(habilitation)
-        console.log("OOOOOOOOOOOOOOOOO")
+        
 
         const transformed = transformHabilitation(habilitation.habilitations);
 
