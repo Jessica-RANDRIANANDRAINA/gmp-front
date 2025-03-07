@@ -1,10 +1,4 @@
-import {
-  useState,
-  useEffect,
-  createContext,
-  useCallback,
-  useMemo,
-} from "react";
+import { useState, useEffect, createContext, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { HubConnection, HubConnectionBuilder } from "@microsoft/signalr";
 import { SketchPicker } from "react-color";
