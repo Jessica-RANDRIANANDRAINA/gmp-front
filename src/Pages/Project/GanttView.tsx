@@ -79,6 +79,7 @@ const GanttView = () => {
         end_date:
           pr.endDate === null ? new Date(pr.startDate) : new Date(pr.endDate),
         progress: pr.completionPercentage / 100,
+        type: "project",
       },
       // Ajouter les phases comme objets séparés avec un champ 'parent'
       ...pr.listPhases.map((phase: any) => ({
@@ -95,6 +96,7 @@ const GanttView = () => {
             : new Date(phase.endDate),
         parent: pr.id,
         progress: phase.status === "Terminé" ? 1 : 0,
+        type: "phase",
       })),
     ]);
 

@@ -31,31 +31,41 @@ const GanttChart: React.FC<GanttChartProps> = ({ tasks }) => {
       gantt.config.drag_links = false;
 
       gantt.attachEvent("onTaskDblClick", (id) => {
-        navigate(`/gmp/project/details/${id}/details`);
+        const task = gantt.getTask(id);
+        if (task.type === "project") {
+          navigate(`/gmp/project/details/${id}/details`);
+        }
         return false;
       });
-      
 
       gantt.templates.task_class = (_start, _end, task) => {
         const currentDate = new Date();
         if (
           (task.duration && task.duration > 0) ||
-          (task.start_date && task.end_date && new Date(task.start_date).getTime() !== new Date(task.end_date).getTime())
+          (task.start_date &&
+            task.end_date &&
+            new Date(task.start_date).getTime() !==
+              new Date(task.end_date).getTime())
         ) {
-          if (task.end_date && new Date(task.end_date) < currentDate && task.progress !==1) {
+          if (
+            task.end_date &&
+            new Date(task.end_date) < currentDate &&
+            task.progress !== 1
+          ) {
             return "task-late"; // Marquer la tâche en retard si sa date de fin est passée
           }
         }
-        return ""; 
+        return "";
       };
 
       gantt.config.columns = [
-        { name: "text", label: "Projet", width: "*", tree: true },
+        { name: "text", label: "Projet", tree: true, resize: true, width: 300 },
         { name: "start_date", label: "Début", align: "center" },
         {
           name: "duration",
           label: "Durée (jours)",
           align: "center",
+          width: 100,
           template: function (task) {
             return (task.duration && task.duration <= 0) ||
               (task.end_date &&
@@ -67,6 +77,7 @@ const GanttChart: React.FC<GanttChartProps> = ({ tasks }) => {
           },
         },
       ];
+
       gantt.locale = {
         date: {
           month_full: [
@@ -159,6 +170,8 @@ const GanttChart: React.FC<GanttChartProps> = ({ tasks }) => {
         },
       };
 
+      gantt.init(ganttRef.current);
+
       gantt.clearAll();
       gantt.parse({
         data: tasks,
@@ -181,7 +194,7 @@ const GanttChart: React.FC<GanttChartProps> = ({ tasks }) => {
       </button>
       <div
         ref={ganttRef}
-        className="h-[500px] md:h-[700px] w-full rounded-lg"
+        className="  max-h-[450px] border border-slate-50  w-full"
       />
     </div>
   );
