@@ -29,6 +29,7 @@ const AddAccessModal = ({
     restoreHierarchy: 0,
     actualizeUserData: 0,
     assignAccess: 0,
+    watchAllActivity: 0,
   });
   const [projectAccess, setProjectAccess] = useState({
     id: "",
@@ -376,6 +377,21 @@ const AddAccessModal = ({
                     isChecked
                       ? handleCheckBoxChange("project", "assign", 1)
                       : handleCheckBoxChange("project", "assign", 0)
+                  }
+                />
+              </div>
+            </div>
+            <div className="mb-4 pb-2 border-b-2 border-b-slate-400">
+              <label className="block text-gray-700 text-sm font-bold mb-2">
+                Accès Activité (transverse / intercontrat/ projet)
+              </label>
+              <div className="pl-3 space-y-1">
+                <Checkbox
+                  label="Regarder les activité de All Ravinala"
+                  onStateCheckChange={(isChecked) =>
+                    isChecked
+                      ? handleCheckBoxChange("admin", "watchAllActivity", 1)
+                      : handleCheckBoxChange("admin", "watchAllActivity", 0)
                   }
                 />
               </div>

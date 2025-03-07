@@ -10,6 +10,7 @@ export interface TableAccessProps {
       restoreHierarchy: number;
       actualizeUserData: number;
       assignAccess: number;
+      watchAllActivity: number;
     }[];
     habilitationProjects: {
       assign: number;

@@ -17,6 +17,9 @@ export const getAllMyHabilitation = async () => {
 
       if (decoded?.jti) {
         const habilitation = await getUserHabilitations(decoded?.jti);
+        console.log("OOOOOOOOOOOOOOOOO")
+        console.log(habilitation)
+        console.log("OOOOOOOOOOOOOOOOO")
 
         const transformed = transformHabilitation(habilitation.habilitations);
 
@@ -38,6 +41,7 @@ const transformHabilitation = (habilitations: any[]) => {
       updateHabilitation: false,
       actualizeUserData: false,
       assignAccess: false,
+      watchAllActivity: false,
     },
     project: {
       assign: false,
@@ -89,6 +93,7 @@ const transformHabilitation = (habilitations: any[]) => {
           admin.updateHabilitation === 1;
         habilitation.admin.actualizeUserData ||= admin.actualizeUserData === 1;
         habilitation.admin.assignAccess ||= admin.assignAccess === 1;
+        habilitation.admin.watchAllActivity ||= admin.watchAllActivity === 1;
       }
 
       // Project habilitations: Same logic as admin

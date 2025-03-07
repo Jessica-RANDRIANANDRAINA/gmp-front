@@ -1,4 +1,10 @@
-import { useState, useEffect, createContext } from "react";
+import {
+  useState,
+  useEffect,
+  createContext,
+  useCallback,
+  useMemo,
+} from "react";
 import { useParams } from "react-router-dom";
 import { HubConnection, HubConnectionBuilder } from "@microsoft/signalr";
 import { SketchPicker } from "react-color";
@@ -42,6 +48,9 @@ const Activity = () => {
     localStorage.getItem("activity_view") || "table"
   );
   const [subordinates, setSubordinates] = useState<
+    Array<{ id: string; name: string; email: string }>
+  >([]);
+  const [mySubordinates, setMySubordinates] = useState<
     Array<{ id: string; name: string; email: string }>
   >([]);
 
@@ -130,32 +139,52 @@ const Activity = () => {
     setSearchClicked(true);
   };
 
-  const fetchSubordinates = async () => {
+  const fetchSubordinates = useCallback(async () => {
     try {
       if (userid && decodedToken) {
         const myId = decodedToken?.jti ?? "";
 
         const data: TSubordinate[] = await getMySubordinatesNameAndId(myId);
 
+        const hab = await getAllMyHabilitation();
+
         const transformedArray = data?.map(({ id, name, email }) => ({
           id,
           name,
           email,
         }));
+
         const me = {
           id: decodedToken?.jti ?? "",
           name: decodedToken?.name ?? "",
           email: decodedToken?.sub ?? "",
         };
         const subordinatesAndMe = [...transformedArray, me];
-
-        setSubordinates(subordinatesAndMe);
-        setIsSubordinatesFetched(true);
+        if (hab?.admin?.watchAllActivity) {
+          const allUsers: TSubordinate[] = await getMySubordinatesNameAndId(
+            myId,
+            "all"
+          );
+          const transformedAllSusersArray = allUsers?.map(
+            ({ id, name, email }) => ({
+              id,
+              name,
+              email,
+            })
+          );
+          setSubordinates(transformedAllSusersArray);
+          setMySubordinates(subordinatesAndMe);
+          setIsSubordinatesFetched(true);
+        } else {
+          setSubordinates(subordinatesAndMe);
+          setMySubordinates(subordinatesAndMe);
+          setIsSubordinatesFetched(true);
+        }
       }
     } catch (error) {
       console.error(`Error at fetch subordinates :${error}`);
     }
-  };
+  }, [decodedToken]);
 
   useEffect(() => {
     fetchSubordinates();
@@ -557,7 +586,7 @@ const Activity = () => {
                   colors={getColorMap()}
                   isAddActivity={isAddActivity}
                   setIsAddActivity={setIsAddActivity}
-                  subordinates={subordinates}
+                  subordinates={mySubordinates}
                   statusSelectedOptions={statusSelectedOptions}
                   myHabilitation={myHabilitation}
                   isSubordinatesFetched={isSubordinatesFetched}
@@ -571,7 +600,7 @@ const Activity = () => {
                   colors={getColorMap()}
                   isAddActivity={isAddActivity}
                   setIsAddActivity={setIsAddActivity}
-                  subordinates={subordinates}
+                  subordinates={mySubordinates}
                   statusSelectedOptions={statusSelectedOptions}
                   myHabilitation={myHabilitation}
                   isSubordinatesFetched={isSubordinatesFetched}

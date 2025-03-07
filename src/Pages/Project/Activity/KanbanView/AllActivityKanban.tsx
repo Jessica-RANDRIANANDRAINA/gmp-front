@@ -179,12 +179,15 @@ const AllActivityKanban = ({
       var response;
       var Ids: (string | undefined)[] = [];
       const subordinatesId = subordinates?.map((sub) => sub?.id);
+      
       if (search?.ids.length === 1) {
         if (!search?.ids?.[0]) {
           Ids = subordinatesId;
         } else {
           Ids = search?.ids;
         }
+      } else if (search?.ids.length > 100) {
+        Ids = subordinatesId;
       } else {
         Ids = search?.ids;
       }

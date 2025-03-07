@@ -39,6 +39,7 @@ export interface IMyHabilitation {
     updateHabilitation: boolean;
     actualizeUserData: boolean;
     assignAccess: boolean;
+    watchAllActivity: boolean;
   };
   project: {
     assign: boolean;

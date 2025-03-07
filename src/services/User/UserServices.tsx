@@ -76,10 +76,16 @@ export const getAllUserPaginated = async (
   }
 };
 
-export const getMySubordinatesNameAndId = async (superiorid: string) => {
+export const getMySubordinatesNameAndId = async (
+  superiorid: string,
+  mode?: string
+) => {
   try {
     const response = await axios.get(
-      `${endPoint}/api/User/subordinates/${superiorid}`
+      `${endPoint}/api/User/subordinates/${superiorid}`,
+      {
+        params: mode ? { mode } : {},
+      }
     );
     return response.data;
   } catch (error) {
