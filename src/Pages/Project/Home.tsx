@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import ProjectLayout from "../../layout/ProjectLayout";
 import { IActivityStat } from "../../types/Project";
-import { IDecodedToken } from "../../types/user";
 import { decodeToken } from "../../services/Function/TokenService";
 import CardDropDown from "../../components/card/CardDropDown";
 import StackedColumn from "../../components/chart/StackedColumn";
@@ -19,6 +18,7 @@ import {
 import { getMySubordinatesNameAndId } from "../../services/User";
 import { formatDate } from "../../services/Function/DateServices";
 import ProjectStatsCard from "../../components/card/ProjectStatsCard";
+
 
 type TSubordinate = {
   id: string;
@@ -42,7 +42,6 @@ type StatsProjectData = {
 
 const Home = () => {
   const [statActivities, setStatActivities] = useState<IActivityStat>();
-  const [decodedToken, setDecodedToken] = useState<IDecodedToken>();
   const [chartData, setChartData] = useState<
     { name: string; data: number[] }[]
   >([]);
@@ -67,7 +66,7 @@ const Home = () => {
   const [statsProject, setStatsProject] = useState<StatsProjectData | null>(
     null
   );
-
+  
   const categories = ["Projets", "Transverses", "Intercontrats"];
 
   // Transform API data for chart format
@@ -111,7 +110,6 @@ const Home = () => {
         }
 
         const decoded = decodeToken("pr");
-        setDecodedToken(decoded);
 
         if (!decoded?.jti) {
           console.error("Invalid token: no JTI found");
@@ -193,8 +191,6 @@ const Home = () => {
           ? updatedUsers.map((user) => user.id)
           : subordinates.map((user) => user.id);
 
-      console.log("88888888888888888888");
-      console.log(selectedUserInput);
       if (selectedUserInput.length === 1) {
         await fetchDashboardData(userIds);
       }
