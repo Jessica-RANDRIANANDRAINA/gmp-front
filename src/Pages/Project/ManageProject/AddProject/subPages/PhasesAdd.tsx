@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { IPhase, IProjectData } from "../../../../../types/Project";
+import { DragDropContext, Droppable, Draggable, DropResult } from "react-beautiful-dnd";
 import {
   CustomInput,
   // CustomSelect,
@@ -233,6 +234,19 @@ const PhasesAdd = ({
       )
     );
   };
+
+  // Fonction pour gérer la fin du glisser-déposer
+  const handleOnDragEnd = (result: DropResult) => {
+    const { source, destination } = result;
+  
+    if (!destination) return; // Vérifier si destination est null
+  
+    const items = Array.from(phaseAndLivrableList);
+    const [reorderedItem] = items.splice(source.index, 1);
+    items.splice(destination.index, 0, reorderedItem);
+  
+    setPhaseAndLivrableList(items);
+  };
   return (
     <form
       className={`space-y-2   transition-all duration-1000 ease-in-out ${
@@ -288,38 +302,56 @@ const PhasesAdd = ({
               Ajouter une phase
             </button>
             <div className="mt-2 space-y-4">
-              <div className="flex flex-wrap gap-1">
-                {phaseAndLivrableList?.map((phase, index) => (
-                  <div key={phase?.id}>
-                    <div className="flex">
-                      <div
-                        className={`flex text base border rounded-md cursor-pointer hover:bg-green-50 dark:hover:bg-green-200 border-green-200 dark:border-green-300 dark:hover:text-green-700 ${
-                          activePhaseId === phase?.id
-                            ? "dark:bg-green-200 bg-green-100 text-green-500 dark:text-green-600 dark:border-2 font-semibold"
-                            : ""
-                        }`}
-                      >
-                        <span
-                          className="px-3 py-2 whitespace-nowrap overflow-hidden text-ellipsis text-gray-700 dark:text-gray-300 font-medium"
-                          onClick={() => {
-                            setActivePhaseId(phase?.id);
-                          }}
-                        >
-                          {phase.phase1 ? phase.phase1 : `Phase ${index + 1}`}
-                        </span>
-                        <button
-                          className="flex items-center justify-center px-3 py-2 text-red-500 dark:text-red-400 hover:text-white dark:hover:text-whiten hover:bg-red-500 transition rounded-r-md focus:outline-none focus:ring-2 focus:ring-red-500"
-                          onClick={() =>
-                            handleRemovePhaseList(phase.id ?? "", index)
-                          }
-                        >
-                          ✕
-                        </button>
-                      </div>
-                    </div>
+            <DragDropContext onDragEnd={handleOnDragEnd}>
+              <Droppable droppableId="phases">
+                {(provided) => (
+                  <div className="flex flex-wrap gap-1"
+                    {...provided.droppableProps}
+                    ref={provided.innerRef}
+                  >
+                    {phaseAndLivrableList?.map((phase, index) => (
+                      <Draggable key={String(phase?.id)} draggableId={String(phase?.id)} index={index}>
+                        {(provided) => (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                          >
+                            <div className="flex">
+                              <div
+                                className={`flex text base border rounded-md cursor-pointer hover:bg-green-50 dark:hover:bg-green-200 border-green-200 dark:border-green-300 dark:hover:text-green-700 ${
+                                  activePhaseId === phase?.id
+                                    ? "dark:bg-green-200 bg-green-100 text-green-500 dark:text-green-600 dark:border-2 font-semibold"
+                                    : ""
+                                }`}
+                              >
+                                <span
+                                  className="px-3 py-2 whitespace-nowrap overflow-hidden text-ellipsis text-gray-700 dark:text-gray-300 font-medium"
+                                  onClick={() => {
+                                    setActivePhaseId(phase?.id);
+                                  }}
+                                >
+                                  {phase.phase1 ? phase.phase1 : `Phase ${index + 1}`}
+                                </span>
+                                <button
+                                  className="flex items-center justify-center px-3 py-2 text-red-500 dark:text-red-400 hover:text-white dark:hover:text-whiten hover:bg-red-500 transition rounded-r-md focus:outline-none focus:ring-2 focus:ring-red-500"
+                                  onClick={() =>
+                                    handleRemovePhaseList(phase.id ?? "", index)
+                                  }
+                                >
+                                  ✕
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </Draggable>
+                    ))}
+                    {provided.placeholder}
                   </div>
-                ))}
-              </div>
+                )}
+              </Droppable>
+            </DragDropContext>
               {phaseAndLivrableList?.map((phase, index) => (
                 <div
                   key={phase.id}
