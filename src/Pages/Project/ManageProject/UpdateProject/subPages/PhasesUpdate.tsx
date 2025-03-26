@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { DragDropContext, Droppable, Draggable, DropResult } from "react-beautiful-dnd";
 import {
   CustomInput,
   // CustomSelect,
@@ -223,6 +224,28 @@ const PhasesUpdate = ({
       )
     );
   };
+
+   // Fonction pour gérer le déplacement des phases
+  const handleOnDragEnd = (result: DropResult, phaseAndLivrableList:IPhase[], setPhaseAndLivrableList: React.Dispatch<React.SetStateAction<IPhase[]>>) => {
+  const { destination, source } = result;
+
+  if (!destination) return;
+  if (destination.index === source.index) return;
+
+  // Création d'une nouvelle liste avec les éléments réarrangés
+  const newPhases = Array.from(phaseAndLivrableList);
+  const [movedPhase] = newPhases.splice(source.index, 1);
+  newPhases.splice(destination.index, 0, movedPhase);
+
+  // Mise à jour du rank pour conserver l'ordre correct
+  newPhases.forEach((phase, index) => {
+    phase.rank = index;
+  });
+
+  // Mise à jour de l'état
+  setPhaseAndLivrableList(newPhases);
+};
+ 
   return (
     <form
       className={`space-y-2 transition-all duration-300 ease-in-out ${
@@ -261,7 +284,54 @@ const PhasesUpdate = ({
               Ajouter une phase
             </button>
             <div className="mt-2 space-y-4">
-              <div className="flex flex-wrap gap-1">
+            <DragDropContext onDragEnd={(result) => handleOnDragEnd(result, phaseAndLivrableList, setPhaseAndLivrableList)}>
+      <Droppable droppableId="phases" direction="vertical">
+        {(provided) => (
+          <div className="flex flex-wrap gap-1" ref={provided.innerRef} {...provided.droppableProps}>
+            {phaseAndLivrableList
+              ?.slice()
+              ?.filter((phase) => phase?.rank !== undefined)
+              ?.sort((a, b) => (a.rank ?? 0) - (b?.rank ?? 0))
+              ?.map((phase, index) => (
+                <Draggable key={String(phase?.id)} draggableId={String(phase?.id)} index={index}>
+                  {(provided) => (
+                    <div
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                    >
+                      <div className="flex">
+                        <div
+                          className={`flex text base border rounded-md cursor-pointer hover:bg-green-50 dark:hover:bg-green-200 border-green-200 dark:border-green-300 dark:hover:text-green-700 ${
+                            activePhaseId === phase?.id
+                              ? "dark:bg-green-200 bg-green-100 text-green-500 dark:text-green-600 dark:border-2 font-semibold"
+                              : ""
+                          }`}
+                        >
+                          <span
+                            className="px-3 py-2 whitespace-nowrap overflow-hidden text-ellipsis text-gray-700 dark:text-gray-300 font-medium"
+                            onClick={() => setActivePhaseId(phase?.id)}
+                          >
+                            {phase.phase1 ? phase.phase1 : `Phase ${index + 1}`}
+                          </span>
+                          <button
+                            className="flex items-center justify-center px-3 py-2 text-red-500 dark:text-red-400 hover:text-white dark:hover:text-whiten hover:bg-red-500 transition rounded-r-md focus:outline-none focus:ring-2 focus:ring-red-500"
+                            onClick={() => handleRemovePhaseList(phase.id ?? "", index)}
+                          >
+                            ✕
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </Draggable>
+              ))}
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
+    </DragDropContext>
+              {/* <div className="flex flex-wrap gap-1">
                 {phaseAndLivrableList
                   ?.slice()
                   ?.filter((phase) => phase?.rank !== undefined)
@@ -296,7 +366,7 @@ const PhasesUpdate = ({
                       </div>
                     </div>
                   ))}
-              </div>
+              </div> */}
               {phaseAndLivrableList
                 ?.slice()
                 ?.filter((phase) => phase?.rank !== undefined)
