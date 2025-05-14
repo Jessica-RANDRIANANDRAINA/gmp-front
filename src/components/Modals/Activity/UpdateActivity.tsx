@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Modal, ModalBody, ModalFooter } from "../Modal";
 import { IActivityAdd } from "../../../types/Project";
-// import { getMondayAndFriday } from "../../../services/Function/DateServices";
 import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
 import { BeatLoader } from "react-spinners";
@@ -15,6 +14,9 @@ import {
   updateTransverse,
 } from "../../../services/Project";
 import { IMyHabilitation } from "../../../types/Habilitation";
+import { getAllUsers } from "../../../services/User";
+import { getInitials } from "../../../services/Function/UserFunctionService";
+import { IUserProject } from "../../../types/Project";
 
 const notyf = new Notyf({ position: { x: "center", y: "top" } });
 
@@ -39,7 +41,8 @@ const UpdateActivity = ({
     type: activity?.content?.type,
     dailyEffort: activity?.content?.dailyEffort,
     startDate: activity?.content?.startDate,
-    endDate: activity?.content?.endDate,
+    dueDate: activity?.content?.dueDate,
+    fichier: activity?.content?.fichier,
     projectTitle: activity?.content?.projectTitle,
     phaseTitle: activity?.content?.phaseTitle,
     projectId: activity?.content?.projectId,
@@ -49,6 +52,22 @@ const UpdateActivity = ({
     status: activity?.content?.status,
     priority: activity?.content?.priority,
   });
+  
+  const [usersList, setUsersList] = useState<Array<any>>([]);
+  const [filteredUsers, setFilteredUsers] = useState<Array<any>>([]);
+  const [showUserList, setShowUserList] = useState<boolean>(false);
+  const [assignedPerson, setAssignedPerson] = useState<Array<IUserProject>>(
+    activity?.content?.user?.map((user: any) => ({
+      userid: user.userid,
+      projectid: activityData.projectId,
+      role: "collaborator",
+      user: {
+        name: user.user?.name || "",
+        email: user.user?.email || ""
+      }
+    })) || []
+  );
+
   const [projectData, setProjectData] = useState<any>();
   const [projectTitle, setProjectTitle] = useState<Array<string>>([]);
   const [phaseTitle, setPhaseTitle] = useState<Array<string>>([]);
@@ -59,7 +78,59 @@ const UpdateActivity = ({
     projectId: "",
     phaseId: "",
   });
-  // const { monday, friday } = getMondayAndFriday();
+
+  // Fetch all users
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const users = await getAllUsers();
+        setUsersList(users);
+        setFilteredUsers(users);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
+    
+    fetchUsers();
+  }, []);
+
+  const handleUserSearch = (searchTerm: string) => {
+    if (searchTerm === "") {
+      setFilteredUsers(usersList);
+      setShowUserList(false);
+    } else {
+      const filtered = usersList.filter(user => 
+        user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        user.email.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setFilteredUsers(filtered);
+      setShowUserList(true);
+    }
+  };
+
+  const handleAddUser = (user: {
+    id: string;
+    name: string;
+    email: string;
+  }) => {
+    if (!assignedPerson.some(u => u.userid === user.id)) {
+      const formatUser = {
+        userid: user.id,
+        projectid: activityData.projectId,
+        role: "collaborator",
+        user: {
+          name: user.name,
+          email: user.email
+        },
+      };
+      setAssignedPerson(prev => [...prev, formatUser]);
+      setShowUserList(false);
+    }
+  };
+
+  const handleRemoveUser = (userId: string) => {
+    setAssignedPerson(prev => prev.filter(user => user.userid !== userId));
+  };
 
   const fetchProjectData = async () => {
     try {
@@ -97,9 +168,11 @@ const UpdateActivity = ({
       console.error(`Error at fetch project data : ${error}`);
     }
   };
+
   useEffect(() => {
     fetchProjectData();
   }, []);
+
   // initialize project title and phase title
   useEffect(() => {
     const project = projectData?.find(
@@ -121,6 +194,7 @@ const UpdateActivity = ({
 
     setActivityData(updatedTaskData);
   }, [projectData]);
+
   // change list of phase available if projectTitle change and change both project id and phaseId
   useEffect(() => {
     const project = projectData?.find(
@@ -155,17 +229,25 @@ const UpdateActivity = ({
   const handleCloseModal = () => {
     setModalUpdateOpen(false);
   };
+
   const handleUpdateActivity = async () => {
     setIsLoading(true);
     try {
+      const cleanDate = (date: string | null | undefined): string | undefined => {
+        if (!date) return undefined;
+        return date.includes('T') ? date.split('T')[0] : date;
+      };
+      
       if (activityData?.type === "Transverse") {
         const dataToSend = {
           title: activityData.title,
           startDate: activityData.startDate,
+          endDate: cleanDate(activityData.dueDate ?? undefined),
           dailyEffort: activityData.dailyEffort,
           type: activityData.transverseType,
           description: activityData.description,
           status: activityData.status,
+          fichier: activityData?.fichier,
         };
         if (activityData.id) {
           await updateTransverse(activityData.id, dataToSend);
@@ -174,26 +256,35 @@ const UpdateActivity = ({
         const dataToSend = {
           title: activityData.title,
           startDate: activityData.startDate,
+          endDate: cleanDate(activityData.dueDate ?? undefined),
           dailyEffort: activityData.dailyEffort,
           type: activityData.intercontractType,
           description: activityData.description,
           status: activityData.status,
+          fichier: activityData?.fichier,
         };
 
         if (activityData.id) {
           await updateIntercontract(activityData.id, dataToSend);
         }
       } else {
+        const formatUser = assignedPerson.map(user => ({
+          userid: user.userid,
+          taskid: activityData.id,
+        }));
+        
         const dataToSend = {
           startDate: activityData?.startDate,
+          dueDate: activityData?.dueDate,
           description: activityData?.description,
           dailyEffort: activityData?.dailyEffort,
           title: activityData?.title,
           priority: activityData?.priority,
           status: activityData?.status,
-          dueDate: activityData?.endDate,
+          fichier: activityData?.fichier,
+          listUsers: formatUser,
         };
-
+        
         if (activityData.id) {
           await updateTaskProject(activityData.id, dataToSend);
         }
@@ -218,192 +309,276 @@ const UpdateActivity = ({
       widthSize="medium"
     >
       <ModalBody>
-        <>
-          <div className="flex flex-col mb-2">
-            <span className=" text-sm font-semibold font-poppins text-black dark:text-white">
-              Attribuée à :
-            </span>{" "}
-            <span className="italic">{activity.content.userName}</span>
+        <div className="space-y-4">
+          {/* Section Assignation */}
+          <div className="space-y-2">
+           
+            
+            
+            <div className="relative">
+              <CustomInput
+                type="text"
+                label="Assigné à :"
+                rounded="medium"
+                className="text-sm"
+                onChange={(e) => handleUserSearch(e.target.value)}
+                onFocus={() => setShowUserList(true)}
+              />
+              
+              
+              {showUserList && filteredUsers.length > 0 && (
+                <div className="absolute z-10 mt-1 w-full bg-white dark:bg-boxdark border dark:border-formStrokedark rounded-md shadow-lg max-h-60 overflow-y-auto">
+                  {filteredUsers.map((user) => (
+                    <div
+                      key={user.id}
+                      className="flex items-center p-2 hover:bg-gray-100 dark:hover:bg-boxdark2 cursor-pointer"
+                      onClick={() => handleAddUser(user)}
+                    >
+                      <div className="w-8 h-8 rounded-full bg-secondaryGreen flex items-center justify-center text-white mr-2">
+                        {getInitials(user.name)}
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium">{user.name}</p>
+                        <p className="text-xs text-gray-500">{user.email}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+            
+            {/* Liste des utilisateurs assignés */}
+            <div className="flex flex-wrap gap-2">
+              {assignedPerson.map((user) => (
+                <div 
+                  key={user.userid} 
+                  className="flex items-center bg-gray-100 dark:bg-boxdark rounded-full px-3 py-1"
+                >
+                  <div className="w-6 h-6 rounded-full bg-secondaryGreen flex items-center justify-center text-white mr-2 text-xs">
+                    {getInitials(user.user?.name)}
+                  </div>
+                  <span className="text-sm mr-2">{user.user?.name}</span>
+                  <button 
+                    onClick={() => handleRemoveUser(user.userid!)}
+                    className="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
+                  >
+                    ×
+                  </button>
+                </div>
+              ))}
+            </div>
           </div>
-          <div>
+          
+          <CustomInput
+            required={true}
+            type="text"
+            label="Titre"
+            rounded="medium"
+            className="text-sm"
+            value={activityData.title}
+            onChange={(e) => {
+              setActivityData({
+                ...activityData,
+                title: e.target.value,
+              });
+            }}
+          />
+          
+          <div className="flex *:w-full flex-wrap md:flex-nowrap gap-2">
+            <CustomSelect
+              label="Type"
+              data={["Projet", "Transverse", "InterContract"]}
+              value={activityData.type}
+              onValueChange={(e) => {
+                setActivityData({
+                  ...activityData,
+                  type: e,
+                  transverseType: "",
+                  intercontractType: ""
+                });
+              }}
+            />
+
+            <CustomSelect
+              label="Statut"
+              data={[
+                "Backlog",
+                "En cours",
+                "Traité",
+                "En pause",
+                "Abandonné",
+              ]}
+              value={activityData.status}
+              onValueChange={(e) => {
+                setActivityData({
+                  ...activityData,
+                  status: e,
+                });
+              }}
+            />
+          </div>
+          
+          <div
+            className={` w-full *:w-full flex-wrap md:flex-nowrap  gap-2 ${
+              activity.content.type === "Projet" ? "flex" : "hidden"
+            } `}
+          >
+            <CustomSelect
+              label="Titre du projet"
+              data={projectTitle}
+              value={activityData.projectTitle}
+              onValueChange={(e) => {
+                setActivityData({
+                  ...activityData,
+                  projectTitle: e,
+                  phaseTitle: "",
+                  phaseId: ""
+                });
+              }}
+            />
+            <CustomSelect
+              className={` ${
+                activityData?.projectTitle === "" ? "hidden" : ""
+              }`}
+              label="Titre de la phase"
+              data={phaseTitle}
+              value={
+                activityData?.phaseTitle === ""
+                  ? initial?.phaseTitle?.slice(0, 20)
+                  : activityData?.phaseTitle?.slice(0, 20)
+              }
+              onValueChange={(e) => {
+                setActivityData({
+                  ...activityData,
+                  phaseTitle: e,
+                });
+              }}
+            />
+          </div>
+          <div
+            className={` w-full *:w-full flex-wrap md:flex-nowrap  gap-2 ${
+              activity.content.type === "Transverse" ? "flex" : "hidden"
+            } `}
+          >
+            <CustomSelect
+              required={true}
+              label="Type de transverse"
+              data={transverseType}
+              value={activityData.transverseType}
+              onValueChange={(e) => {
+                setActivityData({
+                  ...activityData,
+                  transverseType: e,
+                });
+              }}
+            />
+          </div>
+          <div
+            className={` w-full *:w-full flex-wrap md:flex-nowrap  gap-2 ${
+              activity.content.type === "InterContract" ? "flex" : "hidden"
+            } `}
+          >
+            <CustomSelect
+              required={true}
+              label="Type d'intercontrat"
+              data={intercontractType}
+              value={activityData.intercontractType}
+              onValueChange={(e) => {
+                setActivityData({
+                  ...activityData,
+                  intercontractType: e,
+                });
+              }}
+            />
+          </div>
+          <div className="flex *:w-full flex-wrap md:flex-nowrap gap-2">
             <CustomInput
               required={true}
-              type="text"
-              label="Titre"
+              type="date"
+              label="Date début"
               rounded="medium"
               className="text-sm"
-              value={activityData.title}
+              value={
+                activityData?.startDate
+                  ? activityData?.startDate?.split("T")?.[0]
+                  : ""
+              }
               onChange={(e) => {
                 setActivityData({
                   ...activityData,
-                  title: e.target.value,
+                  startDate: e.target.value,
                 });
               }}
             />
-            <div className="flex *:w-full flex-wrap md:flex-nowrap gap-2">
-              <CustomInput
-                required={true}
-                label="Type"
-                type="text"
-                rounded="medium"
-                className="text-sm"
-                value={activityData.type}
-                disabled={true}
-              />
-              <CustomSelect
-                label="Statut"
-                data={[
-                  "Backlog",
-                  "En cours",
-                  "Traité",
-                  "En pause",
-                  "Abandonné",
-                ]}
-                value={activityData.status}
-                onValueChange={(e) => {
-                  setActivityData({
-                    ...activityData,
-                    status: e,
-                  });
-                }}
-              />
-            </div>
-            <div
-              className={` w-full *:w-full flex-wrap md:flex-nowrap  gap-2 ${
-                activity.content.type === "Projet" ? "flex" : "hidden"
-              } `}
-            >
-              <CustomSelect
-                disabled={true}
-                label="Titre du projet"
-                data={projectTitle}
-                value={
-                  activityData?.projectTitle === ""
-                    ? initial?.phaseTitle?.slice(0, 20)
-                    : activityData?.projectTitle?.slice(0, 20)
-                }
-                onValueChange={(e) => {
-                  setActivityData({
-                    ...activityData,
-                    projectTitle: e,
-                    phaseTitle: "",
-                    phaseId: "",
-                  });
-                }}
-              />
-              <CustomSelect
-                disabled
-                className={` ${
-                  activityData?.projectTitle === "" ? "hidden" : ""
-                }`}
-                label="Titre de la phase"
-                data={phaseTitle}
-                value={
-                  activityData?.phaseTitle === ""
-                    ? initial?.phaseTitle?.slice(0, 20)
-                    : activityData?.phaseTitle?.slice(0, 20)
-                }
-                onValueChange={(e) => {
-                  setActivityData({
-                    ...activityData,
-                    phaseTitle: e,
-                  });
-                }}
-              />
-            </div>
-            <div
-              className={` w-full *:w-full flex-wrap md:flex-nowrap  gap-2 ${
-                activity.content.type === "Transverse" ? "flex" : "hidden"
-              } `}
-            >
-              <CustomSelect
-                required={true}
-                label="Type de transverse"
-                data={transverseType}
-                value={activityData.transverseType}
-                onValueChange={(e) => {
-                  setActivityData({
-                    ...activityData,
-                    transverseType: e,
-                  });
-                }}
-              />
-            </div>
-            <div
-              className={` w-full *:w-full flex-wrap md:flex-nowrap  gap-2 ${
-                activity.content.type === "InterContract" ? "flex" : "hidden"
-              } `}
-            >
-              <CustomSelect
-                required={true}
-                label="Type d'intercontrat"
-                data={intercontractType}
-                value={activityData.intercontractType}
-                onValueChange={(e) => {
-                  setActivityData({
-                    ...activityData,
-                    intercontractType: e,
-                  });
-                }}
-              />
-            </div>
-            <div className="flex *:w-full flex-wrap md:flex-nowrap gap-2">
-              <CustomInput
-                required={true}
-                type="date"
-                label="Au date du"
-                rounded="medium"
-                className="text-sm"
-                // min={monday}
-                // max={friday}
-                value={
-                  activityData?.startDate
-                    ? activityData?.startDate?.split("T")?.[0]
-                    : ""
-                }
-                onChange={(e) => {
-                  setActivityData({
-                    ...activityData,
-                    startDate: e.target.value,
-                  });
-                }}
-              />
-              <CustomInput
-                type="number"
-                min={1}
-                max={8}
-                label="Temps a consacré (heures)"
-                rounded="medium"
-                className="text-sm"
-                value={activityData.dailyEffort}
-                onChange={(e) => {
-                  let value = parseInt(e.target.value);
-                  if (value > 8) value = 8;
-                  if (value < 1) value = 1;
-                  setActivityData({
-                    ...activityData,
-                    dailyEffort: value,
-                  });
-                }}
-              />
-            </div>
-
             <CustomInput
-              type="textarea"
-              label="Description"
+              required={true}
+              type="date"
+              label="Date fin"
               rounded="medium"
               className="text-sm"
-              rows={5}
-              value={activityData.description}
+              value={
+                activityData?.dueDate 
+                  ? activityData.dueDate.includes('T') 
+                    ? activityData.dueDate.split('T')[0] 
+                    : activityData.dueDate
+                  : ""
+              }
+              min={activityData.startDate}
               onChange={(e) => {
                 setActivityData({
                   ...activityData,
-                  description: e.target.value,
+                  dueDate: e.target.value,
                 });
               }}
             />
           </div>
-        </>
+          <CustomInput
+            type="number"
+            min={1}
+            max={8}
+            label="Temps a consacré (heures)"
+            rounded="medium"
+            className="text-sm"
+            value={activityData.dailyEffort}
+            onChange={(e) => {
+              let value = parseInt(e.target.value);
+              if (value > 8) value = 8;
+              if (value < 1) value = 1;
+              setActivityData({
+                ...activityData,
+                dailyEffort: value,
+              });
+            }}
+          />
+
+          <CustomInput
+            type="textarea"
+            label="Description"
+            rounded="medium"
+            className="text-sm"
+            rows={5}
+            value={activityData.description}
+            onChange={(e) => {
+              setActivityData({
+                ...activityData,
+                description: e.target.value,
+              });
+            }}
+          />
+          <CustomInput
+            type="text"
+            label="Ajouter un lien"
+            rounded="medium"
+            className="text-sm"
+            value={activityData.fichier}
+            onChange={(e) => {
+              setActivityData({
+                ...activityData,
+                fichier: e.target.value,
+              });
+            }}
+          />
+        </div>
       </ModalBody>
       <ModalFooter>
         <p
@@ -429,7 +604,8 @@ const UpdateActivity = ({
           const hasRequiredFields =
             activityData?.title !== "" &&
             activityData?.type !== "" &&
-            activityData?.startDate !== "";
+            activityData?.startDate !== "" &&
+            activityData?.dueDate !== "";
 
           const isProjectComplete =
             activityData?.type === "Projet" &&
@@ -445,7 +621,6 @@ const UpdateActivity = ({
 
           var isDisabled;
 
-          // myHabilitation?.transverse?.update;
           if (activityData?.type === "Transverse") {
             isDisabled =
               hasRequiredFields &&

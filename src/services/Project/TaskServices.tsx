@@ -14,6 +14,39 @@ export const createTaskPhase = async (taskData: any) => {
 };
 
 // ===== GET ===== //
+export const getTaskDetails = async (activityId: string) => {
+  try {
+    const response = await axios.get(`${endPoint}/api/Task/details/${activityId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching task details:', error);
+    throw error;
+  }
+};
+
+// ===== GET ===== //
+export const getTransverseDetails = async (activityId: string) => {
+  try {
+    const response = await axios.get(`${endPoint}/api/Task/transverse/details/${activityId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching transverse details:', error);
+    throw error;
+  }
+};
+
+// ===== GET ===== //
+export const getIntercontractDetails = async (activityId: string) => {
+  try {
+    const response = await axios.get(`${endPoint}/api/Task/intercontract/details/${activityId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching intercontract details:', error);
+    throw error;
+  }
+};
+
+// ===== GET ===== //
 // get all task by project and by phase
 export const getTaskByProjectAndPhaseID = async (
   projectId: string,

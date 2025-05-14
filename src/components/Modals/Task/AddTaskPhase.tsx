@@ -36,6 +36,7 @@ const AddTaskPhase = ({
     priority: "Moyen",
     startDate: undefined,
     dueDate: undefined,
+    fichier:"",
     dailyEffort: 1,
     status: "Backlog",
   });
@@ -102,9 +103,17 @@ const AddTaskPhase = ({
   const handleCreateTask = async () => {
     setIsLoading(true);
     try {
+      // Validate required fields
+      if (!taskData.title || !taskData.startDate || assignedPerson.length === 0) {
+        notyf.error("Please fill all required fields");
+        setIsLoading(false);
+        return;
+      }
+  
       const id = uuid4();
       const initiatorId = decodedToken?.jti;
       const initiatorName = decodedToken?.name;
+      
       const formatuser = assignedPerson.map((u) => ({
         userid: u.userid,
         taskid: id,
@@ -112,37 +121,39 @@ const AddTaskPhase = ({
           name: u?.user?.name,
         },
       }));
-
+  
       const dataToSend = {
         id,
-        title: taskData?.title,
-        description: taskData?.description,
+        title: taskData.title,
+        description: taskData.description || "", // Ensure description is never undefined
         phaseid: phaseId,
         projectid: projectId,
-        priority: taskData?.priority,
-        startDate: taskData?.startDate,
-        dueDate: taskData?.dueDate,
+        priority: taskData.priority,
+        startDate: new Date(taskData.startDate).toISOString(), // Convert to ISO string
+        dueDate: taskData.dueDate ? new Date(taskData.dueDate).toISOString() : null,
+        fichier: taskData.fichier,
         listUsers: formatuser,
-        DailyEffort: taskData?.dailyEffort,
-        status: taskData?.status,
+        dailyEffort: taskData.dailyEffort, // Changed to match state name
+        status: taskData.status,
         initiatorId,
         initiatorName,
       };
+  
+      console.log("Sending data:", dataToSend); // For debugging
+      
       await createTaskPhase(dataToSend);
       notyf.success("Création de la tâche réussie.");
-
       setIsAddTaskFinished(true);
       handleCloseModal();
     } catch (error) {
       notyf.error(
         "Une erreur s'est produite lors de la création de la tâche, veuillez réessayer plus tard."
       );
-      console.error(`Error at create task phase: ${error}`);
+      console.error("Error creating task:", error);
     } finally {
       setIsLoading(false);
     }
   };
-
   const handleCloseModal = () => {
     setModalOpen(false);
   };
@@ -265,7 +276,7 @@ const AddTaskPhase = ({
                 });
               }}
             />
-            {/* <CustomInput
+            <CustomInput
               type="date"
               label="Date d'échéance"
               className="text-sm"
@@ -278,7 +289,7 @@ const AddTaskPhase = ({
                   dueDate: e.target.value,
                 });
               }}
-            /> */}
+            />
           </div>
           <CustomInput
             type="number"
@@ -311,6 +322,20 @@ const AddTaskPhase = ({
                 setTaskData({
                   ...taskData,
                   description: e.target.value,
+                });
+              }}
+            />
+             <CustomInput
+              type="text"
+              label="Ajouter un lien"
+              placeholder="Insérér votre lien ici"
+              rounded="medium"
+              className="text-sm"
+              value={taskData?.fichier}
+              onChange={(e) => {
+                setTaskData({
+                  ...taskData,
+                  fichier: e.target.value,
                 });
               }}
             />

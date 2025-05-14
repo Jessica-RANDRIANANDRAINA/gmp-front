@@ -170,6 +170,7 @@ const AddTransverse = ({
             transverseData.startDate !== ""
               ? false
               : true
+           
           }
           onClick={handleCreateTransverse}
           className={`border flex justify-center items-center dark:border-boxdark text-xs p-2 rounded-md  text-white font-semibold ${

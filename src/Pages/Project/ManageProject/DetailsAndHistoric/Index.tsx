@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { getProjectById } from "../../../../services/Project";
 import { IProjectData } from "../../../../types/Project";
 import ToogleStateProject from "../../../../components/Modals/Project/ToogleStateProject";
+import { ChevronDown } from "lucide-react"; 
 
 const DetailsAndHistoricProject = () => {
   const { projectId } = useParams();
@@ -17,6 +18,7 @@ const DetailsAndHistoricProject = () => {
   const [showModalStandBy, setShowModalStandBy] = useState<boolean>(false);
   const [isArchiveFinished, setIsArchiveFinished] = useState<boolean>(false);
   const [projectData, setProjectData] = useState<IProjectData>();
+  const [showActions, setShowActions] = useState(false);
 
   const fetchData = async () => {
     if (projectId) {
@@ -66,8 +68,112 @@ const DetailsAndHistoricProject = () => {
               ]}
             />
           )}
+          <div className="flex justify-between items-center flex-wrap px-3 text-sm">
+  {/* Partie gauche : le lien "Détails" */}
+  <div className="flex gap-3">
+    <NavLink
+      to={`/gmp/project/details/${projectId}/details`}
+      className={({ isActive }) =>
+        isActive
+          ? "text-green-800 bg-green-100 border border-green-700 px-3 py-2 rounded"
+          : "hover:text-green-700 text-slate-600 px-3 py-2"
+      }
+    >
+      Détails
+    </NavLink>
+    <NavLink
+          to={`/gmp/project/details/${projectId}/historic`}
+          // className=" hover:bg-gray-100"
+          className={({ isActive }) =>
+            isActive
+              ? "block px-4 py-2 text-green-800 bg-green-100 rounded-lg"
+              : "block px-4 py-2 text-slate-600 hover:bg-green-100 hover:text-green-800 rounded-lg transition-all duration-200"
+          }
+        >
+          Historique
+        </NavLink>
+        <NavLink
+          to={`/gmp/project/task/${projectId}`}
+          className={({ isActive }) =>
+            isActive
+              ? "block px-4 py-2 text-green-800 bg-green-100 rounded-lg"
+              : "block px-4 py-2 text-slate-600 hover:bg-green-100 hover:text-green-800 rounded-lg transition-all duration-200"
+          }
+        >
+          Activités
+        </NavLink>
+        <NavLink
+          to={`/gmp/project/update/${projectId}`}
+          className={({ isActive }) =>
+            isActive
+              ? "block px-4 py-2 text-green-800 bg-green-100 rounded-lg"
+              : "block px-4 py-2 text-slate-600 hover:bg-green-100 hover:text-green-800 rounded-lg transition-all duration-200"
+          }
+        >
+          Modifier
+        </NavLink>
+  </div>
 
-          <div className="flex *:p-3 text-sm flex-wrap">
+  {/* Partie droite : le dropdown "Actions" */}
+  <div className="relative">
+    <button
+      onClick={() => setShowActions(!showActions)}
+      className="flex items-center gap-1 px-3 py-2 text-slate-600 border border-green-700  rounded hover:bg-gray-200"
+    >
+      Actions
+      <ChevronDown className="w-4 h-4" />
+    </button>
+
+    {showActions && (
+      <div className="absolute right-0 mt-2 w-56 bg-white border border-green-700 rounded shadow-md z-50">
+       
+        
+        {projectData?.state !== "Archived" && (
+          <button
+            onClick={handleShowModalDelete}
+            className={`block px-4 py-2 text-green-800 hover:text-green-800 rounded-lg ${
+              projectData?.state === "Archived" ? "hidden" : "block px-4 py-2 text-slate-600  hover:text-green-800 rounded-lg transition-all duration-200"
+            }`}
+          >
+            Archiver
+          </button>
+        )}
+        {projectData?.state === "Archived" && (
+          <button
+            onClick={handleShowModalRestore}
+            className={`block px-4 py-2 text-green-800 hover:text-green-800 rounded-lg ${
+              projectData?.state === "Archived" ? "hidden" : "block px-4 py-2 text-slate-600  hover:text-green-800 rounded-lg transition-all duration-200"
+            }`}
+          >
+            Restaurer
+          </button>
+        )}
+        {projectData?.state !== "Stand by" && (
+          <button
+            onClick={handleShowModalStandBy}
+            className={`block text-green-800 hover:text-green-800 rounded-lg  ${
+              projectData?.state === "Stand by" ? "hidden" : "block px-4 py-2 text-slate-600  hover:text-green-800 rounded-lg transition-all duration-200"
+            }`}
+          >
+            Mettre en stand by
+          </button>
+        )}
+        {projectData?.state === "Stand by" && (
+          <button
+            onClick={handleShowModalDeblock}
+            className={`hover:text-green-800 text-slate-600 ${
+              projectData?.state === "Stand by" ? "" : "hidden"
+            }`}
+          >
+            Débloquer
+          </button>
+        )}
+      </div>
+    )}
+  </div>
+</div>
+
+          {/* <div className="flex *:p-3 text-sm flex-wrap">
             <NavLink
               to={`/gmp/project/details/${projectId}/details`}
               className={({ isActive }) =>
@@ -140,7 +246,7 @@ const DetailsAndHistoricProject = () => {
             >
               Débloquer
             </button>
-          </div>
+          </div> */}
         </div>
         <div className="border mx-4 md:mx-9 rounded-lg p-4 bg-white min-h-[80vh] shadow-1 border-zinc-200 dark:border-strokedark dark:bg-boxdark ">
           <Outlet />

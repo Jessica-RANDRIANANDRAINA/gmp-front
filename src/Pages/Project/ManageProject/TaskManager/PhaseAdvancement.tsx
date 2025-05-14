@@ -39,6 +39,7 @@ const organizeTaskByStatus = (tasks: any[]) => {
         priority: task.priority,
         startDate: task.startDate,
         dueDate: task.dueDate,
+        fichier: task.fichier,
         userTasks: task.userTasks,
         status: task.status,
         dailyEffort: task.dailyEffort,
@@ -306,7 +307,14 @@ const PhaseAdvancement = () => {
       console.error(`Error at handle delete task: ${error}`);
     }
   };
-
+  const isLate = (dueDate: string) => {
+    const today = new Date();
+    const due = new Date(dueDate);
+    // On compare les dates sans les heures
+    today.setHours(0, 0, 0, 0);
+    due.setHours(0, 0, 0, 0);
+    return due < today;
+  };
   return (
     <div className={``}>
       <div
@@ -394,6 +402,7 @@ const PhaseAdvancement = () => {
                           >
                             {(provided, snapshot) => {
                               const startDate = formatDate(task.content.startDate);
+                              const dueDate = formatDate(task.content.dueDate);
                               return (
                                 <div
                                   ref={provided.innerRef}
@@ -531,10 +540,29 @@ const PhaseAdvancement = () => {
                                       </svg>
                                     </span>
                                     {task.content.title}
+                                    {}
                                   </div>
-
+                                    <div>
+                                      {task.content.fichier ? (
+                                        <div className="mt-1 text-xs">
+                                          <a 
+                                            href={task.content.fichier}
+                                            target= "_blank"
+                                            rel="noopener noreferrer"
+                                            className="text-blue-500 hover:underline break-all"
+                                            onClick={(e) => e.stopPropagation()} >
+                                              🔗: {task.content.fichier}
+                                          </a>
+                                        </div>
+                                      ) : null}
+                                    </div>
                                   <div className="border-t mt-2 flex items-center justify-between dark:border-t-zinc-600 text-zinc-400 pt-1">
-                                    <div className={`text-xs`}>{startDate}</div>
+                                    <div className={`text-xs ${isLate(task.content.dueDate) ? "text-red-500" : ""}`}>
+                                      {startDate} - {dueDate}
+                                      {isLate(task.content.dueDate) && (
+                                        <span className="ml-1 text-red-500">En retard</span>
+                                      )}
+                                    </div>
                                     <div className="">
                                       <ListUsers
                                         data={task?.content?.user ?? []}

@@ -18,6 +18,8 @@ const GanttChart: React.FC<GanttChartProps> = ({ tasks }) => {
   const ganttRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
+
+
   useEffect(() => {
     if (ganttRef.current) {
       gantt.init(ganttRef.current);
@@ -61,6 +63,7 @@ const GanttChart: React.FC<GanttChartProps> = ({ tasks }) => {
       gantt.config.columns = [
         { name: "text", label: "Projet", tree: true, resize: true, width: 300 },
         { name: "start_date", label: "Début", align: "center" },
+        
         {
           name: "duration",
           label: "Durée (jours)",

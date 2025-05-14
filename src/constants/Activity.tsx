@@ -1,6 +1,2 @@
-export const transverseType = ["Réunion", "Induction", "Formation"];
-export const intercontractType = [
-  "Formation et certification",
-  "Veille technologique",
-  "Événements d'entreprise",
-];
+export const transverseType = ["Réunion", "Induction","Métier", "Formation","Formation et certification","Événements d'entreprise"];
+export const intercontractType = ["Veille technologique"];

@@ -3,6 +3,7 @@ import {
   CustomInput,
   CustomSelect,
   CustomInputUserSpecifiedSearch,
+  PointSelect
   // CustomSelectChoice,
 } from "../../UIElements";
 import { Calendar, Table } from "lucide-react";
@@ -588,6 +589,7 @@ const TableProjet = ({
       </div>
       {/* =====PAGINATE AND TITLE END===== */}
       {/* ===== BULK START ===== */}
+      {projectSelected.length !== 1 && (
       <div
         className={` mt-[-60px] border-primaryGreen border dark:border-formStrokedark  bg-white dark:bg-boxdark z-40 relative px-2 flex items-center justify-between transition-transform duration-200 ease-in-out transform ${
           projectSelected.length > 0
@@ -595,89 +597,75 @@ const TableProjet = ({
             : "scale-y-0 opacity-0"
         }`}
       >
+        {projectSelected.length !== 1 && (
+    <div>
+      {projectSelected.length === 1
+        ? "1 élément sélectionné"
+        : `${projectSelected.length} éléments sélectionnés`}
+    </div>
+  )}
+
+
         <div>
-          {" "}
-          {projectSelected.length === 1
-            ? "1 élément séléctionné"
-            : `${projectSelected.length} éléments séléctionnés`}{" "}
+          {/* debut */}
+          {projectSelected.length > 1 ? (
+      <button
+        onClick={() => {
+          setProjectsToDelete(projectSelected);
+          setShowModalDelete(true);
+        }}
+        className="mb-1 mt-1 min-w-20 w-full text-sm py-2.5 px-3 md:h-10 border flex items-center justify-between border-stroke dark:border-formStrokedark rounded-lg  text-left text-black "
+      >
+        Archiver
+      </button>
+    ) : (
+      
+      <CustomSelect
+        data={
+          projectSelected.length > 1
+            ? ["Archiver"].filter((action) => {
+                if (
+                  myHabilitation?.project.delete === false &&
+                  action === "Archiver"
+                ) {
+                  return false;
+                }
+                return true;
+              })
+            : []
+        }
+        className={`mb-2 ${projectSelected.length < 2 ? 'opacity-50 cursor-not-allowed' : ''}`}
+        placeholder="Actions"
+        disabled={projectSelected.length < 1}
+        onValueChange={(e) => {
+          if (e.includes("Modifier")) {
+            setProjectToModif(projectSelected);
+          } else if (e.includes("Archiver")) {
+            setProjectsToDelete(projectSelected);
+            setShowModalDelete(true);
+          } else if (e.includes("Détails")) {
+            setProjectsSelected(projectSelected);
+            setGoToDetails(true);
+          } else if (e.includes("Historique")) {
+            setProjectsSelected(projectSelected);
+            setGoToHistoric(true);
+          } else if (e.includes("Avancement")) {
+            setProjectsSelected(projectSelected);
+            setGoToAdvancement(true);
+          } else if (e.includes("Gérer")) {
+            setProjectsSelected(projectSelected);
+            setGoToTask(true);
+          }
+        }}
+      />
+    )}
+    
         </div>
-        <div>
-          <CustomSelect
-            data={
-              projectSelected.length > 1
-                ? ["Archiver"].filter((action) => {
-                    if (
-                      myHabilitation?.project.delete == false &&
-                      action === "Archiver"
-                    ) {
-                      return false;
-                    }
-                    return true;
-                  })
-                : [
-                    "Modifier",
-                    "Avancement",
-                    "Gérer",
-                    "Détails",
-                    "Historique",
-                    "Archiver",
-                  ].filter((action) => {
-                    if (
-                      myHabilitation?.project.delete === false &&
-                      action === "Archiver"
-                    ) {
-                      return false;
-                    }
-                    if (
-                      myHabilitation?.project.update === false &&
-                      action === "Modifier"
-                    ) {
-                      return false;
-                    }
-                    // only chef de project can change avancement
-                    if (action === "Avancement") {
-                      const projectId = projectSelected?.[0];
-                      const selectedProject = data?.find(
-                        (project) => project.id === projectId
-                      );
-                      const isDirector = selectedProject?.listUsers.some(
-                        (userObj: {
-                          userid: string | undefined;
-                          role: string;
-                        }) =>
-                          userObj.userid === decodedToken?.jti &&
-                          userObj.role === "director"
-                      );
-                      return isDirector;
-                    }
-                    return true;
-                  })
-            }
-            className="mb-2  "
-            placeholder="Actions"
-            onValueChange={(e) => {
-              if (e.includes("Modifier")) {
-                setProjectToModif(projectSelected);
-              } else if (e.includes("Archiver")) {
-                setProjectsToDelete(projectSelected);
-                setShowModalDelete(true);
-              } else if (e.includes("Détails")) {
-                setProjectsSelected(projectSelected);
-                setGoToDetails(true);
-              } else if (e.includes("Historique")) {
-                setProjectsSelected(projectSelected);
-                setGoToHistoric(true);
-              } else if (e.includes("Avancement")) {
-                setProjectsSelected(projectSelected);
-                setGoToAdvancement(true);
-              } else if (e.includes("Gérer")) {
-                setProjectsSelected(projectSelected);
-                setGoToTask(true);
-              }
-            }}
-          />
-        </div>
+
+
+        {/* fin */}
       </div>
+    )}
       {/* ===== BULK END ===== */}
       {/* =====TABLE START===== */}
       {isTableView ? (
@@ -1049,6 +1037,7 @@ const TableProjet = ({
                     <span>Avancement</span>
                     <button
                       className={`
+                        
                      transform transition-transform duration-200`}
                       onClick={() => {
                         setDataSorted({
@@ -1108,6 +1097,11 @@ const TableProjet = ({
                       </svg>
                     </button>
                   </div>
+                </th>
+                <th className="py-4 px-4  font-bold text-white dark:text-white xl:pl-11">
+                <div className="flex items-center gap-1">
+                <span>Actions</span>
+                </div>
                 </th>
               </tr>
             </thead>
@@ -1200,7 +1194,11 @@ const TableProjet = ({
                             : project?.title} */}
                           </p>
                         </td>
-                        <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                        <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11 cursor-pointer"
+                          onClick={() => {
+                            setIdProjectForDetails(project.id);
+                          }}
+                        >
                           <p
                             className={`  font-semibold rounded-md  text-center py-1 px-2 text-xs  w-fit
                             ${
@@ -1217,7 +1215,11 @@ const TableProjet = ({
                             {project?.priority}
                           </p>
                         </td>
-                        <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                        <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11 cursor-pointer"
+                          onClick={() => {
+                            setIdProjectForDetails(project.id);
+                          }}
+                        >
                           <p
                             className={` font-semibold rounded-md whitespace-nowrap text-center py-1 px-2 text-xs  w-fit
                             ${
@@ -1230,24 +1232,40 @@ const TableProjet = ({
                             {project?.criticality}
                           </p>
                         </td>
-                        <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                        <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11 cursor-pointer"
+                          onClick={() => {
+                            setIdProjectForDetails(project.id);
+                          }}
+                        >
                           <ListUsers
                             data={project?.listUsers}
                             type="director"
                           />
                         </td>
-                        <td className="border-b  gap-1 border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                        <td className="border-b  gap-1 border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11 cursor-pointer"
+                          onClick={() => {
+                            setIdProjectForDetails(project.id);
+                          }}
+                        >
                           <ListUsers
                             data={project?.listUsers}
                             type="no-director"
                           />
                         </td>
-                        <td className="border-b    border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                        <td className="border-b    border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11 cursor-pointer"
+                          onClick={() => {
+                            setIdProjectForDetails(project.id);
+                          }}
+                        >
                           <p className="text-black  pr-4 dark:text-white">
                             {dateStart}
                           </p>
                         </td>
-                        <td className="border-b  border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                        <td className="border-b  border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11 cursor-pointer"
+                          onClick={() => {
+                            setIdProjectForDetails(project.id);
+                          }}
+                        >
                           <p className="text-black flex  pr-4 gap-1 dark:text-white">
                             {isDateEndPassed ? (
                               <svg
@@ -1294,7 +1312,11 @@ const TableProjet = ({
                             {dateEnd}
                           </p>
                         </td>
-                        <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                        <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11 cursor-pointer"
+                          onClick={() => {
+                            setIdProjectForDetails(project.id);
+                          }}
+                        >
                           <div className="w-full bg-zinc-100 rounded-full dark:bg-strokedark h-6 relative">
                             {project?.state === "Stand by" ? (
                               <div className="h-6 rounded-full bg-[length:14px_14px] bg-[repeating-linear-gradient(45deg,#FFCD59_0,#FFCD59_3px,transparent_3px,transparent_5px)] w-full"></div>
@@ -1327,6 +1349,74 @@ const TableProjet = ({
                                 ? project?.state
                                 : project?.completionPercentage + "%"}
                             </span>
+                          </div>
+                        </td>
+                        <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11 cursor-pointer">
+                          <div >
+                          <PointSelect
+                              data={
+                                    [
+                                      "Modifier",
+                                      "Avancement",
+                                      "Gérer",
+                                      "Historique",
+                                      "Archiver",
+                                    ].filter((action) => {
+                                      if (
+                                        myHabilitation?.project.delete === false &&
+                                        action === "Archiver"
+                                      ) {
+                                        return false;
+                                      }
+                                      if (
+                                        myHabilitation?.project.update === false &&
+                                        action === "Modifier"
+                                      ) {
+                                        return false;
+                                      }
+                                      // only chef de project can change avancement
+                                      if (action === "Avancement") {
+                                        const selectedProject = data?.find(
+                                          (p) => p.id === project.id
+                                        );
+                                        const isDirector = selectedProject?.listUsers.some(
+                                          (userObj: {
+                                            userid: string | undefined;
+                                            role: string;
+                                          }) =>
+                                            userObj.userid === decodedToken?.jti &&
+                                            userObj.role === "director"
+                                        );
+                                        return isDirector;
+                                      }
+                                      return true;
+                                    })
+                              }
+                              className="w-13"
+                              placeholder=""
+                              onClick={() => {
+                                setProjectSelected([project.id]);
+                              }}
+                              onValueChange={(e) => {
+                                if (e.includes("Modifier")) {
+                                  setProjectToModif([project.id]);
+                                } else if (e.includes("Archiver")) {
+                                  setProjectsToDelete([project.id]);
+                                  setShowModalDelete(true);
+                                } else if (e.includes("Historique")) {
+                                  setProjectsSelected([project.id]);
+                                  setGoToHistoric(true);
+                                } else if (e.includes("Avancement")) {
+                                  setProjectsSelected([project.id]);
+                                  setGoToAdvancement(true);
+                                } else if (e.includes("Gérer")) {
+                                  setProjectsSelected([project.id]);
+                                  setGoToTask(true);
+                                }
+                              }}
+
+
+                            />
                           </div>
                         </td>
                       </tr>

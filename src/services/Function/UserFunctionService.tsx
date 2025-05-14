@@ -9,6 +9,18 @@ export const getInitials = (fullname: string) => {
   return `${firstInitial}${secondInitial}`;
 };
 
+//prendre les trois initials des noms
+export const getThreeInitials = (fullname: string) => {
+  const names = fullname
+    .split(" ")
+    .filter(name => name.length > 0 && !name.startsWith("(")); // Ignore les parenthèses
+  
+  const initials = names.map(name => name[0].toUpperCase());
+
+  return initials.slice(0, 3).join('');
+};
+
+
 export const getAllMyHabilitation = async () => {
   const token = localStorage.getItem("_au_pr");
   if (token) {

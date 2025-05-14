@@ -63,7 +63,7 @@ const LoginProject = () => {
           <div className="flex flex-col justify-center items-center">
             <input
               type="text"
-              placeholder="Matricule@ravinala-airports.aero"
+              placeholder="Matricule"
               required
               className={`w-[320px] h-[40px] mt-5 bg-transparent border-b-2 text-white text-sm pl-1 focus:outline-none   ${
                 loginError.mail === ""

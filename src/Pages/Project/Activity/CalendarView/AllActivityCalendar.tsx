@@ -21,12 +21,38 @@ import {
 import { SignalRContext } from "../Activity";
 import AddActivity from "../../../../components/Modals/Activity/AddActivity";
 import UpdateActivity from "../../../../components/Modals/Activity/UpdateActivity";
+import DuplicateActivity from "../../../../components/Modals/Activity/DuplicateActivity";
 import CollapsibleSection from "../../../../components/UIElements/CollapsibleSection";
 import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
 import { IMyHabilitation } from "../../../../types/Habilitation";
 
 const notyf = new Notyf({ position: { x: "center", y: "top" } });
+
+interface Activity {
+  id: string;
+  content: {
+    id: string;
+    title: string;
+    description: string;
+    status: string;
+    startDate: string;
+    endDate: string;
+    dailyEffort: number;
+    finished: boolean;
+    type: string;
+    subType: string;
+    projectId: string;
+    phaseId: string;
+    priority: string;
+    userid: string;
+    userName: string;
+    user: Array<{
+      user: { name: string };
+      userid: string;
+    }>;
+  };
+}
 
 const AllActivityCalendar = ({
   selectedOptions,
@@ -65,8 +91,13 @@ const AllActivityCalendar = ({
   const [events, setEvents] = useState<any[]>([]);
   const [isModalAddOpen, setIsModalAddOpen] = useState<boolean>(false);
   const [isModalUpdateOpen, setIsModalUpdateOpen] = useState<boolean>(false);
+  const [isModalDuplicateActivityOpen, setIsModalDuplicateActivityOpen] = useState<boolean>(false);
+  // const [activityData, setActivityData] = useState<any>();
+  //   const [isModalAddActivityOpen, setIsModalAddActivityOpen] =
+  //     useState<boolean>(false);
   const [isRefreshNeeded, setIsRefreshNeeded] = useState<boolean>(false);
   const [taskData, setTaskData] = useState<any>();
+  const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null);
   const [activeTaskId, setActiveTaskId] = useState<string | null>(null);
   const [data, setData] = useState<any>();
 
@@ -323,6 +354,35 @@ const AllActivityCalendar = ({
     setIsModalUpdateOpen(true);
   };
 
+  //duplicateActivity
+  const handleDuplicateClick = (task: any) => {
+    const activity: Activity = {
+      id: task?.id,
+      content: {
+        id: task?.id,
+        title: task?.title,
+        description: task?.description,
+        startDate: task?.startDate,
+        endDate: task?.endDate,
+        status: task?.status,
+        type: task?.type,
+        subType: task?.subType,
+        projectId: task?.projectid,
+        phaseId: task?.phaseid,
+        priority: task?.priority,
+        dailyEffort: task?.dailyEffort,
+        finished: task?.finished,
+        userid: task?.userid,
+        userName: task?.userName,
+        user: task?.user || [], // ou [] par défaut
+      }
+    };
+  
+    setSelectedActivity(activity);
+    setIsModalDuplicateActivityOpen(true);
+  };
+  
+  //end duplicateActivity
   const handleToogleMenuDelete = (
     activityId: string,
     event: React.MouseEvent
@@ -378,8 +438,15 @@ const AllActivityCalendar = ({
     }
   };
 
+  const [openDropdownId, setOpenDropdownId] = useState<string | null>(null);
+  // const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null);
+  const handleDropdownToggle = (e: React.MouseEvent<HTMLElement>, taskId: string) => {
+    e.stopPropagation();
+    setOpenDropdownId(openDropdownId === taskId ? null : taskId);
+  };
   return (
     <div className="p-5 flex flex-col-reverse md:grid md:grid-cols-5">
+      {/* card */}
       <div className="md:col-span-4">
         <FullCalendar
           timeZone="UTC"
@@ -413,9 +480,10 @@ const AllActivityCalendar = ({
           locale={frLocale}
           height={"70vh"}
           eventContent={(arg) => {
-            const { title, extendedProps } = arg.event;
+            const { title, extendedProps, id } = arg.event;
 
             const dailyEffort = extendedProps?.dailyEffort ?? 1;
+            const dropdownId = `${id}.${extendedProps?.userid}`;
 
             return (
               <div
@@ -427,8 +495,73 @@ const AllActivityCalendar = ({
                     ? colors[extendedProps?.user]
                     : "",
                 }}
-                className={` min-h-full max-h-full flex flex-col items-center justify-center whitespace-nowrap border dark:border-2 border-transparent font-light w-full p-1 text-black dark:text-whiten cursor-pointer text-xs relative group`}
+                className={` relative  min-h-full max-h-full flex flex-col items-center justify-center whitespace-nowrap border dark:border-2 border-transparent font-light w-full p-1 text-black dark:text-whiten cursor-pointer text-xs relative group`}
               >
+               
+                {/* debut */}
+                
+ 
+                 
+                    <div
+                      className="absolute top-1 right-2 hover:bg-zinc-100 dark:hover:bg-boxdark2 px-1 h-4 cursor-pointer"
+                      onClick={(e) => {
+                        e.stopPropagation(); // éviter la propagation de l'événement
+                        handleDropdownToggle(e, dropdownId);
+                      }}
+                    >
+                    <svg
+                      width="15"
+                      height="15"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                    >
+                      <g id="SVGRepo_bgCarrier"></g>
+                      <g
+                        id="SVGRepo_tracerCarrier"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      ></g>
+                      <g id="SVGRepo_iconCarrier">
+                        <path
+                          d="M12 13.75C12.9665 13.75 13.75 12.9665 13.75 12C13.75 11.0335 12.9665 10.25 12 10.25C11.0335 10.25 10.25 11.0335 10.25 12C10.25 12.9665 11.0335 13.75 12 13.75Z"
+                          className="fill-black dark:fill-white"
+                        ></path>{" "}
+                        <path
+                          d="M19 13.75C19.9665 13.75 20.75 12.9665 20.75 12C20.75 11.0335 19.9665 10.25 19 10.25C18.0335 10.25 17.25 11.0335 17.25 12C17.25 12.9665 18.0335 13.75 19 13.75Z"
+                          className="fill-black dark:fill-white"
+                        ></path>{" "}
+                        <path
+                          d="M5 13.75C5.9665 13.75 6.75 12.9665 6.75 12C6.75 11.0335 5.9665 10.25 5 10.25C4.0335 10.25 3.25 11.0335 3.25 12C3.25 12.9665 4.0335 13.75 5 13.75Z"
+                          className="fill-black dark:fill-white"
+                        ></path>{" "}
+                      </g>
+                    </svg>
+                     
+                    </div>
+                    
+                    {openDropdownId === dropdownId && ( // Changed 'activity' to 'task'
+                        <div className="absolute z-20 right-0 top-5 bg-white dark:bg-boxdark shadow-lg rounded-md w-20">
+                          <button
+                           onClick={() => {
+                            const taskForDuplicate = {
+                              id: arg.event.id,
+                              title: arg.event.title,
+                              startDate: arg.event.start?.toISOString(),
+                              endDate: arg.event.end?.toISOString(),
+                              ...arg.event.extendedProps,
+                            };
+                          
+                            handleDuplicateClick(taskForDuplicate);
+                            setOpenDropdownId(null);
+                            setActiveTaskId("");
+                          }}
+                            className="block w-full text-left px-2 py-1 text-black hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                          >
+                            Dupliquer
+                          </button>
+                        </div>
+                      )}
+                {/* fin */}
                 <div>
                   <b className="overflow-x-clip whitespace-nowrap">
                     {dailyEffort}h -{" "}
@@ -472,6 +605,7 @@ const AllActivityCalendar = ({
           dayHeaderClassNames="text-xs sm:text-sm md:text-base"
         />
       </div>
+      {/* fin card */}
       <div className="md:col-span-1 md:pt-16">
         <div
           className="border ml-4 p-1 cursor-pointer border-slate-300 hover:bg-slate-100 dark:hover:bg-boxdark2 flex justify-center text-xs"
@@ -891,6 +1025,15 @@ const AllActivityCalendar = ({
           myHabilitation={myHabilitation}
         />
       )}
+     {isModalDuplicateActivityOpen && selectedActivity && (
+  <DuplicateActivity
+    modalDuplicateOpen={isModalDuplicateActivityOpen}
+    setModalDuplicateOpen={setIsModalDuplicateActivityOpen}
+    setIsRefreshNeeded={setIsRefreshNeeded}
+    activity={selectedActivity}
+    myHabilitation={myHabilitation}
+  />
+)}
     </div>
   );
 };

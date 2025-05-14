@@ -30,6 +30,7 @@ const UpdateTask = ({
     priority: "Moyen",
     startDate: undefined,
     dueDate: undefined,
+    fichier: "",
     dailyEffort: 1,
     status: "Backlog",
   });
@@ -58,6 +59,7 @@ const UpdateTask = ({
         priority: task?.content?.priority || "Moyen",
         startDate: task?.content?.startDate || undefined,
         dueDate: task?.content?.dueDate || undefined,
+        fichier: task?.content?.fichier || "",
         dailyEffort: task?.content?.dailyEffort,
         status: task?.content?.status,
       });
@@ -80,17 +82,24 @@ const UpdateTask = ({
           name: u.name,
         },
       }));
+
+      const formatDate = (dateString: string | undefined) => {
+        if (!dateString) return undefined;
+        const date = new Date(dateString);
+        return isNaN(date.getTime()) ? undefined : date.toISOString();
+      };
       const dataToSend = {
         priority: taskData?.priority,
-        startDate: taskData?.startDate,
-        dueDate: taskData?.dueDate === "" ? undefined : taskData?.dueDate,
+        startDate: formatDate(taskData?.startDate),
+        dueDate: formatDate(taskData?.dueDate === "" ? undefined : taskData?.dueDate),
+        fichier: taskData.fichier,
         description: taskData?.description,
         listUsers: formatUser,
         dailyEffort: taskData?.dailyEffort,
         title: taskData?.title,
         status: taskData?.status,
       };
-
+      //console.log("Data being sent:", dataToSend);
       const taskId = task.content.id;
       await updateTaskProject(taskId, dataToSend);
       setIsRefreshTaskNeeded(true);
@@ -282,7 +291,8 @@ const UpdateTask = ({
                 }
               }}
             />
-            {/* <CustomInput
+            <CustomInput
+              required
               type="date"
               label="Date d'échéance"
               className="text-sm"
@@ -296,24 +306,12 @@ const UpdateTask = ({
                   : taskData?.startDate
               }
               onChange={(e) => {
-                const newDueDate = e.target.value;
-                if (
-                  taskData?.startDate &&
-                  new Date(newDueDate) < new Date(taskData.startDate)
-                ) {
-                  setTaskData({
-                    ...taskData,
-                    dueDate: newDueDate,
-                    startDate: newDueDate,
-                  });
-                } else {
-                  setTaskData({
-                    ...taskData,
-                    dueDate: newDueDate,
-                  });
-                }
+                setTaskData({
+                  ...taskData,
+                  dueDate: e.target.value,
+                });
               }}
-            /> */}
+            /> 
           </div>
           <CustomInput
             type="number"
@@ -347,6 +345,20 @@ const UpdateTask = ({
                 setTaskData({
                   ...taskData,
                   description: e.target.value,
+                });
+              }}
+            />
+             <CustomInput
+              type="text"
+              label="Ajouter un lien"
+              placeholder="Insérer votre lien ici"
+              rounded="medium"
+              className="text-sm"
+              value={taskData?.fichier}
+              onChange={(e) => {
+                setTaskData({
+                  ...taskData,
+                  fichier: e.target.value,
                 });
               }}
             />

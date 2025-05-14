@@ -87,8 +87,9 @@ export const deleteHabilitation = async (ids: string[]) => {
       console.log(`Failed to delete the habilitation`);
     }
   } catch (error) {
-    notyf.error("Impossible de supprimer cet accès");
-    notyf.error("Des utilisateurs sont encore relié à cet accès");
+    // notyf.error("Impossible de supprimer cet accès");
+    // notyf.error("Des utilisateurs sont encore relié à cet accès");
+    notyf.error("Impossible de supprimer cet accès car des utilisateurs y sont encore rattachés");
     console.error(`An error occured while deleting the habilitation: ${error}`);
     throw error;
   }

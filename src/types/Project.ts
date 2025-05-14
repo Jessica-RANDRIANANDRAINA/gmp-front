@@ -114,11 +114,19 @@ export interface ITaskAdd {
   id?: string;
   title: string;
   description: string;
-  priority: string;
-  startDate?: string;
-  dueDate?: string;
+  type?: string;
   dailyEffort?: number;
+  startDate?: string ;
+  dueDate?: string;
+  fichier?: string;
+  projectTitle?: string;
+  phaseTitle?: string;
+  projectId?: string;
+  phaseId?: string;
+  transverseType?: string;
+  intercontractType?: string;
   status?: string;
+  priority?: string;
 }
 
 export interface IActivityAdd {
@@ -127,8 +135,10 @@ export interface IActivityAdd {
   description: string;
   type?: string;
   dailyEffort?: number;
-  startDate?: string;
+  startDate?: string ;
+  dueDate?: string;
   endDate?: string;
+  fichier?: string ;
   projectTitle?: string;
   phaseTitle?: string;
   projectId?: string;
@@ -146,6 +156,7 @@ export interface ITransverseAdd {
   type: string;
   dailyEffort: number;
   startDate?: string;
+  endDate?:string;
   status?: string;
 }
 

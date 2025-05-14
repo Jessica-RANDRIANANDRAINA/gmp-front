@@ -5,7 +5,7 @@ import React, {
   useContext,
   useCallback,
 } from "react";
-import { useParams } from "react-router-dom";
+import { useParams,useNavigate } from "react-router-dom";
 import { SignalRContext } from "../Activity";
 import {
   DragDropContext,
@@ -22,12 +22,40 @@ import {
 } from "../../../../services/Project";
 import AddActivity from "../../../../components/Modals/Activity/AddActivity";
 import UpdateActivity from "../../../../components/Modals/Activity/UpdateActivity";
+import DuplicateActivity from "../../../../components/Modals/Activity/DuplicateActivity";
 import ListUsers from "../../../../components/UIElements/ListUsers";
 
 import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
 import { IMyHabilitation } from "../../../../types/Habilitation";
 const notyf = new Notyf({ position: { x: "center", y: "top" } });
+
+
+interface Activity {
+  id: string;
+  content: {
+    id: string;
+    title: string;
+    description: string;
+    status: string;
+    startDate: string;
+    endDate: string;
+    fichier: string;
+    dailyEffort: number;
+    finished: boolean;
+    type: string;
+    subType: string;
+    projectId: string;
+    phaseId: string;
+    priority: string;
+    userid: string;
+    userName: string;
+    user: Array<{
+      user: { name: string };
+      userid: string;
+    }>;
+  };
+}
 
 const organizeActivityByStatus = (
   activities: any[],
@@ -64,6 +92,7 @@ const organizeActivityByStatus = (
         status: activity.status,
         startDate: activity.startDate,
         endDate: activity.endDate,
+        fichier: activity.fichier,
         dailyEffort: activity.dailyEffort ?? 1,
         finished: activity.finished,
         type: activity.type,
@@ -83,6 +112,7 @@ const organizeActivityByStatus = (
         ],
       },
     };
+    
     const columnKey = Object.keys(columns).find(
       (key) => columns[key].title === activity.status
     );
@@ -128,6 +158,7 @@ const AllActivityKanban = ({
   }>;
   myHabilitation: IMyHabilitation | undefined;
 }) => {
+  const navigate = useNavigate();
   const { userid } = useParams();
   const [data, setData] = useState<any>({
     acivities: {},
@@ -137,6 +168,8 @@ const AllActivityKanban = ({
   const [isModalAddActivityOpen, setIsModalAddActivityOpen] =
     useState<boolean>(false);
   const [isModalUpdateActivityOpen, setIsModalUpdateActivityOpen] =
+    useState<boolean>(false);
+    const [isModalDuplicateActivityOpen, setIsModalDuplicateActivityOpen] =
     useState<boolean>(false);
   const connection = useContext(SignalRContext);
   const [isRefreshNeeded, setIsRefreshNeeded] = useState<boolean>(false);
@@ -200,7 +233,7 @@ const AllActivityKanban = ({
           selectedOptions,
           Ids.length > 0 ? Ids : subordinatesId
         );
-
+        
         const { activityMap, columns, columnOrder } = organizeActivityByStatus(
           response,
           statusSelectedOptions
@@ -236,6 +269,8 @@ const AllActivityKanban = ({
     search,
     isSubordinatesFetched,
   ]);
+
+
 
   // when task deleted refetchData by using signal R
   useEffect(() => {
@@ -468,6 +503,41 @@ const AllActivityKanban = ({
     }
   };
 
+   //dropdown menu trois point
+  
+   const [showDropdown, setShowDropdown] = useState(false);
+   const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null);
+   const handleDropdownToggle = (e: React.MouseEvent<HTMLElement>, activity: any) => {
+     e.stopPropagation(); // Empêche le clic de se propager
+     setSelectedActivity(activity);
+     setShowDropdown(!showDropdown);
+   };
+ 
+   useEffect(() => {
+     const closeDropdown = () => setShowDropdown(false);
+     document.addEventListener("click", closeDropdown);
+     return () => document.removeEventListener("click", closeDropdown);
+   }, []);
+   // fin dropdown menu
+   const isActivityLate = useCallback((endDate: string, status: string) => {
+    if (status !== "En cours") return false;
+    if (!endDate) return false;
+    
+    try {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      
+      const end = new Date(endDate);
+      if (isNaN(end.getTime())) return false; // Validation de la date
+      
+      end.setHours(0, 0, 0, 0);
+      
+      return today > end;
+    } catch (error) {
+      console.error('Error comparing dates:', error);
+      return false;
+    }
+  }, []);
   return (
     <div className={``}>
       <DragDropContext
@@ -516,10 +586,11 @@ const AllActivityKanban = ({
                                 index={index}
                               >
                                 {(provided, snapshot) => {
-                                  const endDate = formatDate(
-                                    activity.content.startDate
-                                  );
-
+                                 const startDate = formatDate(
+                                  activity.content.startDate
+                                );
+                                const endDate = formatDate(activity.content.endDate);
+                                
                                   return (
                                     <div
                                       ref={provided.innerRef}
@@ -568,6 +639,7 @@ const AllActivityKanban = ({
                                             activity.id,
                                             e
                                           );
+                                          handleDropdownToggle(e, activity)
                                         }}
                                       >
                                         <svg
@@ -598,27 +670,32 @@ const AllActivityKanban = ({
                                           </g>
                                         </svg>
                                       </div>
-                                      {/* pop up menu delete */}
-                                      {activeActivityId === activity.id && (
-                                        <div
-                                          ref={deletePopUp}
-                                          className={`absolute z-20 right-0 top-5 bg-white dark:bg-boxdark dark:border-formStrokedark border-zinc-100 dark:hover:border-red-950 border shadow-lg rounded-md `}
-                                        >
-                                          <button
-                                            onClick={(e) => {
-                                              e.stopPropagation();
-                                              handleDeleteActivity(
-                                                activity.id,
-                                                activity.content.type
-                                              );
-                                            }}
-                                            className="text-red-600 dark:text-red-400 dark:hover:bg-red-950  hover:bg-red-50 px-4 py-2 rounded"
-                                          >
-                                            Supprimer
-                                          </button>
-                                        </div>
-                                      )}
-                                      {/* pop up menu delete */}
+                                     {/*show dropdown*/}
+                                     {showDropdown && selectedActivity?.id === activity.id && (
+                                         <div className="absolute z-20 right-0 top-5 bg-white dark:bg-boxdark border border-gray-100 shadow-lg rounded-md w-32">
+                                  
+                                         <button
+                                           onClick={() => {
+                                            setIsModalDuplicateActivityOpen(true);
+                                            setShowDropdown(false);
+                                           }}
+                                           className="block w-full text-left px-4 py-2 text-black hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                                         >
+                                           Dupliquer
+                                         </button>
+                                         <button
+                                           onClick={(e) => {
+                                             e.stopPropagation();
+                                             handleDeleteActivity(activity.id, activity.content.type);
+                                             setShowDropdown(false);
+                                           }}
+                                           className="block w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950"
+                                         >
+                                           Supprimer
+                                         </button>
+                                       </div>
+                                     )}
+                                     {/*end showdropdown*/}
                                       <div className="space-y-2">
                                         <div className="flex flex-col dark:text-zinc-400 gap-1 text-zinc-500">
                                           <div className="grid grid-cols-2">
@@ -845,10 +922,35 @@ const AllActivityKanban = ({
                                                 </svg>
                                               </span>
                                               {/* pince for task en backlog */}
-                                              <div className="dark:text-whiten text-black">
+                                              <div 
+                                                className="cursor-pointer dark:text-whiten text-black"
+                                                onClick={(e) => {
+                                                  e.stopPropagation();
+                                                  const activityId = activity.content.id.split('.')[0]; 
+                                                  const activityType = activity.content.type.toLowerCase();
+                                                  navigate(`/gmp/project/activity-details/${activityType}/${activityId}`);
+                                                }}>
                                                 {activity.content.title}
                                               </div>
+                                             
+
                                             </div>
+                                            {/* <div className="dark:text-whiten text-black">
+                                            {activity.content.fichier ? (
+                                                <div className="mt-1 text-xs">
+                                                  <a 
+                                                    href={activity.content.fichier} 
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="text-blue-500 hover:underline break-all"
+                                                    onClick={(e) => e.stopPropagation()}
+                                                  >
+                                                    🔗: {activity.content.fichier}
+                                                  </a>
+                                                </div>
+                                              ) : null}
+
+                                        </div> */}
                                             <div className="flex flex-wrap">
                                               <div
                                                 className={`border  rounded-md  p-1 text-justify flex justify-center items-center  ${
@@ -864,9 +966,16 @@ const AllActivityKanban = ({
                                         </div>
 
                                         <div className="border-t flex items-center justify-between dark:border-t-zinc-600 text-zinc-400 pt-1">
-                                          <div className={`text-xs `}>
-                                            {endDate}
-                                          </div>
+                                      
+                                        <div className={`text-xs`}>
+                                          {startDate} {endDate && ` - ${endDate}`}
+                                          {isActivityLate(activity.content.endDate, activity.content.status) && (
+                                            <span className="text-xs bg-red-100 text-red-600 px-2 py-0.5 rounded-md">
+                                              En retard
+                                            </span>
+                                          )}
+                                        </div>
+                                      
                                           <div
                                             className={`${
                                               activity?.content?.user?.[0]?.user
@@ -883,6 +992,7 @@ const AllActivityKanban = ({
                                             />
                                           </div>
                                         </div>
+                                        
                                       </div>
                                     </div>
                                   );
@@ -913,6 +1023,15 @@ const AllActivityKanban = ({
         <UpdateActivity
           modalUpdateOpen={isModalUpdateActivityOpen}
           setModalUpdateOpen={setIsModalUpdateActivityOpen}
+          setIsRefreshNeeded={setIsRefreshNeeded}
+          activity={activityData}
+          myHabilitation={myHabilitation}
+        />
+      )}
+       {isModalDuplicateActivityOpen && (
+        <DuplicateActivity 
+          modalDuplicateOpen={isModalDuplicateActivityOpen}
+          setModalDuplicateOpen={setIsModalDuplicateActivityOpen}
           setIsRefreshNeeded={setIsRefreshNeeded}
           activity={activityData}
           myHabilitation={myHabilitation}

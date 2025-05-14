@@ -7,23 +7,23 @@ import 'notyf/notyf.min.css';
 const notyf = new Notyf({ position: { x: "center", y: "top" } });
 
 const UserModifModal = ({
-  // userModif,
   setUserModifs,
   userSelected,
   userForModif
 }: {
-  userModif: boolean;
   setUserModifs: Function;
   userSelected: string[];
   userForModif: {
-    name: string, email: string
+    name: string;
+    email: string;
+    habilitations?: string[]; // Ajout des habilitations existantes
   }
 }) => {
   const [habilitations, setHabilitations] = useState<string[]>([]);
   const [habilitationsIdLabel, setHabilitationsIdLabel] = useState<
     { label: string; id: string }[]
   >([]);
-  const [valueMulti, setValueMulti] = useState<any>();
+  const [valueMulti, setValueMulti] = useState<any>(userForModif.habilitations || []);
   const trigger = useRef<any>(null);
 
   useEffect(() => {
@@ -51,12 +51,11 @@ const UserModifModal = ({
       }
     });
     try {
-      assignHabilitations({ userIds: userSelected, habilitationIds: habIds });
-      notyf.success("Assignement réussi")
+      await assignHabilitations({ userIds: userSelected, habilitationIds: habIds });
+      notyf.success("Assignement réussi");
     } catch (error) {
-      notyf.error("Un problème est survenu lors de l'assignement")
-      notyf.error("Veuillez reessayer plus tard")
-      console.error(`Error while assign habilitation to user`);
+      notyf.error("Un problème est survenu lors de l'assignement");
+      console.error(`Error while assign habilitation to user`, error);
     } finally {
       setUserModifs(false);
     }
@@ -68,18 +67,14 @@ const UserModifModal = ({
         ref={trigger}
         className={"bg-white dark:bg-[#24303F] rounded-md w-5/6 md:w-1/3 p-4"}
       >
-        {/* =====HEADER START===== */}
-        <header className={"flex justify-between w-full  h-12"}>
+        <header className={"flex justify-between w-full h-12"}>
           <div className={"font-bold"}>
             Modifier les accès{" "}
             {userSelected.length > 1
               ? `des ${userSelected.length} utilisateurs`
               : ``}
           </div>
-          <div
-            className={"cursor-pointer"}
-            onClick={() => setUserModifs(false)}
-          >
+          <div className={"cursor-pointer"} onClick={() => setUserModifs(false)}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -96,7 +91,6 @@ const UserModifModal = ({
             </svg>
           </div>
         </header>
-        {/* =====HEADER END===== */}
         <div>
           <form onSubmit={handleModif}>
             {userSelected.length > 1 ? (
@@ -122,11 +116,12 @@ const UserModifModal = ({
               </>
             )}
             <MultiSelect
-              id="aaa"
+              id="user-habilitations"
               label={"Accès"}
-              placeholder="Accés disponible"
+              placeholder="Accès disponible"
               value={habilitations}
               setValueMulti={setValueMulti}
+              initialValue={userForModif.habilitations?.join(",")}
             />
             <input
               type="submit"

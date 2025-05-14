@@ -14,6 +14,7 @@ import TaskProject from "./Pages/Project/ManageProject/TaskManager/TaskProject";
 import PhaseAdvancement from "./Pages/Project/ManageProject/TaskManager/PhaseAdvancement";
 import DetailsAndHistoricProject from "./Pages/Project/ManageProject/DetailsAndHistoric/Index";
 import DetailsProject from "./Pages/Project/ManageProject/DetailsAndHistoric/DetailsProject";
+
 import HistoricProject from "./Pages/Project/ManageProject/DetailsAndHistoric/HistoricProject";
 import UpdateAdvancement from "./Pages/Project/ManageProject/UpdateProject/UpdateAdvancement";
 import Activity from "./Pages/Project/Activity/Activity";
@@ -25,6 +26,8 @@ import PageNotFound from "./components/PageNotFound";
 import GanttView from "./Pages/Project/GanttView";
 
 import "./App.css";
+import ProjectLayout from "./layout/ProjectLayout";
+import ActivityDetails from "./Pages/Project/ManageProject/DetailsAndHistoric/ActivityDetails";
 
 const App = () => {
   return (
@@ -117,6 +120,17 @@ const App = () => {
             </>
           }
         />
+       <Route
+        path="/gmp/project/activity-details/:activityType/:activityId"
+        element={
+          <>
+            <PageTitle title="Détails Activité" />
+            <ProjectLayout>
+              <ActivityDetails />
+            </ProjectLayout>
+          </>
+        }
+      />
         <Route
           path="/gmp/project/task/:projectId"
           element={

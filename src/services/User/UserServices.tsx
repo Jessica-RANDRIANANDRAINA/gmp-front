@@ -81,11 +81,14 @@ export const getMySubordinatesNameAndId = async (
   mode?: string
 ) => {
   try {
-    const response = await axios.get(
-      `${endPoint}/api/User/subordinates/${superiorid}`,
-      {
-        params: mode ? { mode } : {},
-      }
+    const params: any = {
+      pageNumber: 1,
+      pageSize: 500,
+    };
+    const response = mode === 'all' ? 
+    await axios.get(`${endPoint}/api/User/all-paginate`, {params})
+    : await axios.get(
+      `${endPoint}/api/User/subordinates/${superiorid}`
     );
     return response.data;
   } catch (error) {

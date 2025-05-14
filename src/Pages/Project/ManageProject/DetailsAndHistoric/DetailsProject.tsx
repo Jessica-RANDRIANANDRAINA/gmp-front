@@ -394,7 +394,7 @@ const DetailsProject = () => {
                         <th className="py-3 px-6 text-center">Statut</th>
                       </tr>
                     </thead>
-                    <tbody className="text-gray-600 text-xs font-light">
+                    <tbody className="table-striped text-gray-600 text-xs font-light">
                       {projectData?.listPhases
                         ?.filter((phase) => phase?.rank !== undefined)
                         ?.slice()
@@ -628,14 +628,14 @@ const DetailsProject = () => {
                               </span>
                               <span
                                 className={`inline-flex space-x-1 w-fit whitespace-nowrap items-center px-3 py-1 rounded-full text-xs font-semibold 
-                        ${
-                          phases?.status === "Terminé"
-                            ? "bg-green-100 text-green-600 border-green-300  dark:bg-green-900 dark:text-green-300 dark:border-green-700"
-                            : phases?.status === "En cours"
-                            ? "bg-amber-100 text-amber-600 border-amber-300  dark:bg-amber-900 dark:text-amber-300 dark:border-amber-700"
-                            : "bg-cyan-100 text-cyan-600 border-cyan-300  dark:bg-cyan-900 dark:text-cyan-300 dark:border-cyan-700"
-                        }
-                        `}
+                                ${
+                                  phases?.status === "Terminé"
+                                    ? "bg-green-100 text-green-600 border-green-300  dark:bg-green-900 dark:text-green-300 dark:border-green-700"
+                                    : phases?.status === "En cours"
+                                    ? "status-urgent" // Applique le style urgent
+                                    : "status-todo" // Applique le style à faire
+                                }
+                                `}
                               >
                                 <span
                                   className={`${

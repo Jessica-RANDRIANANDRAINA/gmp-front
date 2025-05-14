@@ -5,7 +5,7 @@ import { IUserProject } from "../../types/Project";
 const ListUsers = ({ data, type }: { data: IUserProject[]; type?: string }) => {
   return (
     <>
-      {type === "no-director" ? (
+      { type === "no-director" ? (
         <div className="flex">
           {data && data?.length <= 2
             ? data

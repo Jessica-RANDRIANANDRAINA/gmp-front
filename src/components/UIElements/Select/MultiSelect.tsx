@@ -21,10 +21,11 @@ const MultiSelect = ({
 }: MultiSelectProps) => {
   const [options, setOptions] = useState<OptionMultiSelect[]>([]);
   const [selected, setSelected] = useState<number[]>([]);
-  const [show, setShow] = useState(false);
   const dropdownRef = useRef<any>(null);
   const trigger = useRef<any>(null);
+  const [isOpen, setIsOpen] = useState(false);
 
+  // Load options from hidden select element
   useEffect(() => {
     const loadOptions = () => {
       const select = document.getElementById(id) as HTMLSelectElement | null;
@@ -43,41 +44,54 @@ const MultiSelect = ({
     loadOptions();
   }, [id, value]);
 
+  // Initialize selected values
   useEffect(() => {
-    if (initialValue && selected.length === 0 && options.length > 0) {
+    if (initialValue && options.length > 0) {
+      const selectedValues = initialValue.split(',').map(v => v.trim());
       const selectedIndices: number[] = [];
       const newOptions = [...options];
-      const value = initialValue
-        ?.split(",")
-        ?.map((item: string) => item?.trim());
 
-      for (let i = 0; i < value.length; i++) {
-        for (let j = 0; j < options.length; j++) {
-          if (value[i] === options[j].value) {
-            selectedIndices.push(j);
-            newOptions[j].selected = true;
-          }
+      // Reset all selections
+      newOptions.forEach(opt => opt.selected = false);
+
+      // Find matching options
+      selectedValues.forEach(val => {
+        const index = newOptions.findIndex(opt => opt.value === val);
+        if (index !== -1) {
+          selectedIndices.push(index);
+          newOptions[index].selected = true;
         }
-      }
+      });
+
       setSelected(selectedIndices);
       setOptions(newOptions);
+      setValueMulti(selectedValues);
     }
-  }, [id, value, initialValue, options]);
+  }, [initialValue, options]);
 
-  const open = () => {
-    setShow(true);
-  };
+  // Handle click outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
 
-  const isOpen = () => {
-    return show === true;
-  };
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
 
   const select = (index: number, event: React.MouseEvent) => {
     const newOptions = [...options];
+    event.stopPropagation();
 
     if (!newOptions[index].selected) {
       newOptions[index].selected = true;
-      newOptions[index].element = event.currentTarget as HTMLElement;
       setSelected([...selected, index]);
     } else {
       const selectedIndex = selected.indexOf(index);
@@ -90,7 +104,8 @@ const MultiSelect = ({
     setOptions(newOptions);
   };
 
-  const remove = (index: number) => {
+  const remove = (index: number, event: React.MouseEvent) => {
+    event.stopPropagation();
     const newOptions = [...options];
     const selectedIndex = selected.indexOf(index);
 
@@ -102,35 +117,23 @@ const MultiSelect = ({
   };
 
   const selectedValues = () => {
-    return selected.map((option) => options[option].value);
+    return selected.map((index) => options[index]?.value).filter(Boolean);
   };
 
+  // Update parent component when selected changes
   useEffect(() => {
-    setValueMulti(selectedValues());
-  }, [selected, setValueMulti]);
-
-  useEffect(() => {
-    const clickHandler = ({ target }: MouseEvent) => {
-      if (!dropdownRef.current) return;
-      if (
-        !show ||
-        dropdownRef.current.contains(target) ||
-        trigger.current.contains(target)
-      )
-        return;
-      setShow(false);
-    };
-    document.addEventListener("click", clickHandler);
-    return () => document.removeEventListener("click", clickHandler);
-  });
+    if (selected.length > 0 || initialValue) {
+      setValueMulti(selectedValues());
+    }
+  }, [selected]);
 
   return (
-    <div className={`relative ${className} `}>
+    <div className={`relative ${className}`}>
       <label className="mb-1 min-w-20 block text-sm font-medium text-black dark:text-white">
         {label}
         {required && <span className="text-red-500 ml-1">*</span>}
       </label>
-      <div >
+      <div>
         <select className="hidden" id={id}>
           {value?.map((opt, key) => (
             <option value={opt} key={key}>
@@ -139,27 +142,31 @@ const MultiSelect = ({
           ))}
         </select>
 
-        <div className="flex flex-col items-center ">
+        <div className="flex flex-col items-center">
           <input name="values" type="hidden" defaultValue={selectedValues()} />
-          <div className="relative z-20 inline-block w-full ">
-            <div className="relative flex flex-col items-center  ">
-              <div ref={trigger} onClick={open} className="w-full ">
+          <div className="relative z-20 inline-block w-full">
+            <div className="relative flex flex-col items-center">
+              <div 
+                ref={trigger} 
+                onClick={() => setIsOpen(!isOpen)} 
+                className="w-full cursor-pointer"
+              >
                 <div
-                  className={`mb-2 flex ${round[rounded]} border overflow-x-auto  border-stroke dark:border-formStrokedark md:py-1 px-3 outline-none transition focus:border-primary active:border-primary dark:text-gray dark:border-form-strokedark dark:bg-form-input`}
+                  className={`mb-2 flex ${round[rounded]} border overflow-x-auto border-stroke dark:border-formStrokedark md:py-1 px-3 outline-none transition focus:border-primary active:border-primary dark:text-gray dark:border-form-strokedark dark:bg-form-input`}
                 >
-                  <div className="flex flex-auto  gap-3 ">
+                  <div className="flex flex-auto gap-3">
                     {selected.map((index) => (
                       <div
                         key={index}
-                        className=" flex items-center  justify-center rounded border-[.5px] border-stroke bg-gray px-2.5 py-1.5 text-sm font-medium dark:border-strokedark dark:bg-white/30"
+                        className="flex items-center justify-center rounded border-[.5px] border-stroke bg-gray px-2.5 py-1.5 text-sm font-medium dark:border-strokedark dark:bg-white/30"
                       >
-                        <div className="max-w-full text-xs flex-initial  ">
-                          {options[index].text}
+                        <div className="max-w-full text-xs flex-initial">
+                          {options[index]?.text}
                         </div>
-                        <div className="flex flex-auto  flex-row-reverse ">
+                        <div className="flex flex-auto flex-row-reverse">
                           <div
-                            onClick={() => remove(index)}
-                            className={`cursor-pointer pl-2 hover:text-danger `}
+                            onClick={(e) => remove(index, e)}
+                            className="cursor-pointer pl-2 hover:text-danger"
                           >
                             <svg
                               className="fill-current"
@@ -186,8 +193,9 @@ const MultiSelect = ({
                         <input
                           required={required}
                           placeholder={placeholder}
-                          className="h-full w-full appearance-none bg-transparent  outline-none"
+                          className="h-full w-full appearance-none bg-transparent outline-none"
                           defaultValue={selectedValues()}
+                          readOnly
                         />
                       </div>
                     )}
@@ -195,9 +203,12 @@ const MultiSelect = ({
                   <div className="flex w-8 items-center py-1 pl-1 pr-1">
                     <button
                       type="button"
-                      onClick={open}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setIsOpen(!isOpen);
+                      }}
                       className={`h-6 w-6 cursor-pointer outline-none focus:outline-none transform transition-transform duration-300 ${
-                        isOpen() ? "rotate-180" : ""
+                        isOpen ? "rotate-180" : ""
                       }`}
                     >
                       <svg
@@ -220,20 +231,18 @@ const MultiSelect = ({
                   </div>
                 </div>
               </div>
-              <div className="w-full px-4 ">
+              <div className="w-full px-4">
                 <div
-                  className={`max-h-select max-h-60  absolute top-full left-0 z-40 w-full overflow-y-auto rounded bg-white shadow dark:bg-form-input  ${
-                    isOpen() ? "" : "hidden"
-                  }`}
                   ref={dropdownRef}
-                  onFocus={() => setShow(true)}
-                  onBlur={() => setShow(false)}
+                  className={`max-h-select max-h-60 absolute top-full left-0 z-40 w-full overflow-y-auto rounded bg-white shadow dark:bg-form-input ${
+                    isOpen ? "" : "hidden"
+                  }`}
                 >
                   <div className="flex w-full flex-col">
                     {options.map((option, index) => (
                       <div key={index}>
                         <div
-                          className="w-full  cursor-pointer  border-b border-stroke  hover:bg-gray-3 dark:border-strokedark dark:bg-black dark:hover:bg-boxdark2 "
+                          className="w-full cursor-pointer border-b border-stroke hover:bg-gray-3 dark:border-strokedark dark:bg-black dark:hover:bg-boxdark2"
                           onClick={(event) => select(index, event)}
                         >
                           <div

@@ -38,7 +38,7 @@ const CardDropDown: React.FC<CardDropDownProps> = ({
   return (
     <div ref={dropdownRef} className="relative w-full">
       <div
-        className="py-5 px-4 rounded-xl shadow-md bg-white dark:bg-strokedark transition-all duration-300 border-opacity-80 hover:shadow-xl cursor-pointer flex justify-between items-center"
+        className="py-5 px-4 rounded-xl shadow-md bg-white dark:bg-strokedark transition-all duration-300 border-opacity-80 hover:shadow-xl cursor-pointer flex justify-between items-center gap-4py-4 px-3 rounded-lg shadow-md bg-white dark:bg-strokedark transition-all duration-300 border-opacity-80 hover:shadow-lg cursor-pointer flex justify-between items-center gap-4"
         style={{ borderLeft: `5px solid ${primaryColor}` }}
         onClick={() => setIsOpen(!isOpen)}
       >
@@ -88,7 +88,7 @@ const CardDropDown: React.FC<CardDropDownProps> = ({
             transition={{ duration: 0.2, ease: "easeInOut" }}
             className="absolute z-999 left-0 right-0 mt-2 bg-white dark:bg-strokedark shadow-xl rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden"
           >
-            <div className="max-h-60 overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-slate-400 dark:scrollbar-thumb-slate-600 scrollbar-track-slate-100 dark:scrollbar-track-slate-800 rounded-lg">
+            <div className="max-h-48 overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-slate-400 dark:scrollbar-thumb-slate-600 scrollbar-track-slate-100 dark:scrollbar-track-slate-800 rounded-lg">
               {activity?.map((item, index) => (
                 <div
                   key={index}

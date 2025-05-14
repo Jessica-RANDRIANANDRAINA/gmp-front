@@ -28,6 +28,9 @@ export interface HabilitationAdminInterface {
   updateHabilitation: number;
   deleteHabilitation: number;
   restoreHierarchy: number;
+  actualizeUserData: number;
+  assignAccess: number;
+  watchAllActivity: number
 }
 
 export interface IMyHabilitation {

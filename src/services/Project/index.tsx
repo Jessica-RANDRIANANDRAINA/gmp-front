@@ -15,6 +15,7 @@ import {
   getCountProject,
   updateProjectState,
   getProjectStat,
+  
 } from "./ProjectServices";
 
 import {
@@ -22,6 +23,9 @@ import {
   getTaskByProjectAndPhaseID,
   updateTaskProject,
   deletetaskProject,
+  getTaskDetails,
+  getTransverseDetails,
+  getIntercontractDetails,
 } from "./TaskServices";
 
 import {
@@ -90,4 +94,7 @@ export {
   getActivitiesPercentage,
   getProjectStat,
   MakeAllNotifReaded,
+  getTaskDetails,
+  getTransverseDetails, 
+  getIntercontractDetails 
 };

@@ -13,7 +13,7 @@ import ProjectLayout from "../../../layout/ProjectLayout";
 import AllActivityKanban from "./KanbanView/AllActivityKanban";
 import AllActivityCalendar from "./CalendarView/AllActivityCalendar";
 // types
-import { IDecodedToken } from "../../../types/user";
+import { IDecodedToken, UserInterface } from "../../../types/user";
 import { IMyHabilitation } from "../../../types/Habilitation";
 // services
 import { decodeToken } from "../../../services/Function/TokenService";
@@ -25,10 +25,11 @@ export const SignalRContext = createContext<HubConnection | null>(null);
 // context for viex calendar and view table
 export const ViewContext = createContext({
   view: "table",
-  setView: (_view: string) => {},
+  setView: (_view: string) => { },
 });
 
 type TSubordinate = {
+  users: Array<UserInterface>
   id: string;
   name: string;
   email: string;
@@ -136,11 +137,17 @@ const Activity = () => {
   const fetchSubordinates = useCallback(async () => {
     try {
       if (userid && decodedToken) {
+
+
+        console.log('Has userid and decodedToken');
         const myId = decodedToken?.jti ?? "";
 
+        console.log('myId:', myId);
         const data: TSubordinate[] = await getMySubordinatesNameAndId(myId);
+        console.log('Initial data:', data);
 
         const hab = await getAllMyHabilitation();
+
 
         const transformedArray = data?.map(({ id, name, email }) => ({
           id,
@@ -154,12 +161,15 @@ const Activity = () => {
           email: decodedToken?.sub ?? "",
         };
         const subordinatesAndMe = [...transformedArray, me];
+        
         if (hab?.admin?.watchAllActivity) {
-          const allUsers: TSubordinate[] = await getMySubordinatesNameAndId(
+
+          const allUsers: TSubordinate = await getMySubordinatesNameAndId(
             myId,
             "all"
-          );
-          const transformedAllSusersArray = allUsers?.map(
+          ); 
+          
+          const transformedAllSusersArray = allUsers?.users?.map(
             ({ id, name, email }) => ({
               id,
               name,
@@ -275,11 +285,10 @@ const Activity = () => {
               <div className="flex gap-2">
                 <div
                   onClick={() => handleViewChange("table")}
-                  className={`flex gap-1 text-xs py-1 items-center font-semibold cursor-pointer rounded ${
-                    activityView === "table"
+                  className={`flex gap-1 text-xs py-1 items-center font-semibold cursor-pointer rounded ${activityView === "table"
                       ? "bg-green-50 text-green-700 dark:bg-green-100"
                       : ""
-                  }`}
+                    }`}
                 >
                   <svg
                     width="20"
@@ -304,9 +313,8 @@ const Activity = () => {
                     height="20"
                     viewBox="0 0 16 16"
                     xmlns="http://www.w3.org/2000/svg"
-                    className={`fill-green-700 ${
-                      activityView === "table" ? "" : "hidden"
-                    }`}
+                    className={`fill-green-700 ${activityView === "table" ? "" : "hidden"
+                      }`}
                   >
                     <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
                     <g
@@ -323,11 +331,10 @@ const Activity = () => {
                 </div>
                 <div
                   onClick={() => handleViewChange("calendar")}
-                  className={`flex gap-1 text-xs px-1 items-center font-semibold cursor-pointer rounded ${
-                    activityView === "calendar"
+                  className={`flex gap-1 text-xs px-1 items-center font-semibold cursor-pointer rounded ${activityView === "calendar"
                       ? "bg-green-50 text-green-700 dark:bg-green-100"
                       : ""
-                  }`}
+                    }`}
                 >
                   <svg
                     className={`${activityView === "calendar" ? "hidden" : ""}`}
@@ -474,15 +481,14 @@ const Activity = () => {
                 />
                 <div className="flex items-end gap-2  mb-0.5 ">
                   <div
-                    className={`pb-2 ${
-                      search?.startDate !== undefined ||
-                      search?.endDate !== undefined ||
-                      selectedOptions.length !== 3 ||
-                      statusSelectedOptions.length !== 5 ||
-                      selectedUserInput.length > 0
+                    className={`pb-2 ${search?.startDate !== undefined ||
+                        search?.endDate !== undefined ||
+                        selectedOptions.length !== 3 ||
+                        statusSelectedOptions.length !== 5 ||
+                        selectedUserInput.length > 0
                         ? ""
                         : "hidden"
-                    }`}
+                      }`}
                   >
                     <button
                       onClick={handleDeleteFilter}

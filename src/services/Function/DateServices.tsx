@@ -10,8 +10,26 @@ export function formatDate(
   if (!sqlDate && tail) {
     return "--";
   }
+  
   // convert into js date
-  const dateObj = new Date(sqlDate);
+  let dateObj;
+  if (typeof sqlDate === 'string') {
+    // Si la date est au format ISO (par exemple "2023-12-31")
+    if (sqlDate.includes('T')) {
+      dateObj = new Date(sqlDate);
+    } else {
+      // Si la date est au format "YYYY-MM-DD"
+      const [year, month, day] = sqlDate.split('-');
+      dateObj = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+    }
+  } else {
+    dateObj = new Date(sqlDate);
+  }
+
+  // Vérifier si la date est valide
+  if (isNaN(dateObj.getTime())) {
+    return tail ? "--" : "";
+  }
 
   // get the day, month and year
   const day = dateObj.getDate().toString().padStart(2, "0");
@@ -29,6 +47,14 @@ export function formatDate(
   // return with the desired format
   return formatedDate;
 }
+
+export const calculateDuration = (startDate: string, endDate: string) => {
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+  const diffTime = Math.abs(end.getTime() - start.getTime());
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1; // +1 pour inclure le premier jour
+  return diffDays;
+};
 
 export const formatDateToText: any = (sqlDate: string | number | Date) => {
   // Vérification si la date est valide
@@ -74,4 +100,23 @@ export const getMondayAndFriday = () => {
     monday: monday.toISOString().split("T")[0],
     friday: friday.toISOString().split("T")[0],
   };
+};
+
+export const formatDateTime = (dateString: string, withTime = false) => {
+  const date = new Date(dateString);
+  if (isNaN(date.getTime())) return 'Date invalide';
+
+  const options: Intl.DateTimeFormatOptions = {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  };
+
+  if (withTime) {
+    options.hour = '2-digit';
+    options.minute = '2-digit';
+    options.hour12 = true; // Pour avoir AM/PM
+  }
+
+  return date.toLocaleDateString('fr-FR', options);
 };

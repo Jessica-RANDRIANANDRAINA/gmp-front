@@ -122,3 +122,47 @@
   background: linear-gradient(135deg, #d32f2f, #d32f2f) !important;
  /* Applique un dégradé rouge */
 }
+
+
+.table-striped tr:nth-child(even) {
+  background-color: #f4f4f4; /* Gris clair */
+}
+
+.table-striped tr:nth-child(odd) {
+  background-color: #ffffff; /* Blanc */
+}
+
+/* Pour le mode sombre */
+.dark .table-striped tr:nth-child(even) {
+  background-color: #2d2d2d;
+}
+
+.dark .table-striped tr:nth-child(odd) {
+  background-color: #1a1a1a;
+}
+.table-striped tr:hover {
+  background-color: #d1e3c9; /* Légèrement teinté en vert */
+  transition: background 0.3s ease-in-out;
+}
+.status-todo {
+  background-color: #C6DC96; /* Vert clair */
+  color: white;
+  border-radius: 6px;
+  padding: 5px 10px;
+  font-weight: bold;
+  border: 1px solid #9DBF67; /* Bordure légèrement plus foncée */
+}
+
+.status-urgent {
+  background-color: #E30613; /* Rouge */
+  color: white;
+  border-radius: 6px;
+  padding: 5px 10px;
+  font-weight: bold;
+  border: 1px solid #B8000A;
+}
+
+.status-todo:hover, .status-urgent:hover {
+  opacity: 0.8;
+  transition: all 0.3s ease-in-out;
+}
