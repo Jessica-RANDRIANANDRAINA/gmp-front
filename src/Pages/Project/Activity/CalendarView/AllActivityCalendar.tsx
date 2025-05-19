@@ -29,30 +29,30 @@ import { IMyHabilitation } from "../../../../types/Habilitation";
 
 const notyf = new Notyf({ position: { x: "center", y: "top" } });
 
-interface Activity {
-  id: string;
-  content: {
-    id: string;
-    title: string;
-    description: string;
-    status: string;
-    startDate: string;
-    endDate: string;
-    dailyEffort: number;
-    finished: boolean;
-    type: string;
-    subType: string;
-    projectId: string;
-    phaseId: string;
-    priority: string;
-    userid: string;
-    userName: string;
-    user: Array<{
-      user: { name: string };
-      userid: string;
-    }>;
-  };
-}
+// interface Activity {
+//   id: string;
+//   content: {
+//     id: string;
+//     title: string;
+//     description: string;
+//     status: string;
+//     startDate: string;
+//     dueDate: string;
+//     dailyEffort: number;
+//     finished: boolean;
+//     type: string;
+//     subType: string;
+//     projectId: string;
+//     phaseId: string;
+//     priority: string;
+//     userid: string;
+//     userName: string;
+//     user: Array<{
+//       user: { name: string };
+//       userid: string;
+//     }>;
+//   };
+// }
 
 const AllActivityCalendar = ({
   selectedOptions,
@@ -96,8 +96,27 @@ const AllActivityCalendar = ({
   //   const [isModalAddActivityOpen, setIsModalAddActivityOpen] =
   //     useState<boolean>(false);
   const [isRefreshNeeded, setIsRefreshNeeded] = useState<boolean>(false);
-  const [taskData, setTaskData] = useState<any>();
-  const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null);
+  const [taskData, setTaskData] = useState<any>({
+  content: {
+    id: "",
+    title: "",
+    description: "",
+    status: "",
+    startDate: "",
+    dueDate: "",
+    fichier: "",
+    dailyEffort: 1,
+    type: "",
+    subType: "",
+    projectId: "",
+    phaseId: "",
+    priority: "",
+    userid: "",
+    userName: "",
+    user: []
+  }
+});
+  // const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null);
   const [activeTaskId, setActiveTaskId] = useState<string | null>(null);
   const [data, setData] = useState<any>();
 
@@ -312,7 +331,7 @@ const AllActivityCalendar = ({
 
   const handleEventClick = (info: any) => {
     const task = events.find((event) => event.id === info.event.id);
-
+     const userList = task.userList || [];
     const data = {
       content: {
         dailyEffort: task?.dailyEffort,
@@ -327,60 +346,147 @@ const AllActivityCalendar = ({
         projectId: task?.projectid,
         priority: task?.priority,
         subType: task?.subType,
-        userName: task?.userList?.[0]?.user?.name,
+        userName: userList[0]?.user?.name || task.userName || "",
+      user: userList.map((user: any) => ({
+        userid: user.userid,
+        user: {
+          name: user.user?.name || "",
+          email: user.user?.email || ""
+        }
+      }))
       },
     };
     setTaskData(data);
     setIsModalUpdateOpen(true);
   };
 
-  const handleModifClick = (task: any) => {
-    const data = {
-      content: {
-        dailyEffort: task?.dailyEffort,
-        description: task?.description,
-        id: task?.id,
-        startDate: task?.startDate,
-        status: task?.status,
-        title: task?.title,
-        type: task?.type,
-        phaseId: task?.phaseid,
-        projectId: task?.projectid,
-        priority: task?.priority,
-        subType: task?.subType,
-      },
-    };
-    setTaskData(data);
-    setIsModalUpdateOpen(true);
-  };
+ const handleModifClick = (task: any) => {
+  // Normalisation des données utilisateur
+  const normalizeUsers = () => {
+    if (Array.isArray(task.userList)) {
+      return task.userList.map((user: any) => ({
+        userid: user.userid,
+        user: {
+          name: user.user?.name || "",
+          email: user.user?.email || ""
+        }
+      }));
+    }
+    
+    if (Array.isArray(task.user)) {
+      return task.user.map((user: any) => ({
+        userid: user.userid,
+        user: {
+          name: user.user?.name || "",
+          email: user.user?.email || ""
+        }
+      }));
+    }
 
-  //duplicateActivity
-  const handleDuplicateClick = (task: any) => {
-    const activity: Activity = {
-      id: task?.id,
-      content: {
-        id: task?.id,
-        title: task?.title,
-        description: task?.description,
-        startDate: task?.startDate,
-        endDate: task?.endDate,
-        status: task?.status,
-        type: task?.type,
-        subType: task?.subType,
-        projectId: task?.projectid,
-        phaseId: task?.phaseid,
-        priority: task?.priority,
-        dailyEffort: task?.dailyEffort,
-        finished: task?.finished,
-        userid: task?.userid,
-        userName: task?.userName,
-        user: task?.user || [], // ou [] par défaut
+    // Cas par défaut si aucun tableau utilisateur trouvé
+    return [{
+      userid: task.userid || "",
+      user: {
+        name: task.userName || "",
+        email: ""
       }
-    };
-  
-    setSelectedActivity(activity);
-    setIsModalDuplicateActivityOpen(true);
+    }];
   };
+
+  // Normalisation des dates
+  const startDate = task.startDate || task.start;
+  const dueDate = task.dueDate || task.endDate;
+
+  // Construction de l'objet activité normalisé
+  const activityData = {
+    content: {
+      id: task.id?.split('.')?.[0] || "",
+      title: task.title || "",
+      description: task.description || "",
+      status: task.status || "Backlog",
+      startDate: startDate ? new Date(startDate).toISOString() : "",
+      endDate: dueDate ? new Date(dueDate).toISOString() : "",
+      dailyEffort: task.dailyEffort || 1,
+      type: task.type || "",
+      subType: task.subType || "",
+      projectId: task.projectid || task.projectId || "",
+      phaseId: task.phaseid || task.phaseId || "",
+      priority: task.priority || "Medium",
+      userid: task.userid || "",
+      userName: task.userName || "",
+      user: normalizeUsers()
+    }
+  };
+
+  console.log("Données pour modification:", activityData);
+  setTaskData(activityData);
+  setIsModalUpdateOpen(true);
+};
+  //duplicateActivity
+const handleDuplicateClick = (task: any) => {
+  // 1. Formatage des utilisateurs
+  const formatUser = (userData: any) => ({
+    userid: userData.userid || "",
+    projectid: task.extendedProps?.projectid || task.projectid || "",
+    role: "collaborator",
+    user: {
+      name: userData.user?.name || userData.name || "",
+      email: userData.user?.email || userData.email || ""
+    }
+  });
+
+  // 2. Récupération des utilisateurs
+  let userList: any[] = [];
+  
+  if (Array.isArray(task.extendedProps?.userList)) {
+    userList = task.extendedProps.userList.map(formatUser);
+  } else if (Array.isArray(task.userList)) {
+    userList = task.userList.map(formatUser);
+  } else if (task.extendedProps?.user || task.userid) {
+    userList = [{
+      userid: task.extendedProps?.user || task.userid || "",
+      projectid: task.extendedProps?.projectid || task.projectid || "",
+      role: "collaborator",
+      user: {
+        name: task.extendedProps?.userName || task.userName || "",
+        email: ""
+      }
+    }];
+  }
+
+  // 3. Gestion des dates corrigée
+  const startDate = task.startDate ? new Date(task.startDate).toISOString() : "";
+  const dueDate = task.extendedProps?.dueDate || task.dueDate || "";
+
+  // 4. Construction finale avec toutes les corrections
+  const activityData = {
+    content: {
+      id: task.id?.split('.')?.[0] || "",
+      title: task.title || "",
+      description: task.extendedProps?.description || task.description || "",
+      status: task.extendedProps?.status || task.status || "Backlog",
+      startDate,
+      dueDate, // Utilisation cohérente de dueDate partout
+      fichier: task.extendedProps?.fichier || task.fichier || "",
+      dailyEffort: task.extendedProps?.dailyEffort || task.dailyEffort || 1,
+      type: task.extendedProps?.type || task.type || "",
+      subType: task.extendedProps?.subType || task.subType || "",
+      projectId: task.extendedProps?.projectid || task.projectid || "",
+      phaseId: task.extendedProps?.phaseid || task.phaseid || "",
+      priority: task.extendedProps?.priority || task.priority || "Medium",
+      userid: userList[0]?.userid || task.extendedProps?.user || task.userid || "",
+      userName: userList[0]?.user?.name || 
+               task.extendedProps?.userList?.[0]?.user?.name || 
+               task.userName || 
+               "",
+      user: userList,
+    }
+  };
+
+  console.log("data modification :", activityData);
+  setTaskData(activityData);
+  setIsModalDuplicateActivityOpen(true);
+};
   
   //end duplicateActivity
   const handleToogleMenuDelete = (
@@ -1025,12 +1131,12 @@ const AllActivityCalendar = ({
           myHabilitation={myHabilitation}
         />
       )}
-     {isModalDuplicateActivityOpen && selectedActivity && (
+    {isModalDuplicateActivityOpen && taskData && (
   <DuplicateActivity
     modalDuplicateOpen={isModalDuplicateActivityOpen}
     setModalDuplicateOpen={setIsModalDuplicateActivityOpen}
     setIsRefreshNeeded={setIsRefreshNeeded}
-    activity={selectedActivity}
+    activity={taskData}
     myHabilitation={myHabilitation}
   />
 )}

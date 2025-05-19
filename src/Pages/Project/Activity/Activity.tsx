@@ -139,12 +139,12 @@ const Activity = () => {
       if (userid && decodedToken) {
 
 
-        console.log('Has userid and decodedToken');
+        
         const myId = decodedToken?.jti ?? "";
 
-        console.log('myId:', myId);
+        
         const data: TSubordinate[] = await getMySubordinatesNameAndId(myId);
-        console.log('Initial data:', data);
+        
 
         const hab = await getAllMyHabilitation();
 

@@ -688,14 +688,18 @@ const TableUser = ({
       {/* ===== PAGINATE END ===== */}
       {/* =====TABLE END===== */}
       {/* =====MODAL USER MODIF START===== */}
-      {userModif && (
-        <UserModifModal
-          userForModif={userSelectedForModif}
-          setUserModifs={setUserModif}
-          userModif={userModif}
-          userSelected={userSelected}
-        />
-      )}
+     {userModif && (
+  <UserModifModal
+    userForModif={{
+      ...userSelectedForModif,
+      habilitations: userSelected.length === 1 
+        ? data.find(u => u.id === userSelected[0])?.habilitations?.map(h => h.label) || []
+        : []
+    }}
+    setUserModifs={setUserModif}
+    userSelected={userSelected}
+  />
+)}
       {/* =====MODAL USER MODIF END===== */}
       {/* =====MODAL USER DELETE START===== */}
       {userDelete && (

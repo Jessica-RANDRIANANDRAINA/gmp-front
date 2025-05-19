@@ -25,6 +25,12 @@ const GanttChart: React.FC<GanttChartProps> = ({ tasks }) => {
       gantt.init(ganttRef.current);
       gantt.config.date_format = "%d-%m-%Y";
 
+
+      gantt.config.scale_unit = "month";
+      gantt.config.step=1
+      gantt.config.date_scale="%F %Y"
+      gantt.config.min_column_width=120
+
       gantt.config.subtask = true;
       gantt.config.drag_resize = true; // Modifier la durée
       gantt.config.drag_move = true; // Déplacer les tâches
@@ -53,10 +59,14 @@ const GanttChart: React.FC<GanttChartProps> = ({ tasks }) => {
             task.end_date &&
             new Date(task.end_date) < currentDate &&
             task.progress !== 1
+            
           ) {
+            
+task.end_date = currentDate;
             return "task-late"; // Marquer la tâche en retard si sa date de fin est passée
           }
         }
+        
         return "";
       };
 

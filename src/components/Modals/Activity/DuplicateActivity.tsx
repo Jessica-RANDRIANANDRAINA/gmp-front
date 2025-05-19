@@ -65,8 +65,9 @@ const DuplicateActivity =({
    const [usersList, setUsersList] = useState<Array<any>>([]);
     const [filteredUsers, setFilteredUsers] = useState<Array<any>>([]);
     const [showUserList, setShowUserList] = useState<boolean>(false);
-    const [assignedPerson, setAssignedPerson] = useState<Array<IUserProject>>(
-      activity?.content?.user?.map((user: any) => ({
+   const [assignedPerson, setAssignedPerson] = useState<Array<IUserProject>>(
+  Array.isArray(activity?.content?.user) 
+    ? activity.content.user.map((user: any) => ({
         userid: user.userid,
         projectid: activityData.projectId,
         role: "collaborator",
@@ -74,8 +75,9 @@ const DuplicateActivity =({
           name: user.user?.name || "",
           email: user.user?.email || ""
         }
-      })) || []
-    );
+      }))
+    : []
+);
   
 
   const [projectData, setProjectData] = useState<any>();

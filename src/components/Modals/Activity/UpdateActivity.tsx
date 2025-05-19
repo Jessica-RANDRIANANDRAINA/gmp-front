@@ -42,6 +42,7 @@ const UpdateActivity = ({
     dailyEffort: activity?.content?.dailyEffort,
     startDate: activity?.content?.startDate,
     dueDate: activity?.content?.dueDate,
+    endDate: activity?.content?.endDate,
     fichier: activity?.content?.fichier,
     projectTitle: activity?.content?.projectTitle,
     phaseTitle: activity?.content?.phaseTitle,
@@ -517,10 +518,10 @@ const UpdateActivity = ({
               rounded="medium"
               className="text-sm"
               value={
-                activityData?.dueDate 
-                  ? activityData.dueDate.includes('T') 
-                    ? activityData.dueDate.split('T')[0] 
-                    : activityData.dueDate
+                activityData?.endDate 
+                  ? activityData.endDate.includes('T') 
+                    ? activityData.endDate.split('T')[0] 
+                    : activityData.endDate
                   : ""
               }
               min={activityData.startDate}

@@ -57,6 +57,16 @@ interface Activity {
   };
 }
 
+const normalizeActivity = (activity: any): Activity => {
+  return {
+    ...activity,
+    content: {
+      ...activity.content,
+      endDate: activity.content.endDate || activity.content.dueDate,
+    }
+  };
+};
+
 const organizeActivityByStatus = (
   activities: any[],
   visibleColumns: string[] = []
@@ -91,7 +101,7 @@ const organizeActivityByStatus = (
         description: activity.description,
         status: activity.status,
         startDate: activity.startDate,
-        endDate: activity.endDate,
+        endDate: activity.endDate  || activity.dueDate,
         fichier: activity.fichier,
         dailyEffort: activity.dailyEffort ?? 1,
         finished: activity.finished,
@@ -1033,7 +1043,7 @@ const AllActivityKanban = ({
           modalDuplicateOpen={isModalDuplicateActivityOpen}
           setModalDuplicateOpen={setIsModalDuplicateActivityOpen}
           setIsRefreshNeeded={setIsRefreshNeeded}
-          activity={activityData}
+          activity={normalizeActivity}
           myHabilitation={myHabilitation}
         />
       )}

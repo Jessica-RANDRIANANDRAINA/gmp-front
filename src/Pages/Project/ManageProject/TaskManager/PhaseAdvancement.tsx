@@ -307,7 +307,9 @@ const PhaseAdvancement = () => {
       console.error(`Error at handle delete task: ${error}`);
     }
   };
-  const isLate = (dueDate: string) => {
+  const isLate = (dueDate: string, status : string) => {
+    if(status !== "En cours") return false;
+    if(!dueDate) return false;
     const today = new Date();
     const due = new Date(dueDate);
     // On compare les dates sans les heures
@@ -557,9 +559,9 @@ const PhaseAdvancement = () => {
                                       ) : null}
                                     </div>
                                   <div className="border-t mt-2 flex items-center justify-between dark:border-t-zinc-600 text-zinc-400 pt-1">
-                                    <div className={`text-xs ${isLate(task.content.dueDate) ? "text-red-500" : ""}`}>
+                                    <div className={`text-xs ${isLate(task.content.dueDate, task.content.status) ? "text-red-500" : ""}`}>
                                       {startDate} - {dueDate}
-                                      {isLate(task.content.dueDate) && (
+                                      {isLate(task.content.dueDate, task.content.status) && (
                                         <span className="ml-1 text-red-500">En retard</span>
                                       )}
                                     </div>
