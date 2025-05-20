@@ -65,7 +65,7 @@ const InfoGeneralAdd = ({
           });
         }}
       />
-      <div className="grid  md:grid-cols-3 gap-4">
+      <div className="grid  md:grid-cols-2 gap-4">
         <CustomSelect
           label="Priorité"
           placeholder="Priorité"
@@ -90,7 +90,22 @@ const InfoGeneralAdd = ({
             });
           }}
         />
-        <MultiSelect
+       
+      </div>
+      <div className="grid md:grid-cols-2 gap-4 ">
+          <CustomSelect
+            label="Etat"
+            placeholder="Etat"
+            data={["Pas commencé", "En cours", "Stand by/En attente", "Terminé", "Archivé", "Abandonné"]}
+            value={projectData.state}
+            onValueChange={(e) => {
+              setProjectData({
+                ...projectData,
+                state: e,
+              });
+            }}
+          />
+           <MultiSelect
           id="001"
           label={"Direction propriétaire"}
           placeholder="Choisir une direction"

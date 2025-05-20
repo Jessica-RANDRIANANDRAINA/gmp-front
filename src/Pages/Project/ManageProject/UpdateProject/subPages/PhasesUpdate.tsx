@@ -232,7 +232,7 @@ const PhasesUpdate = ({
 
               {[...phaseAndLivrableList]
                 .sort((a, b) => (a.rank || 0) - (b.rank || 0))
-                .map((phase, index) => (
+                .map((phase) => (
                   <div
                     key={`phase-details-${phase.id}`}
                     className={activePhaseId === phase.id ? "" : "hidden"}

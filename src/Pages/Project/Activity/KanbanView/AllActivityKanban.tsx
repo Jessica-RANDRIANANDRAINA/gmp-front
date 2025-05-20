@@ -1043,7 +1043,7 @@ const AllActivityKanban = ({
           modalDuplicateOpen={isModalDuplicateActivityOpen}
           setModalDuplicateOpen={setIsModalDuplicateActivityOpen}
           setIsRefreshNeeded={setIsRefreshNeeded}
-          activity={normalizeActivity}
+          activity={activityData}
           myHabilitation={myHabilitation}
         />
       )}

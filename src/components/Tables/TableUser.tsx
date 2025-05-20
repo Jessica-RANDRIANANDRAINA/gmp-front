@@ -693,7 +693,7 @@ const TableUser = ({
     userForModif={{
       ...userSelectedForModif,
       habilitations: userSelected.length === 1 
-        ? data.find(u => u.id === userSelected[0])?.habilitations?.map(h => h.label) || []
+        ? data.find(u => u.id === userSelected[0])?.habilitations?.map((h: { label: any; }) => h.label) || []
         : []
     }}
     setUserModifs={setUserModif}

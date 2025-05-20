@@ -51,12 +51,13 @@ const DuplicateActivity =({
     type: activity?.content?.type,
     dailyEffort: activity?.content?.dailyEffort,
     startDate: activity?.content?.startDate,
-    dueDate: activity?.content?.dueDate,
+    dueDate: activity?.content?.dueDate || activity?.content?.endDate,
+    endDate: activity?.content?.endDate || activity?.content?.dueDate,
     fichier: activity?.content?.fichier,
     projectTitle: activity?.content?.projectTitle,
     phaseTitle: activity?.content?.phaseTitle,
-    projectId: activity?.content?.projectId,
-    phaseId: activity?.content?.phaseId,
+    projectId: activity?.content?.projectId || activity?.content?.projectid,
+    phaseId: activity?.content?.phaseId || activity?.content?.phaseid,
     transverseType: activity?.content?.subType,
     intercontractType: activity?.content?.subType,
     status: activity?.content?.status,
@@ -257,34 +258,45 @@ const DuplicateActivity =({
   const handleDuplicateActivity = async () => {
     setIsLoading(true);
     try {
+      const cleanDate = (date: string | null | undefined): string => {
+        if (!date) return new Date().toISOString().split('T')[0]; // Retourne la date du jour si vide
+        return date.includes('T') ? date.split('T')[0] : date;
+      };
       console.log("activityData:", activityData);
       const newId = uuid4(); // Générer un nouvel ID unique pour la copie
 
       console.log("newId:", newId);
 
       if (activityData?.type === "Projet") {
-        const formatUser = [
-          {
-            userid: userid,
-            taskid: newId,
-          },
-        ];
-        const initiatorId = decodedToken?.jti;
-        const initiatorName = decodedToken?.name;
+         const formatUser = [
+        {
+          userid: userid,
+          taskid: newId,
+        },
+        ...assignedPerson.map(user => ({
+          userid: user.userid,
+          taskid: newId
+        }))
+      ].filter((user, index, self) => 
+        index === self.findIndex(u => u.userid === user.userid)
+      );
+
+        // const initiatorId = decodedToken?.jti;
+        // const initiatorName = decodedToken?.name;
+        
         const dataToSend = {
           id: newId, 
           title: activityData.title,
-          description: activityData.description,
+          description: activityData.description || "", 
           phaseid: activityData.phaseId,
           projectid: activityData.projectId,
-          priority: activityData.priority,
-          startDate: activityData.startDate,
-          dueDate: activityData.dueDate,
-          dailyEffort: activityData.dailyEffort,
-          status: activityData.status,
-          listUsers: formatUser,
-          initiatorId,
-          initiatorName,
+          priority: activityData.priority || "Moyen",
+          startDate: cleanDate(activityData.startDate),
+          dueDate: cleanDate(activityData.dueDate || activityData.endDate),
+          dailyEffort: Number(activityData.dailyEffort) || 1, 
+          status: activityData.status || "Backlog", 
+          fichier: activityData.fichier || "", 
+          listUsers: formatUser
         };
         console.log("dataToSend for Projet:", dataToSend);
         const response = await createTaskPhase(dataToSend);
@@ -294,12 +306,13 @@ const DuplicateActivity =({
           id: newId,
           title: activityData.title,
           description: activityData.description,
-          startDate: activityData.startDate,
-          dueDate: activityData.dueDate,
+          startDate: cleanDate(activityData.startDate),
+          endDate: cleanDate(activityData.dueDate ?? activityData.endDate ?? undefined),
           dailyEffort: activityData.dailyEffort,
           type: activityData.transverseType, // Champ crucial manquant
           status: activityData.status,
-          userid: userid // Ajout de l'ID utilisateur
+          fichier: activityData.fichier,
+          userid: decodedToken?.jti
         };
         await createTransverse(dataToSend);
         
@@ -307,12 +320,14 @@ const DuplicateActivity =({
         const dataToSend = {
           id: newId,
           title: activityData.title,
-          startDate: activityData.startDate,
-          dueDate: activityData.dueDate,
+          startDate: cleanDate(activityData.startDate),
+          endDate: cleanDate(activityData.dueDate ?? activityData.endDate ?? undefined),
           dailyEffort: activityData.dailyEffort,
           type: activityData.intercontractType,
           description: activityData.description,
           status: activityData.status,
+          fichier: activityData.fichier,
+          userid: decodedToken?.jti
         };
         console.log("dataToSend for InterContract:", dataToSend);
         const response = await createInterContract(dataToSend);
@@ -547,17 +562,20 @@ const DuplicateActivity =({
                 rounded="medium"
                 className="text-sm"
                 value={
-                  activityData?.dueDate
-                    ? activityData?.dueDate?.split("T")?.[0]
-                    : ""
-                }
-                onChange={(e) => {
-                  setActivityData({
-                    ...activityData,
-                    dueDate: e.target.value,
-                  });
-                }}
-                min={activityData?.startDate?.split("T")?.[0]} // Optionnel: empêche de sélectionner une date antérieure au début
+                activityData?.dueDate || activityData?.endDate
+                  ? (activityData.dueDate || activityData.endDate || '').includes('T') 
+                    ? (activityData.dueDate || activityData.endDate || '').split('T')[0]
+                    : (activityData.dueDate || activityData.endDate || '')
+                  : ""
+              }
+              min={activityData?.startDate}
+              onChange={(e) => {
+                setActivityData({
+                  ...activityData,
+                  dueDate: e.target.value,
+                  endDate: e.target.value
+                });
+              }}
               />
               
             </div>
@@ -634,7 +652,7 @@ const DuplicateActivity =({
             activityData?.title !== "" &&
             activityData?.type !== "" &&
             activityData?.startDate !== "" &&
-            activityData?.dueDate !== "";
+            (activityData?.dueDate !== "" || activityData?.endDate !== "");
             
 
           const isProjectComplete =

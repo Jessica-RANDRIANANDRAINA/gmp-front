@@ -116,13 +116,14 @@ const UserModifModal = ({
               </>
             )}
             <MultiSelect
-              id="user-habilitations"
-              label={"Accès"}
-              placeholder="Accès disponible"
-              value={habilitations}
-              setValueMulti={setValueMulti}
-              initialValue={userForModif.habilitations?.join(",")}
-            />
+  id="user-habilitations"
+  label={"Accès"}
+  placeholder="Accès disponible"
+  value={habilitations}
+  setValueMulti={setValueMulti}
+  initialValue={userForModif.habilitations?.join(",")}
+/>
+
             <input
               type="submit"
               value={"Modifier les accès"}

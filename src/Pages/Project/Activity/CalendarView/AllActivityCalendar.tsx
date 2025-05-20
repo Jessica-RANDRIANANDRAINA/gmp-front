@@ -14,7 +14,7 @@ import listPlugin from "@fullcalendar/list";
 import frLocale from "@fullcalendar/core/locales/fr";
 import {
   deleteIntercontract,
-  deleteTaskActivity,
+  deletetaskProject,
   deleteTransverse,
   getAllActivitiesOfUser,
 } from "../../../../services/Project";
@@ -104,6 +104,7 @@ const AllActivityCalendar = ({
     status: "",
     startDate: "",
     dueDate: "",
+    endDate: "",
     fichier: "",
     dailyEffort: 1,
     type: "",
@@ -234,6 +235,7 @@ const AllActivityCalendar = ({
                   userid: string;
                   title: string;
                   endDate: Date | string;
+                  dueDate: Date | string;
                   description: string;
                   status: string;
                   type: string;
@@ -338,7 +340,8 @@ const AllActivityCalendar = ({
         description: task?.description,
         id: task?.id?.split(".")?.[0],
         startDate: task?.start,
-        endDate: task.dueDate,
+        endDate: task.end,
+        dueDate: task.end,
         status: task?.status,
         title: task?.title,
         type: task?.type,
@@ -497,52 +500,47 @@ const handleDuplicateClick = (task: any) => {
     setActiveTaskId(activeTaskId === activityId ? null : activityId);
   };
 
-  const handleDeleteActivity = async (
-    activityIdWithUser: string,
-    type: string
-  ) => {
-    const [activityId] = activityIdWithUser.split(".");
-    try {
-      if (type === "Transverse") {
-        await deleteTransverse(activityId);
-        if (connection) {
-          try {
-            await connection.invoke("TransverseDeleted", activityId);
-          } catch (error) {
-            console.error(
-              `Error while sending event TransverseDeleted : ${error}`
-            );
-          }
-        }
-      } else if (type === "InterContract") {
-        await deleteIntercontract(activityId);
-        if (connection) {
-          try {
-            await connection.invoke("IntercontractDeleted", activityId);
-          } catch (error) {
-            console.error(
-              `Error while sending event IntercontractDeleted : ${error}`
-            );
-          }
-        }
-      } else {
-        await deleteTaskActivity(activityId);
-        if (connection) {
-          try {
-            await connection.invoke("TaskActivityDeleted", activityId);
-          } catch (error) {
-            console.error(
-              `Error while sending event TaskActivityDeleted : ${error}`
-            );
-          }
+ const handleDeleteActivity = async (
+  activityIdWithUser: string,
+  type: string
+) => {
+  const [activityId] = activityIdWithUser.split(".");
+  try {
+    if (type === "Transverse") {
+      await deleteTransverse(activityId);
+      if (connection) {
+        try {
+          await connection.invoke("TransverseDeleted", activityId);
+        } catch (error) {
+          console.error(`Error while sending event TransverseDeleted : ${error}`);
         }
       }
-      notyf.success("Activité supprimée");
-    } catch (error) {
-      notyf.error("Une erreur s'est produite, veuillez réessayer.");
-      console.error(`Error at handle delete activity: ${error}`);
+    } else if (type === "InterContract") {
+      await deleteIntercontract(activityId);
+      if (connection) {
+        try {
+          await connection.invoke("IntercontractDeleted", activityId);
+        } catch (error) {
+          console.error(`Error while sending event IntercontractDeleted : ${error}`);
+        }
+      }
+    } else {
+      // Utilisez deletetaskProject pour les projets comme dans AllActivityKanban
+      await deletetaskProject(activityId);
+      if (connection) {
+        try {
+          await connection.invoke("TaskActivityDeleted", activityId);
+        } catch (error) {
+          console.error(`Error while sending event TaskActivityDeleted : ${error}`);
+        }
+      }
     }
-  };
+    notyf.success("Activité supprimée");
+  } catch (error) {
+    notyf.error("Une erreur s'est produite, veuillez réessayer.");
+    console.error(`Error at handle delete activity: ${error}`);
+  }
+};
 
   const [openDropdownId, setOpenDropdownId] = useState<string | null>(null);
   // const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null);

@@ -41,8 +41,8 @@ const UpdateActivity = ({
     type: activity?.content?.type,
     dailyEffort: activity?.content?.dailyEffort,
     startDate: activity?.content?.startDate,
-    dueDate: activity?.content?.dueDate,
-    endDate: activity?.content?.endDate,
+    dueDate: activity?.content?.dueDate || activity?.content?.endDate,
+    endDate: activity?.content?.endDate || activity?.content?.dueDate,
     fichier: activity?.content?.fichier,
     projectTitle: activity?.content?.projectTitle,
     phaseTitle: activity?.content?.phaseTitle,
@@ -243,7 +243,7 @@ const UpdateActivity = ({
         const dataToSend = {
           title: activityData.title,
           startDate: activityData.startDate,
-          endDate: cleanDate(activityData.dueDate ?? undefined),
+          endDate: cleanDate(activityData.dueDate ?? activityData.endDate ?? undefined),
           dailyEffort: activityData.dailyEffort,
           type: activityData.transverseType,
           description: activityData.description,
@@ -257,7 +257,7 @@ const UpdateActivity = ({
         const dataToSend = {
           title: activityData.title,
           startDate: activityData.startDate,
-          endDate: cleanDate(activityData.dueDate ?? undefined),
+          endDate: cleanDate(activityData.dueDate ?? activityData.endDate ?? undefined),
           dailyEffort: activityData.dailyEffort,
           type: activityData.intercontractType,
           description: activityData.description,
@@ -276,7 +276,7 @@ const UpdateActivity = ({
         
         const dataToSend = {
           startDate: activityData?.startDate,
-          dueDate: activityData?.dueDate,
+          dueDate: activityData?.dueDate || activityData?.endDate,
           description: activityData?.description,
           dailyEffort: activityData?.dailyEffort,
           title: activityData?.title,
@@ -313,9 +313,6 @@ const UpdateActivity = ({
         <div className="space-y-4">
           {/* Section Assignation */}
           <div className="space-y-2">
-           
-            
-            
             <div className="relative">
               <CustomInput
                 type="text"
@@ -325,7 +322,6 @@ const UpdateActivity = ({
                 onChange={(e) => handleUserSearch(e.target.value)}
                 onFocus={() => setShowUserList(true)}
               />
-              
               
               {showUserList && filteredUsers.length > 0 && (
                 <div className="absolute z-10 mt-1 w-full bg-white dark:bg-boxdark border dark:border-formStrokedark rounded-md shadow-lg max-h-60 overflow-y-auto">
@@ -518,17 +514,18 @@ const UpdateActivity = ({
               rounded="medium"
               className="text-sm"
               value={
-                activityData?.endDate 
-                  ? activityData.endDate.includes('T') 
-                    ? activityData.endDate.split('T')[0] 
-                    : activityData.endDate
+                activityData?.dueDate || activityData?.endDate
+                  ? (activityData.dueDate || activityData.endDate || '').includes('T') 
+                    ? (activityData.dueDate || activityData.endDate || '').split('T')[0]
+                    : (activityData.dueDate || activityData.endDate || '')
                   : ""
               }
-              min={activityData.startDate}
+              min={activityData?.startDate}
               onChange={(e) => {
                 setActivityData({
                   ...activityData,
                   dueDate: e.target.value,
+                  endDate: e.target.value
                 });
               }}
             />
