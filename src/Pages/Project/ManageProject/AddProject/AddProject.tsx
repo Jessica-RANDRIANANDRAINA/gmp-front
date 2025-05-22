@@ -159,7 +159,7 @@ const AddProject = () => {
       await createProject(data);
 
       notyf.success(`Projet Crée avec succès.`);
-      navigate("/gmp/project/list");
+      navigate(`/gmp/project/details/${projectid}/details`);
     } catch (error) {
       notyf.error(`Une erreur s'est produite, veuillez réessayer plus tard`);
       console.log(`Error at create project: ${error}`);

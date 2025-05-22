@@ -96,7 +96,7 @@ const InfoGeneralAdd = ({
           <CustomSelect
             label="Etat"
             placeholder="Etat"
-            data={["Pas commencé", "En cours", "Stand by/En attente", "Terminé", "Archivé", "Abandonné"]}
+            data={["Pas commencé", "Commencer/En cours", "Terminer", "Archiver","Mettre en stand by"]}
             value={projectData.state}
             onValueChange={(e) => {
               setProjectData({

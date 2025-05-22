@@ -56,33 +56,34 @@ const DetailsProject = () => {
                   </div>
                 </div>
                 <div>
-                  <div className="flex items-center gap-2">
-                    <div className="text-base flex">
-                      Etat :
+                  {projectData?.state && (
+                    <div className="flex items-center gap-2">
+                      <div className="text-base flex">Etat :</div>
+                      <div className="flex gap-2 items-center">
+                        <div
+                          className={`text-sm flex justify-center items-center gap-1 ${
+                            projectData.state === "Pas commencé"
+                              ? "text-cyan-500"
+                              : projectData.state === "Commencer/En cours"
+                              ? "text-green-600"
+                              : "text-green-600"
+                          }`}
+                        >
+                          <span
+                            className={`w-2 flex h-2 border rounded-full ${
+                              projectData.state === "Pas commencé"
+                                ? "bg-cyan-500"
+                                : projectData.state === "Commencer/En cours"
+                                ? "bg-green-600"
+                                : "bg-green-600"
+                            }`}
+                          ></span>
+                          {projectData.state}
+                        </div>
+                      </div>
                     </div>
-                    <div className="flex gap-2 items-center">
-                      <div
-                      className={`text-sm flex justify-center items-center gap-1 ${
-                        projectData?.state === "Pas commencé"
-                          ? "text-cyan-500"
-                          : projectData?.state === "En cours"
-                          ? "text-orange"
-                          : "text-rose-600"
-                      }`}
-                    >
-                      <span
-                        className={`w-2 flex h-2 border rounded-full ${
-                          projectData?.state === "Pas commencé"
-                            ? "bg-cyan-500"
-                            : projectData?.state === "En cours"
-                            ? "bg-orange"
-                            : "bg-rose-600"
-                        }`}
-                      ></span>
-                      {projectData?.state}
-                    </div>
-                    </div>
-                  </div>
+                  )}
+
                 </div>
                 <div>
                   <div className="flex items-center gap-2">

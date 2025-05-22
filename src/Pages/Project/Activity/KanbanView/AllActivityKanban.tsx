@@ -57,15 +57,15 @@ interface Activity {
   };
 }
 
-const normalizeActivity = (activity: any): Activity => {
-  return {
-    ...activity,
-    content: {
-      ...activity.content,
-      endDate: activity.content.endDate || activity.content.dueDate,
-    }
-  };
-};
+// const normalizeActivity = (activity: any): Activity => {
+//   return {
+//     ...activity,
+//     content: {
+//       ...activity.content,
+//       endDate: activity.content.endDate || activity.content.dueDate,
+//     }
+//   };
+// };
 
 const organizeActivityByStatus = (
   activities: any[],

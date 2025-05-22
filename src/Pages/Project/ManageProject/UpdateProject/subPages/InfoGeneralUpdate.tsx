@@ -22,13 +22,32 @@ const InfoGeneralUpdate = ({
   setDirectionOwner: Function;
   projectDataToModif: any;
 }) => {
-  // Function to compare if data is previous
+  // Fonction pour vérifier si une date est antérieure à aujourd'hui
   const isPreviousDate = (date: string | number | Date | undefined) => {
     if (!date) return false;
     const inputDate = new Date(date);
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     return inputDate < today;
+  };
+
+  // Liste des états valides pour le projet
+  const validProjectStates = [
+    "Pas commencé", 
+    "Commencer/En cours", 
+    "Terminer", 
+    "Archiver", 
+    "Mettre en stand by"
+  ];
+
+  // Fonction pour obtenir l'état initial du projet
+  const getInitialState = () => {
+    // Si projectDataToModif existe et a un état valide
+    if (projectDataToModif?.state && validProjectStates.includes(projectDataToModif.state)) {
+      return projectDataToModif.state;
+    }
+    // Sinon, retourne l'état actuel ou "Pas commencé" par défaut
+    return projectData?.state || "Pas commencé";
   };
 
   return (
@@ -76,7 +95,8 @@ const InfoGeneralUpdate = ({
           });
         }}
       />
-      <div className="grid  md:grid-cols-2 gap-4">
+      
+      <div className="grid md:grid-cols-2 gap-4">
         <CustomSelect
           label="Priorité"
           placeholder="Priorité"
@@ -101,22 +121,22 @@ const InfoGeneralUpdate = ({
             });
           }}
         />
-       
       </div>
+      
       <div className="grid md:grid-cols-2 gap-4">
-          <CustomSelect
-            label="Etat"
-            placeholder="Etat"
-            data={["Pas commencé", "En cours", "Stand by/En attente", "Terminé", "Archivé", "Abandonné"]}
-            value={projectData.state}
-            onValueChange={(e) => {
-              setProjectData({
-                ...projectData,
-                state: e,
-              });
-            }}
-          />
-           <MultiSelect
+        <CustomSelect
+          label="État"
+          placeholder="Sélectionnez un état"
+          data={validProjectStates}
+          value={projectData.state || getInitialState()}
+          onValueChange={(e) => {
+            setProjectData({
+              ...projectData,
+              state: e,
+            });
+          }}
+        />
+        <MultiSelect
           id="001"
           label={"Direction propriétaire"}
           placeholder="Choisir une direction"
@@ -127,6 +147,7 @@ const InfoGeneralUpdate = ({
           required={true}
         />
       </div>
+      
       <div className="grid md:grid-cols-2 gap-4">
         <CustomInput
           label="Date début prévisionnelle"
@@ -144,7 +165,8 @@ const InfoGeneralUpdate = ({
           required
           disabled={isPreviousDate(projectData?.startDate)}
         />
-        <div className="grid  gap-2">
+        
+        <div className="grid gap-2">
           <CustomInput
             label="Date fin prévisionnelle"
             type="date"
@@ -173,6 +195,7 @@ const InfoGeneralUpdate = ({
               projectData.isEndDateImmuable
             }
           />
+          
           <div className="">
             <div
               className={`${
@@ -181,9 +204,7 @@ const InfoGeneralUpdate = ({
                 projectDataToModif?.endDate === null
                   ? "hidden"
                   : ""
-              }
-                  
-                    `}
+              }`}
             >
               <CustomInput
                 label="Motif de la modification"
@@ -206,18 +227,18 @@ const InfoGeneralUpdate = ({
                 }}
               />
             </div>
+            
             <div
               className={`${
                 projectData?.endDate ? "opacity-100" : "opacity-50 hidden"
               } transform duration-300
-                  ${projectDataToModif?.isEndDateImmuable ? "hidden" : ""}
-                  `}
+              ${projectDataToModif?.isEndDateImmuable ? "hidden" : ""}
+              `}
             >
-              <span className={`cursor-help relative  group`}>
-                Cette date est-elle imuable ?
-                <span className="absolute text-xs  font-thin hidden group-hover:flex max-w-59 min-w-59 bg-white text-black p-2 border border-whiten shadow-5 rounded-md z-999999 top-[-35px] left-1/2 transform -translate-x-1/2">
-                  Si oui, Cette date sera impossible a modifier même en cas de
-                  retard
+              <span className={`cursor-help relative group`}>
+                Cette date est-elle immuable ?
+                <span className="absolute text-xs font-thin hidden group-hover:flex max-w-59 min-w-59 bg-white text-black p-2 border border-whiten shadow-5 rounded-md z-999999 top-[-35px] left-1/2 transform -translate-x-1/2">
+                  Si oui, cette date sera impossible à modifier même en cas de retard
                 </span>
               </span>
               <span className="flex flex-row flex-wrap gap-2">
@@ -258,11 +279,11 @@ const InfoGeneralUpdate = ({
           </div>
         </div>
       </div>
-      <div className="flex justify-end ">
+      
+      <div className="flex justify-end">
         <button
-          // onClick={() => setPageCreate(2)}
           type="submit"
-          className={`md:w-fit gap-2 w-full  mt-2 py-2 px-5  text-center font-medium text-white  lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-darkgreen dark:bg-darkgreen `}
+          className={`md:w-fit gap-2 w-full mt-2 py-2 px-5 text-center font-medium text-white lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-darkgreen dark:bg-darkgreen`}
         >
           Suivant
         </button>
