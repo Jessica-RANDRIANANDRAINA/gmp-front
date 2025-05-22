@@ -24,6 +24,8 @@ const MultiSelect = ({
   const dropdownRef = useRef<any>(null);
   const trigger = useRef<any>(null);
   const [isOpen, setIsOpen] = useState(false);
+  // New state to track if initial values have been set
+  const [isInitialValueSet, setIsInitialValueSet] = useState(false);
 
   // Load options from hidden select element
   useEffect(() => {
@@ -44,17 +46,18 @@ const MultiSelect = ({
     loadOptions();
   }, [id, value]);
 
-  // Initialize selected values
+  // Initialize selected values ONLY ONCE
   useEffect(() => {
-    if (initialValue && options.length > 0) {
+    // This effect will run when options are loaded and only if initialValue hasn't been processed yet
+    if (initialValue && options.length > 0 && !isInitialValueSet) {
       const selectedValues = initialValue.split(',').map(v => v.trim());
       const selectedIndices: number[] = [];
       const newOptions = [...options];
 
-      // Reset all selections
+      // Reset all selections before setting initial ones to avoid duplicates if options were reloaded
       newOptions.forEach(opt => opt.selected = false);
 
-      // Find matching options
+      // Find matching options based on initialValue
       selectedValues.forEach(val => {
         const index = newOptions.findIndex(opt => opt.value === val);
         if (index !== -1) {
@@ -64,10 +67,11 @@ const MultiSelect = ({
       });
 
       setSelected(selectedIndices);
-      setOptions(newOptions);
-      setValueMulti(selectedValues);
+      setOptions(newOptions); // Update options state with selected flags
+      setValueMulti(selectedValues); // Inform parent about initial selections
+      setIsInitialValueSet(true); // Mark that initial values have been processed
     }
-  }, [initialValue, options]);
+  }, [initialValue, options, isInitialValueSet, setValueMulti]); // Added setValueMulti to dependencies as it's used inside
 
   // Handle click outside
   useEffect(() => {
@@ -88,44 +92,46 @@ const MultiSelect = ({
 
   const select = (index: number, event: React.MouseEvent) => {
     const newOptions = [...options];
-    event.stopPropagation();
+    event.stopPropagation(); // Prevent dropdown from closing immediately
 
+    // Toggle selection
     if (!newOptions[index].selected) {
       newOptions[index].selected = true;
-      setSelected([...selected, index]);
+      setSelected(prevSelected => [...prevSelected, index]); // Use functional update for setSelected
     } else {
-      const selectedIndex = selected.indexOf(index);
-      if (selectedIndex !== -1) {
-        newOptions[index].selected = false;
-        setSelected(selected.filter((i) => i !== index));
-      }
+      newOptions[index].selected = false;
+      setSelected(prevSelected => prevSelected.filter((i) => i !== index)); // Use functional update for setSelected
     }
 
-    setOptions(newOptions);
+    setOptions(newOptions); // Update options to reflect selection status
   };
 
   const remove = (index: number, event: React.MouseEvent) => {
-    event.stopPropagation();
+    event.stopPropagation(); // Prevent dropdown from closing immediately
     const newOptions = [...options];
-    const selectedIndex = selected.indexOf(index);
+    const selectedIndex = selected.indexOf(index); // Find the index of the selected item within the 'selected' array
 
     if (selectedIndex !== -1) {
-      newOptions[index].selected = false;
-      setSelected(selected.filter((i) => i !== index));
-      setOptions(newOptions);
+      newOptions[index].selected = false; // Mark the option as not selected
+      setSelected(prevSelected => prevSelected.filter((i) => i !== index)); // Remove from selected array
+      setOptions(newOptions); // Update options state
     }
   };
 
   const selectedValues = () => {
+    // Map selected indices back to their values
     return selected.map((index) => options[index]?.value).filter(Boolean);
   };
 
-  // Update parent component when selected changes
+  // Update parent component when selected items change
+  // This effect will run whenever the 'selected' state changes due to user interaction
   useEffect(() => {
-    if (selected.length > 0 || initialValue) {
+    // Only update parent if initial setup is done or if there are actual selections
+    // This prevents sending empty array before initialValue is processed
+    if (isInitialValueSet || selected.length > 0) {
       setValueMulti(selectedValues());
     }
-  }, [selected]);
+  }, [selected, isInitialValueSet, setValueMulti]); // Include isInitialValueSet and setValueMulti in dependencies
 
   return (
     <div className={`relative ${className}`}>
@@ -134,6 +140,7 @@ const MultiSelect = ({
         {required && <span className="text-red-500 ml-1">*</span>}
       </label>
       <div>
+        {/* Hidden select element to load options from */}
         <select className="hidden" id={id}>
           {value?.map((opt, key) => (
             <option value={opt} key={key}>
@@ -143,63 +150,71 @@ const MultiSelect = ({
         </select>
 
         <div className="flex flex-col items-center">
-          <input name="values" type="hidden" defaultValue={selectedValues()} />
+          <input name="values" type="hidden" defaultValue={selectedValues().join(',')} /> {/* Use join for hidden input */}
           <div className="relative z-20 inline-block w-full">
             <div className="relative flex flex-col items-center">
-              <div 
-                ref={trigger} 
-                onClick={() => setIsOpen(!isOpen)} 
+              <div
+                ref={trigger}
+                onClick={() => setIsOpen(!isOpen)}
                 className="w-full cursor-pointer"
               >
                 <div
                   className={`mb-2 flex ${round[rounded]} border overflow-x-auto border-stroke dark:border-formStrokedark md:py-1 px-3 outline-none transition focus:border-primary active:border-primary dark:text-gray dark:border-form-strokedark dark:bg-form-input`}
                 >
                   <div className="flex flex-auto gap-3">
-                    {selected.map((index) => (
-                      <div
-                        key={index}
-                        className="flex items-center justify-center rounded border-[.5px] border-stroke bg-gray px-2.5 py-1.5 text-sm font-medium dark:border-strokedark dark:bg-white/30"
-                      >
-                        <div className="max-w-full text-xs flex-initial">
-                          {options[index]?.text}
-                        </div>
-                        <div className="flex flex-auto flex-row-reverse">
-                          <div
-                            onClick={(e) => remove(index, e)}
-                            className="cursor-pointer pl-2 hover:text-danger"
-                          >
-                            <svg
-                              className="fill-current"
-                              role="button"
-                              width="12"
-                              height="12"
-                              viewBox="0 0 12 12"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
+                    {/* Display selected items */}
+                    {selected.map((index) => {
+                      const option = options[index];
+                      // Ensure option exists before rendering
+                      if (!option) return null;
+                      return (
+                        <div
+                          key={index}
+                          className="flex items-center justify-center rounded border-[.5px] border-stroke bg-gray px-2.5 py-1.5 text-sm font-medium dark:border-strokedark dark:bg-white/30"
+                        >
+                          <div className="max-w-full text-xs flex-initial">
+                            {option.text}
+                          </div>
+                          <div className="flex flex-auto flex-row-reverse">
+                            <div
+                              onClick={(e) => remove(index, e)}
+                              className="cursor-pointer pl-2 hover:text-danger"
                             >
-                              <path
-                                fillRule="evenodd"
-                                clipRule="evenodd"
-                                d="M9.35355 3.35355C9.54882 3.15829 9.54882 2.84171 9.35355 2.64645C9.15829 2.45118 8.84171 2.45118 8.64645 2.64645L6 5.29289L3.35355 2.64645C3.15829 2.45118 2.84171 2.45118 2.64645 2.64645C2.45118 2.84171 2.45118 3.15829 2.64645 3.35355L5.29289 6L2.64645 8.64645C2.45118 8.84171 2.45118 9.15829 2.64645 9.35355C2.84171 9.54882 3.15829 9.54882 3.35355 9.35355L6 6.70711L8.64645 9.35355C8.84171 9.54882 9.15829 9.54882 9.35355 9.35355C9.54882 9.15829 9.54882 8.84171 9.35355 8.64645L6.70711 6L9.35355 3.35355Z"
-                                fill="currentColor"
-                              ></path>
-                            </svg>
+                              <svg
+                                className="fill-current"
+                                role="button"
+                                width="12"
+                                height="12"
+                                viewBox="0 0 12 12"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  fillRule="evenodd"
+                                  clipRule="evenodd"
+                                  d="M9.35355 3.35355C9.54882 3.15829 9.54882 2.84171 9.35355 2.64645C9.15829 2.45118 8.84171 2.45118 8.64645 2.64645L6 5.29289L3.35355 2.64645C3.15829 2.45118 2.84171 2.45118 2.64645 2.64645C2.45118 2.84171 2.45118 3.15829 2.64645 3.35355L5.29289 6L2.64645 8.64645C2.45118 8.84171 2.45118 9.15829 2.64645 9.35355C2.84171 9.54882 3.15829 9.54882 3.35355 9.35355L6 6.70711L8.64645 9.35355C8.84171 9.54882 9.15829 9.54882 9.35355 9.35355C9.54882 9.15829 9.54882 8.84171 9.35355 8.64645L6.70711 6L9.35355 3.35355Z"
+                                  fill="currentColor"
+                                ></path>
+                              </svg>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    ))}
+                      );
+                    })}
+                    {/* Placeholder input when nothing is selected */}
                     {selected.length === 0 && (
                       <div className="flex-1">
                         <input
                           required={required}
                           placeholder={placeholder}
                           className="h-full w-full appearance-none bg-transparent outline-none"
-                          defaultValue={selectedValues()}
+                          defaultValue="" // Set to empty string for initial load if no values.
                           readOnly
                         />
                       </div>
                     )}
                   </div>
+                  {/* Dropdown toggle button */}
                   <div className="flex w-8 items-center py-1 pl-1 pr-1">
                     <button
                       type="button"
@@ -231,6 +246,7 @@ const MultiSelect = ({
                   </div>
                 </div>
               </div>
+              {/* Dropdown options list */}
               <div className="w-full px-4">
                 <div
                   ref={dropdownRef}
