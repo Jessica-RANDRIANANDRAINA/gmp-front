@@ -10,6 +10,8 @@ const DetailsProject = () => {
   const [projectData, setProjectData] = useState<IProjectData>();
   const [isDateEndPassed, setIsEndPassed] = useState<boolean>(false);
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
+  const [isDescriptionLong, setIsDescriptionLong] = useState(false);
+
 
   const fetchProjectData = async () => {
     if (projectId) {
@@ -26,6 +28,13 @@ const DetailsProject = () => {
   useEffect(() => {
     fetchProjectData();
   }, []);
+
+  useEffect(() => {
+  if (projectData?.description) {
+    const lineCount = projectData.description.split("\n").length;
+    setIsDescriptionLong(lineCount > 5);
+  }
+}, [projectData]);
 
   return (
     <div className="grid px-7">
@@ -262,33 +271,28 @@ const DetailsProject = () => {
                   <span className="text-base">
                     Description :{" "}
                   </span>
-                  <div className="text-justify text-sm">
+                  <div className="text-justify text-sm relative">
                     <p>
-                      {/* {projectData?.description} */}
                       {isExpanded
                         ? `${projectData?.description}`
-                        : `${projectData?.description?.substring(0, 200)}`}
-                      <span
-                        className={`${
-                          projectData?.description &&
-                          projectData?.description.length > 200
-                            ? ""
-                            : "hidden"
-                        }`}
-                      >
-                        {" "}
-                        ...
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setIsExpanded(!isExpanded);
-                          }}
-                          className={`ml-2 text-blue-400 text-xs  font-semibold hover:underline mt-2 `}
-                        >
-                          {isExpanded ? "Afficher moins" : "Afficher plus"}
-                        </button>
-                      </span>
+                        : ""}
+
+                      {isDescriptionLong && (
+                        <>
+                          {!isExpanded && "..."}
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setIsExpanded(!isExpanded);
+                            }}
+                            className="ml-2 text-blue-400 text-xs font-semibold hover:underline mt-2"
+                          >
+                            {isExpanded ? "Afficher moins" : "Afficher plus"}
+                          </button>
+                        </>
+                      )}
                     </p>
+
                   </div>
                 </div>
                 {/* ===== DESCRIPTION END ==== */}
@@ -508,7 +512,7 @@ const DetailsProject = () => {
                                         className={`inline-flex space-x-1 items-center px-3 py-1 rounded-full text-xs font-semibold   ${
                                           phases?.status === "Terminé"
                                             ? "bg-green-100 text-green-600 border-green-300  dark:bg-green-900 dark:text-green-300 dark:border-green-700"
-                                            : phases?.status === "En cours"
+                                            : phases?.status === "Commencer/En cours"
                                             ? "bg-amber-100 text-amber-600 border-amber-300  dark:bg-amber-900 dark:text-amber-300 dark:border-amber-700"
                                             : "bg-cyan-100 text-cyan-600 border-cyan-300  dark:bg-cyan-900 dark:text-cyan-300 dark:border-cyan-700"
                                         }`}
@@ -661,7 +665,7 @@ const DetailsProject = () => {
                                 ${
                                   phases?.status === "Terminé"
                                     ? "bg-green-100 text-green-600 border-green-300  dark:bg-green-900 dark:text-green-300 dark:border-green-700"
-                                    : phases?.status === "En cours"
+                                    : phases?.status === "Commencer/En cours"
                                     ? "status-urgent" // Applique le style urgent
                                     : "status-todo" // Applique le style à faire
                                 }

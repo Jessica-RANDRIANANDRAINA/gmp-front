@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { formatDate} from "../../../../services/Function/DateServices";
+import { formatDate } from "../../../../services/Function/DateServices";
 import { getTaskDetails, getTransverseDetails, getIntercontractDetails } from "../../../../services/Project";
 // import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
 import ListUsers from "../../../../components/UIElements/ListUsers";
-
+import DOMPurify from 'dompurify';
 //const notyf = new Notyf({ position: { x: "center", y: "top" } });
 
 interface Comment {
@@ -189,7 +189,32 @@ const ActivityDetails = () => {
       ? formatDate(activityDetails.endDate) 
       : "Non définie";
 
+  // Function to check if the fichier URL is an image
+  const isImageUrl = (url: string) => {
+    return /\.(jpeg|jpg|gif|png|webp|bmp)$/i.test(url);
+  };
+<style>{`
+  .quill-content img {
+    width: 10px;
+    height: auto;
+    display: block;
+    margin: 1rem 0;
+  }
+  
+  .quill-content {
+    width: 100%;
+    line-height: 1.6;
+    font-size: 1rem;
+  }
+  
+  .quill-content p {
+    margin-bottom: 1rem;
+    white-space: normal;
+    word-wrap: break-word;
+  }
+`}</style>
   return (
+    
     <div className="p-4 md:px-8 lg:px-16">
       <button
         onClick={() => navigate(-1)}
@@ -224,17 +249,17 @@ const ActivityDetails = () => {
             <h2 className="text-lg font-semibold mb-2 dark:text-white">Détails</h2>
             <div className="space-y-2">
              <p className="dark:text-gray-300">
-              <span className="font-medium">Type:</span>{" "}
-              <span className={`border rounded w-fit px-1 cursor-default ${
-                activityDetails.type === "projet"
-                  ? "bg-green-100 text-green-600 border-green-300 dark:bg-green-900 dark:text-green-300 dark:border-green-700"
-                  : activityDetails.type === "transverse"
-                  ? "bg-purple-100 text-purple-600 border-purple-300 dark:bg-purple-900 dark:text-purple-300 dark:border-purple-700"
-                  : "bg-red-100 text-red-600 border-red-300 dark:bg-red-900 dark:text-red-300 dark:border-red-700"
-              }`}>
-                {activityDetails.type.charAt(0).toUpperCase() + activityDetails.type.slice(1)}
-              </span>
-            </p>
+               <span className="font-medium">Type:</span>{" "}
+               <span className={`border rounded w-fit px-1 cursor-default ${
+                 activityDetails.type === "projet"
+                   ? "bg-green-100 text-green-600 border-green-300 dark:bg-green-900 dark:text-green-300 dark:border-green-700"
+                   : activityDetails.type === "transverse"
+                   ? "bg-purple-100 text-purple-600 border-purple-300 dark:bg-purple-900 dark:text-purple-300 dark:border-purple-700"
+                   : "bg-red-100 text-red-600 border-red-300 dark:bg-red-900 dark:text-red-300 dark:border-red-700"
+               }`}>
+                 {activityDetails.type.charAt(0).toUpperCase() + activityDetails.type.slice(1)}
+               </span>
+             </p>
 
               {activityDetails.subType && (
                 <p className="dark:text-gray-300">
@@ -244,7 +269,7 @@ const ActivityDetails = () => {
               <p className="dark:text-gray-300">
                 <span className="font-medium">Effort quotidien:</span> <span className="">{activityDetails.dailyEffort || 0}h</span>
               </p>
-               {activityDetails.type !== 'transverse' && activityDetails.type !== 'intercontract' && (
+                {activityDetails.type !== 'transverse' && activityDetails.type !== 'intercontract' && (
                   <p className="dark:text-gray-300">
                     <span className="font-medium">Priorité:</span>
                     <span className={`ml-1 ${activityDetails.priority === "Élevé" ? "text-red-500" : ""}`}>
@@ -266,7 +291,7 @@ const ActivityDetails = () => {
               </p>
               {isLate && (
                 <p className="text-red-500 font-medium">
-                 !! Cette activité est en retard
+                  !! Cette activité est en retard
                 </p>
               )}
             </div>
@@ -274,23 +299,34 @@ const ActivityDetails = () => {
         </div>
 
         {activityDetails.description && (
-          <div className="mb-6">
-            <h2 className="text-lg font-semibold mb-2 dark:text-white">Description</h2>
-            <p className="dark:text-gray-300 whitespace-pre-line">{activityDetails.description}</p>
-          </div>
-        )}
+  <div className="mb-6">
+    <h2 className="text-lg font-semibold mb-2 dark:text-white">Description</h2>
+    <div 
+      className="dark:text-gray-300"
+      dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(activityDetails.description) }}
+    />
+  </div>
+)}
 
         {activityDetails.fichier && (
           <div className="mb-6">
             <h2 className="text-lg font-semibold mb-2 dark:text-white">Fichier joint</h2>
-            <a
-              href={activityDetails.fichier}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-500 hover:underline break-all"
-            >
-              🔗: {activityDetails.fichier}
-            </a>
+            {isImageUrl(activityDetails.fichier) ? (
+              <img 
+                src={activityDetails.fichier} 
+                alt="Fichier joint" 
+                className="max-w-full h-auto rounded-md shadow-sm mt-2" 
+              />
+            ) : (
+              <a
+                href={activityDetails.fichier}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-500 hover:underline break-all"
+              >
+                🔗: {activityDetails.fichier}
+              </a>
+            )}
           </div>
         )}
 

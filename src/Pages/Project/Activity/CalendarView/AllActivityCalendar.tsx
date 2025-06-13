@@ -87,6 +87,8 @@ const AllActivityCalendar = ({
   const { userid } = useParams();
   const connection = useContext(SignalRContext);
   const deletePopUp = useRef<any>(null);
+  const calendarRef = useRef<any>(null);
+
 
   const [events, setEvents] = useState<any[]>([]);
   const [isModalAddOpen, setIsModalAddOpen] = useState<boolean>(false);
@@ -141,18 +143,32 @@ const AllActivityCalendar = ({
       setActiveTaskId("");
     };
     document.addEventListener("click", clickHandler);
+    
     return () => document.removeEventListener("click", clickHandler);
   });
 
   // EVERY TIME THE SEARCH BUTTON IS CLICKED, fetch data
   useEffect(() => {
-    if (searchClicked) {
-      fetchData();
-    }
+  if (searchClicked) {
+    fetchData().then(() => {
+      // Après le chargement des données, ajuster la vue
+      const calendarApi = calendarRef.current?.getApi();
+      if (calendarApi && search.startDate) {
+        const startDate = new Date(search.startDate);
+        calendarApi.gotoDate(startDate); // Aller à la date de début
+        calendarApi.changeView('dayGridMonth'); // Forcer la vue mois
+      }
+    });
     setSearchClicked(false);
-  }, [searchClicked]);
+  }
+}, [searchClicked, search.startDate, search.endDate]); // Dépendances spécifiques
 
   const fetchData = useCallback(async () => {
+     console.log("Début de fetchData - Filtres actifs:", { 
+      statusSelectedOptions,
+      selectedOptions,
+      search 
+    });
     if (!userid || !isSubordinatesFetched) {
       return;
     }
@@ -172,12 +188,19 @@ const AllActivityCalendar = ({
       }
 
       if (userid) {
+
+        const startDateFilter = search?.startDate ? new Date(search.startDate) : null;
+      const endDateFilter = search?.endDate ? new Date(search.endDate) : null;
+      
+      if (endDateFilter) {
+        endDateFilter.setHours(23, 59, 59, 999); // Inclure toute la journée du dernier jour
+      }
         response = await getAllActivitiesOfUser(
-          search?.startDate,
-          search?.endDate,
-          selectedOptions,
-          Ids.length > 0 ? Ids : subordinatesId
-        );
+        startDateFilter?.toISOString(),
+        endDateFilter?.toISOString(),
+        selectedOptions,
+        Ids.length > 0 ? Ids : subordinatesId
+      );
 
         const filteredResponse = response.filter(
           (activity: { status: string }) =>
@@ -310,7 +333,7 @@ const AllActivityCalendar = ({
       fetchData();
       setIsRefreshNeeded(false);
     }
-  }, [connection, isRefreshNeeded, isSubordinatesFetched]);
+  }, [connection, isRefreshNeeded, isSubordinatesFetched, fetchData]);
 
   // when task deleted refetchData by using signal R
   useEffect(() => {
@@ -548,11 +571,14 @@ const handleDuplicateClick = (task: any) => {
     e.stopPropagation();
     setOpenDropdownId(openDropdownId === taskId ? null : taskId);
   };
+ 
+
   return (
     <div className="p-5 flex flex-col-reverse md:grid md:grid-cols-5">
       {/* card */}
       <div className="md:col-span-4">
         <FullCalendar
+        ref={calendarRef}
           timeZone="UTC"
           plugins={[
             dayGridPlugin,
@@ -561,6 +587,8 @@ const handleDuplicateClick = (task: any) => {
             timeGridPlugin,
           ]}
           initialView={window.innerWidth < 768 ? "timeGridDay" : "dayGridMonth"}
+          initialDate={new Date()} 
+          nowIndicator={true}
           events={events}
           eventClick={handleEventClick}
           eventClassNames={(eventInfo) => {
@@ -599,7 +627,8 @@ const handleDuplicateClick = (task: any) => {
                     ? colors[extendedProps?.user]
                     : "",
                 }}
-                className={` relative  min-h-full max-h-full flex flex-col items-center justify-center whitespace-nowrap border dark:border-2 border-transparent font-light w-full p-1 text-black dark:text-whiten cursor-pointer text-xs relative group`}
+                 className={`relative overflow-visible min-h-full max-h-full flex flex-col items-center justify-center whitespace-nowrap border dark:border-2 border-transparent font-light w-full p-1 text-black dark:text-whiten cursor-pointer text-xs group`}
+
               >
                
                 {/* debut */}
@@ -671,9 +700,11 @@ const handleDuplicateClick = (task: any) => {
                     {dailyEffort}h -{" "}
                     {title.length > 15 ? `${title.slice(0, 15)}...` : title}
                   </b>
-                  <div className="absolute tooltip bottom-full left-0 dark:bg-whiten dark:text-black bg-black text-white text-xs rounded p-1 hidden group-hover:block  whitespace-nowrap ">
-                    {title}
-                  </div>
+                 <div className="absolute overflow-x-clip  whitespace-normal overflow-hidden line-clamp-2 bottom-full left-0 mb-1 px-2 py-1 bg-black text-white text-xs rounded z-[10001] opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-normal max-w-xs w-max break-words shadow-lg">
+                  {/* {title} */}
+                  {title.length > 15 ? `${title.slice(0, 27)}...` : title}
+                </div>
+
                 </div>
                 <div
                   className={`border  flex justify-center items-center p-1 rounded-full 
@@ -711,14 +742,29 @@ const handleDuplicateClick = (task: any) => {
       </div>
       {/* fin card */}
       <div className="md:col-span-1 md:pt-16">
-        <div
-          className="border ml-4 p-1 cursor-pointer border-slate-300 hover:bg-slate-100 dark:hover:bg-boxdark2 flex justify-center text-xs"
-          onClick={() => {
-            setIsModalAddOpen(true);
-          }}
-        >
-          <span>+ Ajouter une activité</span>
-        </div>
+       <div
+  className="border ml-4 p-1 cursor-pointer border-slate-300 hover:bg-slate-100 dark:hover:bg-boxdark2 flex justify-center text-xs"
+  onClick={() => {
+    setIsModalAddOpen(true);
+  }}
+>
+  <span>+ Ajouter une activité</span>
+</div>
+
+{/* Bouton pour aller à aujourd'hui */}
+<div
+  className="border ml-4 mt-2 p-1 cursor-pointer border-slate-300 hover:bg-slate-100 dark:hover:bg-boxdark2 flex justify-center text-xs"
+  onClick={() => {
+    const calendarApi = calendarRef.current?.getApi();
+    if (calendarApi) {
+      calendarApi.changeView("dayGridMonth"); // optionnel
+      calendarApi.today(); // va à aujourd’hui
+    }
+  }}
+>
+  <span>📅 Aller à aujourd’hui</span>
+</div>
+
         <div className="">
           <CollapsibleSection title="Backlog">
             <div className="space-y-2 text-xs">
@@ -1044,6 +1090,7 @@ const handleDuplicateClick = (task: any) => {
                     }}
                     className="relative cursor-pointer p-4 bg-white dark:bg-boxdark rounded shadow-2 hover:shadow-md hover:shadow-slate-300 dark:hover:shadow-slate-500"
                   >
+                   
                     <div
                       className={`absolute top-2 right-1 hover:bg-zinc-100 dark:hover:bg-boxdark2 px-1 h-4 cursor-pointer ${
                         (task.type === "Transverse" &&

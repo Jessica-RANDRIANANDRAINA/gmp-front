@@ -11,7 +11,7 @@ import {
 } from "../../../../services/Project";
 import ListUsers from "../../../../components/UIElements/ListUsers";
 import { IPhase } from "../../../../types/Project";
-import { formatDate } from "../../../../services/Function/DateServices";
+// import { formatDate } from "../../../../services/Function/DateServices";
 import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
 
@@ -284,7 +284,16 @@ const PhaseAdvancement = () => {
       }
     }
   };
-
+  // Modifiez ou ajoutez cette fonction
+const formatDate = (dateString: string | undefined) => {
+  if (!dateString) return "";
+  const date = new Date(dateString);
+  // Ajoutez 'Z' pour indiquer que c'est en UTC si ce n'est pas déjà le cas
+  if (!dateString.endsWith('Z')) {
+    date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+  }
+  return date.toISOString().split('T')[0].split('-').reverse().join('/');
+};
   const handleToogleMenuDelete = (taskId: string, event: React.MouseEvent) => {
     event.stopPropagation();
     setActiveTaskId(activeTaskId === taskId ? null : taskId);

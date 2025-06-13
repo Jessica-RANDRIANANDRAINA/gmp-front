@@ -2,6 +2,32 @@ import axios from "axios";
 
 const endPoint = import.meta.env.VITE_API_ENDPOINT;
 
+
+// Configuration commune pour les requêtes avec fichiers
+const fileUploadConfig = {
+  headers: {
+    "Content-Type": "multipart/form-data",
+    Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+  },
+};
+
+// ===== FILE UPLOAD ===== //
+export const uploadFile = async (file: File) => {
+  try {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const response = await axios.post(
+      `${endPoint}/api/Task/upload`,
+      formData,
+      fileUploadConfig
+    );
+
+    return response.data;
+  } catch (error) {
+    throw new Error(`Error uploading file: ${error}`);
+  }
+};
 // ===== POST ===== //
 // create a ne task in phase
 export const createTaskPhase = async (taskData: any) => {
@@ -88,3 +114,4 @@ export const deletetaskProject = async (taskId: string) => {
     throw new Error(`Error at delete task project: ${error}`);
   }
 };
+

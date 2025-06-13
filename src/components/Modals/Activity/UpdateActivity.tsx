@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { Modal, ModalBody, ModalFooter } from "../Modal";
 import { IActivityAdd } from "../../../types/Project";
@@ -17,8 +17,146 @@ import { IMyHabilitation } from "../../../types/Habilitation";
 import { getAllUsers } from "../../../services/User";
 import { getInitials } from "../../../services/Function/UserFunctionService";
 import { IUserProject } from "../../../types/Project";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+import DOMPurify from 'dompurify';
+import dayjs from "dayjs";
+import { v4 as uuid4 } from "uuid";
 
 const notyf = new Notyf({ position: { x: "center", y: "top" } });
+
+const formats = [
+  "header",
+  "bold",
+  "italic",
+  "underline",
+  "strike",
+  "blockquote",
+  "list",
+  "bullet",
+  "indent",
+  "link",
+  "image",
+];
+
+const QuillEditor = ({
+  value,
+  onChange,
+  placeholder = "",
+}: {
+  value: string;
+  onChange: (value: string) => void;
+  placeholder?: string;
+}) => {
+  const quillRef = useRef<ReactQuill>(null);
+
+  const imageHandler = () => {
+    const input = document.createElement('input');
+    input.setAttribute('type', 'file');
+    input.setAttribute('accept', 'image/*');
+    input.click();
+
+    input.onchange = async () => {
+      if (!input.files) return;
+      const file = input.files[0];
+
+      if (file.size > 2 * 1024 * 1024) {
+        notyf.error("L'image ne doit pas dépasser 2MB");
+        return;
+      }
+
+      try {
+        notyf.success("Upload de l'image en cours...");
+       
+        const formData = new FormData();
+        formData.append('file', file);
+        const endPoint = import.meta.env.VITE_API_ENDPOINT;
+
+        const response = await fetch(`${endPoint}/api/Task/upload`, {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+          }
+        });
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(errorText || "Échec de l'upload");
+        }
+
+        const data = await response.json();
+       
+        if (!data.url) {
+          throw new Error("URL de l'image manquante dans la réponse");
+        }
+
+        const quill = quillRef.current?.getEditor();
+        if (!quill) {
+          throw new Error("Éditeur Quill non disponible");
+        }
+
+        const range = quill.getSelection(true);
+        const imageUrl = data.url.startsWith('http') ? data.url : `${endPoint}${data.url}`;
+
+        const sanitizedHtml = DOMPurify.sanitize(
+          `<img src="${imageUrl}" style="max-width: 500px; height: 500px;" alt="uploaded image">`
+        );
+        quill.clipboard.dangerouslyPasteHTML(range?.index || 0, sanitizedHtml);
+       
+        quill.setSelection((range?.index || 0) + 1, 0);
+       
+        notyf.success("Image ajoutée avec succès");
+      } catch (error: unknown) {
+        console.error("Erreur lors de l'upload de l'image:", error);
+        let errorMessage = "Échec de l'upload de l'image";
+        if (error instanceof Error) {
+          errorMessage += `: ${error.message}`;
+        }
+        notyf.error(errorMessage);
+      }
+    };
+  };
+
+  const modules = useMemo(() => ({
+    toolbar: {
+      container: [
+        [{ header: [1, 2, false] }],
+        ["bold", "italic", "underline", "strike", "blockquote"],
+        [
+          { list: "ordered" },
+          { list: "bullet" },
+          { indent: "-1" },
+          { indent: "+1" },
+        ],
+        ["link", "image"],
+        ["clean"],
+      ],
+      handlers: {
+        image: imageHandler
+      }
+    },
+    clipboard: {
+      matchVisual: false,
+    },
+    
+  }), []);
+
+  return (
+    <div className="text-editor dark:text-white">
+      <ReactQuill
+        ref={quillRef}
+        theme="snow"
+        value={value}
+        onChange={onChange}
+        modules={modules}
+        formats={formats}
+        placeholder={placeholder}
+        className="dark:bg-boxdark dark:border-formStrokedark"
+      />
+    </div>
+  );
+};
 
 const UpdateActivity = ({
   modalUpdateOpen,
@@ -80,6 +218,8 @@ const UpdateActivity = ({
     phaseId: "",
   });
 
+  const userPopUp = useRef<any>(null);
+
   // Fetch all users
   useEffect(() => {
     const fetchUsers = async () => {
@@ -89,6 +229,7 @@ const UpdateActivity = ({
         setFilteredUsers(users);
       } catch (error) {
         console.error("Error fetching users:", error);
+        notyf.error("Erreur lors du chargement des utilisateurs");
       }
     };
     
@@ -126,6 +267,8 @@ const UpdateActivity = ({
       };
       setAssignedPerson(prev => [...prev, formatUser]);
       setShowUserList(false);
+    } else {
+      notyf.error("Cet utilisateur est déjà assigné");
     }
   };
 
@@ -167,6 +310,7 @@ const UpdateActivity = ({
       }
     } catch (error) {
       console.error(`Error at fetch project data : ${error}`);
+      notyf.error("Erreur lors du chargement des projets");
     }
   };
 
@@ -231,6 +375,15 @@ const UpdateActivity = ({
     setModalUpdateOpen(false);
   };
 
+  const processDescription = (html: string): string => {
+    const sanitized = DOMPurify.sanitize(html, {
+      ADD_TAGS: ['img'],
+      ADD_ATTR: ['src', 'alt', 'style', 'width', 'height'],
+      ALLOW_DATA_ATTR: false
+    });
+    return sanitized;
+  };
+
   const handleUpdateActivity = async () => {
     setIsLoading(true);
     try {
@@ -239,6 +392,8 @@ const UpdateActivity = ({
         return date.includes('T') ? date.split('T')[0] : date;
       };
       
+      const processedDescription = processDescription(activityData.description || '');
+
       if (activityData?.type === "Transverse") {
         const dataToSend = {
           title: activityData.title,
@@ -246,7 +401,7 @@ const UpdateActivity = ({
           endDate: cleanDate(activityData.dueDate ?? activityData.endDate ?? undefined),
           dailyEffort: activityData.dailyEffort,
           type: activityData.transverseType,
-          description: activityData.description,
+          description: processedDescription,
           status: activityData.status,
           fichier: activityData?.fichier,
         };
@@ -260,7 +415,7 @@ const UpdateActivity = ({
           endDate: cleanDate(activityData.dueDate ?? activityData.endDate ?? undefined),
           dailyEffort: activityData.dailyEffort,
           type: activityData.intercontractType,
-          description: activityData.description,
+          description: processedDescription,
           status: activityData.status,
           fichier: activityData?.fichier,
         };
@@ -277,7 +432,7 @@ const UpdateActivity = ({
         const dataToSend = {
           startDate: activityData?.startDate,
           dueDate: activityData?.dueDate || activityData?.endDate,
-          description: activityData?.description,
+          description: processedDescription,
           dailyEffort: activityData?.dailyEffort,
           title: activityData?.title,
           priority: activityData?.priority,
@@ -301,6 +456,41 @@ const UpdateActivity = ({
     }
   };
 
+  useEffect(() => {
+    const clickHandler = ({ target }: MouseEvent) => {
+      if (!userPopUp.current) return;
+      if (!userPopUp || userPopUp.current.contains(target)) return;
+      setShowUserList(false);
+    };
+    document.addEventListener("click", clickHandler);
+    return () => document.removeEventListener("click", clickHandler);
+  }, []);
+
+  const isFormValid = () => {
+    const hasRequiredFields =
+      activityData.title &&
+      activityData.type &&
+      activityData.startDate &&
+      activityData.dueDate;
+
+    const isProjectComplete =
+      activityData.type !== "Projet" ||
+      (activityData.projectTitle && activityData.phaseTitle);
+
+    const isTransverseComplete =
+      activityData.type !== "Transverse" || activityData.transverseType;
+
+    const isIntercontractComplete =
+      activityData.type !== "InterContract" || activityData.intercontractType;
+
+    return (
+      hasRequiredFields &&
+      isProjectComplete &&
+      isTransverseComplete &&
+      isIntercontractComplete
+    );
+  };
+
   return (
     <Modal
       modalOpen={modalUpdateOpen}
@@ -311,9 +501,8 @@ const UpdateActivity = ({
     >
       <ModalBody>
         <div className="space-y-4">
-          {/* Section Assignation */}
           <div className="space-y-2">
-            <div className="relative">
+            <div className="relative" ref={userPopUp}>
               <CustomInput
                 type="text"
                 label="Assigné à :"
@@ -321,6 +510,7 @@ const UpdateActivity = ({
                 className="text-sm"
                 onChange={(e) => handleUserSearch(e.target.value)}
                 onFocus={() => setShowUserList(true)}
+                placeholder="Rechercher un utilisateur..."
               />
               
               {showUserList && filteredUsers.length > 0 && (
@@ -344,7 +534,6 @@ const UpdateActivity = ({
               )}
             </div>
             
-            {/* Liste des utilisateurs assignés */}
             <div className="flex flex-wrap gap-2">
               {assignedPerson.map((user) => (
                 <div 
@@ -379,6 +568,7 @@ const UpdateActivity = ({
                 title: e.target.value,
               });
             }}
+            placeholder="Titre de l'activité"
           />
           
           <div className="flex *:w-full flex-wrap md:flex-nowrap gap-2">
@@ -394,6 +584,7 @@ const UpdateActivity = ({
                   intercontractType: ""
                 });
               }}
+              placeholder="Sélectionnez un type"
             />
 
             <CustomSelect
@@ -412,13 +603,13 @@ const UpdateActivity = ({
                   status: e,
                 });
               }}
+              placeholder="Sélectionnez un statut"
             />
           </div>
           
-          <div
-            className={` w-full *:w-full flex-wrap md:flex-nowrap  gap-2 ${
+          <div className={`w-full *:w-full flex-wrap md:flex-nowrap gap-2 ${
               activity.content.type === "Projet" ? "flex" : "hidden"
-            } `}
+            }`}
           >
             <CustomSelect
               label="Titre du projet"
@@ -432,11 +623,10 @@ const UpdateActivity = ({
                   phaseId: ""
                 });
               }}
+              placeholder="Sélectionnez un projet"
             />
             <CustomSelect
-              className={` ${
-                activityData?.projectTitle === "" ? "hidden" : ""
-              }`}
+              className={`${activityData?.projectTitle === "" ? "hidden" : ""}`}
               label="Titre de la phase"
               data={phaseTitle}
               value={
@@ -450,12 +640,13 @@ const UpdateActivity = ({
                   phaseTitle: e,
                 });
               }}
+              placeholder={activityData.projectTitle ? "Sélectionnez une phase" : "Sélectionnez d'abord un projet"}
             />
           </div>
-          <div
-            className={` w-full *:w-full flex-wrap md:flex-nowrap  gap-2 ${
+          
+          <div className={`w-full *:w-full flex-wrap md:flex-nowrap gap-2 ${
               activity.content.type === "Transverse" ? "flex" : "hidden"
-            } `}
+            }`}
           >
             <CustomSelect
               required={true}
@@ -468,12 +659,13 @@ const UpdateActivity = ({
                   transverseType: e,
                 });
               }}
+              placeholder="Sélectionnez un type"
             />
           </div>
-          <div
-            className={` w-full *:w-full flex-wrap md:flex-nowrap  gap-2 ${
+          
+          <div className={`w-full *:w-full flex-wrap md:flex-nowrap gap-2 ${
               activity.content.type === "InterContract" ? "flex" : "hidden"
-            } `}
+            }`}
           >
             <CustomSelect
               required={true}
@@ -486,8 +678,10 @@ const UpdateActivity = ({
                   intercontractType: e,
                 });
               }}
+              placeholder="Sélectionnez un type"
             />
           </div>
+          
           <div className="flex *:w-full flex-wrap md:flex-nowrap gap-2">
             <CustomInput
               required={true}
@@ -530,6 +724,7 @@ const UpdateActivity = ({
               }}
             />
           </div>
+          
           <CustomInput
             type="number"
             min={1}
@@ -549,20 +744,22 @@ const UpdateActivity = ({
             }}
           />
 
-          <CustomInput
-            type="textarea"
-            label="Description"
-            rounded="medium"
-            className="text-sm"
-            rows={5}
-            value={activityData.description}
-            onChange={(e) => {
-              setActivityData({
-                ...activityData,
-                description: e.target.value,
-              });
-            }}
-          />
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-black dark:text-white mb-1">
+              Description
+            </label>
+            <QuillEditor
+              value={activityData.description || ''}
+              onChange={(value) => {
+                setActivityData({
+                  ...activityData,
+                  description: value,
+                });
+              }}
+              placeholder="Écrivez votre description ici..."
+            />
+          </div>
+
           <CustomInput
             type="text"
             label="Ajouter un lien"
@@ -575,6 +772,7 @@ const UpdateActivity = ({
                 fichier: e.target.value,
               });
             }}
+            placeholder="https://example.com"
           />
         </div>
       </ModalBody>
@@ -592,72 +790,28 @@ const UpdateActivity = ({
           * Vous n'avez pas accès à la modification
         </p>
         <button
-          className="border text-xs p-2 rounded-md  font-semibold bg-transparent border-transparent hover:bg-zinc-100 dark:hover:bg-boxdark2 "
+          className="border text-xs p-2 rounded-md font-semibold bg-transparent border-transparent hover:bg-zinc-100 dark:hover:bg-boxdark2"
           type="button"
           onClick={handleCloseModal}
+          disabled={isLoading}
         >
           Annuler
         </button>
-        {(() => {
-          const hasRequiredFields =
-            activityData?.title !== "" &&
-            activityData?.type !== "" &&
-            activityData?.startDate !== "" &&
-            activityData?.dueDate !== "";
-
-          const isProjectComplete =
-            activityData?.type === "Projet" &&
-            activityData?.projectTitle !== "" &&
-            activityData?.phaseTitle !== "";
-
-          const istransverseComplete =
-            activityData?.type === "Transverse" &&
-            activityData?.transverseType !== "";
-          const isIntercontractComplete =
-            activityData?.type === "InterContract" &&
-            activityData?.intercontractType !== "";
-
-          var isDisabled;
-
-          if (activityData?.type === "Transverse") {
-            isDisabled =
-              hasRequiredFields &&
-              (isProjectComplete ||
-                istransverseComplete ||
-                isIntercontractComplete) &&
-              myHabilitation?.transverse.update;
-          } else if (activityData?.type === "InterContract") {
-            isDisabled =
-              hasRequiredFields &&
-              (isProjectComplete ||
-                istransverseComplete ||
-                isIntercontractComplete) &&
-              myHabilitation?.intercontract.update;
-          } else {
-            isDisabled =
-              hasRequiredFields &&
-              (isProjectComplete ||
-                istransverseComplete ||
-                isIntercontractComplete);
-          }
-          const buttonClassName = !isDisabled
-            ? "cursor-not-allowed bg-graydark"
-            : "cursor-pointer bg-green-700 hover:opacity-85";
-
-          return (
-            <button
-              type="button"
-              disabled={!isDisabled}
-              onClick={handleUpdateActivity}
-              className={`border flex justify-center items-center dark:border-boxdark text-xs p-2 rounded-md text-white font-semibold ${buttonClassName}`}
-            >
-              {isLoading ? (
-                <BeatLoader size={5} className="mr-2" color={"#fff"} />
-              ) : null}
-              Valider
-            </button>
-          );
-        })()}
+        <button
+          type="button"
+          disabled={!isFormValid() || isLoading}
+          onClick={handleUpdateActivity}
+          className={`border flex justify-center items-center dark:border-boxdark text-xs p-2 rounded-md text-white font-semibold ${
+            !isFormValid() || isLoading
+              ? "cursor-not-allowed bg-gray-500"
+              : "cursor-pointer bg-green-700 hover:opacity-85"
+          }`}
+        >
+          {isLoading ? (
+            <BeatLoader size={5} className="mr-2" color={"#fff"} />
+          ) : null}
+          Valider
+        </button>
       </ModalFooter>
     </Modal>
   );

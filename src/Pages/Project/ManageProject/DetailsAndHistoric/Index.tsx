@@ -402,7 +402,7 @@ const DetailsAndHistoricProject = () => {
           <ToogleStateProject 
             showModal={showModalDebute}
             projectId={projectId ?? ""}
-            type="En cours"
+            type="Commencer/En cours"
             setShowModal={setShowModalDebute}
             setIsArchiveFinished={setIsArchiveFinished}
           />

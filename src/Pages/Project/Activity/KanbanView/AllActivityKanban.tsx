@@ -237,9 +237,15 @@ const AllActivityKanban = ({
 
       // if (userid && Ids.length > 0) {
       if (userid) {
+        const startDateFilter = search?.startDate ? new Date(search.startDate) : null;
+        const endDateFilter = search?.endDate ? new Date(search.endDate) : null;
+             
+        if (endDateFilter) {
+          endDateFilter.setHours(23, 59, 59, 999); // Inclure toute la journée du dernier jour
+        }
         response = await getAllActivitiesOfUser(
-          search?.startDate,
-          search?.endDate,
+          startDateFilter?.toISOString(),
+          endDateFilter?.toISOString(),
           selectedOptions,
           Ids.length > 0 ? Ids : subordinatesId
         );
@@ -574,7 +580,7 @@ const AllActivityKanban = ({
                       {...provided.droppableProps}
                     >
                       <h3 className="mb-3 text-sm">{column.title}</h3>
-                      {columnId === "column-1" && (
+                      {/* {columnId === "column-1" && (
                         <div
                           className="border text-sm mb-4 p-1 cursor-pointer dark:border-2 shadow-1  shadow-slate-400   text-primaryGreen border-slate-300 hover:bg-slate-100 dark:bg-strokedark dark:border-formStrokedark dark:hover:bg-boxdark2 flex justify-center "
                           onClick={() => {
@@ -583,7 +589,7 @@ const AllActivityKanban = ({
                         >
                           <span>+ Ajouter une activité</span>
                         </div>
-                      )}
+                      )} */}
 
                       {/* add scrollable container */}
                       <div className="relative overflow-y-auto h-[70vh]  space-y-2 pr-2">

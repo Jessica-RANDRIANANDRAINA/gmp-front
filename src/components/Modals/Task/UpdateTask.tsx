@@ -83,11 +83,15 @@ const UpdateTask = ({
         },
       }));
 
-      const formatDate = (dateString: string | undefined) => {
-        if (!dateString) return undefined;
-        const date = new Date(dateString);
-        return isNaN(date.getTime()) ? undefined : date.toISOString();
-      };
+     const formatDate = (dateString: string | undefined) => {
+  if (!dateString) return undefined;
+  const date = new Date(dateString);
+  // Gestion du fuseau horaire
+  if (!dateString.endsWith('Z')) {
+    date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+  }
+  return isNaN(date.getTime()) ? undefined : date.toISOString();
+};
       const dataToSend = {
         priority: taskData?.priority,
         startDate: formatDate(taskData?.startDate),

@@ -147,6 +147,8 @@ export interface IActivityAdd {
   intercontractType?: string;
   status?: string;
   priority?: string;
+  fileName?:string;
+  fileContent?: File;
 }
 
 export interface ITransverseAdd {

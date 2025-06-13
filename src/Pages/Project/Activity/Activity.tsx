@@ -77,7 +77,7 @@ const Activity = () => {
   const [myHabilitation, setMyHabilitation] = useState<IMyHabilitation>();
   const [isSubordinatesFetched, setIsSubordinatesFetched] =
     useState<boolean>(false);
-
+  const [loading, setLoading] = useState(false);
   const getMyHabilitation = async () => {
     const hab = await getAllMyHabilitation();
     setMyHabilitation(hab);
@@ -127,11 +127,15 @@ const Activity = () => {
     } else {
       Ids = subordinates?.map((user) => user.id);
     }
+    setLoading(true);
     setSearch({
       ...search,
       ids: Ids,
     });
-    setSearchClicked(true);
+    setTimeout(() => {
+      setSearchClicked(true);
+      setLoading(false); // ✅ Fin chargement (peut être déplacé selon async réel)
+    }, 500);
   };
 
   const fetchSubordinates = useCallback(async () => {
@@ -472,6 +476,7 @@ const Activity = () => {
                   value={search.endDate || ""}
                   label="Au"
                   rounded="medium"
+                  min={search.startDate}
                   onChange={(e) => {
                     setSearch({
                       ...search,
@@ -576,6 +581,13 @@ const Activity = () => {
               </div>
               {/* FILTER END */}
             </div>
+            {loading && (
+              <div className="flex justify-center items-center my-4">
+                <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-green-500"></div>
+                <span className="ml-2 text-green-600">Chargement...</span>
+              </div>
+            )}
+
             <div className="px-5">
               {activityView === "table" ? (
                 <AllActivityKanban

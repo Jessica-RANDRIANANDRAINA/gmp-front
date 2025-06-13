@@ -34,11 +34,20 @@ type Project = {
 };
 type StatsProjectData = {
   enCours: { count: number; projects: Project[] };
-  archived: { count: number; projects: Project[] };
+  archiver: { count: number; projects: Project[] };
   standBy: { count: number; projects: Project[] };
   initiés: { count: number; projects: Project[] };
   enRetard: { count: number; projects: Project[] };
 };
+
+// Change the initial state to match the expected structure
+// const [statsProject, setStatsProject] = useState<StatsProjectData>({
+//   enCours: { count: 0, projects: [] },
+//   archiver: { count: 0, projects: [] },
+//   standBy: { count: 0, projects: [] },
+//   initiés: { count: 0, projects: [] },
+//   enRetard: { count: 0, projects: [] },
+// });
 
 const Home = () => {
   const [statActivities, setStatActivities] = useState<IActivityStat>();
@@ -457,39 +466,39 @@ const Home = () => {
           </>
         )}
         <div className="space-y-7">
-          <ProjectStatsCard
-            category={{
-              title: "En cours",
-              count: statsProject?.enCours.count,
-              projects: statsProject?.enCours.projects,
-            }}
-          />
+        <ProjectStatsCard
+          category={{
+            title: "En cours",
+            count: statsProject?.enCours?.count || 0,
+            projects: statsProject?.enCours?.projects || [],
+          }}
+        />
           <ProjectStatsCard
             category={{
               title: "Initié",
-              count: statsProject?.initiés.count,
-              projects: statsProject?.initiés.projects,
+              count: statsProject?.initiés?.count,
+              projects: statsProject?.initiés?.projects,
             }}
           />
           <ProjectStatsCard
             category={{
               title: "En retard",
-              count: statsProject?.enRetard.count,
-              projects: statsProject?.enRetard.projects,
+              count: statsProject?.enRetard?.count,
+              projects: statsProject?.enRetard?.projects,
             }}
           />
           <ProjectStatsCard
             category={{
               title: "Archivés",
-              count: statsProject?.archived.count,
-              projects: statsProject?.archived.projects,
+              count: statsProject?.archiver?.count,
+              projects: statsProject?.archiver?.projects,
             }}
           />
           <ProjectStatsCard
             category={{
               title: "Stand by",
-              count: statsProject?.standBy.count,
-              projects: statsProject?.standBy.projects,
+              count: statsProject?.standBy?.count,
+              projects: statsProject?.standBy?.projects,
             }}
           />
         </div>

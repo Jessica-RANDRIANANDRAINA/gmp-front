@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { Modal, ModalBody, ModalFooter } from "../Modal";
 import { CustomInput, CustomSelect } from "../../UIElements";
@@ -9,7 +9,7 @@ import {
   createTransverse,
   getProjectByUserId,
   createTaskPhase,
- } from "../../../services/Project";
+} from "../../../services/Project";
 import { v4 as uuid4 } from "uuid";
 import { intercontractType, transverseType } from "../../../constants/Activity";
 import { Notyf } from "notyf";
@@ -17,12 +17,150 @@ import "notyf/notyf.min.css";
 import { IMyHabilitation } from "../../../types/Habilitation";
 import { IDecodedToken } from "../../../types/user";
 import { decodeToken } from "../../../services/Function/TokenService";
-// import {IUserProject } from "../../../types/Project";
 import { getAllUsers } from "../../../services/User";
-//import ListUsers from "../../UIElements/ListUsers";
-//import { getAllUsers } from "../../../services/User/UserServices";
- import { getInitials } from "../../../services/Function/UserFunctionService";
-const notyf = new Notyf({ position: { x: "center", y: "top" } });
+import { getInitials } from "../../../services/Function/UserFunctionService";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+import dayjs from "dayjs";
+import DOMPurify from 'dompurify';
+const notyf = new Notyf({ 
+  position: { x: "center", y: "top" },
+  duration: 3000
+});
+
+const formats = [
+  "header",
+  "bold",
+  "italic",
+  "underline",
+  "strike",
+  "blockquote",
+  "list",
+  "bullet",
+  "indent",
+  "link",
+  "image",
+];
+
+const QuillEditor = ({
+  value,
+  onChange,
+  placeholder = "",
+}: {
+  value: string;
+  onChange: (value: string) => void;
+  placeholder?: string;
+}) => {
+  const quillRef = useRef<ReactQuill>(null);
+
+const imageHandler = () => {
+  const input = document.createElement('input');
+  input.setAttribute('type', 'file');
+  input.setAttribute('accept', 'image/*');
+  input.click();
+
+  input.onchange = async () => {
+    if (!input.files) return;
+    const file = input.files[0];
+
+    if (file.size > 2 * 1024 * 1024) {
+      notyf.error("L'image ne doit pas dépasser 2MB");
+      return;
+    }
+
+    try {
+      notyf.success("Upload de l'image en cours...");
+     
+      const formData = new FormData();
+      formData.append('file', file);
+      const endPoint = import.meta.env.VITE_API_ENDPOINT;
+
+      const response = await fetch(`${endPoint}/api/Task/upload`, {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+        }
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(errorText || "Échec de l'upload");
+      }
+
+      const data = await response.json();
+     
+      if (!data.url) {
+        throw new Error("URL de l'image manquante dans la réponse");
+      }
+
+      const quill = quillRef.current?.getEditor();
+      if (!quill) {
+        throw new Error("Éditeur Quill non disponible");
+      }
+
+      const range = quill.getSelection(true);
+      const imageUrl = data.url.startsWith('http') ? data.url : `${endPoint}${data.url}`;
+
+      // Solution avec dangerouslyPasteHTML (recommandée)
+      const sanitizedHtml = DOMPurify.sanitize(
+        `<img src="${imageUrl}" style="max-width: 500px; height: 500px;" alt="uploaded image">`
+      );
+      quill.clipboard.dangerouslyPasteHTML(range?.index || 0, sanitizedHtml);
+     
+      quill.setSelection((range?.index || 0) + 1, 0);
+     
+      notyf.success("Image ajoutée avec succès");
+    } catch (error: unknown) {
+      console.error("Erreur lors de l'upload de l'image:", error);
+      let errorMessage = "Échec de l'upload de l'image";
+      if (error instanceof Error) {
+        errorMessage += `: ${error.message}`;
+      }
+      notyf.error(errorMessage);
+    }
+  };
+};
+
+  const modules = useMemo(() => ({
+    toolbar: {
+      container: [
+        [{ header: [1, 2, false] }],
+        ["bold", "italic", "underline", "strike", "blockquote"],
+        [
+          { list: "ordered" },
+          { list: "bullet" },
+          { indent: "-1" },
+          { indent: "+1" },
+        ],
+        ["link", "image"],
+        ["clean"],
+      ],
+      handlers: {
+        image: imageHandler
+      }
+    },
+    clipboard: {
+      matchVisual: false,
+    },
+    
+  }), []);
+
+  return (
+    <div className="text-editor dark:text-white">
+      <ReactQuill
+        ref={quillRef}
+        theme="snow"
+        value={value}
+        onChange={onChange}
+        modules={modules}
+        formats={formats}
+        placeholder={placeholder}
+        className="dark:bg-boxdark dark:border-formStrokedark"
+      />
+    </div>
+  );
+};
 
 const AddActivity = ({
   modalOpen,
@@ -39,11 +177,11 @@ const AddActivity = ({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [decodedToken, setDecodedToken] = useState<IDecodedToken>();
   const userPopUp = useRef<any>(null);
- const [isDropdownUserOpen, setIsDropDownUserOpen] = useState<boolean>(false);
+  const [isDropdownUserOpen, setIsDropDownUserOpen] = useState<boolean>(false);
   const [usersList, setUsersList] = useState<Array<any>>([]);
   const [filteredUsers, setFilteredUsers] = useState<Array<any>>([]);
-  //const [showUserList, setShowUserList] = useState<boolean>(false);
-   const [assignedPerson, setAssignedPerson] = useState<Array<IUserProject>>([]);
+  const [assignedPerson, setAssignedPerson] = useState<Array<IUserProject>>([]);
+  const [searchUserInput, setSearchUserInput] = useState<string>("");
   const [activityData, setActivityData] = useState<IActivityAdd>({
     title: "",
     description: "",
@@ -52,7 +190,7 @@ const AddActivity = ({
     dailyEffort: 1,
     startDate: "",
     dueDate: "",
-    endDate:"",
+    endDate: "",
     fichier: "",
     projectTitle: "",
     phaseTitle: "",
@@ -60,6 +198,8 @@ const AddActivity = ({
     phaseId: "",
     transverseType: "",
     intercontractType: "",
+    fileName: "",
+    fileContent: undefined,
   });
 
   const [projectTitle, setProjectTitle] = useState<Array<string>>([]);
@@ -72,13 +212,24 @@ const AddActivity = ({
       try {
         const decoded = decodeToken("pr");
         setDecodedToken(decoded);
+        
+        if (decoded?.jti && decoded?.name) {
+          setAssignedPerson([{
+            userid: decoded.jti,
+            projectid: "",
+            role: "collaborator",
+            user: {
+              name: decoded.name
+            },
+          }]);
+          setSearchUserInput(decoded.name);
+        }
       } catch (error) {
         console.error(`Invalid token ${error}`);
       }
     }
   }, []);
 
-  // Fetch all users
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -87,6 +238,7 @@ const AddActivity = ({
         setFilteredUsers(users);
       } catch (error) {
         console.error("Error fetching users:", error);
+        notyf.error("Erreur lors du chargement des utilisateurs");
       }
     };
     
@@ -123,11 +275,18 @@ const AddActivity = ({
         },
       };
       setAssignedPerson(prev => [...prev, formatUser]);
+      setSearchUserInput("");
       setIsDropDownUserOpen(false);
+    } else {
+      notyf.error("Cet utilisateur est déjà assigné");
     }
   };
 
   const handleRemoveUser = (userId: string) => {
+    if (userId === decodedToken?.jti) {
+      notyf.error("Vous ne pouvez pas vous retirer de cette activité");
+      return;
+    }
     setAssignedPerson(prev => prev.filter(user => user.userid !== userId));
   };
 
@@ -145,6 +304,7 @@ const AddActivity = ({
       }
     } catch (error) {
       console.error(`Error at fetch project data : ${error}`);
+      notyf.error("Erreur lors du chargement des projets");
     }
   };
 
@@ -185,134 +345,337 @@ const AddActivity = ({
 
   const handleCloseModal = () => {
     setModalOpen(false);
+    setActivityData({
+      title: "",
+      description: "",
+      type: "",
+      status: "Backlog",
+      dailyEffort: 1,
+      startDate: "",
+      dueDate: "",
+      endDate: "",
+      fichier: "",
+      projectTitle: "",
+      phaseTitle: "",
+      projectId: "",
+      phaseId: "",
+      transverseType: "",
+      intercontractType: "",
+      fileName: "",
+      fileContent: undefined,
+    });
+    setAssignedPerson([]);
+    if (decodedToken?.jti && decodedToken?.name) {
+      setAssignedPerson([{
+        userid: decodedToken.jti,
+        projectid: "",
+        role: "collaborator",
+        user: {
+          name: decodedToken.name,
+        },
+      }]);
+      setSearchUserInput(decodedToken.name);
+    }
   };
 
-  //close user pop up if click outside
-useEffect(() => {
-  const clickHandler = ({ target }: MouseEvent) => {
-    if (!userPopUp.current) return;
-    if (!userPopUp || userPopUp.current.contains(target)) return;
-    setIsDropDownUserOpen(false);
+   //
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  if (!e.target.files || e.target.files.length === 0) return;
+
+  const file = e.target.files[0];
+  
+  // Vérification de la taille
+  if (file.size > 5 * 1024 * 1024) {
+    notyf.error("Le fichier ne doit pas dépasser 5MB");
+    return;
+  }
+
+  // Vérification des types de fichiers
+  const allowedTypes = [
+    'application/pdf',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    'image/jpeg',
+    'image/png'
+  ];
+  
+  if (!allowedTypes.includes(file.type)) {
+    notyf.error("Type de fichier non supporté");
+    return;
+  }
+
+  try {
+    notyf.success("Upload du fichier en cours...");
+    
+    const formData = new FormData();
+    formData.append('file', file);
+    
+    const endPoint = import.meta.env.VITE_API_ENDPOINT;
+    const response = await fetch(`${endPoint}/api/Task/upload`, {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+      }
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Erreur lors de l'upload");
+    }
+
+    const data = await response.json();
+    
+    setActivityData({
+      ...activityData,
+      fileName: file.name,
+      fichier: data.url // Assurez-vous que l'API retourne bien une URL
+    });
+    
+    notyf.success("Fichier uploadé avec succès");
+  } catch (error: unknown) {
+    console.error("Erreur lors de l'upload:", error);
+    let errorMessage = "Échec de l'upload";
+    if (error instanceof Error) {
+      errorMessage += `: ${error.message}`;
+    }
+    notyf.error(errorMessage);
+  }
+};
+  //
+
+  useEffect(() => {
+    const clickHandler = ({ target }: MouseEvent) => {
+      if (!userPopUp.current) return;
+      if (!userPopUp || userPopUp.current.contains(target)) return;
+      setIsDropDownUserOpen(false);
+    };
+    document.addEventListener("click", clickHandler);
+    return () => document.removeEventListener("click", clickHandler);
+  }, []);
+
+  const processDescription = (html: string): string => {
+    const sanitized = DOMPurify.sanitize(html, {
+      ADD_TAGS: ['img'],
+      ADD_ATTR: ['src', 'alt', 'style', 'width', 'height'],
+      ALLOW_DATA_ATTR: false
+    });
+    return sanitized;
   };
-  document.addEventListener("click", clickHandler);
-  return () => document.removeEventListener("click", clickHandler);
-}, []);
+
+ 
+  const handleRemoveFile = () => {
+    setActivityData({
+      ...activityData,
+      fileName: "",
+      fileContent: undefined,
+      fichier: ""
+    });
+  };
+
+  const validateForm = () => {
+    if (!activityData.title) {
+      notyf.error("Le titre est requis");
+      return false;
+    }
+
+    if (!activityData.type) {
+      notyf.error("Le type d'activité est requis");
+      return false;
+    }
+
+    if (!activityData.startDate) {
+      notyf.error("La date de début est requise");
+      return false;
+    }
+
+    if (!activityData.dueDate) {
+      notyf.error("La date de fin est requise");
+      return false;
+    }
+
+    const startDate = dayjs(activityData.startDate);
+    const dueDate = dayjs(activityData.dueDate);
+
+    if (dueDate.isBefore(startDate)) {
+      notyf.error("La date de fin doit être après la date de début");
+      return false;
+    }
+
+    if (activityData.type === "Projet") {
+      if (!activityData.projectTitle) {
+        notyf.error("Le projet est requis");
+        return false;
+      }
+
+      if (!activityData.phaseTitle) {
+        notyf.error("La phase est requise");
+        return false;
+      }
+    } else if (activityData.type === "Transverse") {
+      if (!activityData.transverseType) {
+        notyf.error("Le type de transverse est requis");
+        return false;
+      }
+    } else if (activityData.type === "Intercontract") {
+      if (!activityData.intercontractType) {
+        notyf.error("Le type d'intercontrat est requis");
+        return false;
+      }
+    }
+
+    return true;
+  };
 
   const handleCreateActivity = async () => {
+    if (!validateForm()) return;
+
     setIsLoading(true);
     try {
-      const id = uuid4();
-      
-      // Validate required fields
-      if (!activityData?.title || !activityData?.startDate || !activityData?.dueDate) {
-        throw new Error("Title, start date, and due date are required");
-      }
-  
-      if (activityData?.type === "Projet") {
-        const formatUser = [
-          {
-            userid: userid,
-            taskid: id,
-          },
-        ];
-        // Validate project-specific fields
-        // if (!activityData?.projectId || !activityData?.phaseId) {
-        //   throw new Error("Project and phase selection are required");
-        // }
-  
-        // const formatUser = assignedPerson.map(user => ({
-        //   userid: user.userid,
-        //   activityid: id,
-        // }));
-        
-        // Add current user if list is empty
-        // if (formatUser.length === 0 && userid) {
-        //   formatUser.push({
-        //     userid: userid,
-        //     activityid: id,
-        //   });
-        // }
-  
-        const initiatorId = decodedToken?.jti;
-        const initiatorName = decodedToken?.name;
-        
-        if (!initiatorId || !initiatorName) {
-          throw new Error("User information is missing");
+      // Upload du fichier s'il existe
+      let fileUrl = activityData.fichier;
+      if (activityData.fileContent) {
+        try {
+          const formData = new FormData();
+          formData.append('file', activityData.fileContent);
+          
+          const response = await fetch(`${import.meta.env.VITE_API_ENDPOINT}/api/Task/upload`, {
+            method: 'POST',
+            body: formData,
+            headers: {
+              'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+            }
+          });
+
+          if (!response.ok) {
+            throw new Error('Échec de l\'upload du fichier');
+          }
+
+          const result = await response.json();
+          fileUrl = result.url;
+        } catch (error) {
+          console.error('Erreur lors de l\'upload:', error);
+          notyf.error("Échec de l'upload du fichier joint");
+          return;
         }
-  
+      }
+
+      const id = uuid4();
+      const initiatorId = decodedToken?.jti;
+      const initiatorName = decodedToken?.name;
+
+      if (!initiatorId || !initiatorName) {
+        throw new Error("User information is missing");
+      }
+
+      const processedDescription = processDescription(activityData.description);
+
+      if (activityData.type === "Projet") {
+        const formatUser = assignedPerson.length > 0 
+          ? assignedPerson.map(user => ({
+              userid: user.userid,
+              taskid: id,
+            }))
+          : [{
+              userid: userid,
+              taskid: id,
+            }];
+
         const dataToSend = {
           id,
-          title: activityData?.title,
-          description: activityData?.description || "", // Ensure description exists
-          phaseid: activityData?.phaseId,
-          projectid: activityData?.projectId,
+          title: activityData.title,
+          description: processedDescription,
+          phaseid: activityData.phaseId,
+          projectid: activityData.projectId,
           priority: "Moyen",
-          startDate: new Date(activityData?.startDate).toISOString(), // Ensure proper date format
-          dueDate: new Date(activityData?.dueDate).toISOString(),
-          fichier: activityData?.fichier || "", // Ensure fichier exists
-          dailyEffort: activityData?.dailyEffort || 1,
-          status: activityData?.status || "Backlog",
+          startDate: new Date(activityData.startDate|| "").toISOString(),
+          dueDate: new Date(activityData.dueDate|| "").toISOString(),
+          fichier: fileUrl || "",
+          dailyEffort: activityData.dailyEffort || 1,
+          status: activityData.status || "Backlog",
           listUsers: formatUser,
           initiatorId,
           initiatorName,
         };
-  
+
         await createTaskPhase(dataToSend);
       } else if (activityData.type === "Transverse") {
-        if (!activityData.transverseType) {
-          throw new Error("Transverse type is required");
-        }
-  
         const dataToSend = {
           id,
           dailyEffort: activityData.dailyEffort || 1,
-          description: activityData.description || "",
-          startDate: new Date(activityData.startDate).toISOString(),
-          endDate: new Date(activityData.dueDate).toISOString(),
-          status: activityData?.status || "Backlog",
+          description: processedDescription,
+          startDate: new Date(activityData.startDate || "").toISOString(),
+          endDate: new Date(activityData.dueDate || "" ).toISOString(),
+          status: activityData.status || "Backlog",
           title: activityData.title,
           type: activityData.transverseType,
-          userid,
-          fichier: activityData.fichier || "",
+          userid: userid,
+          fichier: fileUrl || "",
         };
+
         await createTransverse(dataToSend);
       } else if (activityData.type === "Intercontract") {
-        if (!activityData.intercontractType) {
-          throw new Error("Intercontract type is required");
-        }
-  
         const dataToSend = {
           id,
           dailyEffort: activityData.dailyEffort || 1,
-          description: activityData.description || "",
-          startDate: new Date(activityData.startDate).toISOString(),
-          endDate: new Date(activityData.dueDate).toISOString(),
-          status: activityData?.status || "Backlog",
+          description: processedDescription,
+          startDate: new Date(activityData.startDate|| "").toISOString(),
+          endDate: new Date(activityData.dueDate|| "").toISOString(),
+          status: activityData.status || "Backlog",
           title: activityData.title,
           type: activityData.intercontractType,
-          userid,
-          fichier: activityData.fichier || "",
+          userid: userid,
+          fichier: fileUrl || "",
         };
+
         await createInterContract(dataToSend);
       }
       
-      notyf.success("Création de l'activité réussie.");
+      notyf.success("Activité créée avec succès");
       setIsActivityFinished(true);
       handleCloseModal();
     } catch (error: any) {
-      const errorMessage = error.response?.data?.message || error.message || "Une erreur s'est produite";
-      notyf.error(errorMessage);
-      console.error("Error at create activity:", error);
+      console.error("Error creating activity:", error);
       
-      // Log additional details for debugging
+      let errorMessage = "Une erreur s'est produite lors de la création";
       if (error.response) {
-        console.error("Response data:", error.response.data);
-        console.error("Response status:", error.response.status);
-        console.error("Response headers:", error.response.headers);
+        errorMessage = error.response.data?.message || errorMessage;
+        if (error.response.data?.errors) {
+          errorMessage += ": " + JSON.stringify(error.response.data.errors);
+        }
+      } else if (error.message) {
+        errorMessage = error.message;
       }
+
+      notyf.error(errorMessage);
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const isFormValid = () => {
+    const hasRequiredFields =
+      activityData.title &&
+      activityData.type &&
+      activityData.startDate &&
+      activityData.dueDate;
+
+    const isProjectComplete =
+      activityData.type !== "Projet" ||
+      (activityData.projectTitle && activityData.phaseTitle);
+
+    const isTransverseComplete =
+      activityData.type !== "Transverse" || activityData.transverseType;
+
+    const isIntercontractComplete =
+      activityData.type !== "Intercontract" || activityData.intercontractType;
+
+    return (
+      hasRequiredFields &&
+      isProjectComplete &&
+      isTransverseComplete &&
+      isIntercontractComplete
+    );
   };
 
   return (
@@ -325,24 +688,23 @@ useEffect(() => {
     >
       <ModalBody>
         <div className="space-y-4">
-          {/* Section Assignation */}
           <div className="space-y-2">
-            
-            
-            {/* Input de recherche */}
-            <div className="relative">
+            <div className="relative" ref={userPopUp}>
               <CustomInput
-              required={true}
                 type="text"
                 label="Assigné à : "
                 rounded="medium"
                 className="text-sm"
-                onChange={(e) => handleUserSearch(e.target.value)}
+                value={searchUserInput}
+                onChange={(e) => {
+                  setSearchUserInput(e.target.value);
+                  handleUserSearch(e.target.value);
+                }}
                 onFocus={() => setIsDropDownUserOpen(true)}
+                placeholder="Rechercher un utilisateur..."
               />
               
-              {/* Liste des utilisateurs filtrés */}
-              {isDropdownUserOpen  && filteredUsers.length > 0 && (
+              {isDropdownUserOpen && filteredUsers.length > 0 && (
                 <div className="absolute z-10 mt-1 w-full bg-white dark:bg-boxdark border dark:border-formStrokedark rounded-md shadow-lg max-h-60 overflow-y-auto">
                   {filteredUsers.map((user) => (
                     <div
@@ -363,7 +725,6 @@ useEffect(() => {
               )}
             </div>
             
-            {/* Liste des utilisateurs assignés */}
             <div className="flex flex-wrap gap-2">
               {assignedPerson.map((user) => (
                 <div 
@@ -374,19 +735,21 @@ useEffect(() => {
                     {getInitials(user.user?.name)}
                   </div>
                   <span className="text-sm mr-2">{user.user?.name}</span>
-                  <button 
-                     onClick={() => handleRemoveUser(user.userid!)}
-                    className="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
-                  >
-                    ×
-                  </button>
+                  {user.userid !== decodedToken?.jti && (
+                    <button 
+                      onClick={() => handleRemoveUser(user.userid!)}
+                      className="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
+                    >
+                      ×
+                    </button>
+                  )}
                 </div>
               ))}
             </div>
           </div>
-          {/* Reste du formulaire */}
+          
           <CustomInput
-            required={true}
+            required
             type="text"
             label="Titre"
             rounded="medium"
@@ -398,12 +761,12 @@ useEffect(() => {
                 title: e.target.value,
               });
             }}
+            placeholder="Titre de l'activité"
           />
           
-          {/* ... (le reste du formulaire reste inchangé) ... */}
           <div className="flex *:w-full flex-wrap md:flex-nowrap gap-2">
             <CustomSelect
-              required={true}
+              required
               label="Type"
               data={[
                 "Projet",
@@ -417,8 +780,11 @@ useEffect(() => {
                 setActivityData({
                   ...activityData,
                   type: e,
+                  transverseType: "",
+                  intercontractType: "",
                 });
               }}
+              placeholder="Sélectionnez un type"
             />        
             <CustomSelect
               label="Statut"
@@ -436,86 +802,90 @@ useEffect(() => {
                   status: e,
                 });
               }}
+              placeholder="Sélectionnez un statut"
             />
           </div>
           
-          <div
-              className={` w-full *:w-full flex-wrap md:flex-nowrap  gap-2 ${
-                activityData.type === "Projet" ? "flex" : "hidden"
-              } `}
-            >
-              <CustomSelect
-                required={true}
-                label="Titre du projet"
-                data={projectTitle}
-                value={activityData?.projectTitle}
-                onValueChange={(e) => {
-                  setActivityData({
-                    ...activityData,
-                    projectTitle: e,
-                  });
-                }}
-              />
-              <CustomSelect
-                required={true}
-                className={` ${
-                  activityData?.projectTitle === "" ? "hidden" : ""
-                }`}
-                label="Titre de la phase"
-                data={phaseTitle}
-                value={activityData?.phaseTitle?.slice(0, 20)}
-                onValueChange={(e) => {
-                  setActivityData({
-                    ...activityData,
-                    phaseTitle: e,
-                  });
-                }}
-              />
-            </div>
-            <div
-              className={` w-full *:w-full flex-wrap md:flex-nowrap  gap-2 ${
-                activityData.type === "Transverse" ? "flex" : "hidden"
-              } `}
-            >
-              <CustomSelect
-                required={true}
-                label="Type de transverse"
-                data={transverseType}
-                value={activityData.transverseType}
-                onValueChange={(e) => {
-                  setActivityData({
-                    ...activityData,
-                    transverseType: e,
-                  });
-                }}
-              />
-            </div>
-            <div
-              className={` w-full *:w-full flex-wrap md:flex-nowrap  gap-2 ${
-                activityData.type === "Intercontract" ? "flex" : "hidden"
-              } `}
-            >
-              <CustomSelect
-                required={true}
-                label="Type d'intercontrat"
-                data={intercontractType}
-                value={activityData.intercontractType}
-                onValueChange={(e) => {
-                  setActivityData({
-                    ...activityData,
-                    intercontractType: e,
-                  });
-                }}
-              />
-            </div>
-            <div className="flex *:w-full flex-wrap md:flex-nowrap gap-2">
+          <div className={`w-full *:w-full flex-wrap md:flex-nowrap gap-2 ${
+              activityData.type === "Projet" ? "flex" : "hidden"
+            }`}
+          >
+            <CustomSelect
+              required={activityData.type === "Projet"}
+              label="Titre du projet"
+              data={projectTitle}
+              value={activityData.projectTitle}
+              onValueChange={(e) => {
+                setActivityData({
+                  ...activityData,
+                  projectTitle: e,
+                  phaseTitle: "",
+                });
+              }}
+              placeholder="Sélectionnez un projet"
+            />
+            <CustomSelect
+              required={activityData.type === "Projet"}
+              disabled={!activityData.projectTitle}
+              label="Titre de la phase"
+              data={phaseTitle}
+              value={activityData.phaseTitle}
+              onValueChange={(e) => {
+                setActivityData({
+                  ...activityData,
+                  phaseTitle: e,
+                });
+              }}
+              placeholder={activityData.projectTitle ? "Sélectionnez une phase" : "Sélectionnez d'abord un projet"}
+            />
+          </div>
+          
+          <div className={`w-full *:w-full flex-wrap md:flex-nowrap gap-2 ${
+              activityData.type === "Transverse" ? "flex" : "hidden"
+            }`}
+          >
+            <CustomSelect
+              required={activityData.type === "Transverse"}
+              label="Type de transverse"
+              data={transverseType}
+              value={activityData.transverseType}
+              onValueChange={(e) => {
+                setActivityData({
+                  ...activityData,
+                  transverseType: e,
+                });
+              }}
+              placeholder="Sélectionnez un type"
+            />
+          </div>
+          
+          <div className={`w-full *:w-full flex-wrap md:flex-nowrap gap-2 ${
+              activityData.type === "Intercontract" ? "flex" : "hidden"
+            }`}
+          >
+            <CustomSelect
+              required={activityData.type === "Intercontract"}
+              label="Type d'intercontrat"
+              data={intercontractType}
+              value={activityData.intercontractType}
+              onValueChange={(e) => {
+                setActivityData({
+                  ...activityData,
+                  intercontractType: e,
+                });
+              }}
+              placeholder="Sélectionnez un type"
+            />
+          </div>
+          
+          <div className="flex *:w-full flex-wrap md:flex-nowrap gap-2">
             <CustomInput
-              required={true}
+              required
               type="date"
               label="Date de début"
               rounded="medium"
               className="text-sm"
-              value={activityData?.startDate}
+              value={activityData.startDate}
               onChange={(e) => {
                 setActivityData({
                   ...activityData,
@@ -525,13 +895,13 @@ useEffect(() => {
             />
             
             <CustomInput
-              required={true}
+              required
               type="date"
               label="Date de fin"
               rounded="medium"
               className="text-sm"
               min={activityData.startDate}
-              value={activityData?.dueDate}
+              value={activityData.dueDate}
               onChange={(e) => {
                 setActivityData({
                   ...activityData,
@@ -539,8 +909,9 @@ useEffect(() => {
                 });
               }}
             />
-            </div>
-             <CustomInput
+          </div>
+          
+          <CustomInput
             type="number"
             min={1}
             max={8}
@@ -550,6 +921,7 @@ useEffect(() => {
             value={activityData.dailyEffort}
             onChange={(e) => {
               let value = parseInt(e.target.value);
+              if (isNaN(value)) value = 1;
               if (value > 8) value = 8;
               if (value < 1) value = 1;
               setActivityData({
@@ -559,89 +931,103 @@ useEffect(() => {
             }}
           />
           
-          <CustomInput
-            type="textarea"
-            label="Description"
-            rounded="medium"
-            className="text-sm"
-            rows={5}
-            value={activityData.description}
-            onChange={(e) => {
-              setActivityData({
-                ...activityData,
-                description: e.target.value,
-              });
-            }}
-          />
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              Description
+            </label>
+            <QuillEditor
+              value={activityData.description}
+              onChange={(value) => {
+                setActivityData({
+                  ...activityData,
+                  description: value,
+                });
+              }}
+              placeholder="Écrivez votre description ici..."
+            />
+          </div>
+
+          {/* <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              Fichier joint
+            </label>
+            <div className="flex items-center">
+              <input
+                type="file"
+                id="file-upload"
+                className="hidden"
+                onChange={handleFileUpload}
+              />
+              <label
+                htmlFor="file-upload"
+                className="cursor-pointer bg-gray-100 dark:bg-boxdark hover:bg-gray-200 dark:hover:bg-boxdark2 text-gray-700 dark:text-gray-300 py-2 px-4 rounded-md border border-gray-300 dark:border-formStrokedark text-sm"
+              >
+                Choisir un fichier
+              </label>
+              {activityData.fileName && (
+                <div className="ml-3 flex items-center">
+                  <span className="text-sm text-gray-600 dark:text-gray-400">
+                    {activityData.fileName}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={handleRemoveFile}
+                    className="ml-2 text-red-500 hover:text-red-700"
+                  >
+                    ×
+                  </button>
+                </div>
+              )}
+            </div>
+            <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+              Formats acceptés : PDF, DOCX, XLSX, JPG, PNG (max 5MB)
+            </p>
+          </div> */}
           
-          <CustomInput
-            type="text"
-            label="Ajouter un lien"
-            rounded="medium"
-            className="text-sm"
-            value={activityData.fichier}
-            onChange={(e) => {
-              setActivityData({
-                ...activityData,
-                fichier: e.target.value,
-              });
-            }}
-          />
-         
+          {/* {!activityData.fileName && ( */}
+            <CustomInput
+              type="text"
+              label="Ajouter un lien"
+              rounded="medium"
+              className="text-sm"
+              value={activityData.fichier}
+              onChange={(e) => {
+                setActivityData({
+                  ...activityData,
+                  fichier: e.target.value,
+                });
+              }}
+              placeholder="https://example.com"
+            />
+          {/* )} */}
         </div>
       </ModalBody>
       
       <ModalFooter>
         <button
-          className="border text-xs p-2 rounded-md  font-semibold bg-transparent border-transparent hover:bg-zinc-100 dark:hover:bg-boxdark2 "
+          className="border text-xs p-2 rounded-md font-semibold bg-transparent border-transparent hover:bg-zinc-100 dark:hover:bg-boxdark2"
           type="button"
           onClick={handleCloseModal}
+          disabled={isLoading}
         >
           Annuler
         </button>
 
-        {(() => {
-          const hasRequiredFields =
-            activityData?.title !== "" &&
-            activityData?.type !== "" &&
-            activityData?.startDate !== "" &&
-            activityData?.dueDate !== "";
-
-          const isProjectComplete =
-            activityData?.type === "Projet" &&
-            activityData?.projectTitle !== "" &&
-            activityData?.phaseTitle !== "";
-
-          const istransverseComplete =
-            activityData?.type === "Transverse" &&
-            activityData?.transverseType !== "";
-          const isIntercontractComplete =
-            activityData?.type === "Intercontract" &&
-            activityData?.intercontractType !== "";
-
-          const isDisabled =
-            hasRequiredFields &&
-            (isProjectComplete ||
-              istransverseComplete ||
-              isIntercontractComplete);
-          const buttonClassName = !isDisabled
-            ? "cursor-not-allowed bg-graydark"
-            : "cursor-pointer bg-green-700 hover:opacity-85";
-
-          return (
-            <button
-              disabled={!isDisabled}
-              type="button"
-              onClick={handleCreateActivity}
-              className={`border flex justify-center items-center dark:border-boxdark text-xs p-2 rounded-md text-white font-semibold ${buttonClassName}`}
-            >
-              {isLoading ? (
-                <BeatLoader size={5} className="mr-2" color={"#fff"} />
-              ) : null}
-              Créer
-            </button>
-          );
-        })()}
+        <button
+          disabled={!isFormValid() || isLoading}
+          type="button"
+          onClick={handleCreateActivity}
+          className={`border flex justify-center items-center dark:border-boxdark text-xs p-2 rounded-md text-white font-semibold ${
+            !isFormValid() || isLoading
+              ? "cursor-not-allowed bg-gray-500"
+              : "cursor-pointer bg-green-700 hover:opacity-85"
+          }`}
+        >
+          {isLoading ? (
+            <BeatLoader size={5} className="mr-2" color={"#fff"} />
+          ) : null}
+          Créer
+        </button>
       </ModalFooter>
     </Modal>
   );

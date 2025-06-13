@@ -144,18 +144,27 @@ export const getNotificationMessage = (
             </>
           );
         } else if (subTable === "Status") {
-          const state =
-            newValue === "Stand by"
-              ? "Mis en stand by"
-              : newValue !== "Stand by" &&
-                newValue !== "Archived" &&
-                oldValue === "Stand by"
-              ? "Débloqué"
-              : "Restauré";
+          let stateMessage = "";
+          if (newValue === "Stand by") {
+            stateMessage = "mis en stand by";
+          } else if (newValue === "Archiver") {
+            stateMessage = "archivé";
+          } else if (newValue === "Terminer") {
+            stateMessage = "terminé";
+          } else if (newValue === "Commencer/En cours") {
+            stateMessage = "mis en cours";
+          } else if (newValue === "Pas commencé" && oldValue !== "Archiver") {
+            stateMessage = "restitué à l'état 'Pas commencé'";
+          } else if (newValue === "Pas commencé" && oldValue === "Archiver") {
+            stateMessage = "restauré";
+          }
+          else {
+            stateMessage = `changé en ${newValue}`; // Fallback for any other new status
+          }
           return (
             <>
               Le projet <strong>{projectName}</strong> a été{" "}
-              <strong>{state}</strong>.{" "}
+              <strong>{stateMessage}</strong>.{" "}
               <a
                 href={`${
                   import.meta.env.VITE_API_FRONT
@@ -173,7 +182,7 @@ export const getNotificationMessage = (
           const state =
             newValue === "Terminé"
               ? "terminée"
-              : newValue === "En cours"
+              : newValue === "Commencer/En cours"
               ? "maintenant en cours"
               : "en attente de démarrage";
           return (

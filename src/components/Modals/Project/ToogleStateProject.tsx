@@ -48,11 +48,11 @@ const navigate = useNavigate();
 
   const getStateFromActionType = (actionType: string): string => {
     const stateMap: Record<string, string> = {
-      "Débloquer": "En cours",
-      "Reprendre": "En cours",
-      "Restaurer": "En cours",
-      "Commencer": "En cours",
-      "Rouvrir": "En cours",
+      "Débloquer": "Commencer/En cours",
+      "Reprendre": "Commencer/En cours",
+      "Restaurer": "Commencer/En cours",
+      "Commencer/En cours": "Commencer/En cours",
+      "Rouvrir": "Commencer/En cours",
       "Terminer": "Terminer",
       "Stand by": "Stand by",
       "Pas commencé": "Pas commencé",
