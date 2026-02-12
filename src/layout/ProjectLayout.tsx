@@ -1,5 +1,4 @@
 import { ReactNode, useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
 import Header from "../components/Header";
 import ProjectSideBar from "../components/Sidebar/projectSideBar";
 import { getAllMyHabilitation } from "../services/Function/UserFunctionService";
@@ -11,33 +10,25 @@ const ProjectLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [decodedToken, setDecodedToken] = useState<IDecodedToken>();
   const [myHabilitation, setMyHabilitation] = useState<IMyHabilitation>();
-  const navigate = useNavigate();
-  const location = useLocation();
 
   const getMyHabilitation = async () => {
     const hab = await getAllMyHabilitation();
     setMyHabilitation(hab);
   };
-  useEffect(() => {
-    getMyHabilitation();
-  }, []);
 
   useEffect(() => {
+    getMyHabilitation();
     const token = localStorage.getItem("_au_pr");
-    const currentPath = location.pathname;
-    if (!token && !currentPath.includes("no-access")) {
-      navigate("/no-access");
-    }
     if (token) {
       try {
         const decoded = decodeToken("pr");
         setDecodedToken(decoded);
       } catch (error) {
         console.error(`Invalid token ${error}`);
-        navigate("/no-access");
+        localStorage.removeItem("_au_pr");
       }
     }
-  }, [location, navigate]);
+  }, []);
 
   return (
     <div className="dark:bg-boxdark-2 dark:text-bodydark">

@@ -3,17 +3,19 @@ import {
   CustomInput,
   CustomSelect,
 } from "../../../../../components/UIElements";
-import { IRessource, IProjectData } from "../../../../../types/Project";
+import { IRessource, IProjectData, IBudget } from "../../../../../types/Project";
 import { v4 as uuid4 } from "uuid";
 
 const BudgetAndRessourceAdd = ({
   setPageCreate,
   pageCreate,
-  setProjectData,
-  projectData,
+  // setProjectData,
+  // projectData,
   departments,
   setRessourceList,
   ressourceList,
+  budgetList, 
+  setBudgetList,
 }: {
   setPageCreate: React.Dispatch<React.SetStateAction<number>>;
   pageCreate: number;
@@ -22,8 +24,42 @@ const BudgetAndRessourceAdd = ({
   departments: string[];
   setRessourceList: React.Dispatch<React.SetStateAction<Array<IRessource>>>;
   ressourceList: IRessource[];
+  budgetList: IBudget[];
+  setBudgetList: React.Dispatch<React.SetStateAction<Array<IBudget>>>;
 }) => {
-  const [haveBudget, setHaveBudget] = useState(false);
+  const [haveBudget] = useState(false);
+
+  // ADD BUDGET LIST
+  const handleAddBudgetToList = () => {
+    let budgetData: IBudget = {
+      id: uuid4(),
+      code: "",
+      anneebudget: "",
+      direction: "",
+      amount: 0,
+      currency: "MGA",
+    };
+    setBudgetList([...budgetList, budgetData]);
+  };
+
+  //REMOVE A BUDGET TO THE LIST
+  const handleRemoveBudgetFromList = (id: string) => {
+    let filteredList = budgetList.filter((budget) => budget.id !== id);
+    setBudgetList(filteredList);
+  };
+
+  const handleBudgetDataChange = (
+    field: string,
+    index: number,
+    value: string | number
+  ) => {
+    setBudgetList((prevState) => {
+    const newBudgets = [...prevState];
+    newBudgets[index] = { ...newBudgets[index], [field]: value };
+    return newBudgets;
+  });
+  };
+
 
   // ADD RESSOURCE LIST
   const handleAddRessourceToList = () => {
@@ -68,8 +104,97 @@ const BudgetAndRessourceAdd = ({
     >
       <div className="space-y-4 ">
         <div>
-          <span className="font-semibold tracking-wide">BUDGET</span>
-          <button
+          <span className="font-semibold tracking-wide">BUDGETS</span>
+          <div className="space-y-4">
+            {budgetList?.map((budget, index) => (
+              <div key={budget.id} className="p-4 rounded-lg">
+                <div className="flex justify-between">
+                  <div className="underline">Budget {index+1}</div>
+                  <button 
+                    type="button"
+                    className="text-red-500 decoration-red-500 border-rose-200 rounded-md hover:bg-rose-100 dark:border-rose-300 dark:hover:bg-rose-400 dark:hover:text-rose-100 border p-2 font-bold hover:font-black"
+                    onClick={() => {
+                      handleRemoveBudgetFromList(budget.id);
+                    }}
+                  >
+                    Supprimer
+                  </button>
+                </div>
+                <CustomInput 
+                  label="Année"
+                  type="text"
+                  placeholder="2025"
+                  rounded="medium"
+                  value={budget.anneebudget}
+                  onChange={(e) => {
+                    handleBudgetDataChange("anneebudget", index, e.target.value);
+                  }}
+                  required
+                />
+                <div className="grid md:grid-cols-2 gap-4 mt-2">
+                  <CustomInput
+                    label="Code"
+                    type="text"
+                    rounded="medium"
+                    placeholder="Code budget"
+                    value={budget.code}
+                    onChange={(e) => {
+                      handleBudgetDataChange("code", index, e.target.value);
+                    }}
+                    required
+                  />
+                  <CustomSelect 
+                    label="Direction sponsor"
+                    placeholder="Choisir une direction"
+                    data={departments}
+                    value={budget.direction}
+                    onValueChange={(e) => {
+                      handleBudgetDataChange("direction", index, e);
+                    }}
+                    required
+                  />
+                </div>
+                <div className="grid md:grid-cols-2 gap-3 mt-2">
+                  <CustomInput 
+                    label="Montant du budget"
+                    type="number"
+                    step={0.01}
+                    min={0}
+                    rounded="medium"
+                    placeholder="0"
+                    value={budget.amount}
+                    required
+                    onChange={(e) => {
+                      handleBudgetDataChange(
+                        "amount", 
+                        index, 
+                        parseFloat(parseFloat(e.target.value).toFixed(2)));
+                    }}
+                  />
+                   <CustomSelect
+                    label="Devise"
+                    placeholder=" "
+                    data={["MGA", "EUR"]}
+                    value={budget.currency}
+                    onValueChange={(e) => {
+                      handleBudgetDataChange("currency", index, e);
+                    }}
+                    required
+                  />
+                </div>
+              </div>
+            ))}
+            <button
+              type="button"
+              onClick={handleAddBudgetToList}
+              className="py-2 w-full mt-2 text-center border border-dashed border-stroke rounded-md hover:bg-stroke dark:hover:bg-boxdark2"
+            >
+              + Ajouter un budget
+            </button>
+          </div>
+          
+          {/* taloh */}
+          {/* <button
             onClick={() => {
               setHaveBudget(true);
             }}
@@ -79,8 +204,8 @@ const BudgetAndRessourceAdd = ({
             }`}
           >
             + Ajouter un budget
-          </button>
-          {haveBudget && (
+          </button> */}
+          {/* {haveBudget && (
             <>
               <div className="flex justify-between">
                 <div></div>
@@ -157,7 +282,7 @@ const BudgetAndRessourceAdd = ({
                 />
               </div>
             </>
-          )}
+          )} */}
         </div>
         <div>
           {/* ===== RESSOURCES START ===== */}

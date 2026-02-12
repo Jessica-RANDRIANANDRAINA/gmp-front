@@ -16,6 +16,8 @@ const TaskProject = () => {
   const [showModalTeam, setShowModalTeam] = useState<boolean>(false);
   const [showModalSettings, setShowModalSettings] = useState<boolean>(false);
   const [isModifTeamApplied, setIsModifTeamApplied] = useState<boolean>(false);
+  const [refresh, setRefresh] = useState(false);
+
 
   const fetchProject = async () => {
     if (projectId) {
@@ -32,6 +34,11 @@ const TaskProject = () => {
     fetchProject();
     setIsModifTeamApplied(false);
   }, [isModifTeamApplied]);
+
+  useEffect(() => {
+  fetchProject();
+}, [refresh]);
+
 
   return (
     <ProjectLayout>
@@ -95,22 +102,44 @@ const TaskProject = () => {
                 "flex  gap-4 *:p-3 *:rounded-md *:mt-5 text-xs font-semibold overflow-x-scroll hide-scrollbar mb-2 whitespace-nowrap"
               }
             >
-              {projectData?.listPhases
-                ?.filter((phase) => phase?.rank !== undefined)
-                ?.sort((a, b) => (a?.rank ?? 0) - (b?.rank ?? 0))
-                ?.map((phase) => (
-                  <NavLink
-                    key={phase.rank}
-                    className={({ isActive }) =>
-                      isActive
-                        ? "text-green-700 bg-green-50 dark:bg-green-100"
-                        : "hover:text-green-700 text-slate-600   "
-                    }
-                    to={`/gmp/project/task/${projectId}/${phase.id}`}
-                  >
-                    {phase?.phase1}
-                  </NavLink>
-                ))}
+             {projectData?.listPhases
+  ?.filter((phase) => phase?.rank !== undefined)
+  ?.sort((a, b) => (a?.rank ?? 0) - (b?.rank ?? 0))
+  ?.map((phase) => (
+    <NavLink
+      key={phase.id}
+      className={({ isActive }) =>
+        `
+        flex flex-col items-center gap-1 px-3 py-2 rounded-md
+        ${isActive
+          ? "text-green-700 bg-green-50 dark:bg-green-100"
+          : "hover:text-green-700 text-slate-600"}
+        `
+      }
+      to={`/gmp/project/task/${projectId}/${phase.id}`}
+    >
+      {/* Nom de la phase */}
+      <span className="whitespace-nowrap">
+        {phase.phase1}
+      </span>
+
+      {/* Avancement */}
+      <span
+        className={`text-[10px] font-semibold
+          ${
+            (phase.completionPercentage ?? 0) === 100
+              ? "text-green-600"
+              : (phase.completionPercentage ?? 0) > 0
+              ? "text-blue-600"
+              : "text-gray-400"
+          }
+        `}
+      >
+        {phase.completionPercentage ?? 0}%
+      </span>
+    </NavLink>
+  ))}
+
             </div>
             <div className=" flex gap-2 justify-between items-end py-3 text-xs font-semibold px-2">
               <span
@@ -197,12 +226,13 @@ const TaskProject = () => {
             <PhaseSettings
               showModalSettings={showModalSettings}
               setShowModalSettings={setShowModalSettings}
+              onUpdated={() => setRefresh(prev => !prev)}
             />
           )}
           {/* PHASE SETTINGS END */}
         </div>
         <div className="">
-          <Outlet />
+          <Outlet context={{ onPhaseUpdated: () => setRefresh(prev => !prev) }} />
         </div>
       </div>
     </ProjectLayout>

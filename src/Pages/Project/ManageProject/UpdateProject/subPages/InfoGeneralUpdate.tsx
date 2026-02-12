@@ -1,9 +1,28 @@
+import { useState } from "react";
 import {
   CustomInput,
   CustomSelect,
   MultiSelect,
 } from "../../../../../components/UIElements";
 import { IProjectData } from "../../../../../types/Project";
+// import { Notyf } from "notyf";
+import "notyf/notyf.min.css";
+import ErrorBadge from "../../../../../components/UIElements/ErrorBadge";
+
+// Mapping des états
+const projectStates = {
+  "Not Started": "Pas commencé",
+  "In Progress": "En cours",
+  "Completed": "Terminé",
+  "Archived": "Archivé",
+  "Stand by": "Stand by"
+};
+// const notyf = new Notyf({ position: { x: "center", y: "top" } });
+// Fonction pour obtenir l'état en français
+const getFrenchState = (state: string | undefined | null) => {
+  if (!state) return "Pas commencé";
+  return projectStates[state as keyof typeof projectStates] || state;
+};
 
 const InfoGeneralUpdate = ({
   pageCreate,
@@ -22,6 +41,9 @@ const InfoGeneralUpdate = ({
   setDirectionOwner: Function;
   projectDataToModif: any;
 }) => {
+
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
   // Fonction pour vérifier si une date est antérieure à aujourd'hui
   const isPreviousDate = (date: string | number | Date | undefined) => {
     if (!date) return false;
@@ -31,25 +53,37 @@ const InfoGeneralUpdate = ({
     return inputDate < today;
   };
 
-  // Liste des états valides pour le projet
-  const validProjectStates = [
-    "Pas commencé", 
-    "Commencer/En cours", 
-    "Terminer", 
-    "Archiver", 
-    "Mettre en stand by"
-  ];
-
-  // Fonction pour obtenir l'état initial du projet
-  const getInitialState = () => {
-    // Si projectDataToModif existe et a un état valide
-    if (projectDataToModif?.state && validProjectStates.includes(projectDataToModif.state)) {
-      return projectDataToModif.state;
+  // Fonction simplifiée pour obtenir l'état actuel
+   const getCurrentState = () => {
+    // Priorité 1 : Utilise projectData.state s'il est défini (modification en cours)
+    if (projectData.state !== undefined && projectData.state !== null) {
+      return getFrenchState(projectData.state);
     }
-    // Sinon, retourne l'état actuel ou "Pas commencé" par défaut
-    return projectData?.state || "Pas commencé";
+    
+    // Priorité 2 : Utilise projectDataToModif.state pour l'initialisation
+    if (projectDataToModif?.state) {
+      return getFrenchState(projectDataToModif.state);
+    }
+    
+    // Valeur par défaut
+    return "Pas commencé";
   };
-
+  // Initialisation des données - CORRIGÉ
+  // useEffect(() => {
+  //   if (projectDataToModif) {
+  //     // Vérifie si les données de base ne sont pas encore initialisées
+  //     const needsInitialization = !projectData.title && !projectData.codeProjet;
+      
+  //     if (needsInitialization) {
+  //       setProjectData(prev => ({
+  //         ...prev,
+  //         ...projectDataToModif,
+  //         // Ne pas écraser state s'il est déjà défini dans projectData
+  //         state: prev.state !== undefined ? prev.state : projectDataToModif.state
+  //       }));
+  //     }
+  //   }
+  // }, [projectDataToModif, projectData.title, projectData.codeProjet]);
   return (
     <form
       className={`space-y-2 transition-all duration-300 ease-in-out ${
@@ -63,6 +97,26 @@ const InfoGeneralUpdate = ({
         }
       }}
     >
+      <CustomInput 
+        label="Code Projet"
+        type="text"
+        rounded="medium"
+        help="Le code du projet est optionnel"
+        placeholder="Code du Projet (optionnel)"
+        value={projectData.codeProjet || ""}
+        required={false}
+        maxLength={50}
+        onChange={(e) => {
+          const value = e.target.value.toUpperCase();
+          if (/^[A-Z0-9]{0,10}$/.test(value)) {
+            setProjectData({
+              ...projectData,
+              codeProjet: value === "" ? null : value
+            });
+          }
+        }}
+      />
+
       <CustomInput
         label="Titre"
         type="text"
@@ -100,7 +154,8 @@ const InfoGeneralUpdate = ({
         <CustomSelect
           label="Priorité"
           placeholder="Priorité"
-          data={["Elevée", "Moyenne", "Faible"]}
+          data={["Urgente", "Normale"]}
+          
           value={projectData.priority}
           onValueChange={(e) => {
             setProjectData({
@@ -112,7 +167,7 @@ const InfoGeneralUpdate = ({
         <CustomSelect
           label="Criticité"
           placeholder="Criticité"
-          data={["Urgente", "Normale"]}
+          data={["Elevée", "Moyenne", "Faible"]}
           value={projectData.criticality}
           onValueChange={(e) => {
             setProjectData({
@@ -127,15 +182,52 @@ const InfoGeneralUpdate = ({
         <CustomSelect
           label="État"
           placeholder="Sélectionnez un état"
-          data={validProjectStates}
-          value={projectData.state || getInitialState()}
-          onValueChange={(e) => {
+          data={Object.values(projectStates)}
+          value={getCurrentState()}
+          onValueChange={(selectedFrenchState) => {
+            const englishState =
+              Object.entries(projectStates).find(
+                ([_, frValue]) => frValue === selectedFrenchState
+              )?.[0] || selectedFrenchState;
+
+            const phases = projectDataToModif?.listPhases ?? [];
+
+            // 🔒 RÈGLE 1 : Projet "Terminé"
+            if (englishState === "Completed") {
+              const hasUnfinishedPhase = phases.some(
+                (p: any) => p.status !== "Terminé"
+              );
+
+              if (hasUnfinishedPhase) {
+                setErrorMessage(
+                  "❌ Impossible : toutes les phases doivent être terminées pour clôturer le projet."
+                );
+                return;
+              }
+            }
+
+            // 🔒 RÈGLE 2 : Projet "Stand by"
+            if (englishState === "Stand by") {
+              const hasStandByPhase = phases.some(
+                (p: any) => p.status === "Stand by"
+              );
+
+              if (!hasStandByPhase) {
+                setErrorMessage(
+                  "⚠️ Le projet ne peut être mis en Stand by que si au moins une phase est en Stand by."
+                );
+                return;
+              }
+            }
+
+            // ✅ Si toutes les règles sont respectées
             setProjectData({
               ...projectData,
-              state: e,
+              state: englishState,
             });
           }}
         />
+
         <MultiSelect
           id="001"
           label={"Direction propriétaire"}
@@ -288,8 +380,20 @@ const InfoGeneralUpdate = ({
           Suivant
         </button>
       </div>
+       {errorMessage && (
+  <ErrorBadge
+    message={errorMessage}
+    duration={6000} // 6 secondes 
+    offsetY="45%"
+    onClose={() => setErrorMessage(null)}
+  />
+)}
     </form>
+
+    
   );
+ 
 };
+
 
 export default InfoGeneralUpdate;

@@ -2,35 +2,67 @@ import {
   CustomInput,
   CustomSelect,
 } from "../../../../../components/UIElements";
-import { IProjectData, IRessource } from "../../../../../types/Project";
+import { IProjectData, IRessource, IBudget } from "../../../../../types/Project";
 import { v4 as uuid4 } from "uuid";
 
 const BudgetAndRessourcesUpdate = ({
   pageCreate,
   setPageCreate,
-  haveBudget,
-  setHaveBudget,
-  projectData,
-  setProjectData,
   departments,
   ressourceList,
   setRessourceList,
+  budgetList,
+  setBudgetList, 
 }: {
   pageCreate: number;
   setPageCreate: React.Dispatch<React.SetStateAction<number>>;
-  haveBudget: boolean;
-  setHaveBudget: React.Dispatch<React.SetStateAction<boolean>>;
   projectData: IProjectData;
   setProjectData: React.Dispatch<React.SetStateAction<IProjectData>>;
   departments: Array<string>;
   ressourceList: Array<IRessource>;
   setRessourceList: React.Dispatch<React.SetStateAction<Array<IRessource>>>;
+  budgetList: IBudget[]; // Ajoutez cette ligne
+  setBudgetList: React.Dispatch<React.SetStateAction<IBudget[]>>; // Ajoutez cette ligne
 }) => {
+  
+
+  // ADD BUDGET LIST
+  const handleAddBudgetToList = () => {
+    let newBudget: IBudget = {
+      id: uuid4(),
+      code: "",
+      anneebudget: "",
+      direction: "",
+      amount: 0,
+      currency: "MGA",
+    };
+    setBudgetList([...budgetList, newBudget]);
+  };
+
+  //REMOVE A BUDGET TO THE LIST
+  const handleRemoveBudgetFromList = (id: string) => {
+    let filteredList = budgetList.filter((budget: IBudget) => budget.id !== id);
+    setBudgetList(filteredList);
+  };
+
+  const handleBudgetDataChange = (
+    field: string,
+    index: number,
+    value: string | number
+  ) => {
+    setBudgetList((prevState: IBudget[]) => {
+      const newBudgets = [...prevState];
+      newBudgets[index] = { ...newBudgets[index], [field]: value};
+      return newBudgets;
+    });
+  };
+
   // REMOVE A RESSOURCE TO THE LIST
   const handleRemoveRessourceToList = (id: string) => {
     let filteredList = ressourceList.filter((ressource) => ressource.id !== id);
     setRessourceList(filteredList);
   };
+
   const handleRessourceDataChange = (
     field: string,
     index: number,
@@ -42,6 +74,7 @@ const BudgetAndRessourcesUpdate = ({
       return newRessources;
     });
   };
+
   // ADD RESSOURCE LIST
   const handleAddRessourceToList = () => {
     let ressourceData: IRessource = {
@@ -52,6 +85,7 @@ const BudgetAndRessourcesUpdate = ({
     };
     setRessourceList([...ressourceList, ressourceData]);
   };
+
   return (
     <form
       className={`space-y-2 transition-all duration-300 ease-in-out ${
@@ -67,106 +101,101 @@ const BudgetAndRessourcesUpdate = ({
     >
       <div className="space-y-4">
         <div>
-          <span className="font-semibold tracking-wide">BUDGET</span>
-          <button
-            onClick={() => {
-              setHaveBudget(true);
-            }}
-            type="button"
-            className={`py-2 w-full mt-2 text-center border border-dashed border-stroke rounded-md hover:bg-stroke dark:hover:bg-boxdark2 ${
-              haveBudget ? "hidden" : ""
-            }`}
-          >
-            + Ajouter un budget ?
-          </button>
-          {haveBudget && (
-            <>
-              <div className="flex justify-between">
-                <div></div>
-                <button
-                  type="button"
-                  className={`
-                    text-red-500 decoration-red-500 border-rose-200 rounded-md hover:bg-rose-100 dark:border-rose-300 dark:hover:bg-rose-400 dark:hover:text-rose-100 border p-2 font-bold hover:font-black
-                    `}
-                  onClick={() => {
-                    setHaveBudget(false);
-                  }}
-                >
-                  Supprimer
-                </button>
-              </div>
-              <div className="grid md:grid-cols-2 gap-4">
-                <CustomInput
-                  label="Code"
+          <span className="font-semibold tracking-wide">BUDGETS</span>
+          <div className="space-y-4">
+            {budgetList?.map((budget: IBudget, index: number) => (
+              <div key={budget.id} className="p-4 rounded-lg">
+                <div className="flex justify-between">
+                  <div className="underline">Budget {index+1}</div>
+                  <button 
+                    type="button"
+                    className="text-red-500 decoration-red-500 border-rose-200 rounded-md hover:bg-rose-100 dark:border-rose-300 dark:hover:bg-rose-400 dark:hover:text-rose-100 border p-2 font-bold hover:font-black"
+                    onClick={() => {
+                      handleRemoveBudgetFromList(budget.id);
+                    }}
+                  >
+                    Supprimer
+                  </button>
+                </div>
+                <CustomInput 
+                  label="Année"
                   type="text"
+                  placeholder="2025"
                   rounded="medium"
-                  placeholder="Code budget"
-                  // disabled={true}
-                  value={projectData?.codeBuget}
+                  value={budget.anneebudget || ""}
                   onChange={(e) => {
-                    setProjectData({
-                      ...projectData,
-                      codeBuget: e.target.value,
-                    });
-                  }}
-                />
-                <CustomSelect
-                  label="Direction sponsor"
-                  placeholder="Choisir une direction"
-                  data={departments}
-                  value={projectData.directionSourceBudget}
-                  onValueChange={(e) => {
-                    setProjectData({
-                      ...projectData,
-                      directionSourceBudget: e,
-                    });
+                    handleBudgetDataChange("anneebudget", index, e.target.value);
                   }}
                   required
                 />
+                <div className="grid md:grid-cols-2 gap-4 mt-2">
+                  <CustomInput
+                    label="Code"
+                    type="text"
+                    rounded="medium"
+                    placeholder="Code budget"
+                    value={budget.code || ""}
+                    onChange={(e) => {
+                      handleBudgetDataChange("code", index, e.target.value);
+                    }}
+                    required
+                  />
+                  <CustomSelect 
+                    label="Direction sponsor"
+                    placeholder="Choisir une direction"
+                    data={departments}
+                    value={budget.direction}
+                    onValueChange={(e) => {
+                      handleBudgetDataChange("direction", index, e);
+                    }}
+                    required
+                  />
+                </div>
+                <div className="grid md:grid-cols-2 gap-3 mt-2">
+                  <CustomInput 
+                    label="Montant du budget"
+                    type="number"
+                    step={0.01}
+                    min={0}
+                    rounded="medium"
+                    placeholder="0"
+                    value={budget.amount}
+                    required
+                    onChange={(e) => {
+                      handleBudgetDataChange(
+                        "amount", 
+                        index, 
+                        parseFloat(parseFloat(e.target.value).toFixed(2)));
+                    }}
+                  />
+                  <CustomSelect
+                    label="Devise"
+                    placeholder=" "
+                    data={["MGA", "EUR"]}
+                    value={budget.currency}
+                    onValueChange={(e) => {
+                      handleBudgetDataChange("currency", index, e);
+                    }}
+                    required
+                  />
+                </div>
               </div>
-              <div className="grid md:grid-cols-2 gap-3">
-                <CustomInput
-                  label="Montant du budget"
-                  type="number"
-                  step={0.01}
-                  min={0}
-                  rounded="medium"
-                  placeholder="0"
-                  value={projectData?.budgetAmount ?? ""}
-                  required
-                  onChange={(e) => {
-                    setProjectData({
-                      ...projectData,
-                      budgetAmount: parseFloat(
-                        parseFloat(e.target.value).toFixed(2)
-                      ),
-                    });
-                  }}
-                />
-                <CustomSelect
-                  label="Devise"
-                  placeholder=" "
-                  data={["MGA", "EUR"]}
-                  value={projectData.budgetCurrency}
-                  onValueChange={(e) => {
-                    setProjectData({
-                      ...projectData,
-                      budgetCurrency: e,
-                    });
-                  }}
-                />
-              </div>
-            </>
-          )}
+            ))}
+            <button
+              type="button"
+              onClick={handleAddBudgetToList}
+              className="py-2 w-full mt-2 text-center border border-dashed border-stroke rounded-md hover:bg-stroke dark:hover:bg-boxdark2"
+            >
+              + Ajouter un budget
+            </button>
+          </div>
         </div>
         <div>
           {/* ===== RESSOURCES START ===== */}
           <span className="font-semibold tracking-wide">
             RESSOURCES
           </span>
-          <div className={`   overflow-y-auto ${
-              haveBudget ? "xl:max-h-75 md:max-h-60" : "xl:max-h-115 md:max-h-72"
-            }`}>
+          <div className="overflow-y-auto">
             {ressourceList?.map((ressource, index) => {
               return (
                 <div key={ressource.id}>

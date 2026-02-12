@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo } from "react";
-import { useParams } from "react-router-dom";
-import { Modal, ModalBody, ModalFooter } from "../Modal";
+import { useNavigate, useParams } from "react-router-dom";
 import { IActivityAdd } from "../../../types/Project";
 import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
@@ -15,13 +14,14 @@ import {
 } from "../../../services/Project";
 import { IMyHabilitation } from "../../../types/Habilitation";
 import { getAllUsers } from "../../../services/User";
-import { getInitials } from "../../../services/Function/UserFunctionService";
+import { getInitials, getThreeInitials } from "../../../services/Function/UserFunctionService";
 import { IUserProject } from "../../../types/Project";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import DOMPurify from 'dompurify';
-import dayjs from "dayjs";
-import { v4 as uuid4 } from "uuid";
+import { fetchComments, postComment } from "../../../services/Project/Comment";
+import { decodeToken } from "../../../services/Function/TokenService";
+
 
 const notyf = new Notyf({ position: { x: "center", y: "top" } });
 
@@ -158,14 +158,480 @@ const QuillEditor = ({
   );
 };
 
+// ===============================
+// 💬 SECTION COMMENTAIRE AVEC MENTIONS @ (liste positionnée sous chaque input)
+// ===============================
+
+type CommentItem = {
+  id: string;
+  content: string;
+  createdAt: string;
+  parentCommentId?: string | null;
+  user?: { name?: string; email?: string };
+  replies?: CommentItem[];
+};
+
+const CommentSection = ({
+  activityData,
+  projectUsers,
+}: {
+  activityData: IActivityAdd;
+  projectUsers: any[];
+}) => {
+  // state
+  const [comments, setComments] = useState<CommentItem[]>([]);
+  const [draftMain, setDraftMain] = useState("");
+  const [draftReplies, setDraftReplies] = useState<Record<string, string>>({});
+  const [replyOpenFor, setReplyOpenFor] = useState<string | null>(null);
+
+  // mentions
+  const [usersList, setUsersList] = useState<any[]>([]);
+  const [filteredUsers, setFilteredUsers] = useState<any[]>([]);
+  const [showUserList, setShowUserList] = useState(false);
+  const [mentionContext, setMentionContext] = useState<{ where: "main" | "reply"; commentId?: string }>({ where: "main" });
+
+  const [isLoadingComments, setIsLoadingComments] = useState(false);
+  const [, setIsLoadingUsers] = useState(false);
+  const [allUsers, setAllUsers] = useState<any[]>([]);
+
+  const mainInputRef = useRef<HTMLInputElement>(null);
+
+  // current user
+  const decodedToken = decodeToken("pr") || decodeToken("ad");
+  const currentUser = {
+    id: decodedToken?.jti || localStorage.getItem("userid") || "me",
+    name: decodedToken?.name || "Moi",
+    email: decodedToken?.sub || "",
+  };
+
+  // utils
+  const normalizeToUTC = (d: string) => (d?.endsWith("Z") ? d : `${d}Z`);
+  const formatDateTime = (dateStr?: string) => {
+    if (!dateStr) return "";
+    const date = new Date(normalizeToUTC(dateStr));
+    return date.toLocaleString("fr-FR", {
+      timeZone: "Indian/Antananarivo",
+      dateStyle: "short",
+      timeStyle: "short",
+    });
+  };
+  const mapTypeToApi = (type?: string) => {
+    switch (type) {
+      case "Projet":
+        return "task";
+      case "InterContract":
+        return "intercontract";
+      case "Transverse":
+        return "transverse";
+      default:
+        return "task";
+    }
+  };
+
+  // build tree from flat list
+  const buildCommentTree = (flat: CommentItem[]): CommentItem[] => {
+    const byId: Record<string, CommentItem> = {};
+    const roots: CommentItem[] = [];
+    flat.forEach((c) => (byId[c.id] = { ...c, replies: [] }));
+    flat.forEach((c) => {
+      if (c.parentCommentId && byId[c.parentCommentId]) byId[c.parentCommentId].replies!.push(byId[c.id]);
+      else roots.push(byId[c.id]);
+    });
+    // tri: parent récents -> anciens, et enfants récents -> anciens
+    const sortDesc = (arr: CommentItem[]) => {
+      arr.sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
+      arr.forEach((n) => n.replies && sortDesc(n.replies));
+    };
+    sortDesc(roots);
+    return roots;
+  };
+
+  // load comments
+  const loadComments = async () => {
+    if (!activityData?.id || !activityData?.type) return;
+    setIsLoadingComments(true);
+    try {
+      const apiType = mapTypeToApi(activityData.type);
+      const data: any[] = await fetchComments(activityData.id!, apiType);
+      setComments(buildCommentTree(Array.isArray(data) ? (data as CommentItem[]) : []));
+    } catch {
+      notyf.error("Erreur lors du chargement des commentaires");
+    } finally {
+      setIsLoadingComments(false);
+    }
+  };
+
+  useEffect(() => {
+    loadComments();
+    setReplyOpenFor(null);
+    setDraftReplies({});
+    (async () => {
+      try {
+        const us = await getAllUsers();
+        setAllUsers(us || []);
+      } catch {
+        console.warn("⚠️ Impossible de charger tous les utilisateurs");
+      }
+    })();
+  }, [activityData?.id]);
+
+  // mentions helpers
+  const ensureUsersLoaded = async () => {
+    if (usersList.length > 0) return;
+    setIsLoadingUsers(true);
+    try {
+      const us = await getAllUsers();
+      setUsersList(us || []);
+    } catch {
+      notyf.error("Erreur lors du chargement des utilisateurs");
+    } finally {
+      setIsLoadingUsers(false);
+    }
+  };
+  const computeMentionQuery = (text: string) => {
+    const m = text.match(/@([^@\s]*)$/);
+    return m ? m[1] ?? "" : null;
+  };
+  const filterUsersByPrefix = (prefix: string) => {
+    const p = prefix.trim().toLowerCase();
+    const base = usersList.length ? usersList : projectUsers;
+    if (!p) return base.slice();
+    return base.filter((u: any) => (u.name || "").toLowerCase().startsWith(p));
+  };
+
+  // mentions handlers
+  const onChangeMain = async (value: string) => {
+    setDraftMain(value);
+    const q = computeMentionQuery(value);
+    if (q !== null) {
+      await ensureUsersLoaded();
+      setFilteredUsers(filterUsersByPrefix(q.toLowerCase()));
+      setMentionContext({ where: "main" });
+      setShowUserList(true);
+    } else setShowUserList(false);
+  };
+  const onChangeReply = async (commentId: string, value: string) => {
+    setDraftReplies((s) => ({ ...s, [commentId]: value }));
+    const q = computeMentionQuery(value);
+    if (q !== null) {
+      await ensureUsersLoaded();
+      setFilteredUsers(filterUsersByPrefix(q.toLowerCase()));
+      setMentionContext({ where: "reply", commentId });
+      setShowUserList(true);
+    } else setShowUserList(false);
+  };
+  const onPickUser = (user: any) => {
+    if (mentionContext.where === "main") {
+      setDraftMain((prev) => prev.replace(/@[^@\s]*$/, `@${user.name} `));
+    } else if (mentionContext.where === "reply" && mentionContext.commentId) {
+      const prev = draftReplies[mentionContext.commentId] || "";
+      setDraftReplies((s) => ({ ...s, [mentionContext.commentId!]: prev.replace(/@[^@\s]*$/, `@${user.name} `) }));
+    }
+    setShowUserList(false);
+  };
+
+  // close mention popover if clicking outside
+  useEffect(() => {
+    const onDocClick = (e: MouseEvent) => {
+      const el = e.target as HTMLElement;
+      if (!el.closest(".mention-list") && !el.closest(".mention-input")) setShowUserList(false);
+    };
+    document.addEventListener("click", onDocClick);
+    return () => document.removeEventListener("click", onDocClick);
+  }, []);
+
+
+  // submit new parent
+  const submitMain = async () => {
+    const content = draftMain.trim();
+    if (!content) return notyf.error("Le commentaire est vide.");
+    try {
+      const t = mapTypeToApi(activityData.type);
+      await postComment({
+        userId: currentUser.id,
+        content,
+        parentCommentId: null,
+        taskId: t === "task" ? activityData.id : undefined,
+        intercontractId: t === "intercontract" ? activityData.id : undefined,
+        transverseId: t === "transverse" ? activityData.id : undefined,
+      });
+      setDraftMain("");
+      await loadComments();
+      notyf.success("Commentaire ajouté !");
+    } catch {
+      notyf.error("Erreur lors de l’ajout du commentaire");
+    }
+  };
+
+  // submit reply (optimistic insert under parent)
+  const submitReply = async (commentId: string) => {
+    const content = (draftReplies[commentId] || "").trim();
+    if (!content) return notyf.error("La réponse est vide.");
+
+    try {
+      // 1) requête API
+      const t = mapTypeToApi(activityData.type);
+      const created = await postComment({
+        userId: currentUser.id,
+        content,
+        parentCommentId: commentId,
+        taskId: t === "task" ? activityData.id : undefined,
+        intercontractId: t === "intercontract" ? activityData.id : undefined,
+        transverseId: t === "transverse" ? activityData.id : undefined,
+      });
+
+      // 2) construit un objet minimal pour insérer tout de suite
+      const newReply: CommentItem = {
+        id: created?.id || Math.random().toString(36).slice(2),
+        content,
+        createdAt: created?.createdAt || new Date().toISOString(),
+        parentCommentId: commentId,
+        user: { name: created?.user?.name || currentUser.name, email: created?.user?.email || currentUser.email },
+        replies: [],
+      };
+
+      // 3) insertion **immédiate sous le parent** (sans recréer un nouveau bloc)
+      setComments((prev) => {
+        const clone = JSON.parse(JSON.stringify(prev)) as CommentItem[];
+        const attach = (nodes: CommentItem[]): boolean => {
+          for (const n of nodes) {
+            if (n.id === commentId) {
+              n.replies = n.replies || [];
+              n.replies.push(newReply);
+              return true;
+            }
+            if (n.replies && n.replies.length && attach(n.replies)) return true;
+          }
+          return false;
+        };
+        attach(clone);
+        return clone;
+      });
+
+      // 4) reset UI
+      setDraftReplies((s) => ({ ...s, [commentId]: "" }));
+      setReplyOpenFor(null);
+      notyf.success("Réponse ajoutée !");
+
+      // 5) sync propre (optionnel)
+      // await loadComments();
+    } catch {
+      notyf.error("Erreur lors de l’ajout de la réponse");
+    }
+  };
+    // --- fonctions de résolution du nom ---
+  const resolveUserName = (comment: any): string => {
+    if (!comment) return "Utilisateur";
+
+    if (comment.user?.name) return comment.user.name;
+    if (comment.userName) return comment.userName;
+
+    const uid = (comment.userId || comment.userid || "").toLowerCase();
+
+    const inProject = projectUsers.find(
+      (u) => (u.userid || u.id || "").toLowerCase() === uid
+    );
+    if (inProject?.name) return inProject.name;
+
+    const inAll = allUsers.find(
+      (u) => (u.id || u.userid || "").toLowerCase() === uid
+    );
+    if (inAll?.name) return inAll.name;
+
+    return "Utilisateur";
+  };
+  
+const getInitialsForComment = (comment: any): string => {
+  const name = resolveUserName(comment);
+  if (!name) return "?";
+
+  // Supprimer les parenthèses et tout ce qu'elles contiennent (ex: "(DSI)")
+  const cleanName = name.replace(/\(.*?\)/g, "").trim();
+
+  // Séparer en mots
+  const parts = cleanName.split(" ").filter(Boolean);
+
+  // Si 3 mots ou plus → 3 initiales
+  if (parts.length >= 3) {
+    return (
+      parts[0][0].toUpperCase() +
+      parts[1][0].toUpperCase() +
+      parts[2][0].toUpperCase()
+    );
+  }
+
+  // Si 2 mots → 2 initiales
+  if (parts.length === 2) {
+    return parts[0][0].toUpperCase() + parts[1][0].toUpperCase();
+  }
+
+  // Si 1 mot → 1 initiale
+  return parts[0][0].toUpperCase();
+};
+
+
+  // render
+  return (
+    <div className="border-t mt-4 pt-4 bg-gray-50 dark:bg-boxdark rounded-lg p-3">
+      <h3 className="font-semibold text-sm mb-2">Commentaires</h3>
+
+      {isLoadingComments ? (
+        <p className="text-xs text-gray-400">Chargement...</p>
+      ) : comments.length === 0 ? (
+        <p className="text-xs text-gray-400"></p>
+      ) : (
+        comments.map((c) => (
+          <div key={c.id} className="mb-4">
+            {/* PARENT */}
+            <div className="flex items-start gap-3">
+              <div className="w-7 h-7 rounded-full bg-secondaryGreen text-white flex items-center justify-center text-[10px] font-semibold">
+                {getInitialsForComment(c)}
+              </div>
+              <div className="flex-1">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm font-semibold text-gray-800"> {resolveUserName(c)}</span>
+                  <span className="text-[11px] text-gray-500">{formatDateTime(c.createdAt)}</span>
+                </div>
+                <p
+                  className="text-sm text-gray-800 mt-1"
+                  dangerouslySetInnerHTML={{
+                    __html: (c.content || "").replace(/@(\w+)/g, '<span class="text-blue-600 font-semibold">@$1</span>'),
+                  }}
+                />
+              </div>
+            </div>
+
+            {/* REPLIES */}
+            {Array.isArray(c.replies) && c.replies.length > 0 && (
+              <div className="ml-7 mt-2 border-gray-300 pl-4 space-y-2">
+                {c.replies.map((r) => (
+                  <div key={r.id} className="flex items-start gap-3">
+                    <div className="w-7 h-7 rounded-full bg-blue-700 text-white flex items-center justify-center text-[10px] font-semibold">
+                      {getInitialsForComment(r)}
+                    </div>
+                    <div className="flex-1 bg-gray-100 dark:bg-boxdark2 rounded-lg shadow-sm">
+                      <div className="flex justify-between items-center mb-1">
+                        <span className="text-xs font-semibold text-gray-800 dark:text-gray-100">{resolveUserName(r)}</span>
+                        <span className="text-[10px] text-gray-400">{formatDateTime(r.createdAt)}</span>
+                      </div>
+                      <p
+                        className="text-xs text-gray-700 dark:text-gray-300 leading-snug"
+                        dangerouslySetInnerHTML={{
+                          __html: (r.content || "").replace(/@(\w+)/g, '<span class="text-blue-600 font-semibold">@$1</span>'),
+                        }}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* INPUT DE RÉPONSE — placé **juste sous le parent** */}
+            {replyOpenFor === c.id ? (
+              <div className="relative mt-2 ml-10 flex items-start justify-end gap-2">
+                <textarea
+  className="mention-input w-full min-h-[36px] max-h-[150px] border bg-transparent py-2.5 px-3 text-sm text-black dark:text-gray outline-none focus:border-green-700 dark:border dark:border-formStrokedark dark:focus:border-green-700 rounded-md border-stroke resize-none overflow-y-auto"
+  placeholder="Votre réponse... (tapez @ pour mentionner)"
+  value={draftReplies[c.id] || ""}
+  onChange={(e) => {
+    e.target.style.height = "auto";
+    e.target.style.height = `${e.target.scrollHeight}px`;
+    onChangeReply(c.id, e.target.value);
+  }}
+/>
+
+
+                {/* Liste des @mentions collée à l'input courant */}
+                {showUserList && mentionContext.where === "reply" && mentionContext.commentId === c.id && filteredUsers.length > 0 && (
+                  <div className="mention-list absolute left-0 right-0 top-[100%] mt-1 w-full max-h-56 overflow-y-auto bg-white dark:bg-boxdark border dark:border-gray-700 rounded-md shadow-lg z-50">
+                    {filteredUsers.map((u) => (
+                      <div
+                        key={u.id}
+                        className="flex items-center p-2 hover:bg-gray-100 dark:hover:bg-boxdark2 cursor-pointer"
+                        onClick={() => onPickUser(u)}
+                      >
+                        <div className="w-7 h-7 rounded-full bg-secondaryGreen flex items-center justify-center text-white mr-2 text-xs">
+                          {getThreeInitials(u.name || "")}
+                        </div>
+                        <span className="text-sm">{u.name}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                <button onClick={() => setReplyOpenFor(null)} className="border text-xs px-3 py-2 rounded-md bg-gray-200 dark:bg-boxdark2 hover:bg-gray-300 self-start">
+                  Annuler
+                </button>
+                <button
+                  onClick={() => submitReply(c.id)}
+                  className="border text-xs px-3 py-2 rounded-md text-white font-semibold cursor-pointer bg-green-700 hover:opacity-85 self-start"
+                >
+                  Envoyer
+                </button>
+              </div>
+            ) : (
+              <button
+                   onClick={() => {
+                  setReplyOpenFor(c.id);
+                  // ✅ Préremplit avec le nom du commentateur parent
+                  setDraftReplies((s) => ({
+                    ...s,
+                    [c.id]: `@${resolveUserName(c)} `,
+                  }));
+                }}
+                  className="text-xs text-green-600 hover:underline mt-2 ml-10"
+                >
+                  Répondre
+                </button>
+            )}
+          </div>
+        ))
+      )}
+
+      {/* NOUVEAU COMMENTAIRE */}
+      <div className="relative flex items-start justify-end gap-2 mt-2">
+   <textarea
+  ref={mainInputRef as any}
+  placeholder="Ajouter un commentaire... (Utilisez @ pour mentionner un membre)"
+  className="mention-input w-full min-h-[40px] max-h-[200px] border bg-transparent py-3 px-3 text-sm text-black dark:text-gray outline-none focus:border-green-700 dark:border dark:border-formStrokedark dark:focus:border-green-700 rounded-md border-stroke resize-none overflow-y-auto"
+  value={draftMain}
+  onChange={(e) => {
+    e.target.style.height = "auto";
+    e.target.style.height = `${e.target.scrollHeight}px`;
+    onChangeMain(e.target.value);
+  }}
+/>
+
+
+        {showUserList && mentionContext.where === "main" && filteredUsers.length > 0 && (
+          <div className="mention-list absolute left-0 right-0 top-[100%] mt-1 w-full max-h-56 overflow-y-auto bg-white dark:bg-boxdark border dark:border-gray-700 rounded-md shadow-lg z-50">
+            {filteredUsers.map((u) => (
+              <div key={u.id} className="flex items-center p-2 hover:bg-gray-100 dark:hover:bg-boxdark2 cursor-pointer" onClick={() => onPickUser(u)}>
+                <div className="w-7 h-7 rounded-full bg-secondaryGreen flex items-center justify-center text-white mr-2 text-xs">
+                  {getThreeInitials(u.name || "")}
+                </div>
+                <span className="text-sm">{u.name}</span>
+              </div>
+            ))}
+          </div>
+        )}
+
+        <button onClick={submitMain} className="border flex justify-center items-center dark:border-boxdark text-xs px-3 py-2 rounded-md text-white font-semibold cursor-pointer bg-green-700 hover:opacity-85">
+          Publier
+        </button>
+      </div>
+    </div>
+  );
+};
+
+
 const UpdateActivity = ({
-  modalUpdateOpen,
+  
   activity,
   setModalUpdateOpen,
-  setIsRefreshNeeded,
-  myHabilitation,
+  setIsRefreshNeeded
 }: {
-  modalUpdateOpen: boolean;
+  
   activity: any;
   myHabilitation?: IMyHabilitation;
   setModalUpdateOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -217,7 +683,7 @@ const UpdateActivity = ({
     projectId: "",
     phaseId: "",
   });
-
+  const navigate = useNavigate();
   const userPopUp = useRef<any>(null);
 
   // Fetch all users
@@ -387,40 +853,53 @@ const UpdateActivity = ({
   const handleUpdateActivity = async () => {
     setIsLoading(true);
     try {
-      const cleanDate = (date: string | null | undefined): string | undefined => {
-        if (!date) return undefined;
-        return date.includes('T') ? date.split('T')[0] : date;
-      };
+      // ✅ Version corrigée : garantit un format ISO complet compatible .NET
+const cleanDate = (date: string | null | undefined): string | undefined => {
+  if (!date) return undefined;
+  const parsed = new Date(date);
+  if (isNaN(parsed.getTime())) return undefined;
+  return parsed.toISOString(); // Exemple : "2025-10-21T00:00:00.000Z"
+};
+
+
       
       const processedDescription = processDescription(activityData.description || '');
+      const decoded = decodeToken("pr") || decodeToken("ad");
+const userId = decoded?.jti || localStorage.getItem("userid");
 
       if (activityData?.type === "Transverse") {
-        const dataToSend = {
-          title: activityData.title,
-          startDate: activityData.startDate,
-          endDate: cleanDate(activityData.dueDate ?? activityData.endDate ?? undefined),
-          dailyEffort: activityData.dailyEffort,
-          type: activityData.transverseType,
-          description: processedDescription,
-          status: activityData.status,
-          fichier: activityData?.fichier,
-        };
+       const dataToSend = {
+  title: activityData.title,
+  startDate: cleanDate(activityData.startDate),
+  endDate: cleanDate(activityData.dueDate ?? activityData.endDate ?? undefined),
+  dailyEffort: activityData.dailyEffort,
+  type: activityData.transverseType,
+  description: processedDescription,
+  status: activityData.status,
+  fichier: activityData?.fichier,
+  userid: userId,
+};
+
         if (activityData.id) {
+          console.log("📤 Payload envoyé au backend (Transverse):", dataToSend);
           await updateTransverse(activityData.id, dataToSend);
         }
       } else if (activityData?.type === "InterContract") {
-        const dataToSend = {
-          title: activityData.title,
-          startDate: activityData.startDate,
-          endDate: cleanDate(activityData.dueDate ?? activityData.endDate ?? undefined),
-          dailyEffort: activityData.dailyEffort,
-          type: activityData.intercontractType,
-          description: processedDescription,
-          status: activityData.status,
-          fichier: activityData?.fichier,
-        };
+       const dataToSend = {
+        title: activityData.title,
+        startDate: cleanDate(activityData.startDate),
+        endDate: cleanDate(activityData.dueDate ?? activityData.endDate ?? undefined),
+        dailyEffort: activityData.dailyEffort,
+        type: activityData.intercontractType,
+        description: processedDescription,
+        status: activityData.status,
+        fichier: activityData?.fichier,
+        userid: userId,
+      };
+
 
         if (activityData.id) {
+          console.log("📤 Payload envoyé au backend (Intercontrat):", dataToSend);
           await updateIntercontract(activityData.id, dataToSend);
         }
       } else {
@@ -447,7 +926,7 @@ const UpdateActivity = ({
       }
       setIsRefreshNeeded(true);
       notyf.success("Modification de l'activité réussi");
-      handleCloseModal();
+      navigate(`/gmp/activity/${userid}`);
     } catch (error) {
       notyf.error("Une erreur s'est produite, veuillez réessayer plus tard");
       console.error(`Error at update activity : ${error}`);
@@ -492,15 +971,14 @@ const UpdateActivity = ({
   };
 
   return (
-    <Modal
-      modalOpen={modalUpdateOpen}
-      setModalOpen={setModalUpdateOpen}
-      header={`${activity?.content?.title}`}
-      heightSize="80vh"
-      widthSize="medium"
-    >
-      <ModalBody>
+    <>
+    
         <div className="space-y-4">
+          <div className="flex justify-center">
+  <span className="font-bold text-zinc-700 dark:text-zinc-200 text-xl md:text-2xl">
+    Modifier la tâche
+  </span>
+</div>
           <div className="space-y-2">
             <div className="relative" ref={userPopUp}>
               <CustomInput
@@ -774,47 +1252,51 @@ const UpdateActivity = ({
             }}
             placeholder="https://example.com"
           />
+
+          
         </div>
-      </ModalBody>
-      <ModalFooter>
-        <p
-          className={`text-xs text-red-500 justify-center items-center ${
-            (!myHabilitation?.transverse?.update &&
-              activityData?.type === "Transverse") ||
-            (!myHabilitation?.intercontract?.update &&
-              activityData?.type === "InterContract")
-              ? "flex"
-              : "hidden"
-          }`}
-        >
-          * Vous n'avez pas accès à la modification
-        </p>
-        <button
-          className="border text-xs p-2 rounded-md font-semibold bg-transparent border-transparent hover:bg-zinc-100 dark:hover:bg-boxdark2"
-          type="button"
-          onClick={handleCloseModal}
-          disabled={isLoading}
-        >
-          Annuler
-        </button>
-        <button
-          type="button"
-          disabled={!isFormValid() || isLoading}
-          onClick={handleUpdateActivity}
-          className={`border flex justify-center items-center dark:border-boxdark text-xs p-2 rounded-md text-white font-semibold ${
-            !isFormValid() || isLoading
-              ? "cursor-not-allowed bg-gray-500"
-              : "cursor-pointer bg-green-700 hover:opacity-85"
-          }`}
-        >
-          {isLoading ? (
-            <BeatLoader size={5} className="mr-2" color={"#fff"} />
-          ) : null}
-          Valider
-        </button>
-      </ModalFooter>
-    </Modal>
+      <div className="flex justify-end p-2">
+  <button
+    className="border text-xs p-3 rounded-md font-semibold bg-transparent border-transparent hover:bg-zinc-100 dark:hover:bg-boxdark2"
+    type="button"
+    onClick={handleCloseModal}
+    disabled={isLoading}
+  >
+    Annuler
+  </button>
+
+  <button
+    type="button"
+    disabled={!isFormValid() || isLoading}
+    onClick={handleUpdateActivity}
+    className={`border flex justify-center items-center dark:border-boxdark text-xs p-2 rounded-md text-white font-semibold ${
+      !isFormValid() || isLoading
+        ? "cursor-not-allowed bg-green-500"
+        : "cursor-pointer bg-green-700 hover:opacity-85"
+    }`}
+  >
+    {isLoading ? (
+      <BeatLoader size={5} className="mr-2" color={"#fff"} />
+    ) : null}
+    Valider
+  </button>
+</div>
+
+     
+     <CommentSection
+        activityData={activityData}
+        projectUsers={assignedPerson
+          .filter((u) => !!u.userid)
+          .map((u) => ({
+            id: u.userid as string,
+            name: (u.user?.name as string) || "",
+          }))}
+      />
+
+   
+    </>
   );
 };
+
 
 export default UpdateActivity;

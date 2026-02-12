@@ -188,6 +188,7 @@ const AddActivity = ({
     type: "",
     status: "Backlog",
     dailyEffort: 1,
+    optionalEffort:undefined,
     startDate: "",
     dueDate: "",
     endDate: "",
@@ -205,6 +206,7 @@ const AddActivity = ({
   const [projectTitle, setProjectTitle] = useState<Array<string>>([]);
   const [phaseTitle, setPhaseTitle] = useState<Array<string>>([]);
   const [projectData, setProjectData] = useState<any>();
+ 
 
   useEffect(() => {
     const token = localStorage.getItem("_au_pr");
@@ -282,13 +284,16 @@ const AddActivity = ({
     }
   };
 
-  const handleRemoveUser = (userId: string) => {
-    if (userId === decodedToken?.jti) {
-      notyf.error("Vous ne pouvez pas vous retirer de cette activité");
-      return;
-    }
-    setAssignedPerson(prev => prev.filter(user => user.userid !== userId));
-  };
+const handleRemoveUser = (userId: string) => {
+  if (userId === decodedToken?.jti) {
+    // Confirmation avant de se retirer
+   
+      setAssignedPerson(prev => prev.filter(user => user.userid !== userId));
+    
+    return;
+  }
+  setAssignedPerson(prev => prev.filter(user => user.userid !== userId));
+};
 
   const fetchProjectData = async () => {
     try {
@@ -351,6 +356,7 @@ const AddActivity = ({
       type: "",
       status: "Backlog",
       dailyEffort: 1,
+      optionalEffort:undefined,
       startDate: "",
       dueDate: "",
       endDate: "",
@@ -379,69 +385,69 @@ const AddActivity = ({
   };
 
    //
-  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-  if (!e.target.files || e.target.files.length === 0) return;
+//   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+//   if (!e.target.files || e.target.files.length === 0) return;
 
-  const file = e.target.files[0];
+//   const file = e.target.files[0];
   
-  // Vérification de la taille
-  if (file.size > 5 * 1024 * 1024) {
-    notyf.error("Le fichier ne doit pas dépasser 5MB");
-    return;
-  }
+//   // Vérification de la taille
+//   if (file.size > 5 * 1024 * 1024) {
+//     notyf.error("Le fichier ne doit pas dépasser 5MB");
+//     return;
+//   }
 
-  // Vérification des types de fichiers
-  const allowedTypes = [
-    'application/pdf',
-    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-    'image/jpeg',
-    'image/png'
-  ];
+//   // Vérification des types de fichiers
+//   const allowedTypes = [
+//     'application/pdf',
+//     'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+//     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+//     'image/jpeg',
+//     'image/png'
+//   ];
   
-  if (!allowedTypes.includes(file.type)) {
-    notyf.error("Type de fichier non supporté");
-    return;
-  }
+//   if (!allowedTypes.includes(file.type)) {
+//     notyf.error("Type de fichier non supporté");
+//     return;
+//   }
 
-  try {
-    notyf.success("Upload du fichier en cours...");
+//   try {
+//     notyf.success("Upload du fichier en cours...");
     
-    const formData = new FormData();
-    formData.append('file', file);
+//     const formData = new FormData();
+//     formData.append('file', file);
     
-    const endPoint = import.meta.env.VITE_API_ENDPOINT;
-    const response = await fetch(`${endPoint}/api/Task/upload`, {
-      method: 'POST',
-      body: formData,
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('access_token')}`
-      }
-    });
+//     const endPoint = import.meta.env.VITE_API_ENDPOINT;
+//     const response = await fetch(`${endPoint}/api/Task/upload`, {
+//       method: 'POST',
+//       body: formData,
+//       headers: {
+//         'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+//       }
+//     });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || "Erreur lors de l'upload");
-    }
+//     if (!response.ok) {
+//       const errorData = await response.json();
+//       throw new Error(errorData.message || "Erreur lors de l'upload");
+//     }
 
-    const data = await response.json();
+//     const data = await response.json();
     
-    setActivityData({
-      ...activityData,
-      fileName: file.name,
-      fichier: data.url // Assurez-vous que l'API retourne bien une URL
-    });
+//     setActivityData({
+//       ...activityData,
+//       fileName: file.name,
+//       fichier: data.url // Assurez-vous que l'API retourne bien une URL
+//     });
     
-    notyf.success("Fichier uploadé avec succès");
-  } catch (error: unknown) {
-    console.error("Erreur lors de l'upload:", error);
-    let errorMessage = "Échec de l'upload";
-    if (error instanceof Error) {
-      errorMessage += `: ${error.message}`;
-    }
-    notyf.error(errorMessage);
-  }
-};
+//     notyf.success("Fichier uploadé avec succès");
+//   } catch (error: unknown) {
+//     console.error("Erreur lors de l'upload:", error);
+//     let errorMessage = "Échec de l'upload";
+//     if (error instanceof Error) {
+//       errorMessage += `: ${error.message}`;
+//     }
+//     notyf.error(errorMessage);
+//   }
+// };
   //
 
   useEffect(() => {
@@ -464,14 +470,14 @@ const AddActivity = ({
   };
 
  
-  const handleRemoveFile = () => {
-    setActivityData({
-      ...activityData,
-      fileName: "",
-      fileContent: undefined,
-      fichier: ""
-    });
-  };
+  // const handleRemoveFile = () => {
+  //   setActivityData({
+  //     ...activityData,
+  //     fileName: "",
+  //     fileContent: undefined,
+  //     fichier: ""
+  //   });
+  // };
 
   const validateForm = () => {
     if (!activityData.title) {
@@ -524,6 +530,11 @@ const AddActivity = ({
       }
     }
 
+    if (assignedPerson.length === 0) {
+    notyf.error("Au moins une personne doit être assignée à l'activité");
+    return false;
+  }
+
     return true;
   };
 
@@ -532,6 +543,10 @@ const AddActivity = ({
 
     setIsLoading(true);
     try {
+      //Utilise le temps réel s'il existe, sinon le temps normal
+       // Conversion sécurisée en heures (avec valeur par défaut)
+    // const effortInDays = activityData.optionalEffort ?? activityData.dailyEffort;
+    // const finalEffortInHours = Math.max(0.5, effortInDays as number) * 8; // Garantit au moins 0.5 jour (4h)
       // Upload du fichier s'il existe
       let fileUrl = activityData.fichier;
       if (activityData.fileContent) {
@@ -591,6 +606,7 @@ const AddActivity = ({
           startDate: new Date(activityData.startDate|| "").toISOString(),
           dueDate: new Date(activityData.dueDate|| "").toISOString(),
           fichier: fileUrl || "",
+          //dailyEffort: finalEffortInHours,
           dailyEffort: activityData.dailyEffort || 1,
           status: activityData.status || "Backlog",
           listUsers: formatUser,
@@ -719,6 +735,7 @@ const AddActivity = ({
                         <p className="text-sm font-medium">{user.name}</p>
                         <p className="text-xs text-gray-500">{user.email}</p>
                       </div>
+                      
                     </div>
                   ))}
                 </div>
@@ -735,14 +752,20 @@ const AddActivity = ({
                     {getInitials(user.user?.name)}
                   </div>
                   <span className="text-sm mr-2">{user.user?.name}</span>
-                  {user.userid !== decodedToken?.jti && (
+                  {/* {user.userid !== decodedToken?.jti && (
                     <button 
                       onClick={() => handleRemoveUser(user.userid!)}
                       className="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
                     >
                       ×
                     </button>
-                  )}
+                  )} */}
+                  <button 
+                    onClick={() => handleRemoveUser(user.userid!)}
+                    className="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
+                  >
+                    ×
+                  </button>
                 </div>
               ))}
             </div>
@@ -910,9 +933,50 @@ const AddActivity = ({
               }}
             />
           </div>
-          
+          {/* <div className="flex *:w-full flex-wrap md:flex-nowrap gap-2">
+              <CustomInput
+                type="number"
+                min={0.5}
+                max={30}
+                step={0.5}
+                label="Temps à consacré (jours)"
+                rounded="medium"
+                className="text-sm"
+                value={activityData.dailyEffort}
+                onChange={(e) => {
+                  let value = parseFloat(e.target.value);
+                  if (isNaN(value)) value = 0.5;
+                  if (value > 30) value = 30;
+                  if (value < 0.5) value = 0.5;
+                  setActivityData({
+                    ...activityData,
+                    dailyEffort: value,
+                  });
+                }}
+                placeholder="0.5"
+              />
+              <CustomInput
+                type="number"
+                min={0.5}
+                max={30}
+                step={0.5}
+                label="Temps réel (jours)"
+                rounded="medium"
+                className="text-sm"
+                value={activityData.optionalEffort || ''}
+                onChange={(e) => {
+                  const value = e.target.value ? parseFloat(e.target.value) : undefined;
+                  setActivityData({
+                    ...activityData,
+                    optionalEffort: value,
+                  });
+                }}
+                placeholder="Optionnel"
+              />
+          </div> */}
           <CustomInput
-            type="number"
+            type="text"
+            inputMode="numeric"
             min={1}
             max={8}
             label="Temps à consacré (heures)"
@@ -1000,6 +1064,8 @@ const AddActivity = ({
               placeholder="https://example.com"
             />
           {/* )} */}
+
+         
         </div>
       </ModalBody>
       

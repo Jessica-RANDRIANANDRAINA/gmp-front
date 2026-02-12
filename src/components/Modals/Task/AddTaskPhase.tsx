@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef , useMemo} from "react";
 import { useParams } from "react-router-dom";
 import { Modal, ModalBody, ModalFooter } from "../Modal";
 import { CustomInput, CustomSelect } from "../../UIElements";
@@ -10,11 +10,145 @@ import { createTaskPhase } from "../../../services/Project";
 import { decodeToken } from "../../../services/Function/TokenService";
 import { v4 as uuid4 } from "uuid";
 import { BeatLoader } from "react-spinners";
+import DOMPurify from 'dompurify';
+import ReactQuill from 'react-quill';
 
 import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
 
 const notyf = new Notyf({ position: { x: "center", y: "top" } });
+
+const formats = [
+  "header",
+  "bold",
+  "italic",
+  "underline",
+  "strike",
+  "blockquote",
+  "list",
+  "bullet",
+  "indent",
+  "link",
+  "image",
+];
+
+const QuillEditor = ({
+  value,
+  onChange,
+  placeholder = "",
+}: {
+  value: string;
+  onChange: (value: string) => void;
+  placeholder?: string;
+}) => {
+  const quillRef = useRef<ReactQuill>(null);
+
+  const imageHandler = () => {
+    const input = document.createElement('input');
+    input.setAttribute('type', 'file');
+    input.setAttribute('accept', 'image/*');
+    input.click();
+
+    input.onchange = async () => {
+      if (!input.files) return;
+      const file = input.files[0];
+
+      if (file.size > 2 * 1024 * 1024) {
+        notyf.error("L'image ne doit pas dépasser 2MB");
+        return;
+      }
+
+      try {
+        notyf.success("Upload de l'image en cours...");
+        
+        const formData = new FormData();
+        formData.append('file', file);
+        const endPoint = import.meta.env.VITE_API_ENDPOINT;
+
+        const response = await fetch(`${endPoint}/api/Task/upload`, {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+          }
+        });
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(errorText || "Échec de l'upload");
+        }
+
+        const data = await response.json();
+        
+        if (!data.url) {
+          throw new Error("URL de l'image manquante dans la réponse");
+        }
+
+        const quill = quillRef.current?.getEditor();
+        if (!quill) {
+          throw new Error("Éditeur Quill non disponible");
+        }
+
+        const range = quill.getSelection(true);
+        const imageUrl = data.url.startsWith('http') ? data.url : `${endPoint}${data.url}`;
+
+        const sanitizedHtml = DOMPurify.sanitize(
+          `<img src="${imageUrl}" style="max-width: 500px; height: 500px;" alt="uploaded image">`
+        );
+        quill.clipboard.dangerouslyPasteHTML(range?.index || 0, sanitizedHtml);
+        
+        quill.setSelection((range?.index || 0) + 1, 0);
+        
+        notyf.success("Image ajoutée avec succès");
+      } catch (error: unknown) {
+        console.error("Erreur lors de l'upload de l'image:", error);
+        let errorMessage = "Échec de l'upload de l'image";
+        if (error instanceof Error) {
+          errorMessage += `: ${error.message}`;
+        }
+        notyf.error(errorMessage);
+      }
+    };
+  };
+
+  const modules = useMemo(() => ({
+    toolbar: {
+      container: [
+        [{ header: [1, 2, false] }],
+        ["bold", "italic", "underline", "strike", "blockquote"],
+        [
+          { list: "ordered" },
+          { list: "bullet" },
+          { indent: "-1" },
+          { indent: "+1" },
+        ],
+        ["link", "image"],
+        ["clean"],
+      ],
+      handlers: {
+        image: imageHandler
+      }
+    },
+    clipboard: {
+      matchVisual: false,
+    },
+  }), []);
+
+  return (
+    <div className="text-editor dark:text-white">
+      <ReactQuill
+        ref={quillRef}
+        theme="snow"
+        value={value}
+        onChange={onChange}
+        modules={modules}
+        formats={formats}
+        placeholder={placeholder}
+        className="dark:bg-boxdark dark:border-formStrokedark"
+      />
+    </div>
+  );
+};
 
 const AddTaskPhase = ({
   modalOpen,
@@ -292,7 +426,8 @@ const AddTaskPhase = ({
             />
           </div>
           <CustomInput
-            type="number"
+            type="text"
+            inputMode="numeric"
             label="Heure consacrée"
             min={1}
             max={8}
@@ -310,8 +445,22 @@ const AddTaskPhase = ({
             }}
           />
 
-          <div>
-            <CustomInput
+         <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              Description
+            </label>
+            <QuillEditor
+              value={taskData.description}
+              onChange={(value) => {
+                setTaskData({
+                  ...taskData,
+                  description: value,
+                });
+              }}
+              placeholder="Écrivez votre description ici..."
+            />
+          </div>
+            {/* <CustomInput
               type="textarea"
               label="Description"
               placeholder="Tapez une description ou ajoutez des notes ici"
@@ -324,7 +473,8 @@ const AddTaskPhase = ({
                   description: e.target.value,
                 });
               }}
-            />
+            /> */}
+             <div>
              <CustomInput
               type="text"
               label="Ajouter un lien"

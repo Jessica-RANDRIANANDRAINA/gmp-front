@@ -1,10 +1,44 @@
+// ✅ ProjectServices.tsx — version corrigée et stable
 import axios from "axios";
 import { IProjectDto } from "../../types/Project";
 
 const endPoint = import.meta.env.VITE_API_ENDPOINT;
 
-// ======GET========
-// get all projects
+// ======================================================
+// ⚙️ Helper universel : gère les réponses vides et erreurs 204
+// ======================================================
+const safeRequest = async (
+  method: "get" | "post" | "put" | "delete",
+  url: string,
+  data?: any,
+  config: any = {}
+) => {
+  try {
+    const res = await axios({
+      method,
+      url,
+      data,
+      validateStatus: () => true, // ✅ évite l’erreur Axios sur 204 / 200 sans JSON
+      ...config,
+    });
+
+    if (res.status >= 200 && res.status < 300) {
+      // Tolère les réponses vides ou texte
+      return typeof res.data === "object" ? res.data || {} : { message: res.data };
+    }
+
+    console.error(`❌ Erreur HTTP ${res.status} sur ${url}`);
+    throw new Error(`Erreur HTTP ${res.status}`);
+  } catch (err) {
+    console.error(`⚠️ Axios error sur ${url} :`, err);
+    throw err;
+  }
+};
+
+// ======================================================
+// 🔹 GETTERS
+// ======================================================
+
 export const getAllProject = async (
   pageNumber?: number,
   pageSize?: number,
@@ -16,41 +50,71 @@ export const getAllProject = async (
   startDate?: string,
   endDate?: string
 ) => {
-  try {
-    const params: any = {
-      pageNumber,
-      pageSize,
-    };
-    if (title) params.title = title;
-    if (member) {
-      member.forEach((user, index) => {
-        params[`Members[${index}]`] = user;
-      });
-    }
-    if (priority) params.priority = priority;
-    if (criticity) params.criticity = criticity;
-    if (completionPercentage)
-      params.completionPercentage = completionPercentage;
-    if (startDate) params.startDate = startDate;
-    if (endDate) params.endDate = endDate;
+  const params: any = { pageNumber, pageSize };
+  if (title) params.title = title;
+  if (member)
+    member.forEach((user, index) => (params[`Members[${index}]`] = user));
+  if (priority) params.priority = priority;
+  if (criticity) params.criticity = criticity;
+  if (completionPercentage) params.completionPercentage = completionPercentage;
+  if (startDate) params.startDate = startDate;
+  if (endDate) params.endDate = endDate;
 
-    const response = await axios.get(`${endPoint}/api/Project/all`, { params });
-    return response.data;
-  } catch (error) {
-    throw new Error(`Error at fetching project`);
-  }
+  return await safeRequest("get", `${endPoint}/api/Project/all`, undefined, { params });
 };
-// get project by user id
+
 export const getProjectByUserId = async (userid: string | undefined) => {
-  try {
-    const response = await axios.get(`${endPoint}/api/Project/user/${userid}`);
-    return response.data;
-  } catch (error) {
-    throw new Error(`Error at fetching project by user id service: ${error}`);
-  }
+  return await safeRequest("get", `${endPoint}/api/Project/user/${userid}`);
 };
 
-// get project by user id (project related to the user and all his subordinates)
+export const getAllArchivedProjects = async (
+  pageNumber?: number,
+  pageSize?: number,
+  title?: string,
+  members?: string[],
+  priority?: string,
+  criticity?: string,
+  completionPercentage?: string,
+  startDate?: string,
+  endDate?: string
+) => {
+  const params: any = { pageNumber, pageSize };
+  if (title) params.title = title;
+  if (members)
+    members.forEach((user, index) => (params[`Members[${index}]`] = user));
+  if (priority) params.priority = priority;
+  if (criticity) params.criticity = criticity;
+  if (completionPercentage) params.completionPercentage = completionPercentage;
+  if (startDate) params.startDate = startDate;
+  if (endDate) params.endDate = endDate;
+
+  return await safeRequest("get", `${endPoint}/api/Project/allarchived`, undefined, { params });
+};
+
+export const getAllCompletedProjects = async (
+  pageNumber?: number,
+  pageSize?: number,
+  title?: string,
+  members?: string[],
+  priority?: string,
+  criticity?: string,
+  completionPercentage?: string,
+  startDate?: string,
+  endDate?: string
+) => {
+  const params: any = { pageNumber, pageSize };
+  if (title) params.title = title;
+  if (members)
+    members.forEach((user, index) => (params[`Members[${index}]`] = user));
+  if (priority) params.priority = priority;
+  if (criticity) params.criticity = criticity;
+  if (completionPercentage) params.completionPercentage = completionPercentage;
+  if (startDate) params.startDate = startDate;
+  if (endDate) params.endDate = endDate;
+
+  return await safeRequest("get", `${endPoint}/api/Project/allcomplete`, undefined, { params });
+};
+
 export const getAllLevelProjectByUserId = async (
   userid: string | undefined,
   pageNumber?: number,
@@ -63,79 +127,38 @@ export const getAllLevelProjectByUserId = async (
   startDate?: string,
   endDate?: string
 ) => {
-  try {
-    const params: any = {
-      pageNumber,
-      pageSize,
-    };
-    if (title) params.title = title;
-    if (member) {
-      member.forEach((user, index) => {
-        params[`Members[${index}]`] = user;
-      });
-    }
-    if (priority) params.priority = priority;
-    if (criticity) params.criticity = criticity;
-    if (completionPercentage)
-      params.completionPercentage = completionPercentage;
-    if (startDate) params.startDate = startDate;
-    if (endDate) params.endDate = endDate;
-    const response = await axios.get(
-      `${endPoint}/api/Project/user/${userid}/all-level`,
-      { params }
-    );
-    return response.data;
-  } catch (error) {
-    throw new Error(
-      `Error at fetching all level project by user id service: ${error}`
-    );
-  }
+  const params: any = { pageNumber, pageSize };
+  if (title) params.title = title;
+  if (member)
+    member.forEach((user, index) => (params[`Members[${index}]`] = user));
+  if (priority) params.priority = priority;
+  if (criticity) params.criticity = criticity;
+  if (completionPercentage) params.completionPercentage = completionPercentage;
+  if (startDate) params.startDate = startDate;
+  if (endDate) params.endDate = endDate;
+
+  return await safeRequest(
+    "get",
+    `${endPoint}/api/Project/user/${userid}/all-level`,
+    undefined,
+    { params }
+  );
 };
 
-// get count for dashboard
 export const getCountProject = async (userid: string | undefined) => {
-  try {
-    const response = await axios.get(`${endPoint}/api/Project/count/${userid}`);
-    return response.data;
-  } catch (error) {
-    throw new Error(
-      `Error at fetching count project by user id service: ${error}`
-    );
-  }
+  return await safeRequest("get", `${endPoint}/api/Project/count/${userid}`);
 };
 
-//get project by project id
 export const getProjectById = async (projectid: string) => {
-  try {
-    const response = await axios.get(`${endPoint}/api/Project/${projectid}`);
-    return response.data;
-  } catch (error) {
-    throw new Error(`Error at fetching project by id service: ${error}`);
-  }
+  return await safeRequest("get", `${endPoint}/api/Project/${projectid}`);
 };
 
 export const getProjectByIDs = async (projectid: Array<string>) => {
-  try {
-    const response = await axios.post(
-      `${endPoint}/api/Project/by-ids`,
-      projectid
-    );
-
-    return response.data;
-  } catch (error) {
-    throw new Error(`Error at get project by ids services: ${error}`);
-  }
+  return await safeRequest("post", `${endPoint}/api/Project/by-ids`, projectid);
 };
 
 export const getPhaseById = async (phaseId: string) => {
-  try {
-    const response = await axios.get(
-      `${endPoint}/api/Project/phase/${phaseId}`
-    );
-    return response.data;
-  } catch (error) {
-    console.error(`Error at get phase by id :${error}`);
-  }
+  return await safeRequest("get", `${endPoint}/api/Project/phase/${phaseId}`);
 };
 
 export const getProjectStat = async (
@@ -146,123 +169,75 @@ export const getProjectStat = async (
   const params: any = {};
   if (startDate) params.startDate = startDate;
   if (endDate) params.endDate = endDate;
-  if (ids) {
-    ids.forEach((id, index) => {
-      params[`Ids[${index}]`] = id;
-    });
-  }
-  const response = await axios.get(`${endPoint}/api/Project/stat`, {
-    params,
-  });
-  return response.data;
+  if (ids) ids.forEach((id, index) => (params[`Ids[${index}]`] = id));
+  return await safeRequest("get", `${endPoint}/api/Project/stat`, undefined, { params });
+};
+export type ChefProjet = {
+  id: string;
+  name: string;
+  email: string;
 };
 
-// ===== POST =======
-// create a new project
+export const getAllChefsProjet = async (): Promise<ChefProjet[]> => {
+  const res = await axios.get(`${endPoint}/api/Project/chefs`);
+  return res.data;
+};
+// ======================================================
+// 🔹 POST / PUT / DELETE
+// ======================================================
+
+// ➕ Create
 export const createProject = async (projectData: IProjectDto) => {
-  try {
-    const response = await axios.post(
-      `${endPoint}/api/Project/create`,
-      projectData
-    );
-    return response;
-  } catch (error) {
-    throw new Error(`Error at create new project services: ${error}`);
-  }
+  return await safeRequest("post", `${endPoint}/api/Project/create`, projectData);
 };
 
-// ===== PUT ===== //
-// update a given project
-export const updateProject = async (
-  projectId: string,
-  projectData: IProjectDto
-) => {
-  try {
-    const response = await axios.put(
-      `${endPoint}/api/Project/update/${projectId}`,
-      projectData
-    );
-    return response.data;
-  } catch (error) {
-    throw new Error(`Error at update project services: ${error}`);
-  }
+// 🔄 Update
+export const updateProject = async (projectId: string, projectData: IProjectDto) => {
+  return await safeRequest("put", `${endPoint}/api/Project/update/${projectId}`, projectData);
 };
-// update advancement
+
 export const updateAdvancementProject = async (
   projectId: string,
   advancement: number,
   name: string | undefined
 ) => {
-  try {
-    const response = await axios.put(
-      `${endPoint}/api/Project/update-advancement/${projectId}`,
-      { advancement, changementInitiator: name }
-    );
-    return response.data;
-  } catch (error) {
-    throw new Error(`Error at update project advancement services: ${error}`);
-  }
+  return await safeRequest("put", `${endPoint}/api/Project/update-advancement/${projectId}`, {
+    advancement,
+    changementInitiator: name,
+  });
 };
 
-// toggle state of a given project
 export const updateProjectState = async (
   projectId: string,
   state: string,
   name: string | undefined
 ) => {
-  try {
-    const response = await axios.put(
-      `${endPoint}/api/Project/update/state/${projectId}`,
-      { state, initiator: name }
-    );
-    return response.data;
-  } catch (error) {
-    throw new Error(`Error at update project state services: ${error}`);
-  }
+  return await safeRequest("put", `${endPoint}/api/Project/update/state/${projectId}`, {
+    state,
+    initiator: name,
+  });
 };
 
-// archive project(s)
-export const archiveProject = async (ids: Array<string>) => {
-  try {
-    const response = await axios.put(`${endPoint}/api/Project/archives`, ids);
-    if (response.status === 200) {
-      return {
-        state: "success",
-        message: "Archive project success",
-      };
-    } else {
-      return {
-        state: "error",
-        message: "something went wrong",
-      };
-    }
-  } catch (error) {
-    console.error(`An error occured while archiving projects: ${error}`);
-
-    throw error;
-  }
+export const archiveProject = async (ids: Array<string>, initiator: string) => {
+  return await safeRequest("put", `${endPoint}/api/Project/archives`, { ids, initiator });
 };
 
 export const updateTeamProject = async (projectId: string, data: any) => {
-  try {
-    const response = await axios.put(
-      `${endPoint}/api/Project/update/team/${projectId}`,
-      data
-    );
-    return response.data;
-  } catch (error) {
-    throw new Error(`Error at update team project: ${error}`);
-  }
+  return await safeRequest("put", `${endPoint}/api/Project/update/team/${projectId}`, data);
 };
 
 export const updatePhaseSettings = async (phaseId: string, data: any) => {
-  try {
-    const response = await axios.put(
-      `${endPoint}/api/Project/phase/${phaseId}`,
-      data
-    );
-    return response.data;
-  } catch (error) {
-    throw new Error(`Error at update phase settings services: ${error}`);
-  }
+  return await safeRequest("put", `${endPoint}/api/Project/phase/${phaseId}`, data);
+};
+
+// ======================================================
+// ✅ Logging helpers (optionnels)
+// ======================================================
+
+export const logSuccess = (action: string, id?: string) => {
+  console.log(`✅ ${action} réussi${id ? ` pour ${id}` : ""}`);
+};
+
+export const logError = (action: string, err: any) => {
+  console.error(`❌ Erreur lors de ${action}:`, err);
 };

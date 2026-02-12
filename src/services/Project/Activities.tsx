@@ -270,3 +270,4 @@ export const initializeSpaceRanking = async () => {
     throw new Error(`Error at initialize space ranking activity: ${error}`);
   }
 };
+

@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import ProjectLayout from "../../layout/ProjectLayout";
-import { IActivityStat } from "../../types/Project";
+import { IActivityStat, IPhase } from "../../types/Project";
 import { decodeToken } from "../../services/Function/TokenService";
 import CardDropDown from "../../components/card/CardDropDown";
 import StackedColumn from "../../components/chart/StackedColumn";
@@ -31,10 +31,13 @@ type Project = {
   startDate: string;
   endDate?: string;
   title: string;
+  completionPercentage: number; // 👈 OBLIGATOIRE
+  phases?: IPhase[];
 };
 type StatsProjectData = {
   enCours: { count: number; projects: Project[] };
-  archiver: { count: number; projects: Project[] };
+  terminé: { count: number; projects: Project[] };
+  archived: { count: number; projects: Project[] };
   standBy: { count: number; projects: Project[] };
   initiés: { count: number; projects: Project[] };
   enRetard: { count: number; projects: Project[] };
@@ -176,7 +179,7 @@ const Home = () => {
       setDataPercentage(activitiesPercentages);
       setStatActivities(stats);
       setStatsProject(projectStat);
-
+      
       return true;
     } catch (error) {
       console.error(`Error fetching activity statistics:`, error);
@@ -490,8 +493,8 @@ const Home = () => {
           <ProjectStatsCard
             category={{
               title: "Archivés",
-              count: statsProject?.archiver?.count,
-              projects: statsProject?.archiver?.projects,
+              count: statsProject?.archived?.count,
+              projects: statsProject?.archived?.projects,
             }}
           />
           <ProjectStatsCard

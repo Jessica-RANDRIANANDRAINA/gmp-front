@@ -14,6 +14,25 @@ const notyf = new Notyf({
   duration: 3000
 });
 
+// Mapping des états
+const projectStates = {
+  "Not Started": "Pas commencé",
+  "In Progress": "En cours",
+  "Completed": "Terminé",
+  "Archived": "Archivé",
+  "Stand by": "Stand by"
+};
+
+// Fonction pour obtenir l'état en anglais à partir du français
+// const getEnglishState = (frenchState: string): string => {
+//   const entry = Object.entries(projectStates).find(([_, frValue]) => frValue === frenchState);
+//   return entry ? entry[0] : frenchState;
+// };
+
+// Fonction pour obtenir l'état en français à partir de l'anglais
+const getFrenchState = (englishState: string): string => {
+  return projectStates[englishState as keyof typeof projectStates] || englishState;
+};
 
 const ToogleStateProject = ({
   showModal,
@@ -46,16 +65,17 @@ const navigate = useNavigate();
     }
   }, []);
 
-  const getStateFromActionType = (actionType: string): string => {
+   const getStateFromActionType = (actionType: string): string => {
     const stateMap: Record<string, string> = {
-      "Débloquer": "Commencer/En cours",
-      "Reprendre": "Commencer/En cours",
-      "Restaurer": "Commencer/En cours",
-      "Commencer/En cours": "Commencer/En cours",
-      "Rouvrir": "Commencer/En cours",
-      "Terminer": "Terminer",
+      "Débloquer": "In Progress",
+      "Reprendre": "In Progress",
+      "Restaurer": "In Progress",
+      "Commencer/En cours": "In Progress",
+      "Rouvrir": "In Progress",
+      "Terminer": "Completed",
       "Stand by": "Stand by",
-      "Pas commencé": "Pas commencé",
+      "Pas commencé": "Not Started",
+      "Archiver": "Archived"
     };
     
     return stateMap[actionType] || actionType;
@@ -64,17 +84,18 @@ const navigate = useNavigate();
   const confirmToogleProjectState = async () => {
     setLoading(true);
     try {
-      const projectType = getStateFromActionType(type);
+      const englishState = getStateFromActionType(type);
+      const frenchState = getFrenchState(englishState);
 
        // Ajouter une vérification si l'action est "Terminer"
-        if (projectType === "Terminer" && projectData?.completionPercentage !== 100) {
-          notyf.error("Impossible de terminer le projet : l'avancement n'est pas à 100%");
-          return;
-        }
+       if (englishState === "Completed" && projectData?.completionPercentage !== 100) {
+        notyf.error("Impossible de terminer le projet : l'avancement n'est pas à 100%");
+        return;
+      }
       
-      await updateProjectState(projectId, projectType, decodedToken?.name);
+       await updateProjectState(projectId, englishState, decodedToken?.name);
       setIsArchiveFinished(true);
-      notyf.success(`Projet marqué comme "${projectType}" avec succès`);
+      notyf.success(`Projet marqué comme "${frenchState}" avec succès`);
       navigate(`/gmp/project/details/${projectId}/details`);
     } catch (error) {
       console.error(`Erreur lors du changement d'état: ${error}`);
@@ -95,6 +116,7 @@ const navigate = useNavigate();
       "Terminer": "Voulez-vous vraiment marquer ce projet comme terminé ?",
       "Stand by": "Voulez-vous vraiment mettre ce projet en stand by ?",
       "Pas commencé": "Voulez-vous vraiment marquer ce projet comme non commencé ?",
+      "Archiver": "Voulez-vous vraiment archiver ce projet ?"
     };
     
     return messages[type] || `Voulez-vous vraiment mettre ce projet en état "${type}" ?`;

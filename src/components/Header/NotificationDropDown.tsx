@@ -3,13 +3,21 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { getAllMyNotification, updateNotifRead } from "../../services/Project";
 import { formatDate } from "../../services/Function/DateServices";
-import { INotification, IListNotification } from "../../types/Notification";
+import { IListNotification } from "../../types/Notification";
 import { getNotificationMessage } from "../../constants/NotificationMessage";
 import { HubConnectionBuilder } from "@microsoft/signalr";
 
+type MyNotificationState = {
+  listNotification: IListNotification[];
+  totalNotifications: number;
+  numberOfNotificationNotRead: number;
+};
+
 const NotificationDropDown = ({ userConnected }: { userConnected: any }) => {
   const [dropDownOpen, setDropDownOpen] = useState<boolean>(false);
-  const [myNotification, setMyNotification] = useState<INotification>();
+  const [myNotification, setMyNotification] = useState<MyNotificationState | undefined>(undefined);
+  const [animateBadge, setAnimateBadge] = useState(false);
+
   const navigate = useNavigate();
 
   const trigger = useRef<HTMLAnchorElement>(null);
@@ -75,22 +83,36 @@ const NotificationDropDown = ({ userConnected }: { userConnected: any }) => {
         console.error("Erreur de connextion signalR : ", err);
       });
 
-    connection.on(`ReceiveNotification-${userConnected?.userid}`, () => {
-      fetchMyNotification(userConnected?.userid);
-    });
+   connection.on(`ReceiveNotification-${userConnected?.userid}`, async () => {
+  await fetchMyNotification(userConnected?.userid);
+  setAnimateBadge(true);
+  setTimeout(() => setAnimateBadge(false), 1000); // L’animation dure 1 seconde
+});
+
     return () => {
       connection.stop();
     };
   }, [userConnected?.userid]);
 
-  const fetchMyNotification = async (userid: string) => {
-    try {
-      const notifs = await getAllMyNotification(userid, 1, 5);
-      setMyNotification(notifs);
-    } catch (error) {
-      console.error("Error at fetching notification : ", error);
-    }
-  };
+const fetchMyNotification = async (userid: string) => {
+  try {
+    const notifs = await getAllMyNotification(userid, 1, 5);
+
+    // ✅ On adapte la structure à ce qu'attend le front
+    const mapped = {
+      listNotification: notifs.data ?? [],
+      totalNotifications: notifs.total ?? 0,
+      // 🔥 Calcul du nombre de notifications non lues
+      numberOfNotificationNotRead: notifs.data?.filter((n: any) => !n.isRead).length ?? 0,
+    };
+
+    setMyNotification(mapped);
+  } catch (error) {
+    console.error("Error fetching notification :", error);
+  }
+};
+
+
   useEffect(() => {
     if (userConnected?.userid) {
       fetchMyNotification(userConnected.userid);
@@ -146,12 +168,19 @@ const NotificationDropDown = ({ userConnected }: { userConnected: any }) => {
         }}
         className={`flex h-8.5 w-8.5 items-center justify-center rounded-full border-[0.5px] border-stroke bg-gray hover:text-primary dark:border-secondaryGreen dark:bg-secondaryGreen dark:text-white`}
       >
-        {myNotification?.numberOfNotificationNotRead != undefined &&
-          myNotification?.numberOfNotificationNotRead > 0 && (
-            <span className="absolute -top-1.5 -right-1 z-1 flex items-center justify-center h-5 w-5 rounded-full bg-meta-1 text-white text-xs font-semibold">
-              {myNotification?.numberOfNotificationNotRead}
-            </span>
-          )}
+       {myNotification?.numberOfNotificationNotRead != undefined &&
+  myNotification?.numberOfNotificationNotRead > 0 && (
+    <span
+      className={`absolute -top-1.5 -right-1 z-1 flex items-center justify-center 
+        h-5 w-5 rounded-full bg-meta-1 text-white text-xs font-semibold
+        transition-all duration-300 
+        ${animateBadge ? "animate-bounce" : ""}
+      `}
+    >
+      {myNotification?.numberOfNotificationNotRead}
+    </span>
+  )}
+
 
         <svg
           className="fill-current duration-300 ease-in-out"

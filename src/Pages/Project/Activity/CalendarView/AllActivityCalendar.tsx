@@ -5,7 +5,7 @@ import React, {
   useRef,
   useCallback,
 } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -85,6 +85,7 @@ const AllActivityCalendar = ({
   myHabilitation: IMyHabilitation | undefined;
 }) => {
   const { userid } = useParams();
+  const navigate = useNavigate();
   const connection = useContext(SignalRContext);
   const deletePopUp = useRef<any>(null);
   const calendarRef = useRef<any>(null);
@@ -355,35 +356,23 @@ const AllActivityCalendar = ({
   }, [connection, fetchData]);
 
   const handleEventClick = (info: any) => {
-    const task = events.find((event) => event.id === info.event.id);
-     const userList = task.userList || [];
-    const data = {
-      content: {
-        dailyEffort: task?.dailyEffort,
-        description: task?.description,
-        id: task?.id?.split(".")?.[0],
-        startDate: task?.start,
-        endDate: task.end,
-        dueDate: task.end,
-        status: task?.status,
-        title: task?.title,
-        type: task?.type,
-        phaseId: task?.phaseid,
-        projectId: task?.projectid,
-        priority: task?.priority,
-        subType: task?.subType,
-        userName: userList[0]?.user?.name || task.userName || "",
-      user: userList.map((user: any) => ({
-        userid: user.userid,
-        user: {
-          name: user.user?.name || "",
-          email: user.user?.email || ""
-        }
-      }))
-      },
-    };
-    setTaskData(data);
-    setIsModalUpdateOpen(true);
+    const event = info.event;
+    const activityId = event.id.split(".")[0]; // On retire le userId
+    const activityType = event.extendedProps.type || "Projet";
+    const userId = event.extendedProps.user || userid;
+
+    console.log("🟢 Redirection :", {
+      userId,
+      activityType,
+      activityId,
+    });
+
+    if (!userId || !activityType || !activityId) {
+      notyf.error("Impossible d’ouvrir cette activité.");
+      return;
+    }
+
+    navigate(`/gmp/activity/${userId}/list/${activityType}/${activityId}`);
   };
 
  const handleModifClick = (task: any) => {
@@ -695,17 +684,42 @@ const handleDuplicateClick = (task: any) => {
                         </div>
                       )}
                 {/* fin */}
-                <div>
-                  <b className="overflow-x-clip whitespace-nowrap">
-                    {dailyEffort}h -{" "}
-                    {title.length > 15 ? `${title.slice(0, 15)}...` : title}
-                  </b>
-                 <div className="absolute overflow-x-clip  whitespace-normal overflow-hidden line-clamp-2 bottom-full left-0 mb-1 px-2 py-1 bg-black text-white text-xs rounded z-[10001] opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-normal max-w-xs w-max break-words shadow-lg">
-                  {/* {title} */}
-                  {title.length > 15 ? `${title.slice(0, 27)}...` : title}
-                </div>
-
-                </div>
+            <div className="fc-event-container" style={{ position: 'relative', zIndex: openDropdownId === dropdownId ? 999 : 1 }}>
+  <div 
+    className="fc-event group" 
+    style={{ 
+      position: 'relative',
+      zIndex: 'inherit'
+    }}
+  >
+    <b className="overflow-x-clip whitespace-nowrap block">
+      {dailyEffort}h - {title.length > 15 ? `${title.slice(0, 15)}...` : title}
+    </b>
+    
+    {/* Tooltip */}
+    <div 
+      className="absolute invisible group-hover:visible whitespace-normal bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-black text-white text-xs rounded max-w-xs w-max break-words shadow-lg"
+      style={{
+        
+        filter: 'drop-shadow(0 0 8px rgba(0,0,0,0.3))',
+        pointerEvents: 'none',
+        whiteSpace: 'wrap',
+        width:200,
+        textAlign: 'center',
+        marginTop:-20
+      }}
+    >
+      {title}
+      {/* Pointeur de tooltip */}
+      <div 
+        className="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-b-4 border-l-transparent border-r-transparent border-b-black"
+        style={{
+          marginTop: '-5px' // Ajustement fin du pointeur
+        }}
+      />
+    </div>
+  </div>
+</div>
                 <div
                   className={`border  flex justify-center items-center p-1 rounded-full 
                     
@@ -1167,15 +1181,15 @@ const handleDuplicateClick = (task: any) => {
           myHabilitation={myHabilitation}
         />
       )}
-      {isModalUpdateOpen && (
-        <UpdateActivity
-          modalUpdateOpen={isModalUpdateOpen}
-          setModalUpdateOpen={setIsModalUpdateOpen}
-          setIsRefreshNeeded={setIsRefreshNeeded}
-          activity={taskData}
-          myHabilitation={myHabilitation}
-        />
-      )}
+     {isModalUpdateOpen && (
+  <UpdateActivity
+    setModalUpdateOpen={setIsModalUpdateOpen}
+    setIsRefreshNeeded={setIsRefreshNeeded}
+    activity={taskData}
+    myHabilitation={myHabilitation}
+  />
+)}
+
     {isModalDuplicateActivityOpen && taskData && (
   <DuplicateActivity
     modalDuplicateOpen={isModalDuplicateActivityOpen}

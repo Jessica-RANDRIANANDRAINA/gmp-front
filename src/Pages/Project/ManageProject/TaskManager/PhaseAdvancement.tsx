@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams, useOutletContext } from "react-router-dom";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { HubConnectionBuilder, HubConnection } from "@microsoft/signalr";
 import AddTaskPhase from "../../../../components/Modals/Task/AddTaskPhase";
@@ -16,6 +16,7 @@ import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
 
 const notyf = new Notyf({ position: { x: "center", y: "top" } });
+
 
 // function to organize task in column by status
 const organizeTaskByStatus = (tasks: any[]) => {
@@ -67,6 +68,7 @@ const organizeTaskByStatus = (tasks: any[]) => {
 
 const PhaseAdvancement = () => {
   const { projectId, phaseId } = useParams();
+  const [searchParams] = useSearchParams();
   const [data, setData] = useState<any>({
     tasks: {},
     columns: {},
@@ -81,8 +83,11 @@ const PhaseAdvancement = () => {
   const [phaseData, setPhaseData] = useState<IPhase>();
   const [connection, setConnection] = useState<HubConnection | null>(null);
   const [activeTaskId, setActiveTaskId] = useState<string | null>(null);
-
+const navigate = useNavigate();
   const deletePopUp = useRef<any>(null);
+const { onPhaseUpdated } = useOutletContext<{
+  onPhaseUpdated?: () => void;
+}>();
 
   // close delete pop up if click outside
   useEffect(() => {
@@ -106,6 +111,66 @@ const PhaseAdvancement = () => {
       console.error("error at fetch data phase: ", error);
     }
   };
+
+  // ✅ OUVERTURE AUTOMATIQUE VIA EMAIL
+  useEffect(() => {
+    const shouldOpenModal = searchParams.get("openModal") === "true";
+    const taskIdFromUrl = window.location.pathname.split("/").pop();
+    if (shouldOpenModal && taskIdFromUrl) {
+      fetchTaskData(taskIdFromUrl);
+    }
+  }, [searchParams]);
+
+   const fetchTaskData = async (taskId: string) => {
+  try {
+    if (!projectId || !phaseId) return;
+
+    const response = await getTaskByProjectAndPhaseID(projectId, phaseId);
+    console.log("✅ Données reçues depuis API:", response);
+    console.log("🔍 ID de la tâche dans l’URL:", taskId);
+
+    const found = response.find((t: any) => 
+      t.id?.toString().includes(taskId?.toString()) || 
+      t.taskId?.toString().includes(taskId?.toString())
+    );
+
+    if (!found) {
+      notyf.error("Tâche introuvable");
+      console.warn("⚠️ Aucune tâche correspondante trouvée pour:", taskId);
+      return;
+    }
+
+    const formatted = {
+      id: found.id || found.taskId,
+      content: {
+        id: found.id || found.taskId,
+        title: found.title,
+        description: found.description,
+        priority: found.priority,
+        startDate: found.startDate,
+        dueDate: found.dueDate,
+        fichier: found.fichier,
+        userTasks: found.userTasks,
+        status: found.status,
+        dailyEffort: found.dailyEffort,
+        userName: found.userTasks?.[0]?.name,
+        user: [
+          {
+            user: { name: found.userTasks?.[0]?.name },
+            userid: found.userTasks?.[0]?.userid,
+          },
+        ],
+      },
+    };
+
+    setTaskData(formatted);
+    setModalUpdateOpen(true);
+  } catch (error) {
+    console.error("Erreur chargement tâche:", error);
+    notyf.error("Impossible de charger la tâche.");
+  }
+};
+
 
   // fetch data of the phase to get all task associated to the task
   const fetchData = async () => {
@@ -131,6 +196,19 @@ const PhaseAdvancement = () => {
       console.error(`Error at fetch task data: ${error}`);
     }
   };
+
+
+//   const phaseProgress = useMemo(() => {
+//   const allTasks = Object.values(data.tasks || {});
+//   if (allTasks.length === 0) return 0;
+
+//   const doneTasks = allTasks.filter(
+//     (t: any) => t.content.status === "Traité"
+//   );
+
+//   return Math.round((doneTasks.length / allTasks.length) * 100);
+// }, [data.tasks]);
+
 
   useEffect(() => {
     fetchData();
@@ -278,6 +356,7 @@ const PhaseAdvancement = () => {
             belowTaskId
           );
           fetchData();
+          onPhaseUpdated?.();
         } catch (error) {
           console.error(`Error at calling task moved: ${error}`);
         }
@@ -303,6 +382,7 @@ const formatDate = (dateString: string | undefined) => {
     try {
       await deletetaskProject(taskId);
       notyf.success("Tâche supprimé");
+      onPhaseUpdated?.(); 
 
       if (connection) {
         try {
@@ -427,10 +507,10 @@ const formatDate = (dateString: string | undefined) => {
                                   style={{
                                     ...provided.draggableProps.style,
                                   }}
-                                  onClick={() => {
-                                    setTaskData(task);
-                                    setModalUpdateOpen(true);
-                                  }}
+                                 onClick={() => {
+  navigate(`/gmp/project/${projectId}/phase/${phaseId}/task/${task.id}/update`);
+}}
+
                                 >
                                   <div
                                     className={`absolute top-2 right-1 hover:bg-zinc-100 dark:hover:bg-boxdark2 px-1 h-4 cursor-pointer ${
@@ -595,21 +675,30 @@ const formatDate = (dateString: string | undefined) => {
             );
           })}
         </div>
+       
+
       </DragDropContext>
       {modalOpen && (
         <AddTaskPhase
           modalOpen={modalOpen}
           setModalOpen={setModalOpen}
-          setIsAddTaskFinished={setIsRefreshTaskNeeded}
+          setIsAddTaskFinished={(v) => {
+            setIsRefreshTaskNeeded(v);
+            onPhaseUpdated?.(); //
+          }}
         />
+
       )}
       {modalUpdateOpen && (
         <UpdateTask
-          modalUpdateOpen={modalUpdateOpen}
+         
           setModalUpdateOpen={setModalUpdateOpen}
           task={taskData}
           phaseData={phaseData ? phaseData : null}
-          setIsRefreshTaskNeeded={setIsRefreshTaskNeeded}
+          setIsRefreshTaskNeeded={(v) => {
+            setIsRefreshTaskNeeded(v);
+            onPhaseUpdated?.(); //
+          }}
         />
       )}
     </div>

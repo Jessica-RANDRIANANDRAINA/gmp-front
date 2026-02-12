@@ -20,6 +20,8 @@ const UpdateAdvancement = () => {
   const [advancement, setAdvancement] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
   const [decodedToken, setDecodedToken] = useState<IDecodedToken>();
+  const [showCustomInput, setShowCustomInput] = useState<boolean>(false);
+  const [customValue, setCustomValue] = useState<string>("");
   const navigate = useNavigate();
 
   const fetchData = async () => {
@@ -42,29 +44,50 @@ const UpdateAdvancement = () => {
     }
   }, []);
 
-  const handleChangeAdvancement = async () => {
-    setLoading(true);
-    if (projectId) {
-      try {
-        await updateAdvancementProject(
-          projectId,
-          advancement,
-          decodedToken?.name
-        );
-        notyf.success("Modification réussie");
-        navigate("/gmp/project/list");
-      } catch (error) {
-        notyf.error("Une erreur est survenue lors de la modification");
-        console.error("Error while update advancement: ", error);
-      } finally {
-        setLoading(false);
+ const handleChangeAdvancement = async () => {
+  setLoading(true);
+  if (projectId) {
+    try {
+      await updateAdvancementProject(
+        projectId,
+        advancement,
+        decodedToken?.name
+      );
+      notyf.success("Modification réussie");
+      navigate(`/gmp/project/details/${projectId}/details`); // Modification ici
+    } catch (error) {
+      notyf.error("Une erreur est survenue lors de la modification");
+      console.error("Error while update advancement: ", error);
+    } finally {
+      setLoading(false);
+    }
+  }
+};
+  const handleSelectChange = (value: string) => {
+    if (value === "Autre") {
+      setShowCustomInput(true);
+    } else {
+      setShowCustomInput(false);
+      setAdvancement(parseInt(value.split("%")?.[0]));
+    }
+  };
+
+  const handleCustomInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setCustomValue(value);
+    
+    // Vérifier que la valeur est un nombre entre 0 et 100
+    if (/^\d+$/.test(value)) {
+      const numValue = parseInt(value);
+      if (numValue >= 0 && numValue <= 100) {
+        setAdvancement(numValue);
       }
     }
   };
+
   return (
     <ProjectLayout>
       <div className="mx-2 p-4 md:mx-10">
-        {/* <Breadcrumb pageName="Avancement" /> */}
         <Breadcrumb
           paths={[
             { name: "Projets", to: "/gmp/project/list" },
@@ -72,14 +95,14 @@ const UpdateAdvancement = () => {
           ]}
         />
         <div className="bg-white min-h-[80vh] pt-2 shadow-1 rounded-lg border border-zinc-200 dark:border-strokedark dark:bg-boxdark">
-          <div className="flex  justify-center items-center ">
-            <div className="w-full p-8  flex justify-center items-center ">
+          <div className="flex justify-center items-center">
+            <div className="w-full p-8 flex justify-center items-center">
               <svg
                 viewBox="0 0 36 36"
                 className="block m-0 w-49 h-49 stroke-primaryGreen"
               >
                 <path
-                  className="fill-none stroke-zinc-300  "
+                  className="fill-none stroke-zinc-300"
                   strokeWidth={3.8}
                   d="M18 2.0845
           a 15.9155 15.9155 0 0 1 0 31.831
@@ -103,32 +126,49 @@ const UpdateAdvancement = () => {
                   }`}
                   y="21"
                   fontSize={10}
-                  className="percentage border text-center "
+                  className="percentage border text-center"
                 >
                   {advancement}%
                 </text>
               </svg>
             </div>
           </div>
-          <div className=" md:flex md:justify-center md:items-end gap-2">
-            <div className="flex justify-center">
+          <div className="md:flex md:justify-center md:items-end gap-2">
+            <div className="flex justify-center flex-col items-center">
               <CustomSelect
                 className="w-72"
                 label="Avancement"
                 placeholder="0"
-                data={["0%", "25%", "50%", "75%", "100%"]}
-                //   value={`${projectData?.completionPercentage}%`}
-                value={`${advancement}%`}
-                onValueChange={(e) => {
-                  setAdvancement(parseInt(e.split("%")?.[0]));
-                }}
+                data={[ "Autre","0%", "10%", "20%", "30%","40%", "50%", "60%", "70%", "80%", "90%", "100%"]}
+                value={
+                  showCustomInput 
+                    ? "Autre" 
+                    : `${advancement}%`
+                }
+                onValueChange={handleSelectChange}
               />
+              {showCustomInput && (
+                <div className="mt-2 w-72">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Saisir l'avancement (0-100)
+                  </label>
+                  <input
+                    type="number"
+                    min="0"
+                    max="100"
+                    value={customValue}
+                    onChange={handleCustomInputChange}
+                    className="mt-1 block w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 py-2 px-3 shadow-sm focus:border-primaryGreen focus:outline-none focus:ring-primaryGreen sm:text-sm"
+                    placeholder="Entrez un pourcentage"
+                  />
+                </div>
+              )}
             </div>
             <div className="px-7 md:pd-0">
               <button
                 onClick={handleChangeAdvancement}
                 type="button"
-                className={`max-h-10 md:w-fit gap-2 w-full  mt-2 py-2 px-5  text-center font-medium text-white  lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-darkgreen dark:bg-darkgreen `}
+                className={`max-h-10 md:w-fit gap-2 w-full mt-2 py-2 px-5 text-center font-medium text-white lg:px-8 xl:px-5 border border-primaryGreen bg-primaryGreen rounded-lg dark:border-darkgreen dark:bg-darkgreen`}
               >
                 {loading ? (
                   <BeatLoader size={5} className="mr-1" color={"#fff"} />

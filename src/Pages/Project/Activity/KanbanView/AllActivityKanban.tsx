@@ -5,7 +5,7 @@ import React, {
   useContext,
   useCallback,
 } from "react";
-import { useParams,useNavigate } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { SignalRContext } from "../Activity";
 import {
   DragDropContext,
@@ -28,6 +28,7 @@ import ListUsers from "../../../../components/UIElements/ListUsers";
 import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
 import { IMyHabilitation } from "../../../../types/Habilitation";
+import { X } from "lucide-react";
 const notyf = new Notyf({ position: { x: "center", y: "top" } });
 
 
@@ -168,8 +169,9 @@ const AllActivityKanban = ({
   }>;
   myHabilitation: IMyHabilitation | undefined;
 }) => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const { userid } = useParams();
+  const [searchParams] = useSearchParams();
   const [data, setData] = useState<any>({
     acivities: {},
     columns: {},
@@ -186,6 +188,14 @@ const AllActivityKanban = ({
   const [activityData, setActivityData] = useState<any>();
   const deletePopUp = useRef<any>(null);
   const [activeActivityId, setActiveActivityId] = useState<string | null>(null);
+  const navigate = useNavigate();
+  //Fenêtre de confirmation de suppression
+  const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
+  const [activityToDelete, setActivityToDelete] = useState<{
+  id: string;
+  type: string;
+  title: string;
+} | null>(null);
 
   // open add activity modal with parent props trigger
   useEffect(() => {
@@ -194,6 +204,52 @@ const AllActivityKanban = ({
       setIsAddActivity(false);
     }
   }, [isAddActivity]);
+
+  useEffect(() => {
+    const shouldOpenModal = searchParams.get("openModal") === "true";
+    const taskIdFromUrl = window.location.pathname.split("/").pop();
+    if (shouldOpenModal && taskIdFromUrl) {
+      fetchTaskData(taskIdFromUrl);
+    }
+  }, [searchParams]);
+
+  const fetchTaskData = async (taskId: string) => {
+    try {
+      const response = await getAllActivitiesOfUser(undefined, undefined, [], [userid]);
+      const found = response.find((a: any) => a.id === taskId);
+      if (found) {
+        const activity = {
+          id: found.id,
+          content: {
+            id: found.id,
+            title: found.title,
+            description: found.description,
+            status: found.status,
+            startDate: found.startDate,
+            endDate: found.endDate,
+            fichier: found.fichier,
+            dailyEffort: found.dailyEffort,
+            finished: found.finished,
+            type: found.type,
+            subType: found.subType,
+            projectId: found.projectid,
+            phaseId: found.phaseid,
+            priority: found.priority,
+            userid: found.userid,
+            userName: found.userName,
+            user: [{ user: { name: found.userName }, userid: found.userid }],
+          },
+        };
+        setActivityData(activity);
+        setIsModalUpdateActivityOpen(true);
+      } else {
+        notyf.error("Tâche introuvable.");
+      }
+    } catch (error) {
+      console.error("Erreur lors du chargement de la tâche:", error);
+      notyf.error("Impossible de charger la tâche.");
+    }
+  };
 
   // close delete pop up when click outside
   useEffect(() => {
@@ -632,10 +688,21 @@ const AllActivityKanban = ({
                                           ? colors[activity.content.userid]
                                           : "",
                                       }}
-                                      onClick={() => {
-                                        setActivityData(activity);
-                                        setIsModalUpdateActivityOpen(true);
-                                      }}
+                                     onClick={(e) => {
+  e.stopPropagation();
+
+  // 🧩 Séparer les deux IDs
+  const [pureActivityId, pureUserId] = activity.content.id.split(".");
+
+  const activityType = activity.content.type;
+
+  // 🧠 Priorité : si la carte contient son propre userId, on l'utilise
+  const finalUserId = activity.content.userid || pureUserId;
+
+  // ✅ URL propre
+  navigate(`/gmp/activity/${finalUserId}/list/${activityType}/${pureActivityId}`);
+}}
+
                                     >
                                       <div
                                         className={`absolute top-2 right-1 hover:bg-zinc-100 dark:hover:bg-boxdark2 px-1 h-4 cursor-pointer ${
@@ -700,15 +767,20 @@ const AllActivityKanban = ({
                                            Dupliquer
                                          </button>
                                          <button
-                                           onClick={(e) => {
-                                             e.stopPropagation();
-                                             handleDeleteActivity(activity.id, activity.content.type);
-                                             setShowDropdown(false);
-                                           }}
-                                           className="block w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950"
-                                         >
-                                           Supprimer
-                                         </button>
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+                                            setActivityToDelete({
+                                              id: activity.id,
+                                              type: activity.content.type,
+                                              title: activity.content.title,
+                                            });
+                                            setIsConfirmDeleteOpen(true);
+                                            setShowDropdown(false);
+                                          }}
+                                          className="block w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950"
+                                        >
+                                          Supprimer
+                                        </button>
                                        </div>
                                      )}
                                      {/*end showdropdown*/}
@@ -939,13 +1011,19 @@ const AllActivityKanban = ({
                                               </span>
                                               {/* pince for task en backlog */}
                                               <div 
-                                                className="cursor-pointer dark:text-whiten text-black"
-                                                onClick={(e) => {
-                                                  e.stopPropagation();
-                                                  const activityId = activity.content.id.split('.')[0]; 
-                                                  const activityType = activity.content.type.toLowerCase();
-                                                  navigate(`/gmp/project/activity-details/${activityType}/${activityId}`);
-                                                }}>
+                                                className=" dark:text-whiten text-black"
+                                                 onClick={() => {
+                                        setActivityData(activity);
+                                        setIsModalUpdateActivityOpen(true);
+                                      }}
+                                                // onClick={(e) => {
+                                                //   e.stopPropagation();
+                                                  // const activityId = activity.content.id.split('.')[0]; 
+                                                  // const activityType = activity.content.type.toLowerCase();
+                                                  // navigate(`/gmp/project/activity-details/${activityType}/${activityId}`);
+                                                // }}
+                                                
+                                                >
                                                 {activity.content.title}
                                               </div>
                                              
@@ -1037,7 +1115,7 @@ const AllActivityKanban = ({
       )}
       {isModalUpdateActivityOpen && (
         <UpdateActivity
-          modalUpdateOpen={isModalUpdateActivityOpen}
+          
           setModalUpdateOpen={setIsModalUpdateActivityOpen}
           setIsRefreshNeeded={setIsRefreshNeeded}
           activity={activityData}
@@ -1053,6 +1131,73 @@ const AllActivityKanban = ({
           myHabilitation={myHabilitation}
         />
       )}
+      {/*Modal confirmation de suppression */}
+     {isConfirmDeleteOpen && activityToDelete && (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+        <div className="bg-white dark:bg-boxdark rounded-lg shadow-lg w-full max-w-md p-6 relative">
+          
+          {/* Header */}
+          <div className="flex items-start justify-between mb-3">
+            <h3 className="text-lg font-semibold text-slate-800 dark:text-white">
+              Confirmation de suppression
+            </h3>
+
+            <button
+              onClick={() => {
+                setIsConfirmDeleteOpen(false);
+                setActivityToDelete(null);
+              }}
+              className="text-slate-400 hover:text-slate-600
+                        dark:text-slate-300 dark:hover:text-white
+                        transition"
+              aria-label="Fermer"
+            >
+              <X size={18} />
+            </button>
+          </div>
+
+          {/* Content */}
+          <p className="text-sm text-slate-600 dark:text-slate-300 mb-6">
+            Voulez-vous vraiment supprimer la tâche&nbsp;
+            <span className="font-semibold text-red-600">
+              "{activityToDelete.title}"
+            </span>
+            &nbsp;?
+          </p>
+
+          {/* Actions */}
+          <div className="flex justify-end gap-3">
+            <button
+              onClick={() => {
+                setIsConfirmDeleteOpen(false);
+                setActivityToDelete(null);
+              }}
+              className="px-4 py-2 text-sm rounded-md border border-slate-300
+                        hover:bg-slate-100 dark:border-strokedark dark:hover:bg-boxdark2"
+            >
+              Annuler
+            </button>
+
+            <button
+              onClick={async () => {
+                await handleDeleteActivity(
+                  activityToDelete.id,
+                  activityToDelete.type
+                );
+                setIsConfirmDeleteOpen(false);
+                setActivityToDelete(null);
+              }}
+              className="px-4 py-2 text-sm rounded-md bg-red-600 text-white
+                        hover:bg-red-700"
+            >
+              Supprimer
+            </button>
+          </div>
+        </div>
+      </div>
+    )}
+
+
     </div>
   );
 };

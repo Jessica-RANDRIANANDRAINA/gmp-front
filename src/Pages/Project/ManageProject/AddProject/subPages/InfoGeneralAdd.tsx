@@ -20,6 +20,32 @@ const InfoGeneralAdd = ({
   departments: string[];
   setDirectionOwner: Function;
 }) => {
+    // Définition des états disponibles avec leurs correspondances
+  const projectStates = {
+    "Not Started": "Pas commencé",
+    "In Progress": "En cours",
+    "Completed": "Terminé",
+    "Archived": "Archivé",
+    "Stand by": "Stand by"
+  };
+
+  // Fonction pour gérer le changement d'état
+  const handleStateChange = (selectedState: string) => {
+    // Trouver la clé anglaise correspondante à la valeur française sélectionnée
+    const englishState = Object.entries(projectStates).find(
+      ([_, frenchValue]) => frenchValue === selectedState
+    )?.[0] || selectedState;
+
+    setProjectData({
+      ...projectData,
+      state: englishState // Stocker la valeur anglaise dans les données
+    });
+  };
+
+  // Obtenir la valeur affichée en français
+  const displayedState = projectData.state 
+    ? projectStates[projectData.state as keyof typeof projectStates] || projectData.state
+    : "";
   return (
     <form
       className={`space-y-2 transition-all min-w-[50vw]  duration-1000 ease-in-out ${
@@ -33,6 +59,28 @@ const InfoGeneralAdd = ({
         }
       }}
     >
+
+    
+    <CustomInput 
+      label="Code Projet"
+      type="text"
+      rounded="medium"
+      help="Code alphanumérique (facultatif)"
+      placeholder="Code du Projet"
+      value={projectData.codeProjet || ""}
+      required={false}
+      maxLength={50}
+      onChange={(e) => {
+        const value = e.target.value.toUpperCase();
+        if (/^[A-Z0-9]*$/.test(value) && value.length <= 10 ) {
+          setProjectData ({
+            ...projectData,
+            codeProjet: value
+          });
+        }
+      }}
+    />
+
       <CustomInput
         label="Titre"
         type="text"
@@ -69,7 +117,8 @@ const InfoGeneralAdd = ({
         <CustomSelect
           label="Priorité"
           placeholder="Priorité"
-          data={["Elevée", "Moyenne", "Faible"]}
+          data={["Urgente", "Normale"]}
+          
           value={projectData.priority}
           onValueChange={(e) => {
             setProjectData({
@@ -81,7 +130,7 @@ const InfoGeneralAdd = ({
         <CustomSelect
           label="Criticité"
           placeholder="Criticité"
-          data={["Urgente", "Normale"]}
+          data={["Elevée", "Moyenne", "Faible"]}
           value={projectData.criticality}
           onValueChange={(e) => {
             setProjectData({
@@ -96,14 +145,9 @@ const InfoGeneralAdd = ({
           <CustomSelect
             label="Etat"
             placeholder="Etat"
-            data={["Pas commencé", "Commencer/En cours", "Terminer", "Archiver","Mettre en stand by"]}
-            value={projectData.state}
-            onValueChange={(e) => {
-              setProjectData({
-                ...projectData,
-                state: e,
-              });
-            }}
+            data={Object.values(projectStates)}
+            value={displayedState}
+            onValueChange={handleStateChange}
           />
            <MultiSelect
           id="001"

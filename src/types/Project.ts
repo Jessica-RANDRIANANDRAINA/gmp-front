@@ -1,5 +1,6 @@
 export interface IProjectData {
   id: string;
+  codeProjet: string | null;
   title: string;
   description: string;
   priority: string;
@@ -17,14 +18,16 @@ export interface IProjectData {
   listUsers: IUserProject[];
   idBudget?: string;
   codeBuget: string;
+  anneeBudget: string;
   directionSourceBudget: string;
   budgetAmount: number | null;
   budgetCurrency: string;
-  state?: string;
+  state?: string | null;
 }
 
 export interface IProjectDto {
   id: string;
+  codeProjet: string;
   title: string;
   description: string;
   priority: string;
@@ -36,6 +39,7 @@ export interface IProjectDto {
   listRessources: IRessource[];
   listPhases: IPhase[];
   listUsers: IUserProject[];
+  completionPercentage?: number;
 }
 
 export interface IPhase {
@@ -48,6 +52,9 @@ export interface IPhase {
   dependantOf?: string;
   initiator?: string;
   status?: string;
+  weight?: number;
+  progress?: number;
+  completionPercentage?: number;
   // deliverable?: string;
   listDeliverables: {
     id: string;
@@ -70,8 +77,9 @@ export interface IRessource {
 }
 
 export interface IBudget {
-  id?: string;
+  id: string;
   code: string;
+  anneebudget: string;
   direction: string;
   amount: number;
   currency: string;
@@ -135,6 +143,7 @@ export interface IActivityAdd {
   description: string;
   type?: string;
   dailyEffort?: number;
+  optionalEffort?: number;
   startDate?: string ;
   dueDate?: string;
   endDate?: string;

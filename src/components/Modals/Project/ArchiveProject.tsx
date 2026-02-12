@@ -70,7 +70,8 @@ const ArchiveProject = ({
     setLoadingArchive(true);
     try {
       const prtoArchive = projectToArchive?.map((pr) => pr.id);
-      await archiveProject(prtoArchive ?? []);
+       const initiator = decodedToken?.name || "Unknown User";
+      await archiveProject(prtoArchive ?? [], initiator);
       setIsArchiveFinished(true);
       var message =
         projectsToDetele.length === 1

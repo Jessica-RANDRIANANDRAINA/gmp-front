@@ -62,7 +62,7 @@ const PointSelect = ({
                 onClick={() => {
                     if (!disabled) setIsOpen(!isOpen);
                 }}
-                className={`w-full text-sm py-2.5 px-3 md:h-10 flex items-center justify-between rounded-lg text-left ${
+                className={`w-full dark:text-white  text-sm py-2.5 px-3 md:h-10 flex items-center justify-between rounded-lg text-left ${
                     value ? "dark:text-gray text-black" : "text-bodydark2"
                 } ${disabled ? "bg-slate-200 cursor-default dark:bg-slate-800" : "bg-transparent"}`}
             >
@@ -77,7 +77,7 @@ const PointSelect = ({
             {isOpen &&
                 ReactDOM.createPortal(
                     <div
-                        className="bg-white dark:bg-black border border-stroke max-h-42 overflow-y-auto rounded-lg shadow-lg transition-all opacity-100"
+                        className="bg-white dark:bg-black dark:text-white  border border-stroke max-h-42 overflow-y-auto rounded-lg shadow-lg transition-all opacity-100"
                            
                         style={dropdownStyles}
                     >

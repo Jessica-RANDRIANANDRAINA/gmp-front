@@ -5,12 +5,28 @@ import { getProjectById } from "../../../../services/Project";
 import { formatDate } from "../../../../services/Function/DateServices";
 import TeamSection from "../../../../components/TeamSection";
 
+// Mapping des états
+const projectStates = {
+  "Not Started": "Pas commencé",
+  "In Progress": "En cours",
+  "Completed": "Terminé",
+  "Archived": "Archivé",
+  "Stand by": "Stand by"
+};
+
+// Fonction pour obtenir l'état en français
+// Update the function signature to accept null values
+const getFrenchState = (state: string | null | undefined) => {
+  if (!state) return "Pas commencé"; // This will handle both null and undefined
+  return projectStates[state as keyof typeof projectStates] || state;
+};
 const DetailsProject = () => {
   const { projectId } = useParams();
   const [projectData, setProjectData] = useState<IProjectData>();
   const [isDateEndPassed, setIsEndPassed] = useState<boolean>(false);
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
   const [isDescriptionLong, setIsDescriptionLong] = useState(false);
+  
 
 
   const fetchProjectData = async () => {
@@ -36,6 +52,12 @@ const DetailsProject = () => {
   }
 }, [projectData]);
 
+
+
+  // Obtenir l'état en français pour l'affichage
+  const frenchState = getFrenchState(projectData?.state);
+
+
   return (
     <div className="grid px-7">
       <div className="text-center">DU : {new Date().toLocaleString()}</div>
@@ -51,7 +73,7 @@ const DetailsProject = () => {
               <div className="flex flex-col space-y-3">
                 <div className="font-semibold  text-lg flex flex-wrap mb-3">
                   <div className="mr-3">
-                    <span>{projectData?.title}</span>
+                    {projectData?.codeProjet && <strong>{projectData.codeProjet} - </strong>} <span>{projectData?.title}</span>
                   </div>
                   <div className="space-x-1 flex flex-wrap">
                     {projectData?.beneficiary?.split(",")?.map((benef) => (
@@ -65,29 +87,33 @@ const DetailsProject = () => {
                   </div>
                 </div>
                 <div>
-                  {projectData?.state && (
+                  {frenchState && (
                     <div className="flex items-center gap-2">
                       <div className="text-base flex">Etat :</div>
                       <div className="flex gap-2 items-center">
                         <div
                           className={`text-sm flex justify-center items-center gap-1 ${
-                            projectData.state === "Pas commencé"
+                            frenchState === "Pas commencé"
                               ? "text-cyan-500"
-                              : projectData.state === "Commencer/En cours"
+                              : frenchState === "En cours"
                               ? "text-green-600"
+                              : frenchState === "Stand by"
+                              ? "text-red-600"
                               : "text-green-600"
                           }`}
                         >
                           <span
                             className={`w-2 flex h-2 border rounded-full ${
-                              projectData.state === "Pas commencé"
+                              frenchState === "Pas commencé"
                                 ? "bg-cyan-500"
-                                : projectData.state === "Commencer/En cours"
+                                : frenchState === "En cours"
                                 ? "bg-green-600"
+                                : frenchState === "Stand by"
+                                ? "bg-red-600"
                                 : "bg-green-600"
                             }`}
                           ></span>
-                          {projectData.state}
+                          {frenchState}
                         </div>
                       </div>
                     </div>
@@ -235,7 +261,7 @@ const DetailsProject = () => {
                 {/* ----- team start ----- */}
 
                 {/* ----- BUDGET START ----- */}
-                <div
+                {/* <div
                   className={` md:grid-cols-2 ${
                     projectData?.listBudgets?.[0]?.amount ? "grid" : "hidden"
                   }`}
@@ -250,7 +276,7 @@ const DetailsProject = () => {
                     </span>{" "}
                     <div>
                       <span className="mr-2">
-                        {projectData?.listBudgets?.[0]?.code}
+                        {projectData?.listBudgets?.[0]?.code}  {projectData?.listBudgets?.[0]?.anneebudget}
                       </span>
                       <span>{projectData?.listBudgets?.[0]?.amount}</span>
                       <span>
@@ -260,10 +286,33 @@ const DetailsProject = () => {
                       </span>
                     </div>
                   </div>
-                </div>
+                </div> */}
                 {/* ===== BUDGET END ===== */}
                 {/* ===== DESCRIPTION START ==== */}
-                <div
+                {projectData?.description && (
+                  <div className="flex-col">
+                    <span className="text-base">Description : </span>
+                    <div className="text-justify text-sm relative">
+                      <p>
+                        {isDescriptionLong && !isExpanded 
+                          ? `${projectData.description.split('\n').slice(0, 5).join('\n')}...`
+                          : projectData.description}
+                      </p>
+                      
+                      {isDescriptionLong && (
+                        <button
+                          type="button"
+                          onClick={() => setIsExpanded(!isExpanded)}
+                          className="ml-2 text-blue-400 text-xs font-semibold hover:underline mt-2"
+                        >
+                          {isExpanded ? "Afficher moins" : "Afficher plus"}
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                )}
+                {/* taloh */}
+                {/* <div
                   className={` flex-col ${
                     projectData?.description ? "flex" : "hidden"
                   }`}
@@ -294,13 +343,117 @@ const DetailsProject = () => {
                     </p>
 
                   </div>
-                </div>
+                </div> */}
                 {/* ===== DESCRIPTION END ==== */}
               </div>
             </div>
           </div>
           {/* ===== INFO GENERAL END =====*/}
+          {/* ===== BUDGET START ===== */}
+{projectData?.listBudgets && projectData?.listBudgets?.length > 0 ? (
+  <div className="space-y-2">
+    <h1 className="font-bold text-zinc-400 text-xl md:text-2xl">
+      BUDGETS
+    </h1>
+    <div className="md:border border-zinc-200 dark:border-black rounded-md">
+      <div className="overflow-x-auto">
+        <table className="min-w-full table-auto bg-white dark:bg-boxdark shadow-lg rounded-lg hidden md:table">
+          <thead className="bg-gray-100 border-b border-b-zinc-300 dark:border-b-black text-gray-600 uppercase text-sm leading-normal">
+            <tr>
+              <th className="py-3 px-6 text-left">Année</th>
+              <th className="py-3 px-6 text-left">Code</th>
+              <th className="py-3 px-6 text-left">Direction</th>
+              <th className="py-3 px-6 text-left">Montant</th>
+              <th className="py-3 px-6 text-left">Devise</th>
+            </tr>
+          </thead>
+          <tbody className="text-gray-600 text-xs font-light">
+            {projectData?.listBudgets?.map((budget) => (
+              <tr
+                key={budget?.id}
+                className="border-b border-zinc-200 hover:bg-zinc-50 dark:hover:bg-black dark:border-black hover:bg-gray-50 transition-colors duration-300"
+              >
+                <td className="py-3 px-6 text-left whitespace-nowrap">
+                  <div className="flex items-center">
+                    <span className="font-medium">
+                      {budget?.anneebudget}
+                    </span>
+                  </div>
+                </td>
+                <td className="py-3 px-6 text-left whitespace-nowrap">
+                  <div className="flex items-center">
+                    <span className="font-medium">
+                      {budget?.code}
+                    </span>
+                  </div>
+                </td>
+                <td className="py-3 px-6 text-left">
+                  <span className="text-gray-700">
+                    {budget?.direction}
+                  </span>
+                </td>
+                <td className="py-3 px-6 text-left">
+                  <span className="text-gray-700">
+                    {budget?.amount}
+                  </span>
+                </td>
+                <td className="py-3 px-6 text-left">
+                  <span className="text-gray-700">
+                    {budget?.currency === "EUR" ? "€" : "Ar"}
+                  </span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
 
+        {/* Mobile view */}
+        <div className="block md:hidden">
+          {projectData?.listBudgets?.map((budget) => (
+            <div
+              key={budget?.id}
+              className="bg-white *:grid *:grid-cols-2 dark:bg-boxdark shadow-lg rounded-lg mb-4 p-4 border border-zinc-200 dark:border-black"
+            >
+              <div className="mb-2">
+                <span className="text-emerald-500 font-semibold">
+                  Code :{" "}
+                </span>
+                <span className="text-gray-800">
+                  {budget?.code}
+                </span>
+              </div>
+              <div className="mb-2">
+                <span className="text-emerald-500 font-semibold">
+                  Direction :{" "}
+                </span>
+                <span className="text-gray-800">
+                  {budget?.direction}
+                </span>
+              </div>
+              <div className="mb-2">
+                <span className="text-emerald-500 font-semibold">
+                  Montant :{" "}
+                </span>
+                <span className="text-gray-800">
+                  {budget?.amount}
+                </span>
+              </div>
+              <div>
+                <span className="text-emerald-500 font-semibold">
+                  Devise :{" "}
+                </span>
+                <span className="text-gray-800">
+                  {budget?.currency === "EUR" ? "€" : "Ar"}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+) : null}
+{/* ===== BUDGET END ===== */}
           {/* ===== RESSOURCE START =====*/}
           {projectData?.listRessources &&
           projectData?.listRessources?.length > 0 ? (
@@ -512,8 +665,10 @@ const DetailsProject = () => {
                                         className={`inline-flex space-x-1 items-center px-3 py-1 rounded-full text-xs font-semibold   ${
                                           phases?.status === "Terminé"
                                             ? "bg-green-100 text-green-600 border-green-300  dark:bg-green-900 dark:text-green-300 dark:border-green-700"
-                                            : phases?.status === "Commencer/En cours"
+                                            : phases?.status === "En cours"
                                             ? "bg-amber-100 text-amber-600 border-amber-300  dark:bg-amber-900 dark:text-amber-300 dark:border-amber-700"
+                                            : phases?.status === "Stand by"
+                                            ? "bg-red-100 text-red-600 border-red-300 dark:bg-red-900 dark:text-red-300 dark:border-red-700"
                                             : "bg-cyan-100 text-cyan-600 border-cyan-300  dark:bg-cyan-900 dark:text-cyan-300 dark:border-cyan-700"
                                         }`}
                                       >

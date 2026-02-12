@@ -116,7 +116,11 @@ const ActivityDetails = () => {
     if (activityDetails) {
       const endDate = activityDetails.dueDate || activityDetails.endDate;
       if (endDate) {
-        const isLate = new Date(endDate) < new Date() && activityDetails.status !== "Traité";
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const endDateObj = new Date(endDate);
+        endDateObj.setHours(0, 0, 0, 0);
+        const isLate = endDateObj < today && activityDetails.status !== "Traité";
         setIsLate(isLate);
       }
     }
@@ -240,7 +244,7 @@ const ActivityDetails = () => {
             activityDetails.status === "En pause" ? "bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200" :
             "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
           }`}>
-            Status actuel: {activityDetails.status}
+           {activityDetails.status}
           </div>
         </div>
 

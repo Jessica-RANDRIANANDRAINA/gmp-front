@@ -1,3 +1,16 @@
+/* Agrandir le texte dans le QuillEditor */
+.ql-editor {
+  font-size: 14px  !important;
+  font-weight: semi-bold;
+  font-style: poppins, sans-serif !important;
+  line-height: 1.6 !important;
+  color: #1f2937; /* gris foncé lisible */
+}
+
+.dark .ql-editor {
+  color: #e5e7eb !important; /* texte clair en mode sombre */
+}
+
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
 }
@@ -208,14 +221,14 @@
 }
 
 /* .dark .quill-content img {
-  width: 500px;
-} */
+  width: 100px;
+}  */
 
  .quill-content a:hover {
   color: #3b82f6;
 }
 .dark .quill-content img {
-    max-width: 100%;
+    max-width: 100px;
     height: auto;
     display: block;
     margin: 1rem 0;

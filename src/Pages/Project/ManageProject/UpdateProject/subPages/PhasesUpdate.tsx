@@ -22,6 +22,18 @@ const PhasesUpdate = ({
   projectData: IProjectData;
 }) => {
   const [activePhaseId, setActivePhaseId] = useState<string>("");
+  // Confirmation modal
+  const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
+  const [phaseToDelete, setPhaseToDelete] = useState<{
+    phase: IPhase;
+    index: number;
+  } | null>(null);
+
+  // Alerte d'annulation de suppression
+  const [pendingDeletePhase, setPendingDeletePhase] = useState<IPhase | null>(null);
+  const [pendingDeleteIndex, setPendingDeleteIndex] = useState<number | null>(null);
+  const [deleteTimeoutId, setDeleteTimeoutId] = useState<NodeJS.Timeout | null>(null);
+
 
   // Initialiser l'ID de phase active
   useEffect(() => {
@@ -32,28 +44,65 @@ const PhasesUpdate = ({
   }, [phaseAndLivrableList]);
 
   // Supprimer une phase
-  const handleRemovePhaseList = (phaseId: string, index: number) => {
-    const filteredList = phaseAndLivrableList.filter(phase => phase.id !== phaseId);
-    setPhaseAndLivrableList(filteredList);
+  // const handleRemovePhaseList = (phaseId: string, index: number) => {
+  //   const filteredList = phaseAndLivrableList.filter(phase => phase.id !== phaseId);
+  //   setPhaseAndLivrableList(filteredList);
     
-    if (activePhaseId === phaseId) {
-      const newActiveId = filteredList[index - 1]?.id || filteredList[0]?.id || "";
-      setActivePhaseId(newActiveId);
-    }
-  };
+  //   if (activePhaseId === phaseId) {
+  //     const newActiveId = filteredList[index - 1]?.id || filteredList[0]?.id || "";
+  //     setActivePhaseId(newActiveId);
+  //   }
+  // };
+
+  // Supprimer une phase avec confirmation et possibilité d'annulation
+  const confirmDeletePhase = () => {
+  if (!phaseToDelete) return;
+
+  const { phase, index } = phaseToDelete;
+
+  // Suppression visuelle immédiate
+  setPhaseAndLivrableList(prev =>
+    prev.filter(p => p.id !== phase.id)
+  );
+
+  setPendingDeletePhase(phase);
+  setPendingDeleteIndex(index);
+
+  if (activePhaseId === phase.id) {
+    setActivePhaseId(
+      phaseAndLivrableList[index - 1]?.id ||
+      phaseAndLivrableList[0]?.id ||
+      ""
+    );
+  }
+
+  // Suppression définitive après 5s
+  const timeout = setTimeout(() => {
+    setPendingDeletePhase(null);
+    setPendingDeleteIndex(null);
+  }, 5000);
+
+  setDeleteTimeoutId(timeout);
+  setIsConfirmDeleteOpen(false);
+  setPhaseToDelete(null);
+};
+
 
   // Mettre à jour les données d'une phase
-  const handlePhaseDataChange = (
-    field: keyof IPhase,
-    value: string | undefined,
-    phaseId: string
-  ) => {
-    setPhaseAndLivrableList(prevList =>
-      prevList.map(phase =>
-        phase.id === phaseId ? { ...phase, [field]: value } : phase
-      )
-    );
-  };
+ const handlePhaseDataChange = (
+  field: keyof IPhase,
+  value: string | number | undefined,
+  phaseId: string
+) => {
+  setPhaseAndLivrableList(prevList =>
+    prevList.map(phase =>
+      phase.id === phaseId
+        ? { ...phase, [field]: value }
+        : phase
+    )
+  );
+};
+
 
   // Ajouter une nouvelle phase
  const handleAddPhaseList = () => {
@@ -147,12 +196,30 @@ const PhasesUpdate = ({
       }`}
       onSubmit={(e) => {
         e.preventDefault();
-        if (phaseAndLivrableList.length > 0) {
-          setPageCreate(4);
-        } else {
+
+        if (phaseAndLivrableList.length === 0) {
           notyf.error("Un projet doit contenir au moins une phase");
+          return;
         }
+
+        // ============================
+        // RÈGLE MÉTIER : PONDÉRATION
+        // ============================
+        const totalWeight = phaseAndLivrableList.reduce(
+          (sum, phase) => sum + (phase.weight ?? 0),
+          0
+        );
+
+        if (totalWeight !== 100) {
+          notyf.error(
+            `La somme des pondérations doit être égale à 100%. Actuellement : ${totalWeight}%`
+          );
+          return;
+        }
+
+        setPageCreate(4);
       }}
+
     >
       <div className="space-y-4">
         <div>
@@ -213,7 +280,8 @@ const PhasesUpdate = ({
                                       className="flex items-center justify-center px-3 py-2 text-red-500 dark:text-red-400 hover:text-white dark:hover:text-white hover:bg-red-500 transition rounded-r-md focus:outline-none focus:ring-2 focus:ring-red-500"
                                       onClick={(e) => {
                                         e.stopPropagation();
-                                        handleRemovePhaseList(phase.id || "", index);
+                                        setPhaseToDelete({ phase, index });
+                                        setIsConfirmDeleteOpen(true);
                                       }}
                                     >
                                       ✕
@@ -269,6 +337,24 @@ const PhasesUpdate = ({
                         onChange={(e) =>
                           handlePhaseDataChange("endDate", e.target.value, phase.id || "")
                         }
+                      />
+                      
+                      <CustomInput
+                        label="Pondération (%)"
+                        type="number"
+                        min={0}
+                        max={100}
+                        rounded="medium"
+                        value={phase.weight ?? ""}
+                        help="Pourcentage de contribution de cette phase au projet"
+                        onChange={(e) =>
+                          handlePhaseDataChange(
+                            "weight",
+                            Number(e.target.value),
+                            phase.id || ""
+                          )
+                        }
+                        required
                       />
 
                       {phase.listDeliverables?.map((livrable, livrableIndex) => (
@@ -331,6 +417,92 @@ const PhasesUpdate = ({
           </button>
         </div>
       </div>
+      {/* Modal de suppression */}
+      {isConfirmDeleteOpen && phaseToDelete && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+          <div className="bg-white dark:bg-boxdark rounded-lg shadow-lg w-full max-w-md p-6">
+
+            <div className="flex justify-between mb-4">
+              <h3 className="text-lg font-semibold">
+                Confirmation de suppression
+              </h3>
+              <button onClick={() => setIsConfirmDeleteOpen(false)}>✕</button>
+            </div>
+
+            <p className="text-sm mb-3">
+              Voulez-vous vraiment supprimer la phase&nbsp;
+              <b className="text-red-600">"{phaseToDelete.phase.phase1}"</b> ?
+            </p>
+
+            <p className="text-xs text-red-500 mb-5">
+              <strong>Remarque : </strong> Les tâches et livrables associés seront également supprimés.
+            </p>
+
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={() => setIsConfirmDeleteOpen(false)}
+                className="px-4 py-2 border rounded-md"
+              >
+                Annuler
+              </button>
+
+              <button
+                onClick={confirmDeletePhase}
+                className="px-4 py-2 bg-red-600 text-white rounded-md"
+              >
+                Supprimer
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* Modal de suppression différée */}
+      {pendingDeletePhase && (
+        <div className="
+          fixed bottom-6 right-6 z-50
+          flex items-center gap-4
+          bg-emerald-50 text-emerald-800
+          border border-emerald-200
+          px-5 py-4 rounded-lg shadow-xl
+          min-w-[320px]
+          animate-slide-in
+        ">
+          <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center">
+            ✔
+          </div>
+
+          <div className="flex-1 text-sm">
+            Phase <b>{pendingDeletePhase.phase1}</b> supprimée
+          </div>
+
+          <button
+            className="text-emerald-600 hover:underline text-sm font-semibold"
+            onClick={() => {
+              if (deleteTimeoutId) clearTimeout(deleteTimeoutId);
+
+              setPhaseAndLivrableList(prev => {
+                const restored = [...prev];
+                restored.splice(pendingDeleteIndex!, 0, pendingDeletePhase);
+                return restored.map((p, i) => ({ ...p, rank: i }));
+              });
+
+              setActivePhaseId(pendingDeletePhase.id || "");
+              setPendingDeletePhase(null);
+              setPendingDeleteIndex(null);
+            }}
+          >
+            Annuler
+          </button>
+
+          <button
+            onClick={() => setPendingDeletePhase(null)}
+            className="text-emerald-400 hover:text-emerald-600"
+          >
+            ✕
+          </button>
+        </div>
+      )}
+
     </form>
   );
 };

@@ -333,7 +333,7 @@ const TableUser = ({
         </div>
         <div
           className={`${
-            myHabilitation?.admin?.assignAccess ? "opacity-100" : "opacity-0"
+            myHabilitation?.admin?.assignAccess ? "opacity-100" : "right-0"
           }`}
         >
           <CustomSelect

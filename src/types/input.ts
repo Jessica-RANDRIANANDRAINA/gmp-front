@@ -12,6 +12,7 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   help?: string;
   value?: string | number | undefined;
   onChange?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+  suffix?: string | JSX.Element;
 }
 
 export interface InputUserSearchInterface {

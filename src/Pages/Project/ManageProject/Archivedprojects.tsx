@@ -2,22 +2,23 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ProjectLayout from "../../../layout/ProjectLayout";
 import Breadcrumb from "../../../components/BreadCrumbs/BreadCrumb";
-import { TableProjet } from "../../../components/Tables/projets";
+// import { TableProjet } from "../../../components/Tables/projets";
 import ArchiveProject from "../../../components/Modals/Project/ArchiveProject";
 import {
   getAllLevelProjectByUserId,
-  getAllProject,
 } from "../../../services/Project";
 import { getAllUsers } from "../../../services/User";
 import { getAllMyHabilitation } from "../../../services/Function/UserFunctionService";
 import { decodeToken } from "../../../services/Function/TokenService";
 import { IMyHabilitation } from "../../../types/Habilitation";
+import ProjetArchivés from "../../../components/Tables/projets/ProjetArchivés";
+import { getAllArchivedProjects } from "../../../services/Project/ProjectServices";
 type TSubordinate = {
   id: string;
   name: string;
   email: string;
 };
-const ManageProjects = () => {
+const Archivedprojects = () => {
   const [projectData, setProjectData] = useState<Array<any> | null>(null);
   const [projectToModif, setProjectToModif] = useState([]);
   const [projectsToDetele, setProjectsToDelete] = useState<Array<string>>([]);
@@ -39,10 +40,8 @@ const ManageProjects = () => {
   const [search, setSearch] = useState({
     title: "",
     member: "",
-    director: "",
     priority: "Tous",
     criticity: "Tous",
-    state: "Tous", // Added the missing 'state' property
     completionPercentage: "Tous",
     startDate: undefined as string | undefined,
     endDate: undefined as string | undefined,
@@ -114,49 +113,50 @@ const ManageProjects = () => {
   }, []);
 
   // fetch all project related to the user connected
-  const fetchProject = async () => {
-    const decode = decodeToken("pr");
+ const fetchProject = async () => {
+  const decode = decodeToken("pr");
+  const hab = await getAllMyHabilitation();
+  const completion = search.completionPercentage === "Tous" ? "" : search.completionPercentage;
+  const criticity = search?.criticity === "Tous" ? "" : search?.criticity;
+  const priority = search?.priority === "Tous" ? "" : search?.priority;
+  const userSelectedName = selectedUserInput?.map((user) => user.name);
 
-    const hab = await getAllMyHabilitation();
-    const completion =
-      search.completionPercentage === "Tous" ? "" : search.completionPercentage;
-    const criticity = search?.criticity === "Tous" ? "" : search?.criticity;
-    const priority = search?.priority === "Tous" ? "" : search?.priority;
-    const userSelectedName = selectedUserInput?.map((user) => user.name);
+  if (hab?.project?.watchAllProject) {
+    // Utilisation du nouvel endpoint pour les projets archivés
+    const project = await getAllArchivedProjects(
+      page?.pageNumber,
+      page?.pageSize,
+      search?.title,
+      userSelectedName,
+      priority,
+      criticity,
+      completion,
+      search?.startDate,
+      search?.endDate
+    );
 
-    if (hab?.project?.watchAllProject) {
-      const project = await getAllProject(
-        page?.pageNumber,
-        page?.pageSize,
-        search?.title,
-        userSelectedName,
-        priority,
-        criticity,
-        completion,
-        search?.startDate,
-        search?.endDate
-      );
-
-      setProjectData(project?.project);
-      setTotalProjectCount(project?.totalCount);
-    } else {
-      // const project = await getProjectByUserId(decode?.jti);
-      const project = await getAllLevelProjectByUserId(
-        decode?.jti,
-        page?.pageNumber,
-        page?.pageSize,
-        search?.title,
-        userSelectedName,
-        priority,
-        criticity,
-        completion,
-        search?.startDate,
-        search?.endDate
-      );
-      setProjectData(project?.project);
-      setTotalProjectCount(project?.totalCount);
-    }
-  };
+    setProjectData(project?.projects); // Notez le changement ici pour correspondre à la réponse de l'API
+    setTotalProjectCount(project?.totalCount);
+  } else {
+    // Pour les utilisateurs qui ne peuvent pas voir tous les projets
+    // Vous devrez peut-être créer un équivalent pour getAllLevelArchivedProjectsByUserId
+    const project = await getAllLevelProjectByUserId(
+      decode?.jti,
+      page?.pageNumber,
+      page?.pageSize,
+      search?.title,
+      userSelectedName,
+      priority,
+      criticity,
+      completion,
+      search?.startDate,
+      search?.endDate,
+      
+    );
+    setProjectData(project?.project);
+    setTotalProjectCount(project?.totalCount);
+  }
+};
 
   useEffect(() => {
     fetchProject();
@@ -170,7 +170,7 @@ const ManageProjects = () => {
         <>
           <div className="flex flex-col md:flex-row">
             <Breadcrumb
-              paths={[{ name: "Liste des Projets", to: "/gmp/project/list" }]}
+              paths={[{ name: "Liste des Projets Archivés", to: "/gmp/project/projetarchivés" }]}
             />
 
             {/* ===== ADD PROJECT START =====*/}
@@ -206,7 +206,7 @@ const ManageProjects = () => {
           </div>
 
           {/* ===== TABLE PROJECT LIST START =====*/}
-          <TableProjet
+          <ProjetArchivés
             setShowModalDelete={setShowModalDelete}
             data={projectData}
             setProjectToModif={setProjectToModif}
@@ -243,4 +243,4 @@ const ManageProjects = () => {
   );
 };
 
-export default ManageProjects;
+export default Archivedprojects;

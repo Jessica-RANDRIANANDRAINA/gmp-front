@@ -6,7 +6,7 @@ import {
   updateNotifRead,
   MakeAllNotifReaded,
 } from "../../services/Project";
-import { INotification, IListNotification } from "../../types/Notification";
+import { IListNotification } from "../../types/Notification";
 import {
   formatDate,
   formatDateToText,
@@ -17,7 +17,11 @@ import { getNotificationMessage } from "../../constants/NotificationMessage";
 import Pagination from "../../components/Tables/Pagination";
 
 const AllNotifications = () => {
-  const [activityData, setActivityData] = useState<INotification>();
+  const [activityData, setActivityData] = useState<{
+    listNotification: IListNotification[];
+    totalNotifications: number;
+    numberOfNotificationNotRead: number;
+  } | undefined>();
   const [decodedToken, setDecodedToken] = useState<IDecodedToken>();
   const [actualPage, setActualPage] = useState(1);
   const [pageNumbers, setPageNumbers] = useState(1);
@@ -56,16 +60,25 @@ const AllNotifications = () => {
     }
   }, [actualPage]);
 
-  const fetchNotifications = async (userid: string) => {
-    if (userid) {
-      try {
-        const notifs = await getAllMyNotification(userid, actualPage, 20);
-        setActivityData(notifs);
-      } catch (error) {
-        console.error("Error fetching notifications:", error);
-      }
+const fetchNotifications = async (userid: string) => {
+  if (userid) {
+    try {
+      const notifs = await getAllMyNotification(userid, actualPage, 20);
+
+      // Adapter à la structure de ton back-end
+      const mapped = {
+        listNotification: notifs.data ?? [], // correspond à la clé "data"
+        totalNotifications: notifs.total ?? 0,
+        numberOfNotificationNotRead: 0,
+      };
+
+      setActivityData(mapped);
+    } catch (error) {
+      console.error("Error fetching notifications:", error);
     }
-  };
+  }
+};
+
   const handleMarkAllAsRead = async () => {
     if (decodedToken?.jti) {
       const userid = decodedToken?.jti;
@@ -106,27 +119,28 @@ const AllNotifications = () => {
   );
 
   // Fonction pour regrouper les notifications par date
-  const groupNotificationsByDate = (notifications: IListNotification[]) => {
-    const grouped: Record<string, IListNotification[]> = {};
+const groupNotificationsByDate = (notifications?: IListNotification[]) => {
+  const grouped: Record<string, IListNotification[]> = {};
 
-    notifications.forEach((notif) => {
-      // Utiliser uniquement la date (en enlevant l'heure) pour regrouper
-      const notifDate = formatDate(notif.modifiedAt, false); // Format sans heure : jj/mm/aaaa
-      const dateKey = notifDate.split("/").reverse().join("-"); // Transforme en format yyyy-mm-dd
+  if (!notifications || notifications.length === 0) return grouped;
 
-      if (!grouped[dateKey]) {
-        grouped[dateKey] = [];
-      }
-      grouped[dateKey].push(notif);
-    });
+  notifications.forEach((notif) => {
+    const notifDate = formatDate(notif.modifiedAt, false);
+    const dateKey = notifDate.split("/").reverse().join("-");
+    if (!grouped[dateKey]) grouped[dateKey] = [];
+    grouped[dateKey].push(notif);
+  });
 
-    return grouped;
-  };
+  return grouped;
+};
+
 
   // Regrouper les notifications par date
-  const groupedNotifications = activityData
+const groupedNotifications =
+  activityData?.listNotification?.length
     ? groupNotificationsByDate(activityData.listNotification)
     : {};
+
 
   return (
     <ProjectLayout>

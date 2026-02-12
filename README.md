@@ -116,7 +116,7 @@ npm run preview
 ```bash
 npm run build
 ```
-
+- Pre-prod
 - copy the dist file in the gmp-front via ftp
 
 * The identifiants for FTP are :
@@ -125,6 +125,18 @@ npm run build
   - Port : 21
   - Nom d'utilisateur : gmpfront
   - Mot de passe : gmp
+
+- Prod 
+- copy the dist file in the gmp-front via ftp
+* The identifiants for FTP are :
+  - Protocole de fichier : FTP
+  - Nom d'hôte : 10.0.180.90
+  - Port : 21
+  - Nom d'utilisateur : gmpfront
+  - Mot de passe : gmp
+- use url in `.env`
+  -  VITE_API_ENDPOINT=https://gmp.corp.ravinala:4431
+  -  VITE_API_FRONT=https://gmp.corp.ravinala
 
 **NB** DON'T ERASE THE `web.config` file
 

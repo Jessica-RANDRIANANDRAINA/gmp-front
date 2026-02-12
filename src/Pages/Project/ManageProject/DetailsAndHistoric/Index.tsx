@@ -9,6 +9,20 @@ import ToogleStateProject from "../../../../components/Modals/Project/ToogleStat
 import { ChevronDown } from "lucide-react"; 
 import { decodeToken } from "../../../../services/Function/TokenService";
 
+// Mapping des états
+// const projectStates = {
+//   "Not Started": "Pas commencé",
+//   "In Progress": "En cours",
+//   "Completed": "Terminé",
+//   "Archived": "Archivé",
+//   "Stand by": "Stand by"
+// };
+
+// const getFrenchState = (state: string | undefined) => {
+//   if (!state) return "Pas commencé";
+//   return projectStates[state as keyof typeof projectStates] || state;
+// };
+
 const DetailsAndHistoricProject = () => {
   const { projectId } = useParams();
   const location = useLocation();
@@ -102,11 +116,17 @@ const DetailsAndHistoricProject = () => {
     setShowActions(false);
   };
 
+    // Obtenir l'état en français pour l'affichage
+  // const frenchState = getFrenchState(projectData?.state);
+  // Fonction pour déterminer les breadcrumbs en fonction de la route
+
+
   return (
     <ProjectLayout>
       <div className="">
         <div className="mx-4 pt-4 md:mx-10">
-          {location.pathname.includes("historic") ? (
+          {/* <Breadcrumb paths={getBreadcrumbs()} /> */}
+         {location.pathname.includes("historic") ? (
             <Breadcrumb
               paths={[
                 { name: "Projets", to: "/gmp/project/list" },
@@ -121,7 +141,6 @@ const DetailsAndHistoricProject = () => {
               ]}
             />
           )}
-          
           <div className="flex justify-between items-center flex-wrap px-3 text-sm">
             <div className="flex gap-3">
               <NavLink
@@ -164,7 +183,7 @@ const DetailsAndHistoricProject = () => {
               >
                 Modifier
               </NavLink> */}
-              {isDirector && (
+              {/* {isDirector && (
                 <NavLink 
                   to={`/gmp/project/advancement/${projectId}/update`}
                   className={({ isActive }) =>
@@ -175,7 +194,7 @@ const DetailsAndHistoricProject = () => {
                 >
                   Avancement
                 </NavLink>
-              )}
+              )} */}
             </div>
 
             <div className="relative">
@@ -188,21 +207,21 @@ const DetailsAndHistoricProject = () => {
               </button>
 
               {showActions && (
-  <div className="absolute right-0 mt-2 w-56 bg-white border border-green-700 rounded shadow-md z-50">
-    <NavLink
-      to={`/gmp/project/update/${projectId}`}
-      className={({ isActive }) =>
-        isActive
-          ? "block px-4 py-2 text-green-800 bg-green-100 rounded-lg"
-          : "block px-4 py-2 text-slate-600 hover:bg-green-100 hover:text-green-800 rounded-lg transition-all duration-200"
-      }
-      onClick={() => setShowActions(false)}
-    >
-      Modifier
-    </NavLink>
+              <div className="absolute right-0 mt-2 w-56 bg-white border border-green-700 rounded shadow-md z-50">
+                <NavLink
+                  to={`/gmp/project/update/${projectId}`}
+                  className={({ isActive }) =>
+                    isActive
+                      ? "block px-4 py-2 text-green-800 bg-green-100 rounded-lg"
+                      : "block px-4 py-2 text-slate-600 hover:bg-green-100 hover:text-green-800 rounded-lg transition-all duration-200"
+                  }
+                  onClick={() => setShowActions(false)}
+                >
+                Modifier
+              </NavLink>
     
-        {(!projectData?.state || projectData?.state === "") && (
-      <>
+                {(!projectData?.state || projectData?.state === "")&& (
+              <>
         <button 
           onClick={handleShowModalDebute}
           className="block w-full text-left px-4 py-2 text-slate-600 hover:bg-green-100 hover:text-green-800 rounded-lg transition-all duration-200"
@@ -231,7 +250,7 @@ const DetailsAndHistoricProject = () => {
     )}
     
     {/* Actions selon l'état du projet */}
-    {projectData?.state === "Pas commencé" && (
+    {projectData?.state === "Not Started" && (
       <>
         <button 
           onClick={handleShowModalDebute}
@@ -260,7 +279,7 @@ const DetailsAndHistoricProject = () => {
       </>
     )}
     
-    {projectData?.state === "Commencer/En cours" && (
+    {projectData?.state === "In Progress" && (
       <>
       <button
         onClick={handleShowModalTerminate}
@@ -288,7 +307,7 @@ const DetailsAndHistoricProject = () => {
       </>
     )}
     
-    {projectData?.state === "Terminer" && (
+    {projectData?.state === "Completed" && (
       <>
         <button
           onClick={handleShowModalDelete}
@@ -305,7 +324,7 @@ const DetailsAndHistoricProject = () => {
       </>
     )}
     
-    {projectData?.state === "Archiver" && (
+    {projectData?.state === "Archived" && (
       <>
         <button
           onClick={handleShowModalRestore}
@@ -322,11 +341,11 @@ const DetailsAndHistoricProject = () => {
       </>
     )}
     
-    {projectData?.state === "Mettre en stand by" && (
+    {projectData?.state === "Stand by" && (
       <>
         <button
           onClick={handleShowModalDelete}
-          className="block w-full text-left px-4 py-2 text-slate-600 hover:bg-green-100 hover:text-green-800 rounded-lg transition-all duration-200"
+          className="block w-full text-left px-4 py-2  text-slate-600 hover:bg-green-100 hover:text-green-800 rounded-lg transition-all duration-200"
         >
           Archiver
         </button>
