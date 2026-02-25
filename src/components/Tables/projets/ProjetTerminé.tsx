@@ -510,7 +510,7 @@ console.log("archiver", completedProjects);
         </button>
 
         <div className="text-xl text-center text-title font-semibold dark:text-whiten">
-          Liste des projets términés
+          Liste des projets terminés
         </div>
         <button
           disabled={actualPage === pageNumbers}
@@ -1131,7 +1131,7 @@ console.log("archiver", completedProjects);
                 <tr className="hover:bg-whiten dark:hover:bg-boxdark2">
                   <td colSpan={9} className="py-9 content-center ">
                     <div className="flex justify-center items-center">
-                      Aucun projet archivé trouvé
+                      Aucun projet terminé trouvé
                     </div>
                   </td>
                 </tr>

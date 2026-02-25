@@ -3,7 +3,7 @@ import {
   CustomInput,
   CustomSelect,
   CustomInputUserSpecifiedSearch,
-  PointSelect  // CustomSelectChoice,
+  PointSelect, // CustomSelectChoice,
 } from "../../UIElements";
 import { Calendar, LayoutDashboard, Table } from "lucide-react";
 
@@ -22,13 +22,12 @@ import GanttChart from "../../chart/GanttChart";
 import { Link } from "react-router-dom";
 import { getAllChefsProjet } from "../../../services/Project/ProjectServices";
 
-
 // Mapping des états anglais → français
 const projectStates: Record<string, string> = {
   "Not Started": "Pas commencé",
   "In Progress": "En cours",
-  "Completed": "Terminé",
-  "Archived": "Archivé",
+  Completed: "Terminé",
+  Archived: "Archivé",
   "Stand by": "Stand by",
 };
 
@@ -55,13 +54,11 @@ const projectStates: Record<string, string> = {
 //   return Math.round(result);
 // };
 
-
 // Fonction utilitaire
 const getFrenchState = (state?: string | null) => {
   if (!state) return "Pas commencé";
   return projectStates[state] || state;
 };
-
 
 const TableProjet = ({
   data,
@@ -80,7 +77,6 @@ const TableProjet = ({
   setProjectsSelected,
   setGoToAdvancement,
   setGoToTask,
-  setPage,
   setIsSearchButtonClicked,
 }: {
   data: Array<any> | null;
@@ -98,25 +94,9 @@ const TableProjet = ({
     startDate: string | undefined;
     endDate: string | undefined;
   };
-  availableUser: {
-    id: string;
-    name: string;
-    email: string;
-  }[];
-  selectedUserInput: Array<{
-    id: string;
-    name: string;
-    email: string;
-  }>;
-  setSelecteduserInput: React.Dispatch<
-    React.SetStateAction<
-      Array<{
-        id: string;
-        name: string;
-        email: string;
-      }>
-    >
-  >;
+  availableUser: Array<{ id: string; name: string; email: string }>;
+  selectedUserInput: Array<{ id: string; name: string; email: string }>;
+  setSelecteduserInput: React.Dispatch<React.SetStateAction<any>>;
   setProjectsToDelete: React.Dispatch<React.SetStateAction<Array<string>>>;
   setProjectsSelected: React.Dispatch<React.SetStateAction<Array<string>>>;
   setShowModalDelete: React.Dispatch<React.SetStateAction<boolean>>;
@@ -125,12 +105,6 @@ const TableProjet = ({
   setGoToAdvancement: React.Dispatch<React.SetStateAction<boolean>>;
   setGoToTask: React.Dispatch<React.SetStateAction<boolean>>;
   setIsSearchButtonClicked: React.Dispatch<React.SetStateAction<boolean>>;
-  setPage: React.Dispatch<
-    React.SetStateAction<{
-      pageNumber: number;
-      pageSize: number;
-    }>
-  >;
   setSearch: React.Dispatch<
     React.SetStateAction<{
       title: string;
@@ -150,7 +124,7 @@ const TableProjet = ({
   const [pageNumbers, setPageNumbers] = useState(1);
   const [dataSorted, setDataSorted] = useState({
     title: 0,
-    codeProjet:0,
+    codeProjet: 0,
     startDate: 0,
     endDate: 0,
     completionPercentage: 0,
@@ -158,27 +132,21 @@ const TableProjet = ({
     priority: 0,
     criticality: 0,
   });
-
   const [isAllSelected, setIsAllSelected] = useState(false);
   const [projectSelected, setProjectSelected] = useState<string[]>([]);
   const [myHabilitation, setMyHabilitation] = useState<IMyHabilitation>();
-  const [isTableView, setIsTableView] = useState<boolean>(true);
-const [viewMode, setViewMode] = useState<"table" | "gantt" | "card">("table");
-const [openMenuProjectId, setOpenMenuProjectId] = useState<string | null>(null);
-
-
-
-
-
+  const [viewMode, setViewMode] = useState<"table" | "gantt" | "card">("table");
+  const [openMenuProjectId, setOpenMenuProjectId] = useState<string | null>(
+    null,
+  );
   const [decodedToken, setDecodedToken] = useState<IDecodedToken>();
   const [tasks, setTasks] = useState<any[]>([]);
   const [applyFilter, setApplyFilter] = useState(false);
-  const [allDirectors, setAllDirectors] = useState<Array<{ id: string; name: string }>>([]);
+  const [allDirectors, setAllDirectors] = useState<
+    Array<{ id: string; name: string }>
+  >([]);
   const [activeCardId, setActiveCardId] = useState<string | null>(null);
   const [isLateOnly, setIsLateOnly] = useState(false);
-
-
-
 
   useEffect(() => {
     const token = localStorage.getItem("_au_pr");
@@ -218,261 +186,318 @@ const [openMenuProjectId, setOpenMenuProjectId] = useState<string | null>(null);
   //   console.log("**************")
   // }, [statusSelectedOptions])
 
-//   const computedData = useMemo(() => {
-//   if (!data) return [];
+  //   const computedData = useMemo(() => {
+  //   if (!data) return [];
 
-//   return data.map((p: any) => {
-//     const stateFr = getFrenchState(p.state);
+  //   return data.map((p: any) => {
+  //     const stateFr = getFrenchState(p.state);
 
-//     return {
-//       ...p,
-//       completionPercentage: calculateProjectCompletion(
-//         p.listPhases || [],
-//         stateFr,
-//         p.completionPercentage
-//       ),
-//     };
-//   });
-// }, [data]);
+  //     return {
+  //       ...p,
+  //       completionPercentage: calculateProjectCompletion(
+  //         p.listPhases || [],
+  //         stateFr,
+  //         p.completionPercentage
+  //       ),
+  //     };
+  //   });
+  // }, [data]);
 
-// const computedData = useMemo(() => {
-//   if (!data) return [];
+  // const computedData = useMemo(() => {
+  //   if (!data) return [];
 
-//   return data.map((project: any) => {
-//     const projectStateFr = getFrenchState(project.state);
+  //   return data.map((project: any) => {
+  //     const projectStateFr = getFrenchState(project.state);
 
-//     const computedCompletion = calculateProjectCompletion(
-//       project.listPhases || [],
-//       projectStateFr,
-//       project.completionPercentage ?? 0
-//     );
+  //     const computedCompletion = calculateProjectCompletion(
+  //       project.listPhases || [],
+  //       projectStateFr,
+  //       project.completionPercentage ?? 0
+  //     );
 
-//     return {
-//       ...project,
-//       completionPercentage: computedCompletion,
-//     };
-//   });
-// }, [data]);
+  //     return {
+  //       ...project,
+  //       completionPercentage: computedCompletion,
+  //     };
+  //   });
+  // }, [data]);
 
+  const filteredData = useMemo(() => {
+    if (!data) return [];
 
-const filteredData = useMemo(() => {
-  if (!data) return [];
+    // 🔹 Tant que "Rechercher" n’est pas cliqué → pas de filtre
+    if (!applyFilter) return data;
 
-  // 🔹 Tant que "Rechercher" n’est pas cliqué → pas de filtre
-  if (!applyFilter) return data;
-
-  return data.filter((project) => {
-    /* =======================
+    return data.filter((project) => {
+      /* =======================
        TITRE
     ======================= */
-    if (
-      search.title &&
-      !project.title.toLowerCase().includes(search.title.toLowerCase())
-    ) {
-      return false;
-    }
+      if (
+        search.title &&
+        !project.title.toLowerCase().includes(search.title.toLowerCase())
+      ) {
+        return false;
+      }
 
-    /* =======================
+      /* =======================
        CHEF DE PROJET
     ======================= */
-    if (search.director) {
-      const hasDirector = project.listUsers?.some(
-        (u: any) =>
-          u.role === "director" &&
-          u.userid === search.director
-      );
-      if (!hasDirector) return false;
-    }
+      if (search.director) {
+        const hasDirector = project.listUsers?.some(
+          (u: any) => u.role === "director" && u.userid === search.director,
+        );
+        if (!hasDirector) return false;
+      }
 
-    /* =======================
+      /* =======================
        PRIORITÉ
     ======================= */
-    if (search.priority !== "Tous" && project.priority !== search.priority) {
-      return false;
-    }
+      if (search.priority !== "Tous" && project.priority !== search.priority) {
+        return false;
+      }
 
-    /* =======================
+      /* =======================
        CRITICITÉ
     ======================= */
-    if (
-      search.criticity !== "Tous" &&
-      project.criticality !== search.criticity
-    ) {
-      return false;
-    }
+      if (
+        search.criticity !== "Tous" &&
+        project.criticality !== search.criticity
+      ) {
+        return false;
+      }
 
-    /* =======================
+      /* =======================
       STATUT DU PROJET
     ======================= */
-    if (search.state !== "Tous") {
-      const projectStateFr = getFrenchState(project.state);
+      if (search.state !== "Tous") {
+        const projectStateFr = getFrenchState(project.state);
 
-      if (projectStateFr !== search.state) {
-        return false;
+        if (projectStateFr !== search.state) {
+          return false;
+        }
       }
-    }
 
-    /* =======================
-       AVANCEMENT
+      /* =======================
+       AVANCEMENT (match exact)
+       - Exclut les projets sans `completionPercentage`
     ======================= */
-    if (search.completionPercentage !== "Tous") {
-      const target = Number(search.completionPercentage);
-      if (project.completionPercentage < target) {
-        return false;
+      if (search.completionPercentage !== "Tous") {
+        const target = Number(search.completionPercentage);
+        const projValue = project.completionPercentage;
+
+        // si la valeur du projet est indéfinie ou non numérique → exclure
+        if (projValue === undefined || projValue === null) return false;
+
+        // match strict (==) — l'utilisateur a demandé un filtre exact
+        if (Number(projValue) !== target) {
+          return false;
+        }
       }
-    }
 
-
-    /* =======================
+      /* =======================
        MEMBRE
     ======================= */
-    if (selectedUserInput.length > 0) {
-      const hasMember = project.listUsers?.some((u: any) =>
-        selectedUserInput.some(
-          (selected) => selected.id === u.userid
-        )
-      );
-      if (!hasMember) return false;
-    }
+      if (selectedUserInput.length > 0) {
+        const hasMember = project.listUsers?.some((u: any) =>
+          selectedUserInput.some((selected) => selected.id === u.userid),
+        );
+        if (!hasMember) return false;
+      }
 
-    /* =======================
+      /* =======================
        DATE DÉBUT
     ======================= */
-    if (search.startDate) {
-      if (new Date(project.startDate) < new Date(search.startDate)) {
-        return false;
-      }
-    }
+      // if (search.startDate) {
+      //   if (new Date(project.startDate) < new Date(search.startDate)) {
+      //     return false;
+      //   }
+      // }
 
-    /* =======================
+      /* =======================
        DATE FIN
     ======================= */
-    if (search.endDate && project.endDate) {
-      if (new Date(project.endDate) > new Date(search.endDate)) {
-        return false;
+      // if (search.endDate && project.endDate) {
+      //   if (new Date(project.endDate) > new Date(search.endDate)) {
+      //     return false;
+      //   }
+      // }
+      // Cas 1: Les deux dates sont renseignées
+      if (search.startDate && search.endDate) {
+        // Vérifier que le projet a les deux dates
+        if (!project.startDate || !project.endDate) {
+          return false;
+        }
+
+        const projectStart = new Date(project.startDate);
+        const projectEnd = new Date(project.endDate);
+        const filterStart = new Date(search.startDate);
+        const filterEnd = new Date(search.endDate);
+
+        // Normaliser à minuit pour ignorer l'heure
+        projectStart.setHours(0, 0, 0, 0);
+        projectEnd.setHours(0, 0, 0, 0);
+        filterStart.setHours(0, 0, 0, 0);
+        filterEnd.setHours(0, 0, 0, 0);
+
+        // Le projet doit être DANS l'intervalle [filterStart, filterEnd]
+        const isAfterStart = projectStart >= filterStart;
+        const isBeforeEnd = projectEnd <= filterEnd;
+
+        if (!isAfterStart || !isBeforeEnd) {
+          return false;
+        }
       }
-    }
+      // Cas 2: Seulement la date de début
+      else if (search.startDate) {
+        if (!project.startDate) {
+          return false;
+        }
+
+        const projectStart = new Date(project.startDate);
+        const filterStart = new Date(search.startDate);
+
+        projectStart.setHours(0, 0, 0, 0);
+        filterStart.setHours(0, 0, 0, 0);
+
+        if (projectStart < filterStart) {
+          return false;
+        }
+      }
+      // Cas 3: Seulement la date de fin
+      else if (search.endDate) {
+        if (!project.endDate) {
+          return false;
+        }
+
+        const projectEnd = new Date(project.endDate);
+        const filterEnd = new Date(search.endDate);
+
+        projectEnd.setHours(0, 0, 0, 0);
+        filterEnd.setHours(0, 0, 0, 0);
+
+        if (projectEnd > filterEnd) {
+          return false;
+        }
+      }
 
       /* =======================
     PROJET EN RETARD
   ======================= */
-  if (isLateOnly) {
-    const today = new Date();
+      if (isLateOnly) {
+        const today = new Date();
 
-    if (
-      !project.endDate ||
-      new Date(project.endDate) >= today ||
-      project.completionPercentage === 100
-    ) {
-      return false;
-    }
-  }
-    return true;
-  });
-}, [
-  data,
-  applyFilter,
-  search,
-  selectedUserInput,
-]);
+        if (
+          !project.endDate ||
+          new Date(project.endDate) >= today ||
+          project.completionPercentage === 100
+        ) {
+          return false;
+        }
+      }
+      return true;
+    });
+  }, [data, applyFilter, search, selectedUserInput, isLateOnly]);
 
-const filteredProjectCount = useMemo(() => {
-  return filteredData.length;
-}, [filteredData]);
+  const filteredProjectCount = useMemo(() => {
+    return filteredData.length;
+  }, [filteredData]);
 
+  const sortedData: IProjectData[] = filteredData
+    .slice()
+    .sort((a: IProjectData, b: IProjectData) => {
+      // sort by code projet
+      if (dataSorted.codeProjet === 1) {
+        return a.codeProjet?.localeCompare(b.codeProjet ?? "") || 0;
+      } else if (dataSorted.codeProjet === 2) {
+        return b.codeProjet?.localeCompare(a.codeProjet ?? "") || 0;
+      }
+      // sort by title
+      if (dataSorted.title === 1) {
+        return a.title.localeCompare(b.title);
+      } else if (dataSorted.title === 2) {
+        return b.title.localeCompare(a.title);
+      }
 
+      // sort by start date
+      if (dataSorted.startDate === 1) {
+        return a.startDate?.localeCompare(b.startDate ?? "") || 0;
+      } else if (dataSorted.startDate === 2) {
+        return b.startDate?.localeCompare(a.startDate ?? "") || 0;
+      }
 
- const sortedData: IProjectData[] = filteredData.slice().sort( (a: IProjectData, b: IProjectData) =>{
-    // sort by title
-    if (dataSorted.title === 1) {
-      return a.title.localeCompare(b.title);
-    } else if (dataSorted.title === 2) {
-      return b.title.localeCompare(a.title);
-    }
+      //sort by end date
+      if (dataSorted.endDate === 1) {
+        if (a.endDate === null) return 1;
+        if (b.endDate === null) return -1;
+        return a.endDate?.localeCompare(b.endDate ?? "") || 0;
+      } else if (dataSorted.endDate === 2) {
+        if (a.endDate === null) return 1;
+        if (b.endDate === null) return -1;
+        return b.endDate?.localeCompare(a.endDate ?? "") || 0;
+      }
 
-    // sort by start date
-    if (dataSorted.startDate === 1) {
-      return a.startDate?.localeCompare(b.startDate ?? "") || 0;
-    } else if (dataSorted.startDate === 2) {
-      return b.startDate?.localeCompare(a.startDate ?? "") || 0;
-    }
+      // sort by completion percentage
+      if (dataSorted.completionPercentage === 1) {
+        if (a.completionPercentage === undefined) return 1;
+        if (b.completionPercentage === undefined) return -1;
+        return a.completionPercentage - b.completionPercentage;
+      } else if (dataSorted.completionPercentage === 2) {
+        if (a.completionPercentage === undefined) return 1;
+        if (b.completionPercentage === undefined) return -1;
+        return b.completionPercentage - a.completionPercentage;
+      }
 
-    //sort by end date
-    if (dataSorted.endDate === 1) {
-      if (a.endDate === null) return 1;
-      if (b.endDate === null) return -1;
-      return a.endDate?.localeCompare(b.endDate ?? "") || 0;
-    } else if (dataSorted.endDate === 2) {
-      if (a.endDate === null) return 1;
-      if (b.endDate === null) return -1;
-      return b.endDate?.localeCompare(a.endDate ?? "") || 0;
-    }
+      // sort by priority
+      const priorityOrder: { [key: string]: number } = {
+        Faible: 1,
+        Moyenne: 2,
+        Elevée: 3,
+      };
+      if (dataSorted.priority === 1) {
+        const priorityA = priorityOrder[a.priority] ?? 0;
+        const priorityB = priorityOrder[b.priority] ?? 0;
+        return priorityA - priorityB;
+      } else if (dataSorted.priority === 2) {
+        const priorityA = priorityOrder[a.priority] ?? 0;
+        const priorityB = priorityOrder[b.priority] ?? 0;
+        return priorityB - priorityA;
+      }
 
-    // sort by completion percentage
-    if (dataSorted.completionPercentage === 1) {
-      if (a.completionPercentage === undefined) return 1;
-      if (b.completionPercentage === undefined) return -1;
-      return a.completionPercentage - b.completionPercentage;
-    } else if (dataSorted.completionPercentage === 2) {
-      if (a.completionPercentage === undefined) return 1;
-      if (b.completionPercentage === undefined) return -1;
-      return b.completionPercentage - a.completionPercentage;
-    }
+      // sort by criticality
+      const criticalityOrder: { [key: string]: number } = {
+        Normale: 1,
+        Urgente: 2,
+      };
+      if (dataSorted.criticality === 1) {
+        const criticalityA = criticalityOrder[a.criticality] ?? 0;
+        const criticalityB = criticalityOrder[b.criticality] ?? 0;
+        return criticalityA - criticalityB;
+      } else if (dataSorted.criticality === 2) {
+        const criticalityA = criticalityOrder[a.criticality] ?? 0;
+        const criticalityB = criticalityOrder[b.criticality] ?? 0;
+        return criticalityB - criticalityA;
+      }
 
-    // sort by priority
-    const priorityOrder: { [key: string]: number } = {
-      Faible: 1,
-      Moyenne: 2,
-      Elevée: 3,
-    };
-    if (dataSorted.priority === 1) {
-      const priorityA = priorityOrder[a.priority] ?? 0;
-      const priorityB = priorityOrder[b.priority] ?? 0;
-      return priorityA - priorityB;
-    } else if (dataSorted.priority === 2) {
-      const priorityA = priorityOrder[a.priority] ?? 0;
-      const priorityB = priorityOrder[b.priority] ?? 0;
-      return priorityB - priorityA;
-    }
+      // =======================
+      // SORT BY STATE (STATUT)
+      // =======================
+      const stateOrder: Record<string, number> = {
+        "Pas commencé": 1,
+        "En cours": 2,
+        "Stand by": 3,
+        Terminé: 4,
+        Archivé: 5,
+      };
 
-    // sort by criticality
-    const criticalityOrder: { [key: string]: number } = {
-      Normale: 1,
-      Urgente: 2,
-    };
-    if (dataSorted.criticality === 1) {
-      const criticalityA = criticalityOrder[a.criticality] ?? 0;
-      const criticalityB = criticalityOrder[b.criticality] ?? 0;
-      return criticalityA - criticalityB;
-    } else if (dataSorted.criticality === 2) {
-      const criticalityA = criticalityOrder[a.criticality] ?? 0;
-      const criticalityB = criticalityOrder[b.criticality] ?? 0;
-      return criticalityB - criticalityA;
-    }
+      if (dataSorted.state === 1 || dataSorted.state === 2) {
+        const stateA = stateOrder[getFrenchState(a.state)] ?? 0;
+        const stateB = stateOrder[getFrenchState(b.state)] ?? 0;
 
-    // =======================
-    // SORT BY STATE (STATUT)
-    // =======================
-    const stateOrder: Record<string, number> = {
-      "Pas commencé": 1,
-      "En cours": 2,
-      "Stand by": 3,
-      "Terminé": 4,
-      "Archivé": 5,
-    };
+        return dataSorted.state === 1 ? stateA - stateB : stateB - stateA;
+      }
 
-    if (dataSorted.state === 1 || dataSorted.state === 2) {
-      const stateA = stateOrder[getFrenchState(a.state)] ?? 0;
-      const stateB = stateOrder[getFrenchState(b.state)] ?? 0;
-
-      return dataSorted.state === 1
-        ? stateA - stateB
-        : stateB - stateA;
-    }
-
-
-    return 0;
-  });
+      return 0;
+    });
 
   const project = useMemo(() => {
     return data?.flatMap((pr: any) => [
@@ -504,13 +529,19 @@ const filteredProjectCount = useMemo(() => {
     ]);
   }, [data]);
 
-  const paginatedData = useMemo(() => {
-  const startIndex = (actualPage - 1) * entriesPerPage;
-  const endIndex = startIndex + entriesPerPage;
+  // --- New: explicit filtered -> paginated flow
+  const filteredProjects = useMemo(() => {
+    // `sortedData` is already produced from `filteredData` (keeps sorting),
+    // so reuse it here as the canonical "filtered + sorted" list.
+    return sortedData;
+  }, [sortedData]);
 
-  return sortedData.slice(startIndex, endIndex);
-}, [sortedData, actualPage, entriesPerPage]);
+  const paginatedProjects = useMemo(() => {
+    const startIndex = (actualPage - 1) * entriesPerPage;
+    const endIndex = startIndex + entriesPerPage;
 
+    return filteredProjects.slice(startIndex, endIndex);
+  }, [filteredProjects, actualPage, entriesPerPage]);
 
   useEffect(() => {
     if (JSON.stringify(project) !== JSON.stringify(tasks)) {
@@ -544,8 +575,6 @@ const filteredProjectCount = useMemo(() => {
     setSelecteduserInput([]);
     setApplyFilter(false);
     setIsSearchButtonClicked(true);
-
-    // réinitialise le filtre "En retard"
     setIsLateOnly(false);
   };
 
@@ -560,17 +589,26 @@ const filteredProjectCount = useMemo(() => {
     return index >= start && index < end;
   };
 
-useEffect(() => {
-  const newPageNumbers = getPageNumber(totalProjectCount);
-  setPageNumbers(newPageNumbers);
-  
-  // Si la page actuelle est au-delà du nombre de pages disponibles, revenir à la dernière page
-  if (actualPage > newPageNumbers && newPageNumbers > 0) {
-    setActualPage(newPageNumbers);
-  } else if (newPageNumbers === 0) {
-    setActualPage(1); // Si pas de données, revenir à la page 1
-  }
-}, [entriesPerPage, totalProjectCount, actualPage]);
+  // useEffect(() => {
+  //   const newPageNumbers = getPageNumber(totalProjectCount);
+  //   setPageNumbers(newPageNumbers);
+
+  //   // Si la page actuelle est au-delà du nombre de pages disponibles, revenir à la dernière page
+  //   if (actualPage > newPageNumbers && newPageNumbers > 0) {
+  //     setActualPage(newPageNumbers);
+  //   } else if (newPageNumbers === 0) {
+  //     setActualPage(1); // Si pas de données, revenir à la page 1
+  //   }
+  // }, [entriesPerPage, totalProjectCount, actualPage]);
+  useEffect(() => {
+    const newPageNumbers = Math.ceil(
+      (filteredProjects?.length ?? 0) / entriesPerPage,
+    );
+    setPageNumbers(newPageNumbers || 1);
+    if (actualPage > newPageNumbers && newPageNumbers > 0) {
+      setActualPage(newPageNumbers);
+    }
+  }, [filteredProjects, entriesPerPage, actualPage]);
 
   useEffect(() => {
     setActualPage(1);
@@ -578,39 +616,38 @@ useEffect(() => {
     setIsAllSelected(false);
   }, [search]);
 
-  useEffect(() => {
-    setPage((prev) => ({
-      ...prev,
-      pageNumber: actualPage,
-    }));
-  }, [actualPage]);
+  // useEffect(() => {
+  //   setPage((prev) => ({
+  //     ...prev,
+  //     pageNumber: actualPage,
+  //   }));
+  // }, [actualPage]);
 
   // Fonction pour changer de page avec validation
-const handlePageChange = (newPage: number) => {
-  if (newPage < 1 || newPage > pageNumbers) return;
-  
-  // Vérifiez s'il y a des données filtrées pour cette page
-  const startIndex = (newPage - 1) * entriesPerPage;
-  const endIndex = startIndex + entriesPerPage;
-  const hasDataForPage = filteredData.slice(startIndex, endIndex).length > 0;
-  
-  if (!hasDataForPage && newPage > 1) {
-    // Si pas de données sur cette page, chercher la dernière page avec des données
-    let lastPageWithData = newPage - 1;
-    while (lastPageWithData > 1) {
-      const startIdx = (lastPageWithData - 1) * entriesPerPage;
-      const endIdx = startIdx + entriesPerPage;
-      if (filteredData.slice(startIdx, endIdx).length > 0) {
-        break;
-      }
-      lastPageWithData--;
-    }
-    setActualPage(lastPageWithData);
-  } else {
-    setActualPage(newPage);
-  }
-};
+  const handlePageChange = (newPage: number) => {
+    if (newPage < 1 || newPage > pageNumbers) return;
 
+    // Vérifiez s'il y a des données filtrées pour cette page
+    const startIndex = (newPage - 1) * entriesPerPage;
+    const endIndex = startIndex + entriesPerPage;
+    const hasDataForPage = filteredData.slice(startIndex, endIndex).length > 0;
+
+    if (!hasDataForPage && newPage > 1) {
+      // Si pas de données sur cette page, chercher la dernière page avec des données
+      let lastPageWithData = newPage - 1;
+      while (lastPageWithData > 1) {
+        const startIdx = (lastPageWithData - 1) * entriesPerPage;
+        const endIdx = startIdx + entriesPerPage;
+        if (filteredData.slice(startIdx, endIdx).length > 0) {
+          break;
+        }
+        lastPageWithData--;
+      }
+      setActualPage(lastPageWithData);
+    } else {
+      setActualPage(newPage);
+    }
+  };
 
   const handleSelectAllProject = () => {
     if (data) {
@@ -634,37 +671,49 @@ const handlePageChange = (newPage: number) => {
 
   const handleRemoveUserSelectedInput = (userId: string) => {
     const updatedSelectedUsers = selectedUserInput.filter(
-      (user) => user.id !== userId
+      (user) => user.id !== userId,
     );
     setSelecteduserInput(updatedSelectedUsers);
+    setApplyFilter(false);
   };
 
-  
- // Récupérez tous les chefs au chargement du composant
-useEffect(() => {
-  const fetchAllDirectors = async () => {
-    try {
-      const chefs = await getAllChefsProjet();
-      setAllDirectors(chefs);
-    } catch (error) {
-      console.error("Erreur lors de la récupération des chefs de projet:", error);
-    }
+  // Récupérez tous les chefs au chargement du composant
+  useEffect(() => {
+    const fetchAllDirectors = async () => {
+      try {
+        const chefs = await getAllChefsProjet();
+        setAllDirectors(chefs);
+      } catch (error) {
+        console.error(
+          "Erreur lors de la récupération des chefs de projet:",
+          error,
+        );
+      }
+    };
+
+    fetchAllDirectors();
+  }, []);
+
+  // Utilisez allDirectors au lieu de directorsFromProjects
+  const directorNameToId = useMemo(() => {
+    const map = new Map<string, string>();
+    allDirectors.forEach((d) => map.set(d.name, d.id));
+    return map;
+  }, [allDirectors]);
+
+  const selectedDirector = useMemo(() => {
+    if (!search.director) return null;
+    return allDirectors.find((d) => d.id === search.director) || null;
+  }, [search.director, allDirectors]);
+
+  const handleSetSelectedUserInput = (
+    value: React.SetStateAction<
+      Array<{ id: string; name: string; email: string }>
+    >,
+  ) => {
+    setSelecteduserInput(value);
+    setApplyFilter(false);
   };
-  
-  fetchAllDirectors();
-}, []);
-
-// Utilisez allDirectors au lieu de directorsFromProjects
-const directorNameToId = useMemo(() => {
-  const map = new Map<string, string>();
-  allDirectors.forEach((d) => map.set(d.name, d.id));
-  return map;
-}, [allDirectors]);
-
-const selectedDirector = useMemo(() => {
-  if (!search.director) return null;
-  return allDirectors.find((d) => d.id === search.director) || null;
-}, [search.director, allDirectors]);
 
   return (
     <div className="bg-white  min-h-[80vh] pt-2 shadow-1 rounded-lg border border-zinc-200 dark:border-strokedark dark:bg-boxdark">
@@ -682,7 +731,6 @@ const selectedDirector = useMemo(() => {
             gap-4 w-full
           "
         >
-
           <CustomInput
             type="text"
             value={search.title}
@@ -690,14 +738,10 @@ const selectedDirector = useMemo(() => {
             placeholder="Rechercher"
             rounded="medium"
             onChange={(e) => {
-              setSearch({
-                ...search,
-                title: e.target.value,
-              });
+              setSearch({ ...search, title: e.target.value });
+              setApplyFilter(false); // <-- add this
             }}
           />
-        
-
 
           {/* <CustomSelectChoice
             label="Statut"
@@ -712,7 +756,7 @@ const selectedDirector = useMemo(() => {
             rounded="medium"
             resetToAll={resetStatusSelectedOptions}
           /> */}
-          
+
           {/* <CustomSelect
             label="Statut"
             data={["Tous", "Pas commencé", "En cours", "Términé", "Stand by"]}
@@ -730,10 +774,8 @@ const selectedDirector = useMemo(() => {
             data={["Tous", "Elevée", "Moyenne", "Faible"]}
             value={search.priority}
             onValueChange={(e) => {
-              setSearch({
-                ...search,
-                priority: e,
-              });
+              setSearch({ ...search, priority: e });
+              setApplyFilter(false); // <-- add this
             }}
           />
           <CustomSelect
@@ -741,10 +783,8 @@ const selectedDirector = useMemo(() => {
             data={["Tous", "Urgente", "Normale"]}
             value={search.criticity}
             onValueChange={(e) => {
-              setSearch({
-                ...search,
-                criticity: e,
-              });
+              setSearch({ ...search, criticity: e });
+              setApplyFilter(false); // <-- add this
             }}
           />
 
@@ -760,53 +800,53 @@ const selectedDirector = useMemo(() => {
             ]}
             value={search.state}
             onValueChange={(value) => {
-              setSearch((prev) => ({
-                ...prev,
-                state: value,
-              }));
+              setSearch((prev) => ({ ...prev, state: value }));
+              setApplyFilter(false); // <-- add this
             }}
           />
 
-
-          <CustomSelect
+          {/* <CustomSelect
             label="Avancement"
             data={["Tous", "0", "25", "50", "75", "100"]}
             value={search.completionPercentage}
             onValueChange={(e) => {
-              setSearch({
-                ...search,
-                completionPercentage: e,
-              });
+              setSearch({ ...search, completionPercentage: e });
+              setApplyFilter(false); // <-- add this
             }}
-          />
-           <CustomInputUserSpecifiedSearch
+          /> */}
+          <CustomInputUserSpecifiedSearch
             label="Membre"
             rounded="medium"
             placeholder="Rechercher"
             user={availableUser}
             userSelected={selectedUserInput}
-            setUserSelected={setSelecteduserInput}
+            setUserSelected={handleSetSelectedUserInput} // <-- use wrapper
           />
 
           <CustomSelect
-              label="Chef de projet"
-              data={["Tous", ...allDirectors.map((d) => d.name)]}
-              value={
-                search.director
-                  ? allDirectors.find((d) => d.id === search.director)?.name ?? "Tous"
-                  : "Tous"
-              }
-              onValueChange={(selectedName) => {
-                if (selectedName === "Tous") {
-                  setSearch((prev) => ({ ...prev, director: "" }));
-                  return;
-                }
+            label="Chef de projet"
+            data={[
+              "Tous",
+              ...allDirectors
+                .map((d) => d.name)
+                .sort((a, b) => a.localeCompare(b)), // Tri alphabétique
+            ]}
+            value={
+              search.director
+                ? (allDirectors.find((d) => d.id === search.director)?.name ??
+                  "Tous")
+                : "Tous"
+            }
+            onValueChange={(selectedName) => {
+              if (selectedName === "Tous") {
+                setSearch((prev) => ({ ...prev, director: "" }));
+              } else {
                 const id = directorNameToId.get(selectedName) ?? "";
                 setSearch((prev) => ({ ...prev, director: id }));
-              }}
-            />
-
-
+              }
+              setApplyFilter(false); // <-- add this
+            }}
+          />
 
           <CustomInput
             type="date"
@@ -818,6 +858,7 @@ const selectedDirector = useMemo(() => {
                 ...search,
                 startDate: e.target.value,
               });
+              setApplyFilter(false);
             }}
           />
           <CustomInput
@@ -830,6 +871,7 @@ const selectedDirector = useMemo(() => {
                 ...search,
                 endDate: e.target.value,
               });
+              setApplyFilter(false);
             }}
           />
           <div className="flex items-center gap-2 mt-6">
@@ -837,7 +879,10 @@ const selectedDirector = useMemo(() => {
               type="checkbox"
               id="lateProject"
               checked={isLateOnly}
-              onChange={(e) => setIsLateOnly(e.target.checked)}
+              onChange={(e) => {
+                setIsLateOnly(e.target.checked);
+                setApplyFilter(false);
+              }}
               className="w-4 h-4 accent-red-600 cursor-pointer"
             />
             <label
@@ -847,7 +892,6 @@ const selectedDirector = useMemo(() => {
               En retard
             </label>
           </div>
-
 
           <div className="flex items-end gap-2 mx-3">
             <div className="pb-2">
@@ -877,14 +921,13 @@ const selectedDirector = useMemo(() => {
               <button
                 type="button"
                 onClick={() => {
-                  setApplyFilter(true);          //déclenche le filtrage
+                  setApplyFilter(true); //déclenche le filtrage
                   setIsSearchButtonClicked(true);
                 }}
                 className=" px-2 cursor-pointer mt-2 py-2 lg:px-3 xl:px-2  text-center font-medium text-sm text-white hover:bg-opacity-90  border border-primaryGreen bg-primaryGreen rounded-lg dark:border-darkgreen dark:bg-darkgreen dark:hover:bg-opacity-90  md:ease-in md:duration-300 md:transform  "
               >
                 Rechercher
               </button>
-
             </div>
           </div>
         </div>
@@ -906,73 +949,74 @@ const selectedDirector = useMemo(() => {
               </div>
             ))}
 
-            {/* ===== CHEF DE PROJET SÉLECTIONNÉ ===== */}
-            {selectedDirector && (
-              <div>
-                <div className="flex mt-2.5 justify-between items-center text-sm border rounded-md shadow-sm bg-blue-100 dark:bg-blue-900 transition hover:shadow-md">
-                  <span className="px-3 py-2 whitespace-nowrap overflow-hidden text-ellipsis text-blue-800 dark:text-blue-200 font-medium">
-                    {selectedDirector.name}
-                  </span>
-                  <button
-                    className="flex items-center justify-center px-3 py-2 text-red-500 hover:text-white hover:bg-red-500 transition rounded-r-md focus:outline-none"
-                    onClick={() => {
-                      setSearch((prev) => ({ ...prev, director: "" }));
-                    }}
-                  >
-                    ✕
-                  </button>
-                </div>
+          {/* ===== CHEF DE PROJET SÉLECTIONNÉ ===== */}
+          {selectedDirector && (
+            <div>
+              <div className="flex mt-2.5 justify-between items-center text-sm border rounded-md shadow-sm bg-blue-100 dark:bg-blue-900 transition hover:shadow-md">
+                <span className="px-3 py-2 whitespace-nowrap overflow-hidden text-ellipsis text-blue-800 dark:text-blue-200 font-medium">
+                  {selectedDirector.name}
+                </span>
+                <button
+                  className="flex items-center justify-center px-3 py-2 text-red-500 hover:text-white hover:bg-red-500 transition rounded-r-md focus:outline-none"
+                  onClick={() => {
+                    setSearch((prev) => ({ ...prev, director: "" }));
+                    setApplyFilter(false);
+                  }}
+                >
+                  ✕
+                </button>
               </div>
-            )}
-
+            </div>
+          )}
         </div>
       </div>
       {/* ===== FILTER END ===== */}
       <div className="flex gap-4 pl-4">
-  {/* TABLE */}
-  <button
-    onClick={() => setViewMode("table")}
-    className={`flex items-center px-4 py-2 rounded-lg transition
-      ${viewMode === "table"
-        ? "bg-primaryGreen dark:bg-darkgreen"
-        : "bg-slate-600 hover:bg-slate-700"}
+        {/* TABLE */}
+        <button
+          onClick={() => setViewMode("table")}
+          className={`flex items-center px-4 py-2 rounded-lg transition
+      ${
+        viewMode === "table"
+          ? "bg-primaryGreen dark:bg-darkgreen"
+          : "bg-slate-600 hover:bg-slate-700"
+      }
     `}
-  >
-    <Table className="text-white" size={20} />
-  </button>
+        >
+          <Table className="text-white" size={20} />
+        </button>
 
-  {/* GANTT */}
-  <button
-    onClick={() => setViewMode("gantt")}
-    className={`flex items-center px-4 py-2 rounded-lg transition
-      ${viewMode === "gantt"
-        ? "bg-primaryGreen dark:bg-darkgreen"
-        : "bg-slate-600 hover:bg-slate-700"}
+        {/* GANTT */}
+        <button
+          onClick={() => setViewMode("gantt")}
+          className={`flex items-center px-4 py-2 rounded-lg transition
+      ${
+        viewMode === "gantt"
+          ? "bg-primaryGreen dark:bg-darkgreen"
+          : "bg-slate-600 hover:bg-slate-700"
+      }
     `}
-  >
-    <Calendar className="text-white" size={20} />
-  </button>
+        >
+          <Calendar className="text-white" size={20} />
+        </button>
 
-  {/* CARD */}
-  <button
-    onClick={() => setViewMode("card")}
-    className={`flex items-center px-4 py-2 rounded-lg transition
-      ${viewMode === "card"
-        ? "bg-primaryGreen dark:bg-darkgreen"
-        : "bg-slate-600 hover:bg-slate-700"}
+        {/* CARD */}
+        <button
+          onClick={() => setViewMode("card")}
+          className={`flex items-center px-4 py-2 rounded-lg transition
+      ${
+        viewMode === "card"
+          ? "bg-primaryGreen dark:bg-darkgreen"
+          : "bg-slate-600 hover:bg-slate-700"
+      }
     `}
-  >
-    {/* icône grille */}
-    <svg
-      width="20"
-      height="20"
-      viewBox="0 0 24 24"
-      fill="white"
-    >
-      <path d="M3 3h8v8H3V3zm10 0h8v8h-8V3zM3 13h8v8H3v-8zm10 0h8v8h-8v-8z" />
-    </svg>
-  </button>
-</div>
+        >
+          {/* icône grille */}
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
+            <path d="M3 3h8v8H3V3zm10 0h8v8h-8V3zM3 13h8v8H3v-8zm10 0h8v8h-8v-8z" />
+          </svg>
+        </button>
+      </div>
 
       {/* =====PAGINATE AND TITLE START===== */}
       <div
@@ -1008,9 +1052,10 @@ const selectedDirector = useMemo(() => {
 
         <div className="text-xl text-center text-title font-semibold dark:text-whiten">
           Liste de tous les projets
+          {/* Désactivé - Affichage du compteur non nécessaire
           <span className="ml-2 text-sm font-medium text-slate-600 dark:text-slate-300">
             {filteredProjectCount} / {data?.length ?? 0} projets
-          </span>
+          </span>*/}
         </div>
 
         <button
@@ -1041,89 +1086,87 @@ const selectedDirector = useMemo(() => {
       {/* =====PAGINATE AND TITLE END===== */}
       {/* ===== BULK START ===== */}
       {projectSelected.length !== 1 && (
-      <div
-        className={` mt-[-60px] border-primaryGreen border dark:border-formStrokedark  bg-white dark:bg-boxdark z-40 relative px-2 flex items-center justify-between transition-transform duration-200 ease-in-out transform ${
-          projectSelected.length > 0
-            ? "scale-y-100 opacity-100"
-            : "scale-y-0 opacity-0"
-        }`}
-      >
-        {projectSelected.length !== 1 && (
-    <div>
-      {projectSelected.length === 1
-        ? "1 élément sélectionné"
-        : `${projectSelected.length} éléments sélectionnés`}
-    </div>
-  )}
+        <div
+          className={` mt-[-60px] border-primaryGreen border dark:border-formStrokedark  bg-white dark:bg-boxdark z-40 relative px-2 flex items-center justify-between transition-transform duration-200 ease-in-out transform ${
+            projectSelected.length > 0
+              ? "scale-y-100 opacity-100"
+              : "scale-y-0 opacity-0"
+          }`}
+        >
+          {projectSelected.length !== 1 && (
+            <div>
+              {projectSelected.length === 1
+                ? "1 élément sélectionné"
+                : `${projectSelected.length} éléments sélectionnés`}
+            </div>
+          )}
 
-
-        <div>
-          {/* debut */}
-          {projectSelected.length > 1 ? (
-      <button
-        onClick={() => {
-          setProjectsToDelete(projectSelected);
-          setShowModalDelete(true);
-        }}
-        className="mb-1 mt-1 min-w-20 w-full text-sm py-2.5 px-3 md:h-10 border flex items-center justify-between border-stroke dark:border-formStrokedark rounded-lg  text-left text-black "
-      >
-        Archiver
-      </button>
-    ) : (
-      
-      <CustomSelect
-        data={
-          projectSelected.length > 1
-            ? ["Archiver"].filter((action) => {
-                if (
-                  myHabilitation?.project.delete === false &&
-                  action === "Archiver"
-                ) {
-                  return false;
+          <div>
+            {/* debut */}
+            {projectSelected.length > 1 ? (
+              <button
+                onClick={() => {
+                  setProjectsToDelete(projectSelected);
+                  setShowModalDelete(true);
+                }}
+                className="mb-1 mt-1 min-w-20 w-full text-sm py-2.5 px-3 md:h-10 border flex items-center justify-between border-stroke dark:border-formStrokedark rounded-lg  text-left text-black "
+              >
+                Archiver
+              </button>
+            ) : (
+              <CustomSelect
+                data={
+                  projectSelected.length > 1
+                    ? ["Archiver"].filter((action) => {
+                        if (
+                          myHabilitation?.project.delete === false &&
+                          action === "Archiver"
+                        ) {
+                          return false;
+                        }
+                        return true;
+                      })
+                    : []
                 }
-                return true;
-              })
-            : []
-        }
-        className={`mb-2 ${projectSelected.length < 2 ? 'opacity-50 cursor-not-allowed' : ''}`}
-        placeholder="Actions"
-        disabled={projectSelected.length < 1}
-        onValueChange={(e) => {
-          if (e.includes("Modifier")) {
-            setProjectToModif(projectSelected);
-          } else if (e.includes("Archiver")) {
-            setProjectsToDelete(projectSelected);
-            setShowModalDelete(true);
-          } else if (e.includes("Détails")) {
-            setProjectsSelected(projectSelected);
-            setGoToDetails(true);
-          } else if (e.includes("Historique")) {
-            setProjectsSelected(projectSelected);
-            setGoToHistoric(true);
-          } else if (e.includes("Avancement")) {
-            setProjectsSelected(projectSelected);
-            setGoToAdvancement(true);
-          } else if (e.includes("Gérer")) {
-            setProjectsSelected(projectSelected);
-            setGoToTask(true);
-          }
-        }}
-      />
-    )}
-    
+                className={`mb-2 ${projectSelected.length < 2 ? "opacity-50 cursor-not-allowed" : ""}`}
+                placeholder="Actions"
+                disabled={projectSelected.length < 1}
+                onValueChange={(e) => {
+                  if (e.includes("Modifier")) {
+                    setProjectToModif(projectSelected);
+                  } else if (e.includes("Archiver")) {
+                    setProjectsToDelete(projectSelected);
+                    setShowModalDelete(true);
+                  } else if (e.includes("Détails")) {
+                    setProjectsSelected(projectSelected);
+                    setGoToDetails(true);
+                  } else if (e.includes("Historique")) {
+                    setProjectsSelected(projectSelected);
+                    setGoToHistoric(true);
+                  }
+                  //  else if (e.includes("Avancement")) {
+                  //   setProjectsSelected(projectSelected);
+                  //   setGoToAdvancement(true);
+                  // }
+                  else if (e.includes("Gérer")) {
+                    setProjectsSelected(projectSelected);
+                    setGoToTask(true);
+                  }
+                }}
+              />
+            )}
+          </div>
+
+          {/* fin */}
         </div>
-
-
-        {/* fin */}
-      </div>
-    )}
+      )}
       {/* ===== BULK END ===== */}
       {/* =====TABLE START===== */}
       {viewMode === "table" && (
         <div className="max-w-full mb-4 overflow-x-auto ">
           <table className="w-full text-sm hidden md:table table-auto">
             {/* ===== TABLE HEAD START ===== */}
-            <thead className="pt-5  rounded-t-xl bg-primaryGreen dark:bg-darkgreen">
+            <thead className="pt-5 rounded-t-xl bg-primaryGreen dark:bg-darkgreen">
               <tr className="border border-stone-300 border-opacity-[0.1] border-r-0 border-l-0 text-white text-left">
                 <th className="pl-2">
                   <button
@@ -1152,75 +1195,68 @@ const selectedDirector = useMemo(() => {
                     </svg>
                   </button>
                 </th>
+
+                {/* Code Projet */}
                 <th className="py-4 px-4 font-bold text-white dark:text-white xl:pl-11">
-                    <div className="flex items-center gap-1">
-                      <span>Code Projet</span>
-                      <button
-                        className={`transform transition-transform duration-200`}
-                        onClick={() => {
-                          setDataSorted({
-                            ...dataSorted,
-                            title: 0,
-                            startDate: 0,
-                            endDate: 0,
-                            completionPercentage: 0,
-                            criticality: 0,
-                            priority: 0,
-                            codeProjet:
-                              dataSorted.codeProjet < 2 ? dataSorted.codeProjet + 1 : 0, 
-                          })
-                        }}
-                      >
-                        <svg
+                  <div className="flex items-center gap-1">
+                    <span>Code Projet</span>
+                    <button
+                      className="transform transition-transform duration-200"
+                      onClick={() => {
+                        setDataSorted({
+                          ...dataSorted,
+                          title: 0,
+                          startDate: 0,
+                          endDate: 0,
+                          completionPercentage: 0,
+                          criticality: 0,
+                          priority: 0,
+                          codeProjet:
+                            dataSorted.codeProjet < 2
+                              ? dataSorted.codeProjet + 1
+                              : 0,
+                        });
+                      }}
+                    >
+                      <svg
                         className="fill-white"
                         height="15"
                         width="15"
-                        version="1.1"
-                        id="Layer_1"
                         viewBox="0 0 425 425"
                       >
-                        <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-                        <g
-                          id="SVGRepo_tracerCarrier"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        ></g>
-                        <g id="SVGRepo_iconCarrier">
-                          {" "}
-                          <g>
-                            {" "}
-                            <polygon
-                              className={`${
-                                dataSorted.codeProjet === 0
-                                  ? "fill-white"
-                                  : dataSorted.codeProjet === 1
+                        <g>
+                          <polygon
+                            className={`${
+                              (dataSorted.codeProjet ?? 0) === 0
+                                ? "fill-white"
+                                : (dataSorted.codeProjet ?? 0) === 1
                                   ? "fill-black"
                                   : "fill-primaryGreen dark:fill-darkgreen"
-                              }`}
-                              points="212.5,0 19.371,192.5 405.629,192.5 "
-                            ></polygon>{" "}
-                            <polygon
-                              className={`${
-                                dataSorted.codeProjet === 0
-                                  ? "fill-white"
-                                  : dataSorted.codeProjet === 1
+                            }`}
+                            points="212.5,0 19.371,192.5 405.629,192.5"
+                          />
+                          <polygon
+                            className={`${
+                              (dataSorted.codeProjet ?? 0) === 0
+                                ? "fill-white"
+                                : (dataSorted.codeProjet ?? 0) === 1
                                   ? "fill-primaryGreen dark:fill-darkgreen"
                                   : "fill-black"
-                              }`}
-                              points="212.5,425 405.629,232.5 19.371,232.5 "
-                            ></polygon>{" "}
-                          </g>{" "}
+                            }`}
+                            points="212.5,425 405.629,232.5 19.371,232.5"
+                          />
                         </g>
                       </svg>
                     </button>
-                    </div>
+                  </div>
                 </th>
+
+                {/* Titre */}
                 <th className="py-4 px-4 font-bold text-white dark:text-white xl:pl-11">
                   <div className="flex items-center gap-1">
                     <span>Titre</span>
                     <button
-                      className={`
-                     transform transition-transform duration-200`}
+                      className="transform transition-transform duration-200"
                       onClick={() => {
                         setDataSorted({
                           ...dataSorted,
@@ -1238,119 +1274,41 @@ const selectedDirector = useMemo(() => {
                         className="fill-white"
                         height="15"
                         width="15"
-                        version="1.1"
-                        id="Layer_1"
                         viewBox="0 0 425 425"
                       >
-                        <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-                        <g
-                          id="SVGRepo_tracerCarrier"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        ></g>
-                        <g id="SVGRepo_iconCarrier">
-                          {" "}
-                          <g>
-                            {" "}
-                            <polygon
-                              className={`${
-                                dataSorted.title === 0
-                                  ? "fill-white"
-                                  : dataSorted.title === 1
+                        <g>
+                          <polygon
+                            className={`${
+                              (dataSorted.title ?? 0) === 0
+                                ? "fill-white"
+                                : (dataSorted.title ?? 0) === 1
                                   ? "fill-black"
                                   : "fill-primaryGreen dark:fill-darkgreen"
-                              }`}
-                              points="212.5,0 19.371,192.5 405.629,192.5 "
-                            ></polygon>{" "}
-                            <polygon
-                              className={`${
-                                dataSorted.title === 0
-                                  ? "fill-white"
-                                  : dataSorted.title === 1
+                            }`}
+                            points="212.5,0 19.371,192.5 405.629,192.5"
+                          />
+                          <polygon
+                            className={`${
+                              (dataSorted.title ?? 0) === 0
+                                ? "fill-white"
+                                : (dataSorted.title ?? 0) === 1
                                   ? "fill-primaryGreen dark:fill-darkgreen"
                                   : "fill-black"
-                              }`}
-                              points="212.5,425 405.629,232.5 19.371,232.5 "
-                            ></polygon>{" "}
-                          </g>{" "}
+                            }`}
+                            points="212.5,425 405.629,232.5 19.371,232.5"
+                          />
                         </g>
                       </svg>
                     </button>
                   </div>
                 </th>
-                {/* status */}
-                {/* <th className="py-4 px-4 font-bold text-white dark:text-white xl:pl-11">
-                  <div className="flex items-center gap-1">
-                    <span>Statut</span>
-                    <button
-                      className={`
-                     transform transition-transform duration-200`}
-                      onClick={() => {
-                        setDataSorted({
-                          ...dataSorted,
-                          startDate: 0,
-                          endDate: 0,
-                          completionPercentage: 0,
-                          criticality: 0,
-                          title: 0,
-                          priority:
-                            dataSorted.priority < 2
-                              ? dataSorted.priority + 1
-                              : 0,
-                        });
-                      }}
-                    >
-                      <svg
-                        className="fill-white"
-                        height="15"
-                        width="15"
-                        version="1.1"
-                        id="Layer_1"
-                        viewBox="0 0 425 425"
-                      >
-                        <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-                        <g
-                          id="SVGRepo_tracerCarrier"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        ></g>
-                        <g id="SVGRepo_iconCarrier">
-                          {" "}
-                          <g>
-                            {" "}
-                            <polygon
-                              className={`${
-                                dataSorted.priority === 0
-                                  ? "fill-white"
-                                  : dataSorted.priority === 1
-                                  ? "fill-black"
-                                  : "fill-primaryGreen dark:fill-darkgreen"
-                              }`}
-                              points="212.5,0 19.371,192.5 405.629,192.5 "
-                            ></polygon>{" "}
-                            <polygon
-                              className={`${
-                                dataSorted.priority === 0
-                                  ? "fill-white"
-                                  : dataSorted.priority === 1
-                                  ? "fill-primaryGreen dark:fill-darkgreen"
-                                  : "fill-black"
-                              }`}
-                              points="212.5,425 405.629,232.5 19.371,232.5 "
-                            ></polygon>{" "}
-                          </g>{" "}
-                        </g>
-                      </svg>
-                    </button>
-                  </div>
-                </th> */}
-                {/* status */}
+
+                {/* Priorité */}
                 <th className="py-4 px-4 font-bold text-white dark:text-white xl:pl-11">
                   <div className="flex items-center gap-1">
                     <span>Priorité</span>
                     <button
-                      className={`
-                     transform transition-transform duration-200`}
+                      className="transform transition-transform duration-200"
                       onClick={() => {
                         setDataSorted({
                           ...dataSorted,
@@ -1370,52 +1328,41 @@ const selectedDirector = useMemo(() => {
                         className="fill-white"
                         height="15"
                         width="15"
-                        version="1.1"
-                        id="Layer_1"
                         viewBox="0 0 425 425"
                       >
-                        <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-                        <g
-                          id="SVGRepo_tracerCarrier"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        ></g>
-                        <g id="SVGRepo_iconCarrier">
-                          {" "}
-                          <g>
-                            {" "}
-                            <polygon
-                              className={`${
-                                dataSorted.priority === 0
-                                  ? "fill-white"
-                                  : dataSorted.priority === 1
+                        <g>
+                          <polygon
+                            className={`${
+                              (dataSorted.priority ?? 0) === 0
+                                ? "fill-white"
+                                : (dataSorted.priority ?? 0) === 1
                                   ? "fill-black"
                                   : "fill-primaryGreen dark:fill-darkgreen"
-                              }`}
-                              points="212.5,0 19.371,192.5 405.629,192.5 "
-                            ></polygon>{" "}
-                            <polygon
-                              className={`${
-                                dataSorted.priority === 0
-                                  ? "fill-white"
-                                  : dataSorted.priority === 1
+                            }`}
+                            points="212.5,0 19.371,192.5 405.629,192.5"
+                          />
+                          <polygon
+                            className={`${
+                              (dataSorted.priority ?? 0) === 0
+                                ? "fill-white"
+                                : (dataSorted.priority ?? 0) === 1
                                   ? "fill-primaryGreen dark:fill-darkgreen"
                                   : "fill-black"
-                              }`}
-                              points="212.5,425 405.629,232.5 19.371,232.5 "
-                            ></polygon>{" "}
-                          </g>{" "}
+                            }`}
+                            points="212.5,425 405.629,232.5 19.371,232.5"
+                          />
                         </g>
                       </svg>
                     </button>
                   </div>
                 </th>
+
+                {/* Criticité */}
                 <th className="py-4 px-4 font-bold text-white dark:text-white xl:pl-11">
                   <div className="flex items-center gap-1">
                     <span>Criticité</span>
                     <button
-                      className={`
-                     transform transition-transform duration-200`}
+                      className="transform transition-transform duration-200"
                       onClick={() => {
                         setDataSorted({
                           ...dataSorted,
@@ -1435,46 +1382,36 @@ const selectedDirector = useMemo(() => {
                         className="fill-white"
                         height="15"
                         width="15"
-                        version="1.1"
-                        id="Layer_1"
                         viewBox="0 0 425 425"
                       >
-                        <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-                        <g
-                          id="SVGRepo_tracerCarrier"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        ></g>
-                        <g id="SVGRepo_iconCarrier">
-                          {" "}
-                          <g>
-                            {" "}
-                            <polygon
-                              className={`${
-                                dataSorted.criticality === 0
-                                  ? "fill-white"
-                                  : dataSorted.criticality === 1
+                        <g>
+                          <polygon
+                            className={`${
+                              (dataSorted.criticality ?? 0) === 0
+                                ? "fill-white"
+                                : (dataSorted.criticality ?? 0) === 1
                                   ? "fill-black"
                                   : "fill-primaryGreen dark:fill-darkgreen"
-                              }`}
-                              points="212.5,0 19.371,192.5 405.629,192.5 "
-                            ></polygon>{" "}
-                            <polygon
-                              className={`${
-                                dataSorted.criticality === 0
-                                  ? "fill-white"
-                                  : dataSorted.criticality === 1
+                            }`}
+                            points="212.5,0 19.371,192.5 405.629,192.5"
+                          />
+                          <polygon
+                            className={`${
+                              (dataSorted.criticality ?? 0) === 0
+                                ? "fill-white"
+                                : (dataSorted.criticality ?? 0) === 1
                                   ? "fill-primaryGreen dark:fill-darkgreen"
                                   : "fill-black"
-                              }`}
-                              points="212.5,425 405.629,232.5 19.371,232.5 "
-                            ></polygon>{" "}
-                          </g>{" "}
+                            }`}
+                            points="212.5,425 405.629,232.5 19.371,232.5"
+                          />
                         </g>
                       </svg>
                     </button>
                   </div>
                 </th>
+
+                {/* Statut */}
                 <th className="py-4 px-4 font-bold text-white xl:pl-11">
                   <div className="flex items-center gap-1">
                     <span>Statut</span>
@@ -1489,11 +1426,11 @@ const selectedDirector = useMemo(() => {
                           completionPercentage: 0,
                           priority: 0,
                           criticality: 0,
-                          state: dataSorted.state < 2 ? dataSorted.state + 1 : 0,
+                          state:
+                            dataSorted.state < 2 ? dataSorted.state + 1 : 0,
                         });
                       }}
                     >
-                      {/* icône tri */}
                       <svg
                         className="fill-white"
                         height="15"
@@ -1502,21 +1439,21 @@ const selectedDirector = useMemo(() => {
                       >
                         <polygon
                           className={`${
-                            dataSorted.state === 0
+                            (dataSorted.state ?? 0) === 0
                               ? "fill-white"
-                              : dataSorted.state === 1
-                              ? "fill-black"
-                              : "fill-primaryGreen dark:fill-darkgreen"
+                              : (dataSorted.state ?? 0) === 1
+                                ? "fill-black"
+                                : "fill-primaryGreen dark:fill-darkgreen"
                           }`}
                           points="212.5,0 19.371,192.5 405.629,192.5"
                         />
                         <polygon
                           className={`${
-                            dataSorted.state === 0
+                            (dataSorted.state ?? 0) === 0
                               ? "fill-white"
-                              : dataSorted.state === 1
-                              ? "fill-primaryGreen dark:fill-darkgreen"
-                              : "fill-black"
+                              : (dataSorted.state ?? 0) === 1
+                                ? "fill-primaryGreen dark:fill-darkgreen"
+                                : "fill-black"
                           }`}
                           points="212.5,425 405.629,232.5 19.371,232.5"
                         />
@@ -1525,22 +1462,26 @@ const selectedDirector = useMemo(() => {
                   </div>
                 </th>
 
+                {/* CDP */}
                 <th className="py-4 px-4 font-bold text-white dark:text-white xl:pl-11">
                   <div className="flex items-center">
                     <span>CDP</span>
                   </div>
                 </th>
+
+                {/* Équipes */}
                 <th className="py-4 px-4 font-bold text-white dark:text-white xl:pl-11">
                   <div className="flex items-center">
                     <span>Équipes</span>
                   </div>
                 </th>
+
+                {/* Date début */}
                 <th className="py-4 px-4 font-bold text-white dark:text-white xl:pl-11">
                   <div className="flex items-center gap-1">
                     <span>Date début</span>
                     <button
-                      className={`
-                     transform transition-transform duration-200`}
+                      className="transform transition-transform duration-200"
                       onClick={() => {
                         setDataSorted({
                           ...dataSorted,
@@ -1560,52 +1501,41 @@ const selectedDirector = useMemo(() => {
                         className="fill-white"
                         height="15"
                         width="15"
-                        version="1.1"
-                        id="Layer_1"
                         viewBox="0 0 425 425"
                       >
-                        <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-                        <g
-                          id="SVGRepo_tracerCarrier"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        ></g>
-                        <g id="SVGRepo_iconCarrier">
-                          {" "}
-                          <g>
-                            {" "}
-                            <polygon
-                              className={`${
-                                dataSorted.startDate === 0
-                                  ? "fill-white"
-                                  : dataSorted.startDate === 1
+                        <g>
+                          <polygon
+                            className={`${
+                              (dataSorted.startDate ?? 0) === 0
+                                ? "fill-white"
+                                : (dataSorted.startDate ?? 0) === 1
                                   ? "fill-black"
                                   : "fill-primaryGreen dark:fill-darkgreen"
-                              }`}
-                              points="212.5,0 19.371,192.5 405.629,192.5 "
-                            ></polygon>{" "}
-                            <polygon
-                              className={`${
-                                dataSorted.startDate === 0
-                                  ? "fill-white"
-                                  : dataSorted.startDate === 1
+                            }`}
+                            points="212.5,0 19.371,192.5 405.629,192.5"
+                          />
+                          <polygon
+                            className={`${
+                              (dataSorted.startDate ?? 0) === 0
+                                ? "fill-white"
+                                : (dataSorted.startDate ?? 0) === 1
                                   ? "fill-primaryGreen dark:fill-darkgreen"
                                   : "fill-black"
-                              }`}
-                              points="212.5,425 405.629,232.5 19.371,232.5 "
-                            ></polygon>{" "}
-                          </g>{" "}
+                            }`}
+                            points="212.5,425 405.629,232.5 19.371,232.5"
+                          />
                         </g>
                       </svg>
                     </button>
                   </div>
                 </th>
+
+                {/* Date de fin */}
                 <th className="py-4 px-4 font-bold text-white dark:text-white xl:pl-11">
                   <div className="flex items-center gap-1">
                     <span>Date de fin</span>
                     <button
-                      className={`
-                     transform transition-transform duration-200`}
+                      className="transform transition-transform duration-200"
                       onClick={() => {
                         setDataSorted({
                           ...dataSorted,
@@ -1623,53 +1553,41 @@ const selectedDirector = useMemo(() => {
                         className="fill-white"
                         height="15"
                         width="15"
-                        version="1.1"
-                        id="Layer_1"
                         viewBox="0 0 425 425"
                       >
-                        <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-                        <g
-                          id="SVGRepo_tracerCarrier"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        ></g>
-                        <g id="SVGRepo_iconCarrier">
-                          {" "}
-                          <g>
-                            {" "}
-                            <polygon
-                              className={`${
-                                dataSorted.endDate === 0
-                                  ? "fill-white"
-                                  : dataSorted.endDate === 1
+                        <g>
+                          <polygon
+                            className={`${
+                              (dataSorted.endDate ?? 0) === 0
+                                ? "fill-white"
+                                : (dataSorted.endDate ?? 0) === 1
                                   ? "fill-black"
                                   : "fill-primaryGreen dark:fill-darkgreen"
-                              }`}
-                              points="212.5,0 19.371,192.5 405.629,192.5 "
-                            ></polygon>{" "}
-                            <polygon
-                              className={`${
-                                dataSorted.endDate === 0
-                                  ? "fill-white"
-                                  : dataSorted.endDate === 1
+                            }`}
+                            points="212.5,0 19.371,192.5 405.629,192.5"
+                          />
+                          <polygon
+                            className={`${
+                              (dataSorted.endDate ?? 0) === 0
+                                ? "fill-white"
+                                : (dataSorted.endDate ?? 0) === 1
                                   ? "fill-primaryGreen dark:fill-darkgreen"
                                   : "fill-black"
-                              }`}
-                              points="212.5,425 405.629,232.5 19.371,232.5 "
-                            ></polygon>{" "}
-                          </g>{" "}
+                            }`}
+                            points="212.5,425 405.629,232.5 19.371,232.5"
+                          />
                         </g>
                       </svg>
                     </button>
                   </div>
                 </th>
-                <th className="py-4 px-4  font-bold text-white dark:text-white xl:pl-11">
+
+                {/* Avancement */}
+                <th className="py-4 px-4 font-bold text-white dark:text-white xl:pl-11">
                   <div className="flex items-center gap-1">
                     <span>Avancement</span>
                     <button
-                      className={`
-                        
-                     transform transition-transform duration-200`}
+                      className="transform transition-transform duration-200"
                       onClick={() => {
                         setDataSorted({
                           ...dataSorted,
@@ -1689,50 +1607,40 @@ const selectedDirector = useMemo(() => {
                         className="fill-white"
                         height="15"
                         width="15"
-                        version="1.1"
-                        id="Layer_1"
                         viewBox="0 0 425 425"
                       >
-                        <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-                        <g
-                          id="SVGRepo_tracerCarrier"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        ></g>
-                        <g id="SVGRepo_iconCarrier">
-                          {" "}
-                          <g>
-                            {" "}
-                            <polygon
-                              className={`${
-                                dataSorted.completionPercentage === 0
-                                  ? "fill-white"
-                                  : dataSorted.completionPercentage === 1
+                        <g>
+                          <polygon
+                            className={`${
+                              (dataSorted.completionPercentage ?? 0) === 0
+                                ? "fill-white"
+                                : (dataSorted.completionPercentage ?? 0) === 1
                                   ? "fill-black"
                                   : "fill-primaryGreen dark:fill-darkgreen"
-                              }`}
-                              points="212.5,0 19.371,192.5 405.629,192.5 "
-                            ></polygon>{" "}
-                            <polygon
-                              className={`${
-                                dataSorted.completionPercentage === 0
-                                  ? "fill-white"
-                                  : dataSorted.completionPercentage === 1
+                            }`}
+                            points="212.5,0 19.371,192.5 405.629,192.5"
+                          />
+                          <polygon
+                            className={`${
+                              (dataSorted.completionPercentage ?? 0) === 0
+                                ? "fill-white"
+                                : (dataSorted.completionPercentage ?? 0) === 1
                                   ? "fill-primaryGreen dark:fill-darkgreen"
                                   : "fill-black"
-                              }`}
-                              points="212.5,425 405.629,232.5 19.371,232.5 "
-                            ></polygon>{" "}
-                          </g>{" "}
+                            }`}
+                            points="212.5,425 405.629,232.5 19.371,232.5"
+                          />
                         </g>
                       </svg>
                     </button>
                   </div>
                 </th>
-                <th className="py-4 px-4  font-bold text-white dark:text-white xl:pl-11">
-                <div className="flex items-center gap-1">
-                <span>Actions</span>
-                </div>
+
+                {/* Actions */}
+                <th className="py-4 px-4 font-bold text-white dark:text-white xl:pl-11">
+                  <div className="flex items-center gap-1">
+                    <span>Actions</span>
+                  </div>
                 </th>
               </tr>
             </thead>
@@ -1756,9 +1664,8 @@ const selectedDirector = useMemo(() => {
                   </td>
                 </tr>
               ) : (
-                sortedData
-                  ?.map((project) => {
-                    const dateStart = project?.startDate
+                paginatedProjects?.map((project) => {
+                  const dateStart = project?.startDate
                     ? formatDate(project.startDate)
                     : "--";
 
@@ -1778,149 +1685,155 @@ const selectedDirector = useMemo(() => {
                     project?.completionPercentage !== 100 &&
                     dateEnd !== "--";
 
-
-                    return (
-                      <tr
-                        key={project?.id}
-                        className={`  ${
-                          isDateEndPassed
-                            ? "bg-red-100 hover:bg-red-50 dark:bg-red-300 dark:hover:bg-red-200  "
-                            : "hover:bg-whiten dark:hover:bg-boxdark2"
-                        }`}
-                      >
-                        <td className="pl-2 border-b border-[#eee]">
-                          <button
-                            className="cursor-pointer border w-5 h-5"
-                            onClick={() => {
-                              setProjectSelected((prev) => {
-                                if (prev?.includes(project.id)) {
-                                  return prev.filter((id) => id !== project.id);
-                                } else {
-                                  return [...prev, project.id];
-                                }
-                              });
-                            }}
+                  return (
+                    <tr
+                      key={project?.id}
+                      className={`  ${
+                        isDateEndPassed
+                          ? "bg-red-100 hover:bg-red-50 dark:bg-red-300 dark:hover:bg-red-200  "
+                          : "hover:bg-whiten dark:hover:bg-boxdark2"
+                      }`}
+                    >
+                      <td className="pl-2 border-b border-[#eee]">
+                        <button
+                          className="cursor-pointer border w-5 h-5"
+                          onClick={() => {
+                            setProjectSelected((prev) => {
+                              if (prev?.includes(project.id)) {
+                                return prev.filter((id) => id !== project.id);
+                              } else {
+                                return [...prev, project.id];
+                              }
+                            });
+                          }}
+                        >
+                          <svg
+                            width="18"
+                            height="17"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                            className={`${
+                              projectSelected.includes(project.id)
+                                ? "visible"
+                                : "invisible"
+                            }`}
                           >
-                            <svg
-                              width="18"
-                              height="17"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                              className={`${
-                                projectSelected.includes(project.id)
-                                  ? "visible"
-                                  : "invisible"
-                              }`}
-                            >
-                              <path
-                                d="M4 12.6111L8.92308 17.5L20 6.5"
-                                className="stroke-black-2 dark:stroke-whiten"
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                            </svg>
-                          </button>
-                        </td>
-                        <td 
-                          className="border-b max-w-90 min-w-50 border-[#eee] pl-9 py-5 dark:border-strokedark cursor-pointer"
+                            <path
+                              d="M4 12.6111L8.92308 17.5L20 6.5"
+                              className="stroke-black-2 dark:stroke-whiten"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
+                        </button>
+                      </td>
+                      <td className="border-b max-w-90 min-w-50 border-[#eee] pl-9 py-5 dark:border-strokedark cursor-pointer">
+                        <Link
+                          to={`/gmp/project/details/${project.id}/details`}
+                          className="text-black text-justify  dark:text-white font-bold "
                         >
-                              <Link 
-                                to={`/gmp/project/details/${project.id}/details`}
-                                className="text-black text-justify  dark:text-white font-bold ">
-                                {project?.codeProjet}
-                              </Link>
-                        </td>
-                        <td
-                          className="border-b border-[#eee] px-4 py-3 dark:border-strokedark cursor-pointer"
-                          
+                          {project?.codeProjet}
+                        </Link>
+                      </td>
+                      <td className="border-b border-[#eee] px-4 py-3 dark:border-strokedark cursor-pointer">
+                        <Link
+                          to={`/gmp/project/details/${project.id}/details`}
+                          className="text-black dark:text-white font-semibold leading-tight line-clamp-3"
+                          title={project.title} // Shows full title on hover
                         >
-                          {/* <p className="text-black text-justify  dark:text-white font-bold ">
+                          {project.title}
+                        </Link>
+                      </td>
+                      {/*<td className="border-b border-[#eee] px-4 py-3 dark:border-strokedark cursor-pointer">
+                         <p className="text-black text-justify  dark:text-white font-bold ">
                             {project?.title}
                             {/* {project?.title.length > 40
                             ? `${project?.title?.slice(0, 40)}...`
                             : project?.title} */}
-                          {/* </p> */}
-                           <Link
-                            to={`/gmp/project/details/${project.id}/details`}
-                            className="text-black dark:text-white font-semibold leading-tight whitespace-normal"
-                          >
-                            {project.title}
-                          </Link>
-                          {/* <p className="text-black dark:text-white font-semibold leading-tight whitespace-normal">
+                      {/* </p> */}
+                      {/* <Link
+                        to={`/gmp/project/details/${project.id}/details`}
+                        className="text-black dark:text-white font-semibold leading-tight whitespace-normal"
+                      >
+                        {project.title}
+                      </Link> */}
+                      {/* <p className="text-black dark:text-white font-semibold leading-tight whitespace-normal">
                             {project?.title}
-                          </p> */}
-
-                        </td>
-                        {/* <td
+                          </p> 
+                      </td>*/}
+                      {/* <td
                           className="border-b max-w-90 min-w-50 border-[#eee] pl-9  py-5 dark:border-strokedark cursor-pointer"
                           onClick={() => {
                             setIdProjectForDetails(project.id);
                           }}
                         >
                           <p className="text-black text-justify  dark:text-white font-bold "> */}
-                            {/* {project?.state} */}
-                            {/* {project?.title.length > 40
+                      {/* {project?.state} */}
+                      {/* {project?.title.length > 40
                             ? `${project?.title?.slice(0, 40)}...`
                             : project?.title} */}
-                          {/* </p>
+                      {/* </p>
                         </td> */}
-                        <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11 cursor-pointer">
-                          <Link
-                            to={`/gmp/project/details/${project.id}/details`}
-                            className={`  font-semibold rounded-md  text-center py-1 px-2 text-xs  w-fit
+                      <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11 cursor-pointer">
+                        <Link
+                          to={`/gmp/project/details/${project.id}/details`}
+                          className={`  font-semibold rounded-md  text-center py-1 px-2 text-xs  w-fit
                             ${
                               project?.priority === "Moyenne"
                                 ? "bg-amber-100 border text-amber-600 border-amber-300 dark:bg-amber-900 dark:text-amber-300 dark:border-amber-700 "
                                 : project?.priority === "Faible"
-                                ? "bg-cyan-100 border text-cyan-600 border-cyan-300 dark:bg-cyan-900 dark:text-cyan-300 dark:border-cyan-700 "
-                                : project?.priority === "Elevée"
-                                ? "bg-red-100 border text-red-600 border-red-300 dark:bg-red-900 dark:text-red-300 dark:border-red-700 "
-                                : ""
+                                  ? "bg-cyan-100 border text-cyan-600 border-cyan-300 dark:bg-cyan-900 dark:text-cyan-300 dark:border-cyan-700 "
+                                  : project?.priority === "Elevée"
+                                    ? "bg-red-100 border text-red-600 border-red-300 dark:bg-red-900 dark:text-red-300 dark:border-red-700 "
+                                    : ""
                             }
                             `}
-                          >
-                            {project?.priority}
-                          </Link>
-                        </td>
-                        <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11 cursor-pointer">
-                          <Link
-                            to={`/gmp/project/details/${project.id}/details`}
-                            className={` font-semibold rounded-md whitespace-nowrap text-center py-1 px-2 text-xs  w-fit
+                        >
+                          {project?.priority}
+                        </Link>
+                      </td>
+                      <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11 cursor-pointer">
+                        <Link
+                          to={`/gmp/project/details/${project.id}/details`}
+                          className={` font-semibold rounded-md whitespace-nowrap text-center py-1 px-2 text-xs  w-fit
                             ${
                               project?.criticality === "Urgente"
                                 ? "bg-amber-100 border text-amber-600 border-amber-300 dark:bg-amber-900 dark:text-amber-300 dark:border-amber-700"
                                 : "bg-cyan-100 border text-cyan-600 border-cyan-300 dark:bg-cyan-900 dark:text-cyan-300 dark:border-cyan-700 "
                             }
                             `}
-                          >
-                            {project?.criticality}
-                          </Link>
-                        </td>
-                        <td
-                          className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11 cursor-pointer">
-                          <Link
-                            to={`/gmp/project/details/${project.id}/details`}
-                            className={`font-semibold rounded-md whitespace-nowrap text-center py-1 px-2 text-xs w-fit
+                        >
+                          {project?.criticality}
+                        </Link>
+                      </td>
+                      <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11 cursor-pointer">
+                        <Link
+                          to={`/gmp/project/details/${project.id}/details`}
+                          className={`font-semibold rounded-md whitespace-nowrap text-center py-1 px-2 text-xs w-fit
                               ${
-                                getFrenchState(project?.state) === "Pas commencé"
+                                getFrenchState(project?.state) ===
+                                "Pas commencé"
                                   ? "bg-cyan-100 text-cyan-600 border border-cyan-300 dark:bg-cyan-900 dark:text-cyan-300"
-                                  : getFrenchState(project?.state) === "En cours"
-                                  ? "bg-amber-100 text-amber-600 border border-amber-300 dark:bg-amber-900 dark:text-amber-300"
-                                  : getFrenchState(project?.state) === "Terminé"
-                                  ? "bg-green-100 text-green-600 border border-green-300 dark:bg-green-900 dark:text-green-300"
-                                  : getFrenchState(project?.state) === "Stand by"
-                                  ? "bg-orange-100 text-orange-600 border border-orange-300 dark:bg-orange-900 dark:text-orange-300"
-                                  : "bg-slate-100 text-slate-600 border border-slate-300 dark:bg-slate-800 dark:text-slate-300"
+                                  : getFrenchState(project?.state) ===
+                                      "En cours"
+                                    ? "bg-amber-100 text-amber-600 border border-amber-300 dark:bg-amber-900 dark:text-amber-300"
+                                    : getFrenchState(project?.state) ===
+                                        "Terminé"
+                                      ? "bg-green-100 text-green-600 border border-green-300 dark:bg-green-900 dark:text-green-300"
+                                      : getFrenchState(project?.state) ===
+                                          "Stand by"
+                                        ? "bg-orange-100 text-orange-600 border border-orange-300 dark:bg-orange-900 dark:text-orange-300"
+                                        : "bg-slate-100 text-slate-600 border border-slate-300 dark:bg-slate-800 dark:text-slate-300"
                               }
                             `}
-                          >
-                            {getFrenchState(project?.state)}
-                          </Link>
-                        </td>
+                        >
+                          {getFrenchState(project?.state)}
+                        </Link>
+                      </td>
 
-                       {/* <td
+                      {/* <td
                           className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11 cursor-pointer"
                           onClick={() => setIdProjectForDetails(project.id)}
                         >
@@ -1943,29 +1856,29 @@ const selectedDirector = useMemo(() => {
                             {getFrenchState(project?.state)}
                           </p>
                         </td> */}
-                        <td
-                          className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11 cursor-pointer">
-                          {(() => {
-                            const director = project?.listUsers?.find(
-                              (u: any) => u.role === "director"
-                            );
+                      <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11 cursor-pointer">
+                        {(() => {
+                          const director = project?.listUsers?.find(
+                            (u: any) => u.role === "director",
+                          );
 
-                            if (!director) {
-                              return (
-                                <span className="text-xs italic text-slate-400">
-                                  Non défini
-                                </span>
-                              );
-                            }
-
+                          if (!director) {
                             return (
+                              <span className="text-xs italic text-slate-400">
+                                Non défini
+                              </span>
+                            );
+                          }
 
-                              <Link to={`/gmp/project/details/${project.id}/details`} 
-                              className="flex flex-col gap-1">
-                                {/* ===== DÉPARTEMENT ===== */}
-                                {director.user?.department && (
-                                  <span
-                                    className="
+                          return (
+                            <Link
+                              to={`/gmp/project/details/${project.id}/details`}
+                              className="flex flex-col gap-1"
+                            >
+                              {/* ===== DÉPARTEMENT ===== */}
+                              {director.user?.department && (
+                                <span
+                                  className="
                                       w-fit
                                       px-2 py-0.5
                                       text-[10px] font-medium
@@ -1974,219 +1887,212 @@ const selectedDirector = useMemo(() => {
                                       border border-blue-200
                                       dark:bg-blue-900 dark:text-blue-300 dark:border-blue-700
                                     "
-                                  >
-                                    {typeof director.user.department === "string"
-                                      ? director.user.department
-                                      : director.user.department.name}
-                                  </span>
-                                )}
-                                {/* ===== NOM COMPLET ===== */}
-                                <span className="text-sm font-semibold text-slate-800 dark:text-white">
-                                  {director.user?.name?.split("(")?.[0]}
+                                >
+                                  {typeof director.user.department === "string"
+                                    ? director.user.department
+                                    : director.user.department.name}
                                 </span>
+                              )}
+                              {/* ===== NOM COMPLET ===== */}
+                              <span className="text-sm font-semibold text-slate-800 dark:text-white">
+                                {director.user?.name?.split("(")?.[0]}
+                              </span>
+                            </Link>
+                          );
+                        })()}
+                      </td>
 
-                                
-                              </Link>
-                            );
-                          })()}
-                        </td>
-
-                        <td className="border-b  gap-1 border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11 cursor-pointer">
-                          <Link
-                            to={`/gmp/project/details/${project.id}/details`}
-                            className="flex flex-wrap gap-2">
+                      <td className="border-b  gap-1 border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11 cursor-pointer">
+                        <Link
+                          to={`/gmp/project/details/${project.id}/details`}
+                          className="flex flex-wrap gap-2"
+                        >
                           <ListUsers
                             data={project?.listUsers}
                             type="no-director"
                           />
-                          </Link>
-                        </td>
-                        <td className="border-b    border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11 cursor-pointer">
-                          <Link 
-                            to={`/gmp/project/details/${project.id}/details`}
-                            className="text-black  pr-4 dark:text-white">
-                            {dateStart}
-                          </Link>
-                        </td>
-                        <td className="border-b  border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11 cursor-pointer">
-                          <Link 
-                            to={`/gmp/project/details/${project.id}/details`}
-                            className="text-black flex  pr-4 gap-1 dark:text-white">
-                            {isDateEndPassed ? (
-                              <svg
-                                width="20"
-                                height="20"
-                                viewBox="0 0 64 64"
-                                aria-hidden="true"
-                                preserveAspectRatio="xMidYMid meet"
-                                fill="#000000"
-                              >
-                                <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-                                <g
-                                  id="SVGRepo_tracerCarrier"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                ></g>
-                                <g id="SVGRepo_iconCarrier">
+                        </Link>
+                      </td>
+                      <td className="border-b    border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11 cursor-pointer">
+                        <Link
+                          to={`/gmp/project/details/${project.id}/details`}
+                          className="text-black  pr-4 dark:text-white"
+                        >
+                          {dateStart}
+                        </Link>
+                      </td>
+                      <td className="border-b  border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11 cursor-pointer">
+                        <Link
+                          to={`/gmp/project/details/${project.id}/details`}
+                          className="text-black flex  pr-4 gap-1 dark:text-white"
+                        >
+                          {isDateEndPassed ? (
+                            <svg
+                              width="20"
+                              height="20"
+                              viewBox="0 0 64 64"
+                              aria-hidden="true"
+                              preserveAspectRatio="xMidYMid meet"
+                              fill="#000000"
+                            >
+                              <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                              <g
+                                id="SVGRepo_tracerCarrier"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              ></g>
+                              <g id="SVGRepo_iconCarrier">
+                                {" "}
+                                <g fill="#ff002f">
                                   {" "}
-                                  <g fill="#ff002f">
+                                  <path d="M23 42.4H13L9 2h18z"> </path>{" "}
+                                  <ellipse cx="18" cy="54.4" rx="7.7" ry="7.6">
                                     {" "}
-                                    <path d="M23 42.4H13L9 2h18z"> </path>{" "}
-                                    <ellipse
-                                      cx="18"
-                                      cy="54.4"
-                                      rx="7.7"
-                                      ry="7.6"
-                                    >
-                                      {" "}
-                                    </ellipse>{" "}
-                                    <path d="M51 42.4H41L37 2h18z"> </path>{" "}
-                                    <ellipse
-                                      cx="46"
-                                      cy="54.4"
-                                      rx="7.7"
-                                      ry="7.6"
-                                    >
-                                      {" "}
-                                    </ellipse>{" "}
-                                  </g>{" "}
-                                </g>
-                              </svg>
-                            ) : null}
+                                  </ellipse>{" "}
+                                  <path d="M51 42.4H41L37 2h18z"> </path>{" "}
+                                  <ellipse cx="46" cy="54.4" rx="7.7" ry="7.6">
+                                    {" "}
+                                  </ellipse>{" "}
+                                </g>{" "}
+                              </g>
+                            </svg>
+                          ) : null}
 
-                            {dateEnd}
-                          </Link>
-                        </td>
-                        <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11 cursor-pointer">
-                          <Link
-                            to={`/gmp/project/details/${project.id}/details`}
-                            className="flex items-center justify-center">
-                            {project?.state === "Stand by" ? (
-                              // Cercle spécial "Stand by"
-                              <div className="relative flex items-center justify-center w-16 h-16 rounded-full bg-[length:14px_14px] bg-[repeating-linear-gradient(45deg,#FFCD59_0,#FFCD59_3px,transparent_3px,transparent_5px)]">
-                                <span className="absolute inset-0 flex items-center justify-center text-xs font-semibold text-black dark:text-white dark:bg-black/40 rounded-full">
-                                  {project?.state}
-                                </span>
-                              </div>
-                            ) : (
-                              // Cercle de progression normal
-                              <div className="relative w-16 h-16">
-                                <svg className="w-16 h-16 -rotate-90">
-                                  {/* cercle de fond */}
-                                  <circle
-                                    cx="32"
-                                    cy="32"
-                                    r="28"
-                                    stroke="#e5e7eb" // gris clair
-                                    strokeWidth="6"
-                                    fill="none"
-                                  />
-                                  {/* cercle de progression */}
-                                  <circle
-                                    cx="32"
-                                    cy="32"
-                                    r="28"
-                                    stroke={
-                                      project?.completionPercentage === 0
-                                        ? "#ef4444" // rouge
-                                        : project?.completionPercentage === 25
+                          {dateEnd}
+                        </Link>
+                      </td>
+                      <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11 cursor-pointer">
+                        <Link
+                          to={`/gmp/project/details/${project.id}/details`}
+                          className="flex items-center justify-center"
+                        >
+                          {project?.state === "Stand by" ? (
+                            // Cercle spécial "Stand by"
+                            <div className="relative flex items-center justify-center w-16 h-16 rounded-full bg-[length:14px_14px] bg-[repeating-linear-gradient(45deg,#FFCD59_0,#FFCD59_3px,transparent_3px,transparent_5px)]">
+                              <span className="absolute inset-0 flex items-center justify-center text-xs font-semibold text-black dark:text-white dark:bg-black/40 rounded-full">
+                                {project?.state}
+                              </span>
+                            </div>
+                          ) : (
+                            // Cercle de progression normal
+                            <div className="relative w-16 h-16">
+                              <svg className="w-16 h-16 -rotate-90">
+                                {/* cercle de fond */}
+                                <circle
+                                  cx="32"
+                                  cy="32"
+                                  r="28"
+                                  stroke="#e5e7eb" // gris clair
+                                  strokeWidth="6"
+                                  fill="none"
+                                />
+                                {/* cercle de progression */}
+                                <circle
+                                  cx="32"
+                                  cy="32"
+                                  r="28"
+                                  stroke={
+                                    project?.completionPercentage === 0
+                                      ? "#ef4444" // rouge
+                                      : project?.completionPercentage === 25
                                         ? "#f97316" // orange
                                         : project?.completionPercentage === 50
-                                        ? "#eab308" // jaune
-                                        : project?.completionPercentage === 75
-                                        ? "#84cc16" // vert clair
-                                        : "#22c55e" // vert
-                                    }
-                                    strokeWidth="6"
-                                    fill="none"
-                                    strokeDasharray={2 * Math.PI * 28}
-                                    strokeDashoffset={
-                                      (1 - (project?.completionPercentage ?? 0) / 100) *
-                                      (2 * Math.PI * 28)
-                                    }
-                                    strokeLinecap="round"
-                                  />
-                                </svg>
-                                {/* texte au centre */}
-                                <span className="absolute inset-0 flex items-center justify-center text-xs font-semibold text-black dark:text-white">
-                                  {project?.completionPercentage}%
-                                </span>
-                              </div>
-                            )}
-                          </Link>
-                        </td>
+                                          ? "#eab308" // jaune
+                                          : project?.completionPercentage === 75
+                                            ? "#84cc16" // vert clair
+                                            : "#22c55e" // vert
+                                  }
+                                  strokeWidth="6"
+                                  fill="none"
+                                  strokeDasharray={2 * Math.PI * 28}
+                                  strokeDashoffset={
+                                    (1 -
+                                      (project?.completionPercentage ?? 0) /
+                                        100) *
+                                    (2 * Math.PI * 28)
+                                  }
+                                  strokeLinecap="round"
+                                />
+                              </svg>
+                              {/* texte au centre */}
+                              <span className="absolute inset-0 flex items-center justify-center text-xs font-semibold text-black dark:text-white">
+                                {project?.completionPercentage}%
+                              </span>
+                            </div>
+                          )}
+                        </Link>
+                      </td>
 
-                        <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11 cursor-pointer">
-                          <div >
+                      <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11 cursor-pointer">
+                        <div>
                           <PointSelect
-                              data={
-                                    [
-                                      "Modifier",
-                                      "Avancement",
-                                      "Gérer",
-                                      "Historique",
-                                      "Archiver",
-                                    ].filter((action) => {
-                                      if (
-                                        myHabilitation?.project.delete === false &&
-                                        action === "Archiver"
-                                      ) {
-                                        return false;
-                                      }
-                                      if (
-                                        myHabilitation?.project.update === false &&
-                                        action === "Modifier"
-                                      ) {
-                                        return false;
-                                      }
-                                      // only chef de project can change avancement
-                                      if (action === "Avancement") {
-                                        const selectedProject = data?.find(
-                                          (p) => p.id === project.id
-                                        );
-                                        const isDirector = selectedProject?.listUsers.some(
-                                          (userObj: {
-                                            userid: string | undefined;
-                                            role: string;
-                                          }) =>
-                                            userObj.userid === decodedToken?.jti &&
-                                            userObj.role === "director"
-                                        );
-                                        return isDirector;
-                                      }
-                                      return true;
-                                    })
+                            data={[
+                              "Modifier",
+                              //"Avancement",
+                              "Gérer",
+                              "Historique",
+                              "Archiver",
+                            ].filter((action) => {
+                              if (
+                                myHabilitation?.project.delete === false &&
+                                action === "Archiver"
+                              ) {
+                                return false;
                               }
-                              className="w-13"
-                              placeholder=""
-                              onClick={() => {
-                                setProjectSelected([project.id]);
-                              }}
-                              onValueChange={(e) => {
-                                if (e.includes("Modifier")) {
-                                  setProjectToModif([project.id]);
-                                } else if (e.includes("Archiver")) {
-                                  setProjectsToDelete([project.id]);
-                                  setShowModalDelete(true);
-                                } else if (e.includes("Historique")) {
-                                  setProjectsSelected([project.id]);
-                                  setGoToHistoric(true);
-                                } else if (e.includes("Avancement")) {
-                                  setProjectsSelected([project.id]);
-                                  setGoToAdvancement(true);
-                                } else if (e.includes("Gérer")) {
-                                  setProjectsSelected([project.id]);
-                                  setGoToTask(true);
-                                }
-                              }}
-
-
-                            />
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                  })
+                              if (
+                                myHabilitation?.project.update === false &&
+                                action === "Modifier"
+                              ) {
+                                return false;
+                              }
+                              // only chef de project can change avancement
+                              // if (action === "Avancement") {
+                              //   const selectedProject = data?.find(
+                              //     (p) => p.id === project.id,
+                              //   );
+                              //   const isDirector =
+                              //     selectedProject?.listUsers.some(
+                              //       (userObj: {
+                              //         userid: string | undefined;
+                              //         role: string;
+                              //       }) =>
+                              //         userObj.userid === decodedToken?.jti &&
+                              //         userObj.role === "director",
+                              //     );
+                              //   return isDirector;
+                              // }
+                              return true;
+                            })}
+                            className="w-13"
+                            placeholder=""
+                            onClick={() => {
+                              setProjectSelected([project.id]);
+                            }}
+                            onValueChange={(e) => {
+                              if (e.includes("Modifier")) {
+                                setProjectToModif([project.id]);
+                              } else if (e.includes("Archiver")) {
+                                setProjectsToDelete([project.id]);
+                                setShowModalDelete(true);
+                              } else if (e.includes("Historique")) {
+                                setProjectsSelected([project.id]);
+                                setGoToHistoric(true);
+                              }
+                              // else if (e.includes("Avancement")) {
+                              //   setProjectsSelected([project.id]);
+                              //   setGoToAdvancement(true);
+                              // }
+                              else if (e.includes("Gérer")) {
+                                setProjectsSelected([project.id]);
+                                setGoToTask(true);
+                              }
+                            }}
+                          />
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })
               )}
             </tbody>
             {/* ===== TABLE BODY END ===== */}
@@ -2194,10 +2100,8 @@ const selectedDirector = useMemo(() => {
 
           {/* Mobile view */}
           <div className="block md:hidden">
-            {sortedData
-              ?.filter((_project, index) => indexInPaginationRange(index))
-              .map((project) => {
-                const dateStart = project?.startDate
+            {paginatedProjects?.map((project) => {
+              const dateStart = project?.startDate
                 ? formatDate(project.startDate)
                 : "--";
 
@@ -2217,215 +2121,210 @@ const selectedDirector = useMemo(() => {
                 project?.completionPercentage !== 100 &&
                 dateEnd !== "--";
 
-                return (
-                  <div
-                    key={project?.id}
-                    className={` *:grid *:grid-cols-2  shadow-lg rounded-lg mb-4 p-4 border border-zinc-200 dark:border-black ${
-                      isDateEndPassed
-                        ? "bg-red-100 dark:bg-red-200 text-black"
-                        : "bg-white dark:bg-boxdark"
-                    }`}
-                  >
-                    <div className="">
-                      <button
-                        className="relative  cursor-pointer border w-5 h-5"
+              return (
+                <div
+                  key={project?.id}
+                  className={` *:grid *:grid-cols-2  shadow-lg rounded-lg mb-4 p-4 border border-zinc-200 dark:border-black ${
+                    isDateEndPassed
+                      ? "bg-red-100 dark:bg-red-200 text-black"
+                      : "bg-white dark:bg-boxdark"
+                  }`}
+                >
+                  <div className="">
+                    <button
+                      className="relative  cursor-pointer border w-5 h-5"
+                      onClick={() => {
+                        setProjectSelected((prev) => {
+                          if (prev?.includes(project.id)) {
+                            return prev.filter((id) => id !== project.id);
+                          } else {
+                            return [...prev, project.id];
+                          }
+                        });
+                      }}
+                    >
+                      <svg
+                        width="18"
+                        height="17"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        className={`${
+                          projectSelected.includes(project.id)
+                            ? "visible"
+                            : "invisible"
+                        }`}
+                      >
+                        <path
+                          d="M4 12.6111L8.92308 17.5L20 6.5"
+                          className="stroke-black-2 dark:stroke-whiten"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                  <div className="mb-2">
+                    <span className="text-emerald-500 font-semibold">
+                      Titre :{" "}
+                    </span>
+                    <span className="text-gray-800">
+                      <p
+                        className="text-black dark:text-white font-bold cursor-pointer"
                         onClick={() => {
-                          setProjectSelected((prev) => {
-                            if (prev?.includes(project.id)) {
-                              return prev.filter((id) => id !== project.id);
-                            } else {
-                              return [...prev, project.id];
-                            }
-                          });
+                          setIdProjectForDetails(project.id);
                         }}
                       >
+                        {project?.title.length > 30
+                          ? `${project?.title?.slice(0, 30)}...`
+                          : project?.title}
+                      </p>
+                    </span>
+                  </div>
+                  <div className="mb-2">
+                    <span className="text-emerald-500 font-semibold">
+                      Priorité :{" "}
+                    </span>
+                    <span className="text-gray-800">{project?.priority}</span>
+                  </div>
+                  <div className="mb-2">
+                    <span className="text-emerald-500 font-semibold">
+                      Criticité :{" "}
+                    </span>
+                    <span className="text-gray-800">
+                      {project?.criticality}
+                    </span>
+                  </div>
+                  <div className="mb-2">
+                    <span className="text-emerald-500 font-semibold">
+                      Statut :{" "}
+                    </span>
+                    <span className="text-gray-800">
+                      {getFrenchState(project?.state)}
+                    </span>
+                  </div>
+                  <div className="mb-2">
+                    <span className="text-emerald-500 font-semibold">
+                      CDP :{" "}
+                    </span>
+                    <span className="text-gray-800">
+                      <ListUsers data={project?.listUsers} type="director" />
+                    </span>
+                  </div>
+                  <div className="mb-2">
+                    <span className="text-emerald-500 font-semibold">
+                      Équipe :{" "}
+                    </span>
+                    <span className="text-gray-800">
+                      <ListUsers data={project?.listUsers} type="no-director" />
+                    </span>
+                  </div>
+                  <div className="mb-2">
+                    <span className="text-emerald-500 font-semibold">
+                      Date début :{" "}
+                    </span>
+                    <span className="text-gray-800">{dateStart}</span>
+                  </div>
+                  <div className="mb-2">
+                    <span className="text-emerald-500 font-semibold">
+                      Date fin :{" "}
+                    </span>
+                    <span className=" flex gap-1 text-gray-800">
+                      {isDateEndPassed ? (
                         <svg
-                          width="18"
-                          height="17"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                          className={`${
-                            projectSelected.includes(project.id)
-                              ? "visible"
-                              : "invisible"
-                          }`}
+                          width="20"
+                          height="20"
+                          viewBox="0 0 64 64"
+                          aria-hidden="true"
+                          preserveAspectRatio="xMidYMid meet"
+                          fill="#000000"
                         >
-                          <path
-                            d="M4 12.6111L8.92308 17.5L20 6.5"
-                            className="stroke-black-2 dark:stroke-whiten"
-                            strokeWidth="2"
+                          <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                          <g
+                            id="SVGRepo_tracerCarrier"
                             strokeLinecap="round"
                             strokeLinejoin="round"
-                          />
-                        </svg>
-                      </button>
-                    </div>
-                    <div className="mb-2">
-                      <span className="text-emerald-500 font-semibold">
-                        Titre :{" "}
-                      </span>
-                      <span className="text-gray-800">
-                        <p
-                          className="text-black dark:text-white font-bold cursor-pointer"
-                          onClick={() => {
-                            setIdProjectForDetails(project.id);
-                          }}
-                        >
-                          {project?.title.length > 30
-                            ? `${project?.title?.slice(0, 30)}...`
-                            : project?.title}
-                        </p>
-                      </span>
-                    </div>
-                    <div className="mb-2">
-                      <span className="text-emerald-500 font-semibold">
-                        Priorité :{" "}
-                      </span>
-                      <span className="text-gray-800">{project?.priority}</span>
-                    </div>
-                    <div className="mb-2">
-                      <span className="text-emerald-500 font-semibold">
-                        Criticité :{" "}
-                      </span>
-                      <span className="text-gray-800">
-                        {project?.criticality}
-                      </span>
-                    </div>
-                    <div className="mb-2">
-                      <span className="text-emerald-500 font-semibold">
-                        Statut :{" "}
-                      </span>
-                      <span className="text-gray-800">
-                        {getFrenchState(project?.state)}
-                      </span>
-                    </div>
-                    <div className="mb-2">
-                      <span className="text-emerald-500 font-semibold">
-                        CDP :{" "}
-                      </span>
-                      <span className="text-gray-800">
-                        <ListUsers data={project?.listUsers} type="director" />
-                      </span>
-                    </div>
-                    <div className="mb-2">
-                      <span className="text-emerald-500 font-semibold">
-                        Équipe :{" "}
-                      </span>
-                      <span className="text-gray-800">
-                        <ListUsers
-                          data={project?.listUsers}
-                          type="no-director"
-                        />
-                      </span>
-                    </div>
-                    <div className="mb-2">
-                      <span className="text-emerald-500 font-semibold">
-                        Date début :{" "}
-                      </span>
-                      <span className="text-gray-800">{dateStart}</span>
-                    </div>
-                    <div className="mb-2">
-                      <span className="text-emerald-500 font-semibold">
-                        Date fin :{" "}
-                      </span>
-                      <span className=" flex gap-1 text-gray-800">
-                        {isDateEndPassed ? (
-                          <svg
-                            width="20"
-                            height="20"
-                            viewBox="0 0 64 64"
-                            aria-hidden="true"
-                            preserveAspectRatio="xMidYMid meet"
-                            fill="#000000"
-                          >
-                            <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-                            <g
-                              id="SVGRepo_tracerCarrier"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            ></g>
-                            <g id="SVGRepo_iconCarrier">
+                          ></g>
+                          <g id="SVGRepo_iconCarrier">
+                            {" "}
+                            <g fill="#ff002f">
                               {" "}
-                              <g fill="#ff002f">
+                              <path d="M23 42.4H13L9 2h18z"> </path>{" "}
+                              <ellipse cx="18" cy="54.4" rx="7.7" ry="7.6">
                                 {" "}
-                                <path d="M23 42.4H13L9 2h18z"> </path>{" "}
-                                <ellipse cx="18" cy="54.4" rx="7.7" ry="7.6">
-                                  {" "}
-                                </ellipse>{" "}
-                                <path d="M51 42.4H41L37 2h18z"> </path>{" "}
-                                <ellipse cx="46" cy="54.4" rx="7.7" ry="7.6">
-                                  {" "}
-                                </ellipse>{" "}
-                              </g>{" "}
-                            </g>
-                          </svg>
-                        ) : null}
-                        {dateEnd}
+                              </ellipse>{" "}
+                              <path d="M51 42.4H41L37 2h18z"> </path>{" "}
+                              <ellipse cx="46" cy="54.4" rx="7.7" ry="7.6">
+                                {" "}
+                              </ellipse>{" "}
+                            </g>{" "}
+                          </g>
+                        </svg>
+                      ) : null}
+                      {dateEnd}
+                    </span>
+                  </div>
+                  <div className="mb-2">
+                    <span className="text-emerald-500 font-semibold">
+                      Avancement :{" "}
+                    </span>
+                    <div className="w-full bg-zinc-100 rounded-full dark:bg-strokedark h-6 relative">
+                      <div
+                        className="bg-primaryGreen h-6 rounded-full"
+                        style={{
+                          width: `${project?.completionPercentage}%`,
+                        }}
+                      ></div>
+                      <span className="absolute inset-0 flex justify-center items-center text-black dark:text-white text-xs font-semibold">
+                        {project?.completionPercentage}%
                       </span>
-                    </div>
-                    <div className="mb-2">
-                      <span className="text-emerald-500 font-semibold">
-                        Avancement :{" "}
-                      </span>
-                      <div className="w-full bg-zinc-100 rounded-full dark:bg-strokedark h-6 relative">
-                        <div
-                          className="bg-primaryGreen h-6 rounded-full"
-                          style={{
-                            width: `${project?.completionPercentage}%`,
-                          }}
-                        ></div>
-                        <span className="absolute inset-0 flex justify-center items-center text-black dark:text-white text-xs font-semibold">
-                          {project?.completionPercentage}%
-                        </span>
-                      </div>
                     </div>
                   </div>
-                );
-              })}
+                </div>
+              );
+            })}
           </div>
         </div>
       )}
 
-      {viewMode === "gantt" && (
-        <GanttChart tasks={tasks} />
-      )}
+      {viewMode === "gantt" && <GanttChart tasks={tasks} />}
 
-  {viewMode === "card" && (
-  <div
-    className="
+      {viewMode === "card" && (
+        <div
+          className="
       grid gap-6 p-4
       grid-cols-1
       sm:grid-cols-2
       lg:grid-cols-3
       xl:grid-cols-4
     "
-  >
-    {sortedData.map((project) => {
-      const director = project?.listUsers?.find(
-        (u: any) => u.role === "director"
-      );
+        >
+          {paginatedProjects.map((project) => {
+            const director = project?.listUsers?.find(
+              (u: any) => u.role === "director",
+            );
 
-      const members =
-        project?.listUsers?.filter((u: any) => u.role !== "director") || [];
+            const members =
+              project?.listUsers?.filter((u: any) => u.role !== "director") ||
+              [];
 
-      const dateEndCheck = project?.endDate
-        ? new Date(project.endDate)
-        : null;
+            const dateEndCheck = project?.endDate
+              ? new Date(project.endDate)
+              : null;
 
-      const isLate =
-        dateEndCheck !== null &&
-        dateEndCheck < new Date() &&
-        project?.completionPercentage !== 100;
+            const isLate =
+              dateEndCheck !== null &&
+              dateEndCheck < new Date() &&
+              project?.completionPercentage !== 100;
 
-      return (
-        <div
-          key={project.id}
-          onClick={() =>
-            setIdProjectForDetails(project.id) ||
-            setGoToDetails(true)
-          }
-          className={`
+            return (
+              <div
+                key={project.id}
+                onClick={() =>
+                  setIdProjectForDetails(project.id) || setGoToDetails(true)
+                }
+                className={`
             cursor-pointer rounded-xl border p-4 shadow-md transition
             hover:shadow-lg
             ${
@@ -2434,185 +2333,190 @@ const selectedDirector = useMemo(() => {
                 : "bg-white border-zinc-200 dark:bg-boxdark dark:border-strokedark"
             }
           `}
-        >
-          {/* ================= HEADER ================= */}
-          {/* ================= HEADER ================= */}
-          <div className="flex justify-between items-start">
-            <span className="text-sm font-semibold text-gray-600">
-              {project.codeProjet}
-            </span>
+              >
+                {/* ================= HEADER ================= */}
+                {/* ================= HEADER ================= */}
+                <div className="flex justify-between items-start">
+                  <span className="text-sm font-semibold text-gray-600">
+                    {project.codeProjet}
+                  </span>
 
-            <div
-              className="relative"
-              onClick={(e) => e.stopPropagation()} // empêche la redirection
-            >
-              {/* STATUT */}
-              <span
-                className={`text-xs font-semibold px-2 py-1 rounded-md mr-2
+                  <div
+                    className="relative"
+                    onClick={(e) => e.stopPropagation()} // empêche la redirection
+                  >
+                    {/* STATUT */}
+                    <span
+                      className={`text-xs font-semibold px-2 py-1 rounded-md mr-2
                   ${
                     getFrenchState(project.state) === "En cours"
                       ? "bg-amber-100 text-amber-600 border border-amber-300"
                       : getFrenchState(project.state) === "Terminé"
-                      ? "bg-green-100 text-green-600 border border-green-300"
-                      : getFrenchState(project.state) === "Stand by"
-                      ? "bg-orange-100 text-orange-600 border border-orange-300"
-                      : "bg-cyan-100 text-cyan-600 border border-cyan-300"
+                        ? "bg-green-100 text-green-600 border border-green-300"
+                        : getFrenchState(project.state) === "Stand by"
+                          ? "bg-orange-100 text-orange-600 border border-orange-300"
+                          : "bg-cyan-100 text-cyan-600 border border-cyan-300"
                   }
                 `}
-              >
-                {getFrenchState(project.state)}
-              </span>
-
-            {/* BOUTON ⋮ */}
-            <button
-              onClick={() =>
-                setOpenMenuProjectId(
-                  openMenuProjectId === project.id ? null : project.id
-                )
-              }
-              className="inline-flex items-center p-1 rounded hover:bg-zinc-200"
-            >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                <circle cx="12" cy="5" r="2" fill="currentColor" />
-                <circle cx="12" cy="12" r="2" fill="currentColor" />
-                <circle cx="12" cy="19" r="2" fill="currentColor" />
-              </svg>
-            </button>
-
-            {/* MENU ACTION → visible UNIQUEMENT si ⋮ cliqué */}
-                {openMenuProjectId === project.id && (
-                  <div className="absolute right-0 mt-2 w-32 bg-white rounded-md shadow-lg z-20">
-                    <button
-                      onClick={() => {
-                        setProjectsToDelete([project.id]);
-                        setShowModalDelete(true);
-                        setOpenMenuProjectId(null);
-                      }}
-                      className="w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50"
                     >
-                      Archiver
+                      {getFrenchState(project.state)}
+                    </span>
+
+                    {/* BOUTON ⋮ */}
+                    <button
+                      onClick={() =>
+                        setOpenMenuProjectId(
+                          openMenuProjectId === project.id ? null : project.id,
+                        )
+                      }
+                      className="inline-flex items-center p-1 rounded hover:bg-zinc-200"
+                    >
+                      <svg
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                      >
+                        <circle cx="12" cy="5" r="2" fill="currentColor" />
+                        <circle cx="12" cy="12" r="2" fill="currentColor" />
+                        <circle cx="12" cy="19" r="2" fill="currentColor" />
+                      </svg>
                     </button>
+
+                    {/* MENU ACTION → visible UNIQUEMENT si ⋮ cliqué */}
+                    {openMenuProjectId === project.id && (
+                      <div className="absolute right-0 mt-2 w-32 bg-white rounded-md shadow-lg z-20">
+                        <button
+                          onClick={() => {
+                            setProjectsToDelete([project.id]);
+                            setShowModalDelete(true);
+                            setOpenMenuProjectId(null);
+                          }}
+                          className="w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50"
+                        >
+                          Archiver
+                        </button>
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
-            </div>
+                </div>
 
+                {/* ================= TITLE + PROGRESS ================= */}
+                <div className="flex justify-between items-center gap-3">
+                  <h3 className="font-semibold text-sm text-black dark:text-white line-clamp-2">
+                    {project.title}
+                  </h3>
 
-          {/* ================= TITLE + PROGRESS ================= */}
-          <div className="flex justify-between items-center gap-3">
-            <h3 className="font-semibold text-base text-black dark:text-white line-clamp-2">
-              {project.title}
-            </h3>
+                  <div className="relative w-14 h-14 mt-3 shrink-0">
+                    <svg className="w-14 h-14 -rotate-90">
+                      <circle
+                        cx="28"
+                        cy="28"
+                        r="24"
+                        stroke="#e5e7eb"
+                        strokeWidth="4"
+                        fill="none"
+                      />
+                      <circle
+                        cx="28"
+                        cy="28"
+                        r="24"
+                        stroke={
+                          (project.completionPercentage ?? 0 >= 75)
+                            ? "#22c55e"
+                            : (project.completionPercentage ?? 0 >= 50)
+                              ? "#eab308"
+                              : "#f97316"
+                        }
+                        strokeWidth="4"
+                        fill="none"
+                        strokeDasharray={2 * Math.PI * 24}
+                        strokeDashoffset={
+                          (1 - (project.completionPercentage ?? 0) / 100) *
+                          (2 * Math.PI * 24)
+                        }
+                        strokeLinecap="round"
+                      />
+                    </svg>
+                    <span className="absolute inset-0 flex items-center justify-center text-xs font-bold">
+                      {project.completionPercentage}%
+                    </span>
+                  </div>
+                </div>
 
-            <div className="relative w-14 h-14 mt-3 shrink-0">
-              <svg className="w-14 h-14 -rotate-90">
-                <circle
-                  cx="28"
-                  cy="28"
-                  r="24"
-                  stroke="#e5e7eb"
-                  strokeWidth="4"
-                  fill="none"
-                />
-                <circle
-                  cx="28"
-                  cy="28"
-                  r="24"
-                  stroke={
-                    project.completionPercentage >= 75
-                      ? "#22c55e"
-                      : project.completionPercentage >= 50
-                      ? "#eab308"
-                      : "#f97316"
-                  }
-                  strokeWidth="4"
-                  fill="none"
-                  strokeDasharray={2 * Math.PI * 24}
-                  strokeDashoffset={
-                    (1 - project.completionPercentage / 100) *
-                    (2 * Math.PI * 24)
-                  }
-                  strokeLinecap="round"
-                />
-              </svg>
-              <span className="absolute inset-0 flex items-center justify-center text-xs font-bold">
-                {project.completionPercentage}%
-              </span>
-            </div>
-          </div>
-
-          {/* ================= PRIORITÉ / CRITICITÉ ================= */}
-          <div className="flex gap-2 flex-wrap">
-            <span
-              className={`text-xs font-semibold px-2 py-1 rounded-md
+                {/* ================= PRIORITÉ / CRITICITÉ ================= */}
+                <div className="flex gap-2 flex-wrap">
+                  <span
+                    className={`text-xs font-semibold px-2 py-1 rounded-md
                 ${
                   project.priority === "Moyenne"
                     ? "bg-amber-100 text-amber-600 border border-amber-300"
                     : project.priority === "Faible"
-                    ? "bg-cyan-100 text-cyan-600 border border-cyan-300"
-                    : "bg-red-100 text-red-600 border border-red-300"
+                      ? "bg-cyan-100 text-cyan-600 border border-cyan-300"
+                      : "bg-red-100 text-red-600 border border-red-300"
                 }
               `}
-            >
-              {project.priority}
-            </span>
+                  >
+                    {project.priority}
+                  </span>
 
-            <span
-              className={`text-xs font-semibold px-2 py-1 rounded-md
+                  <span
+                    className={`text-xs font-semibold px-2 py-1 rounded-md
                 ${
                   project.criticality === "Urgente"
                     ? "bg-amber-100 text-amber-600 border border-amber-300"
                     : "bg-cyan-100 text-cyan-600 border border-cyan-300"
                 }
               `}
-            >
-              {project.criticality}
-            </span>
-          </div>
-         {/* ================= CHEF DE PROJET ================= */}
-          <div className="mt-3 text-sm flex items-center gap-2 flex-wrap">
-            <p className="font-semibold text-black dark:text-white">
-              {director?.user?.name?.split("(")[0] || "Non défini"}
-            </p>
+                  >
+                    {project.criticality}
+                  </span>
+                </div>
+                {/* ================= CHEF DE PROJET ================= */}
+                <div className="mt-3 text-sm flex items-center gap-2 flex-wrap">
+                  <p className="font-semibold text-black dark:text-white">
+                    {director?.user?.name?.split("(")[0] || "Non défini"}
+                  </p>
 
-            {director?.user?.department && (
-              <span className="
+                  {director?.user?.department && (
+                    <span
+                      className="
                 px-2 py-0.5
                 text-xs font-medium
                 rounded-full
                 bg-blue-100 text-blue-700
                 dark:bg-blue-900 dark:text-blue-200
                 whitespace-nowrap
-              ">
-                {typeof director.user.department === "string"
-                  ? director.user.department
-                  : director.user.department.name}
-              </span>
-            )}
-          </div>
+              "
+                    >
+                      {typeof director.user.department === "string"
+                        ? director.user.department
+                        : director.user.department.name}
+                    </span>
+                  )}
+                </div>
 
+                {/* ================= MEMBRES ================= */}
+                <div className="flex items-center mt-2 relative">
+                  {/* ===== MEMBRES AFFICHÉS (MAX 3) ===== */}
+                  {members.slice(0, 3).map((m: any, idx: number) => {
+                    const initials = m.user?.name
+                      ?.split(" ")
+                      .map((n: string) => n[0])
+                      .join("")
+                      .slice(0, 2);
 
-          {/* ================= MEMBRES ================= */}
-       <div className="flex items-center mt-2 relative">
-  {/* ===== MEMBRES AFFICHÉS (MAX 3) ===== */}
-  {members.slice(0, 3).map((m: any, idx: number) => {
-    const initials = m.user?.name
-      ?.split(" ")
-      .map((n: string) => n[0])
-      .join("")
-      .slice(0, 2);
+                    const isObserver = m.role === "observer";
 
-    const isObserver = m.role === "observer";
-
-    return (
-      <div
-        key={m.userid}
-        className="relative group"
-        style={{ marginLeft: idx === 0 ? 0 : -8 }}
-      >
-        {/* AVATAR */}
-        <div
-          className={`
+                    return (
+                      <div
+                        key={m.userid}
+                        className="relative group"
+                        style={{ marginLeft: idx === 0 ? 0 : -8 }}
+                      >
+                        {/* AVATAR */}
+                        <div
+                          className={`
             w-8 h-8 rounded-full
             flex items-center justify-center
             text-xs font-bold text-white
@@ -2620,13 +2524,13 @@ const selectedDirector = useMemo(() => {
             cursor-pointer
             ${isObserver ? "bg-yellow-500" : "bg-emerald-600"}
           `}
-        >
-          {initials}
-        </div>
+                        >
+                          {initials}
+                        </div>
 
-        {/* TOOLTIP */}
-        <div
-          className="
+                        {/* TOOLTIP */}
+                        <div
+                          className="
             absolute bottom-full left-1/2 -translate-x-1/2 mb-2
             hidden group-hover:flex
             flex-col items-center gap-1
@@ -2637,14 +2541,14 @@ const selectedDirector = useMemo(() => {
             whitespace-nowrap
             z-50
           "
-        >
-          {/* NOM */}
-          <span className="font-semibold text-gray-900">
-            {m.user?.name}
-          </span>
+                        >
+                          {/* NOM */}
+                          <span className="font-semibold text-gray-900">
+                            {m.user?.name}
+                          </span>
 
-          {/* TAG ROLE */}
-          {/* <span
+                          {/* TAG ROLE */}
+                          {/* <span
             className={`px-2 py-0.5 rounded-full text-[10px] font-semibold
               ${
                 isObserver
@@ -2656,30 +2560,27 @@ const selectedDirector = useMemo(() => {
             {isObserver ? "Observateur" : "Membre"}
           </span> */}
 
-          {/* FLÈCHE */}
-          <div
-            className="
+                          {/* FLÈCHE */}
+                          <div
+                            className="
               absolute top-full
               w-2 h-2
               bg-white
               border-r border-b border-gray-200
               rotate-45
             "
-          />
-        </div>
-      </div>
-    );
-  })}
+                          />
+                        </div>
+                      </div>
+                    );
+                  })}
 
-  {/* ===== +X AUTRES MEMBRES ===== */}
-  {members.length > 3 && (
-    <div
-      className="relative group"
-      style={{ marginLeft: -8 }}
-    >
-      {/* AVATAR +X */}
-      <div
-        className="
+                  {/* ===== +X AUTRES MEMBRES ===== */}
+                  {members.length > 3 && (
+                    <div className="relative group" style={{ marginLeft: -8 }}>
+                      {/* AVATAR +X */}
+                      <div
+                        className="
           w-8 h-8 rounded-full
           bg-emerald-600 text-white
           flex items-center justify-center
@@ -2687,13 +2588,13 @@ const selectedDirector = useMemo(() => {
           border-2 border-white
           cursor-pointer
         "
-      >
-        +{members.length - 3}
-      </div>
+                      >
+                        +{members.length - 3}
+                      </div>
 
-      {/* TOOLTIP DES AUTRES */}
-      <div
-        className="
+                      {/* TOOLTIP DES AUTRES */}
+                      <div
+                        className="
           absolute bottom-full left-1/2 -translate-x-1/2 mb-2
           hidden group-hover:flex
           flex-col gap-2
@@ -2704,20 +2605,20 @@ const selectedDirector = useMemo(() => {
           whitespace-nowrap
           z-50
         "
-      >
-        {members.slice(3).map((m: any) => {
-          //const isObserver = m.role === "observer";
+                      >
+                        {members.slice(3).map((m: any) => {
+                          //const isObserver = m.role === "observer";
 
-          return (
-            <div
-              key={m.userid}
-              className="flex items-center justify-between gap-2"
-            >
-              <span className="font-medium text-gray-900">
-                {m.user?.name}
-              </span>
+                          return (
+                            <div
+                              key={m.userid}
+                              className="flex items-center justify-between gap-2"
+                            >
+                              <span className="font-medium text-gray-900">
+                                {m.user?.name}
+                              </span>
 
-              {/* <span
+                              {/* <span
                 className={`px-2 py-0.5 rounded-full text-[10px] font-semibold
                   ${
                     isObserver
@@ -2728,51 +2629,66 @@ const selectedDirector = useMemo(() => {
               >
                 {isObserver ? "Observateur" : "Membre"}
               </span> */}
-            </div>
-          );
-        })}
+                            </div>
+                          );
+                        })}
 
-        {/* FLÈCHE */}
-        <div
-          className="
+                        {/* FLÈCHE */}
+                        <div
+                          className="
             absolute top-full left-1/2 -translate-x-1/2
             w-2 h-2
             bg-white
             border-r border-b border-gray-200
             rotate-45
           "
-        />
-      </div>
-    </div>
-  )}
-</div>
+                        />
+                      </div>
+                    </div>
+                  )}
+                </div>
 
-
-
-          {/* ================= DATES ================= */}
-          <div className="mt-3 flex justify-between text-xs text-gray-600">
-            <span>Début : {formatDate(project.startDate)}</span>
-            <span className={isLate ? "text-red-600 font-semibold" : ""}>
-              {isLate && " !! "}
-              Fin : {project.endDate ? formatDate(project.endDate) : "--"}
-              
-            </span>
-          </div>
+                {/* ================= DATES ================= */}
+                <div className="mt-3 flex justify-between text-xs text-gray-600">
+                  <span>
+                    Début :{" "}
+                    {project.startDate ? formatDate(project.startDate) : "--"}
+                  </span>
+                  <span className={isLate ? "text-red-600 font-semibold" : ""}>
+                    {isLate && " !! "}
+                    Fin : {project.endDate ? formatDate(project.endDate) : "--"}
+                  </span>
+                </div>
+              </div>
+            );
+          })}
         </div>
-      );
-    })}
-  </div>
-)}
-
-
+      )}
 
       {/* =====PAGINATE START===== */}
       <div className="flex flex-col flex-wrap md:flex-row justify-end px-4 items-center">
-        <PerPageInput
+        {/* <PerPageInput
           entriesPerPage={entriesPerPage}
           setEntriesPerPage={setEntriesPerPage}
           setPage={setPage}
-        />
+        /> */}
+        <div className="flex items-center gap-2 mr-4">
+          <span className="text-sm">Afficher</span>
+          <select
+            value={entriesPerPage}
+            onChange={(e) => {
+              setEntriesPerPage(Number(e.target.value));
+              setActualPage(1);
+            }}
+            className="border rounded px-2 py-1 text-sm dark:bg-boxdark dark:border-strokedark"
+          >
+            <option value={5}>5</option>
+            <option value={10}>10</option>
+            <option value={20}>20</option>
+            <option value={50}>50</option>
+          </select>
+          <span className="text-sm">entrées</span>
+        </div>
         <Pagination
           actualPage={actualPage}
           setActualPage={setActualPage}

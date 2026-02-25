@@ -401,7 +401,7 @@ const TableAccess = ({
                         count++;
                       }
                       if (admin.actualizeUserData === 1) {
-                        message.push("Actualiser les valeurs utilisaterus");
+                        message.push("Actualiser les valeurs utilisateurs");
                         count++;
                       }
                       if (admin.assignAccess === 1) {
