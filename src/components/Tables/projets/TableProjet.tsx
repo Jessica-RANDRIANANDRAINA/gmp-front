@@ -141,7 +141,7 @@ const TableProjet = ({
   );
   const [decodedToken, setDecodedToken] = useState<IDecodedToken>();
   const [tasks, setTasks] = useState<any[]>([]);
-  const [applyFilter, setApplyFilter] = useState(false);
+  // const [applyFilter, setApplyFilter] = useState(false);
   const [allDirectors, setAllDirectors] = useState<
     Array<{ id: string; name: string }>
   >([]);
@@ -226,7 +226,7 @@ const TableProjet = ({
     if (!data) return [];
 
     // 🔹 Tant que "Rechercher" n’est pas cliqué → pas de filtre
-    if (!applyFilter) return data;
+    //if (!applyFilter) return data;
 
     return data.filter((project) => {
       /* =======================
@@ -396,7 +396,7 @@ const TableProjet = ({
       }
       return true;
     });
-  }, [data, applyFilter, search, selectedUserInput, isLateOnly]);
+  }, [data, search, selectedUserInput, isLateOnly]);
 
   const filteredProjectCount = useMemo(() => {
     return filteredData.length;
@@ -573,8 +573,8 @@ const TableProjet = ({
     // setTimeout(() => setResetStatusSelectedOptions(false), 0);
 
     setSelecteduserInput([]);
-    setApplyFilter(false);
-    setIsSearchButtonClicked(true);
+    // setApplyFilter(false);
+    // setIsSearchButtonClicked(true);
     setIsLateOnly(false);
   };
 
@@ -674,7 +674,7 @@ const TableProjet = ({
       (user) => user.id !== userId,
     );
     setSelecteduserInput(updatedSelectedUsers);
-    setApplyFilter(false);
+    // setApplyFilter(false);
   };
 
   // Récupérez tous les chefs au chargement du composant
@@ -712,7 +712,7 @@ const TableProjet = ({
     >,
   ) => {
     setSelecteduserInput(value);
-    setApplyFilter(false);
+    //setApplyFilter(false);
   };
 
   return (
@@ -739,7 +739,7 @@ const TableProjet = ({
             rounded="medium"
             onChange={(e) => {
               setSearch({ ...search, title: e.target.value });
-              setApplyFilter(false); // <-- add this
+              //setApplyFilter(false); // <-- add this
             }}
           />
 
@@ -775,7 +775,7 @@ const TableProjet = ({
             value={search.priority}
             onValueChange={(e) => {
               setSearch({ ...search, priority: e });
-              setApplyFilter(false); // <-- add this
+              //setApplyFilter(false); // <-- add this
             }}
           />
           <CustomSelect
@@ -784,7 +784,7 @@ const TableProjet = ({
             value={search.criticity}
             onValueChange={(e) => {
               setSearch({ ...search, criticity: e });
-              setApplyFilter(false); // <-- add this
+              //setApplyFilter(false); // <-- add this
             }}
           />
 
@@ -801,7 +801,7 @@ const TableProjet = ({
             value={search.state}
             onValueChange={(value) => {
               setSearch((prev) => ({ ...prev, state: value }));
-              setApplyFilter(false); // <-- add this
+              // setApplyFilter(false); // <-- add this
             }}
           />
 
@@ -820,7 +820,7 @@ const TableProjet = ({
             placeholder="Rechercher"
             user={availableUser}
             userSelected={selectedUserInput}
-            setUserSelected={handleSetSelectedUserInput} // <-- use wrapper
+             setUserSelected={handleSetSelectedUserInput} // <-- use wrapper
           />
 
           <CustomSelect
@@ -844,7 +844,7 @@ const TableProjet = ({
                 const id = directorNameToId.get(selectedName) ?? "";
                 setSearch((prev) => ({ ...prev, director: id }));
               }
-              setApplyFilter(false); // <-- add this
+              // setApplyFilter(false); // <-- add this
             }}
           />
 
@@ -858,7 +858,7 @@ const TableProjet = ({
                 ...search,
                 startDate: e.target.value,
               });
-              setApplyFilter(false);
+              // setApplyFilter(false);
             }}
           />
           <CustomInput
@@ -871,7 +871,7 @@ const TableProjet = ({
                 ...search,
                 endDate: e.target.value,
               });
-              setApplyFilter(false);
+              // setApplyFilter(false);
             }}
           />
           <div className="flex items-center gap-2 mt-6">
@@ -881,7 +881,7 @@ const TableProjet = ({
               checked={isLateOnly}
               onChange={(e) => {
                 setIsLateOnly(e.target.checked);
-                setApplyFilter(false);
+                // setApplyFilter(false);
               }}
               className="w-4 h-4 accent-red-600 cursor-pointer"
             />
@@ -895,7 +895,7 @@ const TableProjet = ({
 
           <div className="flex items-end gap-2 mx-3">
             <div className="pb-2">
-              <button
+            <button
                 onClick={handleDeleteFilter}
                 className="flex justify-center whitespace-nowrap text-sm gap-1 h-fit "
               >
@@ -918,7 +918,7 @@ const TableProjet = ({
               </button>
             </div>
             <div>
-              <button
+              {/* <button
                 type="button"
                 onClick={() => {
                   setApplyFilter(true); //déclenche le filtrage
@@ -927,7 +927,7 @@ const TableProjet = ({
                 className=" px-2 cursor-pointer mt-2 py-2 lg:px-3 xl:px-2  text-center font-medium text-sm text-white hover:bg-opacity-90  border border-primaryGreen bg-primaryGreen rounded-lg dark:border-darkgreen dark:bg-darkgreen dark:hover:bg-opacity-90  md:ease-in md:duration-300 md:transform  "
               >
                 Rechercher
-              </button>
+              </button> */}
             </div>
           </div>
         </div>
@@ -960,7 +960,7 @@ const TableProjet = ({
                   className="flex items-center justify-center px-3 py-2 text-red-500 hover:text-white hover:bg-red-500 transition rounded-r-md focus:outline-none"
                   onClick={() => {
                     setSearch((prev) => ({ ...prev, director: "" }));
-                    setApplyFilter(false);
+                    // setApplyFilter(false);
                   }}
                 >
                   ✕
@@ -2297,7 +2297,7 @@ const TableProjet = ({
       grid-cols-1
       sm:grid-cols-2
       lg:grid-cols-3
-      xl:grid-cols-4
+      xl:grid-cols-3  
     "
         >
           {paginatedProjects.map((project) => {
